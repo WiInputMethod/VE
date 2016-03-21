@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
+        android:focusable="false" android:focusableInTouchMode="false"
+        android:id="@+id/grid_relativelayout"
+        android:padding="10dp"
+        android:paddingTop="2dp" android:paddingBottom="2dp">
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:id="@+id/imageView"
+            android:layout_centerHorizontal="true"
+    />
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/picklayer"
+            android:layout_centerHorizontal="true"
+            android:adjustViewBounds="true"
+            android:layout_alignBottom="@id/imageView"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Skin"
+            android:id="@+id/tv_item"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/imageView"/>
+</RelativeLayout>

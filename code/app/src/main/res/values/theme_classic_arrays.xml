@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="THEME_CLASSIC_TEXT_COLORS">
+        <!-- 最上排五个功能键：移动、缩放、设置、隐藏、退出 -->
+        <item>0xFF272822</item>
+
+        <!-- 第二行candidate候选拼音 -->
+        <item>0xFF272822</item>
+
+        <!-- 第三排左边五个字符选择键 -->
+        <item>0xFF272822</item>
+
+        <!-- 第三排删除键 -->
+        <item>0xFF272822</item>
+
+        <!-- 九宫格九个按键 -->
+        <item>0xFF272822</item>
+
+        <!-- 二十六个英文字母按键 -->
+        <item>0xFF272822</item>
+
+        <!-- 数字零按键7 -->
+        <item>0xFF272822</item>
+
+        <!-- 空格键8 -->
+        <item>0xFF272822</item>
+
+        <!-- 换行键9 -->
+        <item>0xFF272822</item>
+
+        <!-- 左侧候选词 -->
+        <item>0xFF272822</item>
+
+        <!-- 编辑框11 -->
+        <item>0xFF272822</item>
+
+        <!-- Shift键12 -->
+        <item>0xFF272822</item>
+
+        <!-- 编辑框13 -->
+        <item>0xFF272822</item>
+    </integer-array>
+
+    <integer-array name="THEME_CLASSIC_BUTTON_BACK_COLORS">
+        <!-- 最上排五个功能键：移动、缩放、设置、隐藏、退出 -->
+        <item>0xFFF0F0F0</item>
+
+        <!-- 第二行candidate候选拼音 -->
+        <item>0xFFF0F0F0</item>
+
+        <!-- 第三排左边五个字符选择键 -->
+        <item>0xFFF0F0F0</item>
+
+        <!-- 第三排删除键11 -->
+        <item>0xFFF0F0F0</item>
+
+        <!-- 九宫格九个按键 -->
+        <item>0xFFF0F0F0</item>
+
+        <!-- 二十六个英文字母按键21 -->
+        <item>0xFFF0F0F0</item>
+
+        <!-- 数字零按键47 -->
+        <item>0xFFF0F0F0</item>
+
+        <!-- 空格键48 -->
+        <item>0xFFF0F0F0</item>
+
+        <!-- 换行键49 -->
+        <item>0xFFF0F0F0</item>
+
+        <!-- 左侧候选词50 -->
+        <item>0xFFF0F0F0</item>
+
+        <!-- Shift键51 -->
+        <item>0xFFF0F0F0</item>
+
+        <!-- 左斜杠52 -->
+        <item>0xFFF0F0F0</item>
+
+        <!-- 第二行的选种颜色53 -->
+        <item>0xFFBBBBBB</item>
+
+        <!-- 按键按下的背景色54 -->
+        <item>0xFF1F7BE5</item>
+
+        <!-- preedit backcolor-->
+        <item>0xFF1F7BE5</item>
+    </integer-array>
+
+    <integer name="THEME_CLASSIC_SHADOW">0xBFC9C9C9</integer>
+
+</resources>

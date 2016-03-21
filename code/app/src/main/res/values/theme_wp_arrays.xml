@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="THEME_WP_TEXT_COLORS">
+        <!-- 最上排五个功能键：移动、缩放、设置、隐藏、退出 -->
+        <item>0xFFFFFFFF</item>
+
+        <!-- 第二行candidate候选拼音 -->
+        <item>0xFFFFFFFF</item>
+
+        <!-- 第三排左边五个字符选择键 -->
+        <item>0xFFFFFFFF</item>
+
+        <!-- 第三排删除键 -->
+        <item>0xFFFFFFFF</item>
+
+        <!-- 九宫格九个按键 -->
+        <item>0xFFFFFFFF</item>
+
+        <!-- 二十六个英文字母按键 -->
+        <item>0xFFFFFFFF</item>
+
+        <!-- 数字零按键 -->
+        <item>0xFFFFFFFF</item>
+
+        <!-- 空格键 -->
+        <item>0xFFFFFFFF</item>
+
+        <!-- 换行键 -->
+        <item>0xFFFFFFFF</item>
+
+        <!-- 左侧候选词 -->
+        <item>0xFFFFFFFF</item>
+
+        <!-- 编辑框 -->
+        <item>0xFFFFFFFF</item>
+
+        <!-- Shift键11 -->
+        <item>0xFFFFFFFF</item>
+
+        <!-- 编辑框12 -->
+        <item>0xFFFFFFFF</item>
+    </integer-array>
+
+    <integer-array name="THEME_WP_BUTTON_BACK_COLORS">
+        <!-- 最上排五个功能键：移动、缩放、设置、隐藏、退出 -->
+        <item>0xD0212121</item>
+
+        <!-- 第二行candidate候选拼音 -->
+        <item>0xD0212121</item>
+
+        <!-- 第三排左边五个字符选择键 -->
+        <item>0xD0212121</item>
+
+        <!-- 第三排删除键 -->
+        <item>0xD0212121</item>
+
+        <!-- 九宫格九个按键 -->
+        <item>0xD0212121</item>
+
+        <!-- 二十六个英文字母按键 -->
+        <item>0xD0212121</item>
+
+        <!-- 数字零按键47 -->
+        <item>0xD0212121</item>
+
+        <!-- 空格键48 -->
+        <item>0xD0212121</item>
+
+        <!-- 换行键49 -->
+        <item>0xD0212121</item>
+
+        <!-- 左侧候选词50 -->
+        <item>0xD0212121</item>
+
+        <!-- Shift键51 -->
+        <item>0xD0212121</item>
+
+        <!-- 左斜杠52 -->
+        <item>0xD0212121</item>
+
+        <!-- 第二行的选中颜色53 -->
+        <item>0xD0BBBBBB</item>
+
+        <!-- 按键按下的背景色54 -->
+        <item>0xD0FFFFC9</item>
+
+        <!-- preedit backcolor-->
+        <item>0xD0212121</item>
+    </integer-array>
+
+    <integer name="THEME_WP_SHADOW">0xBFdfdfdf</integer>
+
+</resources>

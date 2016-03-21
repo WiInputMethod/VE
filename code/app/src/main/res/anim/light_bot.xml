@@ -1,0 +1,63 @@
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <scale
+            android:duration="200"
+            android:fillBefore="true"
+            android:fillEnabled="true"
+            android:fromXScale="1.0"
+            android:fromYScale="0.0"
+            android:interpolator="@android:anim/decelerate_interpolator"
+            android:pivotX="50%"
+            android:pivotY="0%"
+            android:toXScale="1.0"
+            android:toYScale="1.0"/>
+    <!--
+    <scale
+        android:duration="100"
+        android:fillBefore="true"
+        android:fillEnabled="true"
+        android:fromXScale="1.0"
+        android:fromYScale="0.0"
+        android:interpolator="@android:anim/decelerate_interpolator"
+        android:pivotX="50%"
+        android:pivotY="0%"
+        android:toXScale="0.8"
+        android:toYScale="1.0" />
+    <scale
+        android:duration="200"
+        android:fillBefore="true"
+        android:fillEnabled="true"
+        android:fromXScale="0.8"
+        android:fromYScale="1.0"
+        android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+        android:pivotX="50%"
+        android:pivotY="0%"
+        android:startOffset="100"
+        android:toXScale="1.2"
+        android:toYScale="1.0" />
+    <scale
+        android:duration="100"
+        android:fillBefore="true"
+        android:fillEnabled="true"
+        android:fromXScale="1.2"
+        android:fromYScale="1"
+        android:interpolator="@android:anim/decelerate_interpolator"
+        android:pivotX="50%"
+        android:pivotY="0%"
+        android:startOffset="300"
+        android:toXScale="1"
+        android:toYScale="1" />
+
+    <scale
+        android:duration="200"
+        android:fromXScale="1.0"
+        android:fromYScale="1.0"
+        android:interpolator="@android:anim/decelerate_interpolator"
+        android:pivotX="50%"
+        android:pivotY="0%"
+        android:startOffset="200"
+        android:toXScale="1.0"
+        android:toYScale="0.0" />
+    -->
+
+</set>

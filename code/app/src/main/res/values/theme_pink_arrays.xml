@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="THEME_PINK_TEXT_COLORS">
+        <!-- 最上排五个功能键：移动、缩放、设置、隐藏、退出 -->
+        <item>0xFFf9f9f9</item>
+
+        <!-- 第二行candidate候选拼音 -->
+        <item>0xFFf9f9f9</item>
+
+        <!-- 第三排左边五个字符选择键 -->
+        <item>0xFFf9f9f9</item>
+
+        <!-- 第三排删除键 -->
+        <item>0xFFf9f9f9</item>
+
+        <!-- 九宫格九个按键 -->
+        <item>0xFFd54b44</item>
+
+        <!-- 二十六个英文字母按键 -->
+        <item>0xFFd54b44</item>
+
+        <!-- 数字零按键7 -->
+        <item>0xFFd54b44</item>
+
+        <!-- 空格键8 -->
+        <item>0xFFd54b44</item>
+
+        <!-- 换行键9 -->
+        <item>0xFFf9f9f9</item>
+
+        <!-- 左侧候选词 -->
+        <item>0xFFf9f9f9</item>
+
+        <!-- 编辑框11 -->
+        <item>0xFFf9f9f9</item>
+
+        <!-- Shift键12 -->
+        <item>0xFFf9f9f9</item>
+
+        <!-- 编辑框13 -->
+        <item>0xFFf9f9f9</item>
+    </integer-array>
+
+    <integer-array name="THEME_PINK_BUTTON_BACK_COLORS">
+        <!-- 最上排五个功能键：移动、缩放、设置、隐藏、退出 -->
+        <item>0xFFfd6a75</item>
+
+        <!-- 第二行candidate候选拼音 -->
+        <item>0xFFfcb1aa</item>
+
+        <!-- 第三排左边五个字符选择键 -->
+        <item>0xFFfcb1aa</item>
+
+        <!-- 第三排删除键11 -->
+        <item>0xFFfcb1aa</item>
+
+        <!-- 九宫格九个按键 -->
+        <item>0xFFffeeee</item>
+
+        <!-- 二十六个英文字母按键21 -->
+        <item>0xFFffeeee</item>
+
+        <!-- 数字零按键47 -->
+        <item>0xFFffeeee</item>
+
+        <!-- 空格键48 -->
+        <item>0xFFfcb1aa</item>
+
+        <!-- 换行键49 -->
+        <item>0xFFfd6a75</item>
+
+        <!-- 左侧候选词50 -->
+        <item>0xFFfcb1aa</item>
+
+        <!-- Shift键51 -->
+        <item>0xFFfcb1aa</item>
+
+        <!-- 左斜杠52 -->
+        <item>0xFFfcb1aa</item>
+
+        <!-- prefix53 -->
+        <item>0xFFfcb1aa</item>
+
+        <!-- 按键按下的背景色54 -->
+        <item>0xFF949c97</item>
+
+        <!-- preedit backcolor-->
+        <item>0xFFe1bda2</item>
+    </integer-array>
+
+    <integer name="THEME_PINK_SHADOW">0xBFFF4827</integer>
+
+</resources>

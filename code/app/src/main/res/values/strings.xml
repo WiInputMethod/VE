@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, WIT9Activity!</string>
+    <string name="app_name">WI微逸输入法</string>
+    <string name="app_desc">指尖上的飞舞</string>
+    <string name="simple">简洁到极致</string>
+    <string name="ime_name">WI微逸输入法0.1内部测试版本</string>
+
+    <!-- Symbols that are commonly considered word separators in this language -->
+
+    <string name="title_common_setting">常用设置</string>
+    <string name="summary_common_setting">定制您的输入法</string>
+    <string name="title_mohu_setting">模糊音设置</string>
+    <string name="summary_mohu_setting">定制您的偏好</string>
+    <string name="title_reverse_candidate">翻转候选顺序</string>
+    <string name="summary_reverse_candidate">自下而上显示候选词</string>
+    <string name="key_reverse_candidate">REVERSE_CANDIDATE</string>
+    <string name="key_left_hand">LEFT_HAND</string>
+    <string name="summary_left_hand">键盘在左边，候选栏在右边。</string>
+    <string name="title_left_hand">左手模式</string>
+    <string name="title_skin_picker">皮肤</string>
+    <string name="summary_skin_picker">选择你的色彩</string>
+    <string name="key_unshown_help">KEY_UNSHOWN_HELP</string>
+    <string name="title_unshown_help">若无法显示键盘请按此</string>
+    <string name="summary_unshown_help">小米等手机安装后无法显示键盘，需要进行设置</string>
+    <string name="unshown_desc">
+        \u3000\u3000部分手机如小米安装后无法弹出键盘，请进到系统的“设置”里，点击“应用”选项，找到WI微逸输入法，点击开启悬浮窗，如下图所示。然后结束程序并重新打开即可。
+    </string>
+    <string name="summary_user_def_space_text">用户自定义空格文字</string>
+    <string name="title_user_def_space_text">空格文字</string>
+    <string name="dialogtitle_user_def_space_text">自定义空格文字</string>
+    <string name="save">保存</string>
+    <string name="cancel">取消</string>
+    <string name="silent">静音</string>
+    <string name="low">低</string>
+    <string name="middle">中</string>
+    <string name="high">高</string>
+    <string name="rate">级别</string>
+
+    <string name="shift_symbol">#+=</string>
+    <string name="abc">ABC</string>
+    <string name="select_all">全选</string>
+    <string name="copy">复制</string>
+    <string name="paste">粘贴</string>
+    <string name="cut">剪切</string>
+    <string name="head">行首</string>
+    <string name="tail">行尾</string>
+    <string name="show">显示</string>
+    <string name="hide">隐藏</string>
+    <string name="zh_wi">WI输入法</string>
+    <string name="en_wi">WI-Inputmethod</string>
+    <string name="zheng">正</string>
+    <string name="zhong">中</string>
+    <string name="eng">En</string>
+    <string name="smile">&#x263A;</string>
+    <string name="reset">重置</string>
+    <string name="back">返回</string>
+    <string name="categorytitle_changyong_gongneng">功能选项</string>
+    <string name="categorytitle_changyong_yangshi">外观选项</string>
+    <string name="categorytitle_changyong_fankui">反馈选项</string>
+    <string name="title_quanpinjiucuo">全拼智能纠错</string>
+    <string name="summary_quanpinjiucuo">勾选开启全拼智能纠错</string>
+    <string name="title_biaoqing">Emoji表情</string>
+    <string name="summary_biaoqing">勾选开启更丰富的表情输入</string>
+    <string name="title_jianpin_mode">简拼输入</string>
+    <string name="summary_jianpin_mode">开启简拼输入模式</string>
+    <string name="title_lianxiang">中文联想</string>
+    <string name="summary_lianxiang">联想下一个候选词</string>
+
+    <string name="qk_summary_slide_pin_mode">设置点滑状态、声音大小、自定义点滑等</string>
+    <string name="nk_summary_slide_pin_mode">九键下无法使用</string>
+    <string name="title_slide_pin">点滑输入</string>
+    <string name="summary_slide_pin">勾选开启拼音串点滑输入，全拼模式下有效</string>
+    <string name="title_slide_pin_volume">点滑音量设置</string>
+    <string name="summary_slide_pin_volume">调节点滑音大小</string>
+    <string name="title_self_def_slide_pin">自定义点滑</string>
+    <string name="summary_self_def_slide_pin">设置任意按键上的点滑文字</string>
+    <string name="title_slide_recommend">加载点滑组合</string>
+    <string name="summary_slide_recommend">微逸新手？加载推荐点滑组合方案尝鲜</string>
+    <string name="title_slide_recommend_0">默认点滑方案</string>
+    <string name="summary_slide_recommend_0">初始状态的默认点滑方案，最为简洁干净</string>
+    <string name="title_slide_recommend_1">中文全键盘、数字混输方案</string>
+    <string name="summary_slide_recommend_1">第一排按键上划输入数字，中文数字混合输入</string>
+    <string name="title_slide_recommend_2">数字符号混输方案</string>
+    <string name="summary_slide_recommend_2">点滑输入数字和常用符号，也可根据习惯自定义</string>
+    <string name="title_slide_recommend_3">常用符号混输方案</string>
+    <string name="summary_slide_recommend_3">按键点滑输入常用符号，也可根据习惯自定义</string>
+
+    <string name="special_function">自定义键盘大小</string>
+    <string name="sound">按键音设置</string>
+    <string name="summary_sound">调节按键音</string>
+    <string name="vibrator">震动反馈设置</string>
+    <string name="summary_vibrator">调节按键震动的级别</string>
+    <string name="title_sound_effect">按键音效方案</string>
+    <string name="summary_sound_effect">选择您喜欢的音效方案</string>
+    <string name="dialog_title_sound_effect">音效类型</string>
+    <string name="title_skin_window">皮肤</string>
+    <string name="summary_skin_window">夏季五彩缤纷皮肤选择</string>
+    <string name="summary_space_double_click">勾选开启双击空格输入逗号功能</string>
+    <string name="title_space_double_click">双击空格输入逗号</string>
+
+    <string name="shuangpin_mode">双拼选项</string>
+    <string name="title_shuangpin">双拼类型设置</string>
+    <string name="summary_shuangpin">选择您喜欢的双拼类型</string>
+    <string name="dialog_title_shuangpin">双拼类型</string>
+    <string name="title_advance_shuangpin">双拼高级选项</string>
+    <string name="summary_advance_shuangpin">混输,句内编辑，纠错等设置</string>
+    <string name="title_hunshu">全拼双拼混输</string>
+    <string name="summary_hunshu">勾选开启混输模式</string>
+    <string name="title_juneibianji">句内编辑模式</string>
+    <string name="summary_juneibianji">勾选开启句内编辑模式</string>
+
+    <string name="title_shuangpinjiucuo">双拼智能纠错</string>
+    <string name="summary_shuangpinjiucuo">勾选开启双拼纠错模式</string>
+    <string name="key">按键</string>
+    <string name="data_setting">数据选项</string>
+    <string name="title_dict_setting">词典管理</string>
+    <string name="summary_dict_setting">自定义词典</string>
+    <string name="word">文字</string>
+    <string name="pinyin">拼音</string>
+    <string name="add">添加</string>
+    <string name="title_user_def_word">自定义用户词</string>
+    <string name="title_import_contacts">加载通讯录词库</string>
+    <string name="title_user_word">整理用户词</string>
+    <string name="summary_on_import_contacts">取消勾选去除联系人词库</string>
+    <string name="summary_off_import_contacts">勾选加载联系人词库</string>
+    <string name="title_data_sync">数据同步</string>
+    <string name="summary_data_sync">备份和恢复本地数据</string>
+    <string name="title_data_back_up">本地备份</string>
+    <string name="summary_data_back_up">备份您的用户词典到SD卡</string>
+    <string name="title_data_recover">本地恢复</string>
+    <string name="summary_data_recover">从SD卡恢复您的用户词典</string>
+    <string name="help">使用帮助</string>
+    <string name="title_helper">使用帮助</string>
+    <string name="summary_helper">帮助</string>
+    <string name="title_user_skill">使用技巧</string>
+    <string name="title_donate">捐助</string>
+    <string name="title_about_us">关于我们</string>
+    <string name="title_update_log">更新日志</string>
+    <string name="title_share">好友推荐</string>
+    <string name="summary_share">快推荐给您的好友吧</string>
+    <string name="user_guide">用户手册</string>
+    <string name="about">关于</string>
+    <string name="donate">捐助</string>
+    <string name="shuangpin_fangan">双拼方案</string>
+
+    <!-- MIUI权限部分 -->
+    <string name="miui_permission">MIUI开启悬浮窗</string>
+    <!-- 键盘部分 -->
+    <string name="title_keyboard_select">全新九键全键切换</string>
+    <string name="title_keyboard_setting">键盘选项</string>
+    <string name="summary_keyboard_setting">选择中文键盘</string>
+    <string name="title_slide_pin_mode">全键点滑设置</string>
+    <string name="summary_slide_pin_mode">设置点滑状态、声音大小、自定义点滑等</string>
+
+    <!-- 引导菜单部分 -->
+    <string name="guide_page1_appname">WI微逸</string>
+    <string name="guide_page1_welcome">指尖上的飞舞</string>
+    <string name="guide_page2_text">浮动键盘 边点边看</string>
+    <string name="guide_page3_text">尺寸自如 大小随心</string>
+    <string name="guide_page4_text">透明度自由调节</string>
+    <string name="guide_page5_text1">独有拼音预测点滑输入</string>
+    <string name="guide_page5_text2">更快速 最懂你</string>
+    <string name="guide_page6_text1">开启微逸</string>
+    <string name="guide_page6_text2">选择微逸</string>
+    <string name="guide_page6_success">微逸 有您更精彩</string>
+    <string name="title_part1">第一步：先勾选WI微逸输入法</string>
+    <string name="button_check_off">去勾选</string>
+    <string name="button_check_on">已经完成</string>
+    <string name="tittle_part2">第二步：选择WI微逸输入法</string>
+    <string name="button_choose_off">选择我~</string>
+    <string name="button_choose_on">^_^ 好了</string>
+    <string name="summary">马上开启新的输入体验！</string>
+    <string name="please_switch_to_wi">请先切换至Wi微逸输入法～</string>
+    <string name="success_import_contact">成功导入联系人</string>
+    <string name="num">个</string>
+    <string name="clear_contact_dict">已清除通讯录词典</string>
+
+    <!-- 数据备份部分 -->
+    <string name="back_up_folder_name">wi_inputmethod</string>
+    <string name="back_up_success">本地备份成功</string>
+    <string name="back_up_failed">本地备份失败</string>
+    <string name="not_found_sd_card">未找到SD卡</string>
+    <string name="restore">恢复</string>
+    <string name="words_number">个用户词</string>
+    <string name="restore_failed">本地恢复失败</string>
+    <string name="file_broken">文件被损坏</string>
+    <string name="not_found_restore_file">未找到备份文件:</string>
+    <string name="kernel_not_init">内核未初始化</string>
+    <string name="no_user_word">尚无用户词</string>
+    <string name="cannot_create_file">该目录下无法创建文件：</string>
+    <string name="cannot_create_folder">创建目录失败：</string>
+
+    <!-- emoji工具部分 -->
+    <string name="emoji_unified2softbank_path_name">dict/emoji_unified2softbank.ser</string>
+
+    <!-- 字体路径 -->
+    <string name="font_file_path">fonts/iphone.ttf</string>
+
+    <!-- html路径 -->
+
+
+    <!-- 分享文字 -->
+    <string name="share_text">#软件分享#，我正在使用@WI微逸输入法，浮动键盘横空出世，你也来试试吧！官方内测群：186058531</string>
+    <string name="share_subject">快分享给你的好友吧</string>
+    <string name="share">分享</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_skin_picker">皮肤</string>
+    <string name="smile_key_text">^-^</string>
+
+    <!--键盘固定符号-->
+    <string name="symbol">符</string>
+    <string name="symbol_add">\u2647</string>
+    <string name="confirm">确定</string>
+    <string name="cancel_b">取消</string>
+    <string name="reset_b">重置</string>
+
+    <!--底部栏文字-->
+    <string name="keyboard">\ue005</string>
+    <string name="expression">\u263a</string>
+    <string name="zh_space_text">空格</string>
+    <string name="en_space_text">space</string>
+    <string name="zh_enter">换行</string>
+    <string name="en_enter">Enter</string>
+
+    <!-- delete text-->
+    <string name="delete_text">\ue008</string>
+    <string name="largecandidate">\uf7d9</string>
+
+    <string name="file_write_wrong">Sorry, \nsomething is wrong when program writes to file.\nPlease report this to us
+    </string>
+    <string name="dialog_title_lianxiang">联想选项</string>
+    <string name="SLIDE_DELETE_STR">开启删除键左滑清空</string>
+    <string name="SLIDE_DELETE_TITLE">删除键左滑清空</string>
+
+    <string name="SHADOW_STR">开启文字阴影</string>
+    <string name="SHADOW_TITLE">文字阴影</string>
+    <string name="shadow_category_STR">文字阴影选项</string>
+    <string name="SHADOW_RADIUS_TITLE">阴影大小</string>
+    <string name="SHADOW_RADIUS_DIALOG_TITLE">输入阴影大小(0~30)</string>
+    <string name="SHADOW_RADIUS_SUMMARY">设定文字阴影大小</string>
+<!--自定义皮肤-->
+    <string name="skin_diy">自定义皮肤</string>
+    <string name="skin_diy_background">背景颜色</string>
+    <string name="skin_diy_text">字体颜色</string>
+    <string name="skin_diy_topfunc">上侧功能栏</string>
+    <string name="skin_diy_bottom">底部操作栏</string>
+    <string name="skin_diy_quicksymbol">符号栏</string>
+    <string name="skin_diy_candiate">候选栏</string>
+    <string name="skin_diy_edit">编辑框</string>
+    <string name="skin_diy__t9keyboard">九键</string>
+    <string name="skin_diy_keyboard">全键</string>
+    <string name="skin_diy_touchdown">按下背景色</string>
+    <string name="skin_diy_sure">确定</string>
+    <string name="skin_diy_try">试试你的配色吧</string>
+    <string name="large_text">
+        "Material is the metaphor.\n\n"
+
+        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
+        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
+        "technologically advanced and open to imagination and magic.\n"
+        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
+        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
+        "flexibility of the material creates new affordances that supercede those in the physical "
+        "world, without breaking the rules of physics.\n"
+        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
+        "interact, and exist in space and in relation to each other. Realistic lighting shows "
+        "seams, divides space, and indicates moving parts.\n\n"
+
+        "Bold, graphic, intentional.\n\n"
+
+        "The foundational elements of print based design typography, grids, space, scale, color, "
+        "and use of imagery guide visual treatments. These elements do far more than please the "
+        "eye. They create hierarchy, meaning, and focus. Deliberate color choices, edge to edge "
+        "imagery, large scale typography, and intentional white space create a bold and graphic "
+        "interface that immerse the user in the experience.\n"
+        "An emphasis on user actions makes core functionality immediately apparent and provides "
+        "waypoints for the user.\n\n"
+
+        "Motion provides meaning.\n\n"
+
+        "Motion respects and reinforces the user as the prime mover. Primary user actions are "
+        "inflection points that initiate motion, transforming the whole design.\n"
+        "All action takes place in a single environment. Objects are presented to the user without "
+        "breaking the continuity of experience even as they transform and reorganize.\n"
+        "Motion is meaningful and appropriate, serving to focus attention and maintain continuity. "
+        "Feedback is subtle yet clear. Transitions are efﬁcient yet coherent.\n\n"
+
+        "3D world.\n\n"
+
+        "The material environment is a 3D space, which means all objects have x, y, and z "
+        "dimensions. The z-axis is perpendicularly aligned to the plane of the display, with the "
+        "positive z-axis extending towards the viewer. Every sheet of material occupies a single "
+        "position along the z-axis and has a standard 1dp thickness.\n"
+        "On the web, the z-axis is used for layering and not for perspective. The 3D world is "
+        "emulated by manipulating the y-axis.\n\n"
+
+        "Light and shadow.\n\n"
+
+        "Within the material environment, virtual lights illuminate the scene. Key lights create "
+        "directional shadows, while ambient light creates soft shadows from all angles.\n"
+        "Shadows in the material environment are cast by these two light sources. In Android "
+        "development, shadows occur when light sources are blocked by sheets of material at "
+        "various positions along the z-axis. On the web, shadows are depicted by manipulating the "
+        "y-axis only. The following example shows the card with a height of 6dp.\n\n"
+
+        "Resting elevation.\n\n"
+
+        "All material objects, regardless of size, have a resting elevation, or default elevation "
+        "that does not change. If an object changes elevation, it should return to its resting "
+        "elevation as soon as possible.\n\n"
+
+        "Component elevations.\n\n"
+
+        "The resting elevation for a component type is consistent across apps (e.g., FAB elevation "
+        "does not vary from 6dp in one app to 16dp in another app).\n"
+        "Components may have different resting elevations across platforms, depending on the depth "
+        "of the environment (e.g., TV has a greater depth than mobile or desktop).\n\n"
+
+        "Responsive elevation and dynamic elevation offsets.\n\n"
+
+        "Some component types have responsive elevation, meaning they change elevation in response "
+        "to user input (e.g., normal, focused, and pressed) or system events. These elevation "
+        "changes are consistently implemented using dynamic elevation offsets.\n"
+        "Dynamic elevation offsets are the goal elevation that a component moves towards, relative "
+        "to the component’s resting state. They ensure that elevation changes are consistent "
+        "across actions and component types. For example, all components that lift on press have "
+        "the same elevation change relative to their resting elevation.\n"
+        "Once the input event is completed or cancelled, the component will return to its resting "
+        "elevation.\n\n"
+
+        "Avoiding elevation interference.\n\n"
+
+        "Components with responsive elevations may encounter other components as they move between "
+        "their resting elevations and dynamic elevation offsets. Because material cannot pass "
+        "through other material, components avoid interfering with one another any number of ways, "
+        "whether on a per component basis or using the entire app layout.\n"
+        "On a component level, components can move or be removed before they cause interference. "
+        "For example, a floating action button (FAB) can disappear or move off screen before a "
+        "user picks up a card, or it can move if a snackbar appears.\n"
+        "On the layout level, design your app layout to minimize opportunities for interference. "
+        "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
+        "when a user tries to pick up one of cards.\n\n"
+    </string>
+</resources>

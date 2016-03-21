@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="THEME_ORANGE_TEXT_COLORS">
+        <!-- 最上排五个功能键：移动、缩放、设置、隐藏、退出 -->
+        <item>0xFFFFFFFF</item>
+
+        <!-- 第二行candidate候选拼音 -->
+        <item>0xFFFFFFFF</item>
+
+        <!-- 第三排左边五个字符选择键 -->
+        <item>0xFFFFFFFF</item>
+
+        <!-- 第三排删除键 -->
+        <item>0xFFFFFFFF</item>
+
+        <!-- 九宫格九个按键 -->
+        <item>0xFFFFFFFF</item>
+
+        <!-- 二十六个英文字母按键 -->
+        <item>0xFFFFFFFF</item>
+
+        <!-- 数字零按键 -->
+        <item>0xFFFFFFFF</item>
+
+        <!-- 空格键 -->
+        <item>0xFFFFFFFF</item>
+
+        <!-- 换行键 -->
+        <item>0xFFFFFFFF</item>
+
+        <!-- 左侧候选词 -->
+        <item>0xFFFFFFFF</item>
+
+        <!-- 编辑框10 -->
+        <item>0xFFFFFFFF</item>
+
+        <!-- Shift键11 -->
+        <item>0xFFFFFFFF</item>
+
+        <!-- 编辑框12 -->
+        <item>0xFFFFFFFF</item>
+    </integer-array>
+
+    <integer-array name="THEME_ORANGE_BUTTON_BACK_COLORS">
+        <!-- 最上排五个功能键：移动、缩放、设置、隐藏、退出 -->
+        <item>0xFFCC6231</item>
+
+        <!-- 第二行candidate候选拼音5 -->
+        <item>0xFFCC6231</item>
+
+        <!-- 第三排左边五个字符选择键6 -->
+        <item>0xFFCC6231</item>
+
+        <!-- 第三排删除键11 -->
+        <item>0xFFCC6231</item>
+
+        <!-- 九宫格九个按键12 -->
+        <item>0xFFDCB03B</item>
+
+        <!-- 二十六个英文字母按键21 -->
+        <item>0xFFDCB03B</item>
+
+        <!-- 数字零按键47 -->
+        <item>0xFFDCB03B</item>
+
+        <!-- 空格键48 -->
+        <item>0xFFCC6231</item>
+
+        <!-- 换行键49 -->
+        <item>0xFFCC6231</item>
+
+        <!-- 左侧候选词50 -->
+        <item>0xFF28435C</item>
+
+        <!-- Shift键51 -->
+        <item>0xFFCC6231</item>
+
+        <!-- 左斜杠52 -->
+        <item>0xFFCC6231</item>
+
+        <!-- 第二行的选种颜色53 -->
+        <item>0xFFDCB03B</item>
+
+        <!-- 按键按下的背景色54 -->
+        <item>0xFFFFF096</item>
+
+        <!-- preedit backcolor-->
+        <item>0xFFCC6231</item>
+    </integer-array>
+
+    <integer name="THEME_ORANGE_SHADOW">0xBF27F2FF</integer>
+
+</resources>

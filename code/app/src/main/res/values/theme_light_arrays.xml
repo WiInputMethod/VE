@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="THEME_LIGHT_TEXT_COLORS">
+        <!-- 最上排五个功能键：移动、缩放、设置、隐藏、退出 -->
+        <item>0xFF0a0a0a</item>
+
+        <!-- 第二行candidate候选拼音 -->
+        <item>0xFF0a0a0a</item>
+
+        <!-- 第三排左边五个字符选择键 -->
+        <item>0xFF0a0a0a</item>
+
+        <!-- 第三排删除键 -->
+        <item>0xFF0a0a0a</item>
+
+        <!-- 九宫格九个按键 -->
+        <item>0xFF0a0a0a</item>
+
+        <!-- 二十六个英文字母按键 -->
+        <item>0xFF0a0a0a</item>
+
+        <!-- 数字零按键7 -->
+        <item>0xFF0a0a0a</item>
+
+        <!-- 空格键8 -->
+        <item>0xFF0a0a0a</item>
+
+        <!-- 换行键9 -->
+        <item>0xFF0a0a0a</item>
+
+        <!-- 左侧候选词 -->
+        <item>0xFF0a0a0a</item>
+
+        <!-- 编辑框11 -->
+        <item>0xFF0a0a0a</item>
+
+        <!-- Shift键12 -->
+        <item>0xFF0a0a0a</item>
+
+        <!-- 编辑框13 -->
+        <item>0xFF0a0a0a</item>
+    </integer-array>
+
+    <integer-array name="THEME_LIGHT_BUTTON_BACK_COLORS">
+        <!-- 最上排五个功能键：移动、缩放、设置、隐藏、退出 -->
+        <item>0xFFe7e5d0</item>
+
+        <!-- 第二行candidate候选拼音 -->
+        <item>0xFFfafaee</item>
+
+        <!-- 第三排左边五个字符选择键 -->
+        <item>0xFFfafaee</item>
+
+        <!-- 第三排删除键11 -->
+        <item>0xFFfafaee</item>
+
+        <!-- 九宫格九个按键 -->
+        <item>0xFFFFfafa</item>
+
+        <!-- 二十六个英文字母按键21 -->
+        <item>0xFFFFfafa</item>
+
+        <!-- 数字零按键47 -->
+        <item>0xFFFFfafa</item>
+
+        <!-- 空格键48 -->
+        <item>0xFFfafaee</item>
+
+        <!-- 换行键49 -->
+        <item>0xFFe7e5d0</item>
+
+        <!-- 左侧候选词50 -->
+        <item>0xFFfafaee</item>
+
+        <!-- Shift键51 -->
+        <item>0xFFfafaee</item>
+
+        <!-- 左斜杠52 -->
+        <item>0xFFfafaee</item>
+
+        <!-- 第二行的选种颜色53 -->
+        <item>0xFFcccccc</item>
+
+        <!-- 按键按下的背景色54 -->
+        <item>0xFF5a5c5b</item>
+
+        <!-- preedit backcolor-->
+        <item>0xFFFFFFE5</item>
+    </integer-array>
+
+    <integer name="THEME_LIGHT_SHADOW">0xBF3D3D3D</integer>
+</resources>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="THEME_DARK_TEXT_COLORS">
+        <!-- 最上排五个功能键：移动、缩放、设置、隐藏、退出 -->
+        <item>0xFFe8853b</item>
+
+        <!-- 第二行candidate候选拼音 -->
+        <item>0xFFe8853b</item>
+
+        <!-- 第三排左边五个字符选择键 -->
+        <item>0xFFe8853b</item>
+
+        <!-- 第三排删除键 -->
+        <item>0xFFe8853b</item>
+
+        <!-- 九宫格九个按键 -->
+        <item>0xFFe8853b</item>
+
+        <!-- 二十六个英文字母按键 -->
+        <item>0xFFe8853b</item>
+
+        <!-- 数字零按键7 -->
+        <item>0xFFe8853b</item>
+
+        <!-- 空格键8 -->
+        <item>0xFFe8853b</item>
+
+        <!-- 换行键9 -->
+        <item>0xFFe8853b</item>
+
+        <!-- 左侧候选词 -->
+        <item>0xFFe8853b</item>
+
+        <!-- 编辑框11 -->
+        <item>0xFFe8853b</item>
+
+        <!-- Shift键12 -->
+        <item>0xFFe8853b</item>
+
+        <!-- 编辑框13 -->
+        <item>0xFFe8853b</item>
+    </integer-array>
+
+    <integer-array name="THEME_DARK_BUTTON_BACK_COLORS">
+        <!-- 最上排五个功能键：移动、缩放、设置、隐藏、退出 -->
+        <item>0xFF050505</item>
+
+        <!-- 第二行candidate候选拼音 -->
+        <item>0xFF0a0a0a</item>
+
+        <!-- 第三排左边五个字符选择键 -->
+        <item>0xFF0a0a0a</item>
+
+        <!-- 第三排删除键11 -->
+        <item>0xFF0a0a0a</item>
+
+        <!-- 九宫格九个按键 -->
+        <item>0xFF1a1a1a</item>
+
+        <!-- 二十六个英文字母按键21 -->
+        <item>0xFF1a1a1a</item>
+
+        <!-- 数字零按键47 -->
+        <item>0xFF1a1a1a</item>
+
+        <!-- 空格键48 -->
+        <item>0xFF0a0a0a</item>
+
+        <!-- 换行键49 -->
+        <item>0xFF050505</item>
+
+        <!-- 9候选词50 -->
+        <item>0xFF0a0a0a</item>
+
+        <!-- Shift键51 -->
+        <item>0xFF0a0a0a</item>
+
+        <!-- 左斜杠52 -->
+        <item>0xFF0a0a0a</item>
+
+        <!-- prefix -->
+        <item>0xFF1a1a1a</item>
+
+        <!-- 按键按下的背景色54 -->
+        <item>0xFF555555</item>
+
+        <!-- preedit backcolor-->
+        <item>0xFF1F2a3a</item>
+    </integer-array>
+
+    <integer name="THEME_DARK_SHADOW">0xBFD7D5EB</integer>
+</resources>

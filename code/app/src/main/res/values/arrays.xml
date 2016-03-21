@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="KEY_COLORS">
+        <item>0xff5dade2</item>
+        <item>0xff4c6f2e</item>
+        <item>0xff372a8b</item>
+        <item>0xff357492</item>
+        <item>0xff932548</item>
+        <item>0xff368933</item>
+        <item>0xff857433</item>
+        <item>0xff467932</item>
+        <item>0xff892344</item>
+        <item>0xff5dade2</item>
+        <item>0xff4c6f2e</item>
+        <item>0xff857433</item>
+        <item>0xff5dade2</item>
+        <item>0xff892344</item>
+        <item>0xff892344</item>
+    </integer-array>
+    <integer-array name="KEY_POS_X">
+        <item name="1">2</item>
+        <item name="2">35</item>
+        <item name="3">68</item>
+        <item name="4">2</item>
+        <item name="5">35</item>
+        <item name="6">68</item>
+        <item name="7">2</item>
+        <item name="8">35</item>
+        <item name="9">68</item>
+    </integer-array>
+    <integer-array name="KEY_POS_Y">
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>33</item>
+        <item>33</item>
+        <item>33</item>
+        <item>66</item>
+        <item>66</item>
+        <item>66</item>
+        <item>99</item>
+        <item>99</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+    <integer-array name="KEY_WIDTH">
+        <item>30</item>
+        <item>30</item>
+        <item>30</item>
+        <item>30</item>
+        <item>30</item>
+        <item>30</item>
+        <item>30</item>
+        <item>30</item>
+        <item>30</item>
+        <item>46</item>
+        <item>46</item>
+        <item>26</item>
+        <item>67</item>
+        <item>96</item>
+    </integer-array>
+    <integer-array name="KEY_HEIGHT">
+        <item>30</item>
+        <item>30</item>
+        <item>30</item>
+        <item>30</item>
+        <item>30</item>
+        <item>30</item>
+        <item>30</item>
+        <item>30</item>
+        <item>30</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </integer-array>
+
+    <integer-array name="LAYER_HEIGHT">
+        <item>15</item>
+        <item>12</item>
+        <item>56</item>
+        <item>12</item>
+    </integer-array>
+
+    <integer-array name="BOTTOMBAR_KEY_WIDTH">
+        <item>20</item>
+        <item>20</item>
+        <item>35</item>
+        <item>25</item>
+    </integer-array>
+
+    <integer-array name="BOTTOMBAR_RETURN_WIDTH">
+        <item>20</item>
+        <item>35</item>
+        <item>25</item>
+        <item>20</item>
+    </integer-array>
+
+    <integer-array name="BOTTOMBAR_NUM_KEY_WIDTH">
+        <item>33</item>
+        <item>34</item>
+        <item>33</item>
+    </integer-array>
+
+    <string-array name="KEYBOARD_TYPE">
+        <item>\ue005</item>
+        <item>中文</item>
+        <item>英文</item>
+        <item>123</item>
+        <item>9键</item>
+    </string-array>
+
+    <string-array name="BOTTOMBAR_TEXT">
+        <item>\ue005</item>
+        <item>\u263a</item>
+        <item>空格</item>
+        <item>回车</item>
+    </string-array>
+
+    <string-array name="KEY_TEXT">
+        <item>/\'…\"</item>
+        <item>ABC</item>
+        <item>DEF</item>
+        <item>GHI</item>
+        <item>JKL</item>
+        <item>MNO</item>
+        <item>PQRS</item>
+        <item>TUV</item>
+        <item>WXYZ</item>
+    </string-array>
+
+    <string-array name="lianxiang_option">
+        <item>关闭联想</item>
+        <item>单词联想</item>
+        <item>多重联想</item>
+    </string-array>
+    <string-array name="lianxiang_option_value">
+        <item>27</item>
+        <item>28</item>
+        <item>29</item>
+    </string-array>
+
+    <string-array name="shuangpin_option">
+        <item>关闭双拼模式</item>
+        <item>智能ABC双拼</item>
+        <item>微软2003双拼</item>
+        <item>拼音加加双拼</item>
+        <item>搜狗双拼</item>
+        <item>紫光双拼</item>
+        <item>自然码双拼</item>
+        <item>小鹤双拼</item>
+        <item>中文之星双拼</item>
+        <item>音声双拼</item>
+    </string-array>
+
+    <string-array name="shuangpin_option_value">
+        <item>0</item>
+        <item>15</item>
+        <item>18</item>
+        <item>17</item>
+        <item>16</item>
+        <item>20</item>
+        <item>21</item>
+        <item>19</item>
+        <item>22</item>
+        <item>14</item>
+    </string-array>
+
+    <string-array name="FUNC_KEY_TEXT">
+        <item>\u06de</item>
+        <item>\u264b</item>
+        <item>\u264a</item>
+        <item>\u06dd</item>
+        <item>\uf7dc</item>
+    </string-array>
+    <string-array name="KEY_SYMBOL_TEXT">
+        <item>常用</item>
+        <item>全角</item>
+        <item>半角</item>
+        <item>表情</item>
+        <item>网络</item>
+        <item>邮箱</item>
+        <item>序号</item>
+        <item>数学</item>
+        <item>其他</item>
+        <item>emoji</item>
+    </string-array>
+    <string-array name="KEY_SYMBOL_SEND_TEXT">
+        <item>\'</item>
+        <item>\'f</item>
+        <item>\'h</item>
+        <item>\'s</item>
+        <item>\'u</item>
+        <item>\'e</item>
+        <item>\'8</item>
+        <item>\'o</item>
+    </string-array>
+    <string-array name="OTHER_SYMBOL_TEXT">
+        <item>特殊</item>
+        <item>部首</item>
+        <item>注音</item>
+        <item>俄语</item>
+        <item>日文</item>
+        <item>拼音</item>
+        <item>希腊</item>
+    </string-array>
+    <string-array name="OTHER_SYMBOL_SEND_TEXT">
+        <item>\'i</item>
+        <item>\'c</item>
+        <item>\'p</item>
+        <item>\'r</item>
+        <item>\'j</item>
+        <item>\'y</item>
+        <item>\'g</item>
+    </string-array>
+    <string-array name="EMOJI_SYMBOL_TEXT">
+        <item>笑脸</item>
+        <item>动物</item>
+        <item>自然</item>
+        <item>人工</item>
+        <item>活动</item>
+        <item>食物</item>
+        <item>符号</item>
+    </string-array>
+    <string-array name="EMOJI_SYMBOL_SEND_TEXT">
+        <item>\'k</item>
+        <item>\'a</item>
+        <item>\'n</item>
+        <item>\'t</item>
+        <item>\'v</item>
+        <item>\'o</item>
+        <item>b</item>
+    </string-array>
+    <string-array name="QUICK_SYMBOL">
+        <item>，</item>
+        <item>。</item>
+        <item>！</item>
+        <item>？</item>
+        <item>\@</item>
+        <item>:)</item>
+        <item>\"</item>
+        <item>·</item>
+    </string-array>
+    <string-array name="QUICK_SYMBOL_EN">
+        <item>,</item>
+        <item>.</item>
+        <item>\?</item>
+        <item>\@</item>
+        <item>$</item>
+        <item>*</item>
+        <item>#</item>
+        <item>!</item>
+        <item>{}</item>
+        <item>[]</item>
+        <item>;</item>
+    </string-array>
+    <string-array name="QUICK_SYMBOL_NUM">
+        <item>.</item>
+        <item>-</item>
+        <item>+</item>
+        <item>*</item>
+        <item>%</item>
+        <item>|</item>
+        <item>^</item>
+        <item>()</item>
+        <item>></item>
+        <item>~</item>
+    </string-array>
+    <string-array name="SYMBOL_FUNC">
+        <item>\u25c4</item>
+        <item></item>
+        <item>\u25ba</item>
+    </string-array>
+    <string-array name="LOCK_SYM">
+        <item>\u264f</item>
+        <item>\u264e</item>
+    </string-array>
+    <string-array name="EN_SHIFT_AND_SYM_KEY_TEXT">
+        <item>\uf7e3</item>
+        <item>\u2105</item>
+        <item>/\'-\"</item>
+    </string-array>
+    <string-array name="FUNC_KEYBOARD_TEXT">
+        <item>中文</item>
+        <item>英文</item>
+        <item>数字</item>
+    </string-array>
+    <string-array name="EN_KEY_TEXT">
+        <item>Q</item>
+        <item>W</item>
+        <item>E</item>
+        <item>R</item>
+        <item>T</item>
+        <item>Y</item>
+        <item>U</item>
+        <item>I</item>
+        <item>O</item>
+        <item>P</item>
+        <item>A</item>
+        <item>S</item>
+        <item>D</item>
+        <item>F</item>
+        <item>G</item>
+        <item>H</item>
+        <item>J</item>
+        <item>K</item>
+        <item>L</item>
+        <item>Z</item>
+        <item>X</item>
+        <item>C</item>
+        <item>V</item>
+        <item>B</item>
+        <item>N</item>
+        <item>M</item>
+    </string-array>
+
+    <string-array name="RECOMMEND_SLIDE_TEXT0">
+        <item>!</item><!-- A -->
+        <item>\"</item><!-- B -->
+        <item>:</item><!-- C -->
+        <item>^-^</item><!-- D -->
+        <item>3</item><!-- E -->
+        <item>……</item><!-- F -->
+        <item>%</item><!-- G -->
+        <item>^</item><!-- H -->
+        <item>8</item><!-- I -->
+        <item>;</item><!-- J -->
+        <item>(</item><!-- K -->
+        <item>)</item><!-- L -->
+        <item>*</item><!-- M -->
+        <item>\\</item><!-- N -->
+        <item>9</item><!-- O -->
+        <item>0</item><!-- P -->
+        <item>1</item><!-- Q -->
+        <item>4</item><!-- R -->
+        <item>\@</item><!-- S -->
+        <item>5</item><!-- T -->
+        <item>7</item><!-- U -->
+        <item>\?</item><!-- V -->
+        <item>2</item><!-- W -->
+        <item>/</item><!-- X -->
+        <item>6</item><!-- Y -->
+        <item>~</item><!-- Z -->
+    </string-array>
+
+    <string-array name="RECOMMEND_SLIDE_TEXT1">
+        <item></item><!-- A -->
+        <item></item><!-- B -->
+        <item>ch</item><!-- C -->
+        <item></item><!-- D -->
+        <item>3</item><!-- E -->
+        <item></item><!-- F -->
+        <item></item><!-- G -->
+        <item></item><!-- H -->
+        <item>8</item><!-- I -->
+        <item></item><!-- J -->
+        <item></item><!-- K -->
+        <item></item><!-- L -->
+        <item></item><!-- M -->
+        <item>ng</item><!-- N -->
+        <item>9</item><!-- O -->
+        <item>0</item><!-- P -->
+        <item>1</item><!-- Q -->
+        <item>4</item><!-- R -->
+        <item>sh</item><!-- S -->
+        <item>5</item><!-- T -->
+        <item>7</item><!-- U -->
+        <item></item><!-- V -->
+        <item>2</item><!-- W -->
+        <item></item><!-- X -->
+        <item>6</item><!-- Y -->
+        <item>zh</item><!-- Z -->
+    </string-array>
+    <string-array name="RECOMMEND_SLIDE_TEXT2">
+        <item></item><!-- A -->
+        <item></item><!-- B -->
+        <item>ch</item><!-- C -->
+        <item></item><!-- D -->
+        <item></item><!-- E -->
+        <item></item><!-- F -->
+        <item></item><!-- G -->
+        <item></item><!-- H -->
+        <item></item><!-- I -->
+        <item></item><!-- J -->
+        <item></item><!-- K -->
+        <item></item><!-- L -->
+        <item></item><!-- M -->
+        <item>ng</item><!-- N -->
+        <item></item><!-- O -->
+        <item></item><!-- P -->
+        <item></item><!-- Q -->
+        <item></item><!-- R -->
+        <item>sh</item><!-- S -->
+        <item></item><!-- T -->
+        <item></item><!-- U -->
+        <item></item><!-- V -->
+        <item></item><!-- W -->
+        <item></item><!-- X -->
+        <item></item><!-- Y -->
+        <item>zh</item><!-- Z -->
+    </string-array>
+
+    <string-array name="RECOMMEND_SLIDE_TEXT3">
+        <item></item><!-- A -->
+        <item></item><!-- B -->
+        <item>ch</item><!-- C -->
+        <item></item><!-- D -->
+        <item>#</item><!-- E -->
+        <item></item><!-- F -->
+        <item></item><!-- G -->
+        <item></item><!-- H -->
+        <item>*</item><!-- I -->
+        <item></item><!-- J -->
+        <item></item><!-- K -->
+        <item></item><!-- L -->
+        <item></item><!-- M -->
+        <item>ng</item><!-- N -->
+        <item>(</item><!-- O -->
+        <item>)</item><!-- P -->
+        <item>!</item><!-- Q -->
+        <item>$</item><!-- R -->
+        <item>sh</item><!-- S -->
+        <item>%</item><!-- T -->
+        <item>&amp;</item><!-- U -->
+        <item></item><!-- V -->
+        <item>\@</item><!-- W -->
+        <item></item><!-- X -->
+        <item>^</item><!-- Y -->
+        <item>zh</item><!-- Z -->
+    </string-array>
+    <string-array name="KEY_SLIDE_TEXT">
+        <item>/\'…\"</item>
+        <item>abc</item>
+        <item>def</item>
+        <item>ghi</item>
+        <item>jkl</item>
+        <item>mno</item>
+        <item>pqrs</item>
+        <item>tuv</item>
+        <item>wxyz</item>
+    </string-array>
+    <string-array name="NUM_KEY_TEXT">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>0</item>
+    </string-array>
+    <integer-array name="KEY_TEXT_SIZE">
+        <item>30</item>
+        <item>30</item>
+        <item>30</item>
+        <item>30</item>
+        <item>30</item>
+        <item>30</item>
+        <item>30</item>
+        <item>30</item>
+        <item>30</item>
+        <item>50</item>
+        <item>50</item>
+        <item>40</item>
+        <item>40</item>
+        <item>50</item>
+    </integer-array>
+    <integer-array name="EN_KEY_TEXT_SIZE">
+        <item>80</item>
+        <item>80</item>
+        <item>80</item>
+        <item>80</item>
+        <item>80</item>
+        <item>80</item>
+        <item>80</item>
+        <item>80</item>
+        <item>80</item>
+        <item>80</item>
+        <item>80</item>
+        <item>80</item>
+        <item>80</item>
+        <item>80</item>
+        <item>80</item>
+        <item>80</item>
+        <item>80</item>
+        <item>80</item>
+        <item>80</item>
+        <item>80</item>
+        <item>80</item>
+        <item>80</item>
+        <item>80</item>
+        <item>80</item>
+        <item>80</item>
+        <item>80</item>
+    </integer-array>
+    <integer-array name="LIGHT_POS_X">
+        <item>34</item>
+        <item>34</item>
+        <item>0</item>
+        <item>67</item>
+    </integer-array>
+    <integer-array name="LIGHT_POS_Y">
+        <item>0</item>
+        <item>67</item>
+        <item>34</item>
+        <item>34</item>
+    </integer-array>
+    <integer-array name="LIGHT_WIDTH">
+        <item>32</item>
+        <item>32</item>
+        <item>34</item>
+        <item>34</item>
+    </integer-array>
+    <integer-array name="LIGHT_HEIGHT">
+        <item>32</item>
+        <item>32</item>
+        <item>32</item>
+        <item>32</item>
+    </integer-array>
+    <integer-array name="FUNC_KEY_X">
+        <item>2</item>
+        <item>21</item>
+        <item>41</item>
+        <item>61</item>
+        <item>81</item>
+    </integer-array>
+    <integer-array name="FUNC_KEY_Y">
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+        <item>2</item>
+    </integer-array>
+    <integer-array name="FUNC_KEY_WIDTH">
+        <item>18</item>
+        <item>18</item>
+        <item>18</item>
+        <item>18</item>
+        <item>18</item>
+    </integer-array>
+    <integer name="PREEDIT_WIDTH">70</integer>
+
+    <string-array name="sound_effect_option">
+        <item>iPhone</item>
+        <item>WP7</item>
+        <item>WI</item>
+        <item>心跳</item>
+        <item>走路</item>
+        <item>水滴</item>
+        <item>木鱼</item>
+        <item>系统</item>
+    </string-array>
+    <string-array name="sound_effect_option_value">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>9</item>
+    </string-array>
+    <string-array name="userdef_add_message">
+        <item>添加成功</item>
+        <item>添加失败\n此用户词已定义</item>
+        <item>添加失败\n拼音最长不得超过16个字符</item>
+        <item>添加失败\n拼音不能为空</item>
+        <item>添加失败\n文字最长不得超过16个汉字或48个字符</item>
+        <item>添加失败\n文字不能为空</item>
+        <item>添加失败\n拼音仅可使用字母</item>
+        <item>添加失败\n词典已满，无法继续添加</item>
+        <item>添加失败\n找不到此用户词</item>
+    </string-array>
+    <string-array name="keyboard_option_value">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="keyboard_option">
+        <item>中文九键</item>
+        <item>中文全键盘</item>
+    </string-array>
+    <string-array name="ALL_SMILE_VIEW_TEXT">
+        <item>全选</item>
+        <item>复制</item>
+        <item>剪切</item>
+        <item>粘贴</item>
+    </string-array>
+
+    <string-array name="quicksymbols_dim_flag">
+        <item>中</item>
+        <item>En</item>
+        <item>数</item>
+    </string-array>
+
+    <integer name="SHADOW_RADIUS">5</integer>
+</resources>

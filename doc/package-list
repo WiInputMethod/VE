@@ -1,0 +1,16 @@
+com.hit.wi.define
+com.hit.wi.function.data
+com.hit.wi.jni
+com.hit.wi.t9
+com.hit.wi.t9.Interfaces
+com.hit.wi.t9.datastruct
+com.hit.wi.t9.effect
+com.hit.wi.t9.functions
+com.hit.wi.t9.functions.data
+com.hit.wi.t9.functions.data.emojicon
+com.hit.wi.t9.settings
+com.hit.wi.t9.values
+com.hit.wi.t9.view
+com.hit.wi.t9.viewGroups
+com.hit.wi.t9.widget
+com.hit.wi.util

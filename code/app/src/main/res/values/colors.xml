@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/* 
+**
+** Copyright 2008, The Android Open Source Project
+**
+** Licensed under the Apache License, Version 2.0 (the "License"); 
+** you may not use this file except in compliance with the License. 
+** You may obtain a copy of the License at 
+**
+**     http://www.apache.org/licenses/LICENSE-2.0 
+**
+** Unless required by applicable law or agreed to in writing, software 
+** distributed under the License is distributed on an "AS IS" BASIS, 
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+** See the License for the specific language governing permissions and 
+** limitations under the License.
+*/
+-->
+<resources>
+
+    <color name="key_color">#000000</color>
+    <color name="shadow_color">#ffffff</color>
+    <color name="guide_background_color">#ffd8d8d8</color>
+    <color name="prefix_item_back_color">#fdfeff</color>
+    <color name="prefix_item_back_choose_color">#1f7be5</color>
+    <color name="vivid_violet">#8E44AD</color>
+    <color name="zest">#E67E22</color>
+    <color name="light_sea_green">#13A89E</color>
+    <color name="snow">#FBFBFB</color>
+</resources>

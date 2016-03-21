@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/quicksymbol_dim_dialog">
+    <EditText android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:id="@+id/quicksymbol_dim_edit_view"
+    />
+    <!--<LinearLayout android:layout_width="match_parent" -->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@id/quicksymbol_dim_edit_view"-->
+    <!--android:orientation="horizontal">-->
+    <!--<Button android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:id="@+id/quicksymbol_dim_button_cancel"-->
+    <!--android:layout_weight="1"-->
+    <!--android:text="@string/cancel"-->
+    <!--/>-->
+    <!--<Button android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:id="@+id/quicksymbol_dim_button_confirm"-->
+    <!--android:layout_weight="1"   -->
+    <!--android:text="@string/confirm"-->
+    <!--/>-->
+    <!--</LinearLayout>-->
+
+
+</RelativeLayout>

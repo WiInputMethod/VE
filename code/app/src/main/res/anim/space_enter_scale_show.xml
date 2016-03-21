@@ -1,0 +1,17 @@
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+     android:fillAfter="true"
+     android:fillEnabled="true">
+
+    <alpha
+            android:duration="400"
+            android:fromAlpha="0.2"
+            android:fillEnabled="true"
+            android:fillAfter="true"
+            android:interpolator="@android:anim/accelerate_interpolator"
+            android:toAlpha="0.8"/>
+    <scale
+            android:fromXScale="0.65"
+            android:toXScale="0.65"
+            android:fromYScale="1.0"
+            android:toYScale="0.65"/>
+</set>
