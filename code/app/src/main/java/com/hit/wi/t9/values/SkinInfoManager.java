@@ -84,7 +84,6 @@ public class SkinInfoManager {
     public void loadConfigurationFromDIY(Context context){
 
         //从SharedPreference中获得DIY颜色值
-
         sp = PreferenceManager.getDefaultSharedPreferences(context);
 
         Log.i("颜色值",""+sp.getInt("THEME_TYPE", 0));
@@ -93,43 +92,40 @@ public class SkinInfoManager {
         skinData.textcolors_functionKeys = sp.getInt("textcolors_functionKeys",0);
         skinData.textcolors_quickSymbol = sp.getInt("textcolors_quickSymbol",0);
 
-        skinData.textcolors_delete = sp.getInt("textcolors_delete",0);
+        skinData.textcolors_delete = sp.getInt("textcolors_26keys",0);
         skinData.textcolors_t9keys = sp.getInt("textcolors_t9keys",0);
         skinData.textcolors_26keys = sp.getInt("textcolors_26keys",0);
 
-        skinData.textcolors_zero = sp.getInt("textcolors_zero",0);
-        skinData.textcolors_space = sp.getInt("textcolors_space",0);
-        skinData.textcolors_enter = sp.getInt("textcolors_enter",0);
+        skinData.textcolors_zero = sp.getInt("textcolors_bottom",0);
+        skinData.textcolors_space = sp.getInt("textcolors_bottom",0);
+        skinData.textcolors_enter = sp.getInt("textcolors_bottom",0);
 
-        skinData.textcolors_candidate_t9 = sp.getInt("textcolors_candidate_t9",0);
+        skinData.textcolors_candidate_t9 = sp.getInt("textcolors_candidate",0);
         skinData.textcolors_preEdit = sp.getInt("textcolors_preEdit",0);
-        skinData.textcolors_shift = sp.getInt("textcolors_shift",0);
+        skinData.textcolors_shift = sp.getInt("textcolors_26keys",0);
 
 
         skinData.backcolor_functionKeys = sp.getInt("backcolor_functionKeys",0);
-        skinData.backcolor_candidate_qk = sp.getInt("backcolor_candidate_qk",0);
+        skinData.backcolor_candidate_qk = sp.getInt("backcolor_candidate",0);
         skinData.backcolor_quickSymbol = sp.getInt("backcolor_quickSymbol",0);
 
-        skinData.backcolor_delete = sp.getInt("backcolor_delete",0);
+        skinData.backcolor_delete = sp.getInt("backcolor_26keys",0);
         skinData.backcolor_t9keys = sp.getInt("backcolor_t9keys",0);
         skinData.backcolor_26keys = sp.getInt("backcolor_26keys",0);
 
-        skinData.backcolor_zero = sp.getInt("backcolor_zero",0);
-        skinData.backcolor_space = sp.getInt("backcolor_space",0);
-        skinData.backcolor_enter = sp.getInt("backcolor_enter",0);
+        skinData.backcolor_zero = sp.getInt("backcolor_bottom",0);
+        skinData.backcolor_space = sp.getInt("backcolor_bottom",0);
+        skinData.backcolor_enter = sp.getInt("backcolor_bottom",0);
 
-        skinData.backcolor_candidate_t9 = sp.getInt("backcolor_candidate_t9",0);
-        skinData.backcolor_shift = sp.getInt("backcolor_shift",0);
-        skinData.backcolor_smile = sp.getInt("backcolor_smile",0);
+        skinData.backcolor_candidate_t9 = sp.getInt("backcolor_candidate",0);
+        skinData.backcolor_shift = sp.getInt("backcolor_26keys",0);
+        skinData.backcolor_smile = sp.getInt("backcolor_26keys",0);
 
-        skinData.backcolor_prefix = sp.getInt("backcolor_prefix",0);
+        skinData.backcolor_prefix = sp.getInt("backcolor_touchdown",0);
         skinData.backcolor_touchdown = sp.getInt("backcolor_touchdown",0);
         skinData.backcolor_preEdit = sp.getInt("backcolor_preEdit",0);
 
-        skinData.backcolor_editText = sp.getInt("backcolor_editText",0);
-
-
-
+        skinData.backcolor_editText = sp.getInt("backcolor_26keys",0);
         skinData.shadow = sp.getInt("shadow",0);
 
     }
