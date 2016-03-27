@@ -19,9 +19,6 @@ import android.view.View;
 
 public class SetKeyboardSizeView extends View {
 
-    /**
-     * TODO
-     */
     public enum SettingType {
         QuickSetMode, FullSetMode, MoveMode
     }
@@ -36,9 +33,6 @@ public class SetKeyboardSizeView extends View {
     private final int EDGE_Finish=7;
     private final int EDGE_Reset=8;
 
-    /**
-     * TODO
-     */
     SettingType mSettingType;
     Rect mKeyboardRect;
     Rect mOldKBRect;

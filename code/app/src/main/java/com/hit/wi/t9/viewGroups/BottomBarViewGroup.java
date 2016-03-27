@@ -323,6 +323,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_UP) {
+                softKeyboard8.lightViewManager.lightViewAnimate(v,event);
                 if ((WIInputMethodNK.GetWordsNumber() > 0) || (WIInputMethod.GetWordsNumber() > 0) && Global.currentKeyboard != Global.KEYBOARD_SYM) {
                     softKeyboard8.ChooseWord(0);
                 } else{

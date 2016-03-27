@@ -72,12 +72,12 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
     /**
      * 横屏状态字符
      */
-    private static final String ORI_HOR = "_H";
+    private final String ORI_HOR = "_H";
 
     /**
      * 竖屏状态字符
      */
-    private static final String ORI_VER = "_V";
+    private final String ORI_VER = "_V";
 
     /**
      * 设置键盘大小界面是否显示
@@ -493,7 +493,6 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
     }
 
     /**
-     * TODO
      * 功能：更新键盘的尺寸视图
      * 调用时机：初始化尺寸视图或调整键盘尺寸时
      */
@@ -543,12 +542,15 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
             this.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL);
         } else {
             if (Global.currentKeyboard == Global.KEYBOARD_T9) {
-
+                String pinyin = WIInputMethodNK.GetWordsPinyin(0);
+                Global.addToRedo(pinyin.substring(pinyin.length()-1));
                 WIInputMethodNK.DeleteAction();
                 t9InputViewGroup.updateFirstKeyText();
                 refreshDisplay();
             } else if (Global.currentKeyboard == Global.KEYBOARD_QP) {
                 if (mQPOrEmoji == Global.QUANPIN) {
+                    String pinyin = WIInputMethod.GetWordsPinyin(0);
+                    Global.addToRedo(pinyin.substring(pinyin.length()-1));
                     innerEdit("", true);
                 } else if (mQPOrEmoji == Global.EMOJI) {
                     WIInputMethodNK.CLeanKernel();
@@ -557,6 +559,7 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
                 }
             } else if (Global.currentKeyboard == Global.KEYBOARD_EN) {
                 WIInputMethodNK.CLeanKernel();
+                WIInputMethod.CLeanKernel();
                 refreshDisplay(true);
             }
         }
@@ -575,8 +578,7 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
         if (text != null) {
             InputConnection ic = getCurrentInputConnection();
             if (ic != null) {
-                Global.redoText_single.add(new InputAction(text,InputAction.TEXT_TO_INPUTCONNECTION));
-                if(Global.redoText_single.size()>Global.redo_MAX_NUM)Global.redoText_single.remove();
+                Global.addToRedo(text);
                 ic.commitText(text, 1);
             }
         }
@@ -591,8 +593,7 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
     public void CommitText(CharSequence text) {
         InputConnection ic = getCurrentInputConnection();
         if (text != null && ic != null) {
-            Global.redoText_single.add(new InputAction((String) text,InputAction.TEXT_TO_INPUTCONNECTION));
-            if(Global.redoText_single.size()>Global.redo_MAX_NUM)Global.redoText_single.remove();
+            Global.addToRedo(text);
             ic.commitText(text, 1);
         }
         qkInputViewGroups.refreshQKKeyboardPredict();//刷新点滑预测
@@ -604,8 +605,6 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
      * @param msg
     * */
     public void sendMsgToKernel(String msg) {
-        Global.redoText_single.add(new InputAction(msg,InputAction.TEXT_TO_KERNEL));
-        if(Global.redoText_single.size()>Global.redo_MAX_NUM)Global.redoText_single.remove();
         Global.redoTextForDeleteAll_preedit = "";
         mHandler.sendMessage(mHandler.obtainMessage(MSG_SEND_TO_KERNEL, msg));
     }
@@ -616,8 +615,6 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
      * @param msg
      * */
     public void sendMsgToQKKernel(String msg) {
-        Global.redoText_single.add(new InputAction(msg,InputAction.TEXT_TO_KERNEL));
-        if(Global.redoText_single.size()>Global.redo_MAX_NUM)Global.redoText_single.remove();
         Global.redoTextForDeleteAll_preedit = "";
         mHandler.sendMessage(mHandler.obtainMessage(QP_MSG_SEND_TO_KERNEL, msg));
     }
@@ -830,7 +827,6 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
         }
 
         /**
-         * TODO
          * 功能：判断输入框是否要输入邮箱
          * 调用时机：切换为符号键盘
          *
@@ -848,7 +844,6 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
         }
 
         /**
-         * TODO
          * 功能：调用候选框需要显示的符号集
          * 调用时机：切换为符号键盘
          */
@@ -1400,7 +1395,6 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
         }
 
         /**
-         * TODO
          * 功能：从SharedPreference中加载键盘的尺寸信息
          * 调用时机：初始化或旋转手机方向
          */
@@ -1408,7 +1402,6 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(T9SoftKeyboard8.this);
 
             /**
-             * TODO
              * 若为英文键盘，则为FULL_WIDTH
              */
 //            if (zhKeyboard == Global.KEYBOARD_QP) {
@@ -1434,7 +1427,6 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
         }
 
         /**
-         * TODO
          * 功能：将键盘尺寸信息写入SharedPreference
          * 调用时机：调整键盘尺寸
          */
@@ -1471,7 +1463,6 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
         boolean heartAlphaStarted = false;
 
         /**
-         * TODO
          * 功能：开始心跳动画
          * 调用时机：五秒内没有touch
          */
@@ -1549,7 +1540,6 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
         }
 
         /**
-         * TODO
          * 功能：减小透明度
          * 调用时机：键盘上的任意touch事件
          */
@@ -1587,7 +1577,6 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
      */
     public class ViewManagerC {
         /**
-         * TODO
          */
         public void addInputView() {
             if (!keyboardLayout.isShown() ) {
@@ -1613,7 +1602,6 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
         }
 
         /**
-         * TODO
          * 功能：添加调整键盘尺寸的视图
          * 调用时机：touch RESIZE功能键
          *
