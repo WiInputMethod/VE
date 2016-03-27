@@ -5,11 +5,64 @@
     android:gravity="center"
     >
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_weight="1">
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:id="@+id/rg_pick_type"
+        >
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="字体颜色"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:id="@+id/rb_picker_text"
+            />
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="背景颜色"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:id="@+id/rb_picker_background"
+            />
+    </RadioGroup>
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rb_pick_asqk"
+        android:layout_marginTop="10dp"
+        android:text="和全键的配色保持一致"
+        />
+
+    >
+</LinearLayout>
+
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical"
+android:layout_weight="7"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:gravity="center"
+    >
+
     <com.larswerkman.holocolorpicker.ColorPicker
         android:id="@+id/color_picker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-
 
     <com.larswerkman.holocolorpicker.SVBar
         android:id="@+id/color_picker_svbar"
@@ -27,4 +80,6 @@
         android:id="@+id/color_picker_valuebar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
+</LinearLayout>
 </LinearLayout>
