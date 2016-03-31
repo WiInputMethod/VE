@@ -12,6 +12,8 @@ import com.hit.wi.t9.datastruct.InputAction;
 import com.hit.wi.t9.values.Global;
 import com.hit.wi.t9.view.QuickButton;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * Created by admin on 2016/2/29.
  */
@@ -393,17 +395,20 @@ public class T9InputViewGroup extends NonScrollViewGroup {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 WIInputMethodNK.CLeanKernel();
                 softKeyboard8.qkCandidatesViewGroup.clearCandidates();
-                Log.d("Test",buttonList.indexOf((QuickButton)v)+"");
-                if ((v.getTag()!=null)&&((int)v.getTag() ==  KEY_OTHER_TAG)){
+                int index = buttonList.indexOf(v);
+                if (v.getTag()!= null && (int)v.getTag() ==  KEY_OTHER_TAG) {
                     switchSymbolToFunc(mOtherSymbolTypeList, mOtherSymbolTypeSendKeyList);
                     softKeyboard8.qkCandidatesViewGroup.displayCandidates(Global.SYMBOL,Global.convertStringtoList(softKeyboard8.symbolsManager.SPECIAL),100);
-                } else if (buttonList.indexOf((QuickButton) v) == 6){
+                } else if (index == 6){
                     softKeyboard8.qkCandidatesViewGroup.displayCandidates(Global.SYMBOL,Global.convertStringtoList(softKeyboard8.symbolsManager.NUMBER),100);
-                } else if (buttonList.indexOf((QuickButton) v) == 7){
+                    softKeyboard8.refreshDisplay(true);
+                } else if (index == 7){
                     softKeyboard8.qkCandidatesViewGroup.displayCandidates(Global.SYMBOL,Global.convertStringtoList(softKeyboard8.symbolsManager.MATH),100);
+                    softKeyboard8.refreshDisplay(true);
                 } else {
                     switchBackFunc();
-                    softKeyboard8.sendMsgToKernel(mSymbolKeySendText[buttonList.indexOf((QuickButton)v)]);
+
+                    softKeyboard8.sendMsgToKernel("'"+mSymbolKeySendText[index]);
                 }
             }
             onTouchEffectWithAnim(v, event.getAction(),skinInfoManager.skinData.backcolor_t9keys);

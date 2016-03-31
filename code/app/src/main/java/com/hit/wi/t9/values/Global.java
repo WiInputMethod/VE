@@ -24,9 +24,9 @@ public final class Global {
 //	static{
 //	}
 
-    private static final int UP = 0;
+    public static final int UP = 0;
     private static final int DOWM = 1;
-    private static final int LEFT = 2;
+    public static final int LEFT = 2;
     private static final int RIGHT = 3;
     public static final int ERR = -1;
 

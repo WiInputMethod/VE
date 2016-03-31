@@ -52,6 +52,7 @@ import com.umeng.analytics.MobclickAgent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 
 public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftKeyboard8Interface {
@@ -512,8 +513,10 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
      * 每次有候选词跟新的时候统一刷新界面，因为影响到的因素比较多，统一使用状态机解决
      */
     public void refreshDisplay(boolean special) {
+
         Log.i("Test","refreshDisplay");
-        boolean isNK = Global.currentKeyboard == Global.KEYBOARD_T9;
+
+        boolean isNK = Global.currentKeyboard == Global.KEYBOARD_T9 || Global.currentKeyboard == Global.KEYBOARD_SYM;
         int candidatenum = isNK ? WIInputMethodNK.GetWordsNumber() : WIInputMethod.GetWordsNumber();
         boolean hidecandidate = candidatenum != 0 ? false : (special ? false : true);
 
@@ -610,7 +613,7 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
      * @param msg
     * */
     public void sendMsgToKernel(String msg) {
-        Global.redoTextForDeleteAll_preedit = "";
+//        Global.redoTextForDeleteAll_preedit = "";
         mHandler.sendMessage(mHandler.obtainMessage(MSG_SEND_TO_KERNEL, msg));
     }
 
@@ -620,7 +623,7 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
      * @param msg
      * */
     public void sendMsgToQKKernel(String msg) {
-        Global.redoTextForDeleteAll_preedit = "";
+//        Global.redoTextForDeleteAll_preedit = "";
         mHandler.sendMessage(mHandler.obtainMessage(QP_MSG_SEND_TO_KERNEL, msg));
     }
 
@@ -775,7 +778,7 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
             if ((WIInputMethodNK.GetWordsNumber() == 0 && WIInputMethod.GetWordsNumber() == 0) || Global.currentKeyboard == Global.KEYBOARD_SYM) {
                 InputConnection ic = T9SoftKeyboard8.this.getCurrentInputConnection();
                 if (ic != null) {
-                    Global.redoTextForDeleteAll = ic.getTextAfterCursor(Integer.MAX_VALUE,InputConnection.GET_TEXT_WITH_STYLES);
+                    Global.redoTextForDeleteAll = ic.getTextBeforeCursor(200,0);
                     ic.deleteSurroundingText(Integer.MAX_VALUE, 0);
                 }
             } else {

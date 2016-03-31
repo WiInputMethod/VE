@@ -76,8 +76,8 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
     }
 
     // state machine
-    public void refreshState(boolean show,String type){
-        if (show) {
+    public void refreshState(boolean hide,String type){
+        if (hide) {
             WIInputMethodNK.CLeanKernel();
             if (scrollView.isShown()) {hide();}
         } else {

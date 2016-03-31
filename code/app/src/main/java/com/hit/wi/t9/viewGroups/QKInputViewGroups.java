@@ -642,18 +642,11 @@ public class QKInputViewGroups extends NonScrollViewGroup {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 softKeyboard8.mHandler.sendEmptyMessageDelayed(softKeyboard8.MSG_REPEAT, softKeyboard8.REPEAT_START_DELAY);
             } else if (event.getAction() == MotionEvent.ACTION_MOVE && Global.slideDeleteSwitch) {
-                View lightView = softKeyboard8.lightViewManager.mLightView[2];
-                if (event.getX() < 0 && !lightView.isShown()) {
-                    lightView.setVisibility(View.VISIBLE);
-                    lightView.startAnimation(AnimationUtils.loadAnimation(context.getApplicationContext(), R.anim.light_left));
-                    ((TextView) lightView).setText("清空");
+                softKeyboard8.lightViewManager.HideLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight());
+                if (Global.LEFT == Global.computePosition(event.getX(),event.getY(),v.getWidth(),v.getHeight()) ) {
+                    softKeyboard8.lightViewManager.ShowLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight(),"清空");
                     softKeyboard8.mHandler.removeMessages(softKeyboard8.MSG_REPEAT);
-                }
-                if (event.getX() >= 0 && lightView.isShown()) {
-                    lightView.startAnimation(AnimationUtils.loadAnimation(context.getApplicationContext(), R.anim.light_left_off));
-                    lightView.setVisibility(View.GONE);
-                }
-                if(event.getY() <0){
+                } else if(Global.UP == Global.computePosition(event.getX(),event.getY(),v.getWidth(),v.getHeight()) ){
                     softKeyboard8.lightViewManager.ShowLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight(),"恢复");
                     softKeyboard8.mHandler.removeMessages(softKeyboard8.MSG_REPEAT);
                 }
