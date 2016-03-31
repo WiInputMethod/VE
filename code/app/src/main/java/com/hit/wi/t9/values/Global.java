@@ -53,8 +53,8 @@ public final class Global {
 
     public static CharSequence redoTextForDeleteAll = "";
     public static String redoTextForDeleteAll_preedit = "";
-    public static Queue<InputAction> redoText_single = new LinkedList<>();
-    public static int redo_MAX_NUM = 10;
+    public static Stack<InputAction> redoText_single = new Stack<>();
+    public static int redo_MAX_NUM = 60;
 
     public final static void showToast(final Context context,
                                        final CharSequence text) {
@@ -224,5 +224,10 @@ public final class Global {
 
     public static boolean isQK(int keyboard){
         return keyboard == Global.KEYBOARD_EN || keyboard==Global.KEYBOARD_QP;
+    }
+
+    public static void addToRedo(CharSequence redoText){
+        redoText_single.push(new InputAction(redoText, InputAction.TEXT_TO_KERNEL));
+        if(redoText_single.size()>redo_MAX_NUM)redoText_single.remove(redoText_single.size()-1);
     }
 }

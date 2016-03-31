@@ -366,7 +366,6 @@ public class T9InputViewGroup extends NonScrollViewGroup {
     }
 
     /**
-     * TODO
      * 功能：监听数字键盘的touch事件
      * 调用时机：touch 数字键盘
      */
@@ -383,7 +382,6 @@ public class T9InputViewGroup extends NonScrollViewGroup {
 
 
     /**
-     * TODO
      * 功能：监听符号键盘的touch 事件
      * 调用时机：touch 符号键盘
      */
@@ -412,7 +410,6 @@ public class T9InputViewGroup extends NonScrollViewGroup {
     };
 
     /**
-     * TODO
      * 功能：监听九键键盘的touch事件
      * 调用时机：touch 九键键盘
      */
@@ -451,6 +448,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
                         }
                         softKeyboard8.preFixViewGroup.setVisibility(View.GONE);
                     } else {
+                        Global.redoText_single.clear();
                         softKeyboard8.sendMsgToKernel(commitText);
                     }
                     Global.keyboardRestTimeCount = 0;
@@ -481,13 +479,8 @@ public class T9InputViewGroup extends NonScrollViewGroup {
                 }
             } else if (event.getAction() == MotionEvent.ACTION_UP) {
                 softKeyboard8.mHandler.removeMessages(softKeyboard8.MSG_REPEAT);
-                View lightView = softKeyboard8.lightViewManager.mLightView[2];
-                View outView = softKeyboard8.lightViewManager.mOutLightView[2];
-                if (event.getX() < 0 && lightView.isShown() && Global.slideDeleteSwitch) {
-                    lightView.startAnimation(AnimationUtils.loadAnimation(context.getApplicationContext(),R.anim.light_right_off)) ;
-                    lightView.setVisibility(View.GONE);
-                    outView.setVisibility(View.VISIBLE);
-                    outView.startAnimation(AnimationUtils.loadAnimation(context.getApplicationContext(),R.anim.light_left_out));
+                softKeyboard8.lightViewManager.lightViewAnimate(v,event);
+                if (event.getX() < 0 && Global.slideDeleteSwitch) {
                     softKeyboard8.functionsC.DeleteAll();
                 } else if (event.getY() < 0) {
                     if(Global.redoTextForDeleteAll != ""){
@@ -499,11 +492,11 @@ public class T9InputViewGroup extends NonScrollViewGroup {
                         Global.redoTextForDeleteAll_preedit = "";
                     } else {
                         if (Global.redoText_single.size()>0){
-                            InputAction ia = Global.redoText_single.poll();
+                            InputAction ia = Global.redoText_single.pop();
                             if (ia.Type == InputAction.TEXT_TO_KERNEL){
-                                softKeyboard8.sendMsgToKernel(ia.text);
+                                softKeyboard8.sendMsgToKernel(ia.text.toString());
                             } else {
-                                softKeyboard8.CommitText(ia.text);
+                                softKeyboard8.CommitText(ia.text.toString());
                             }
                         }
                     }

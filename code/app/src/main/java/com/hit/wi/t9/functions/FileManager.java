@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Administrator on 2015/6/4.
+ * Created by purebleusong on 2015/6/4.
  */
 public class FileManager {
     //this maybe object to the law SRP todo: need you to clean

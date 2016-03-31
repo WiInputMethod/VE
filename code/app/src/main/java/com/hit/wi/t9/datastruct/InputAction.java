@@ -7,10 +7,10 @@ public class InputAction {
     public static final int TEXT_TO_KERNEL = 0x00;
     public static final int TEXT_TO_INPUTCONNECTION = 0x01;
 
-    public String text;
+    public CharSequence text;
     public int Type;
 
-    public InputAction(String text,int Type){
+    public InputAction(CharSequence text,int Type){
         this.text = text;
         this.Type = Type;
     }

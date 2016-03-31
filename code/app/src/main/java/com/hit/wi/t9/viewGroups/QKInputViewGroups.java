@@ -505,6 +505,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
                             commitText = Global.fullToHalf(commitText);
                             if (softKeyboard8.functionsC.isAllLetter(commitText)) {
                                 commitText = commitText.toLowerCase();
+                                Global.redoText_single.clear();
                                 softKeyboard8.sendMsgToQKKernel(Global.fullToHalf(commitText));
                             } else {
                                 softKeyboard8.ChooseWord(0);
@@ -513,6 +514,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
                         }
                     } else {
                         int index = buttonList.indexOf(view);
+                        Global.redoText_single.clear();
                         softKeyboard8.sendMsgToQKKernel(alphabet.substring(index,index+1));
                     }
                     break;
@@ -562,7 +564,6 @@ public class QKInputViewGroups extends NonScrollViewGroup {
     };
 
     /**
-     * TODO
      * 功能：监听英文键盘Shift键的touch事件
      * 调用时机：touch英文键盘的Shift键
      */
@@ -658,13 +659,8 @@ public class QKInputViewGroups extends NonScrollViewGroup {
                 }
             } else if (event.getAction() == MotionEvent.ACTION_UP) {
                 softKeyboard8.mHandler.removeMessages(softKeyboard8.MSG_REPEAT);
-                View lightView = softKeyboard8.lightViewManager.mLightView[2];
-                View outView = softKeyboard8.lightViewManager.mOutLightView[2];
-                if (event.getX() < 0 && lightView.isShown() && Global.slideDeleteSwitch) {
-                    lightView.startAnimation(AnimationUtils.loadAnimation(context.getApplicationContext(),R.anim.light_right_off)) ;
-                    lightView.setVisibility(View.GONE);
-                    outView.setVisibility(View.VISIBLE);
-                    outView.startAnimation(AnimationUtils.loadAnimation(context.getApplicationContext(),R.anim.light_left_out));
+                softKeyboard8.lightViewManager.lightViewAnimate(v,event);
+                if (event.getX() < 0 && Global.slideDeleteSwitch) {
                     softKeyboard8.functionsC.DeleteAll();
                 } else if (event.getY() < 0) {
                     if(Global.redoTextForDeleteAll != ""){
@@ -676,11 +672,11 @@ public class QKInputViewGroups extends NonScrollViewGroup {
                         Global.redoTextForDeleteAll_preedit = "";
                     } else {
                         if (Global.redoText_single.size()>0){
-                            InputAction ia = Global.redoText_single.poll();
+                            InputAction ia = Global.redoText_single.pop();
                             if (ia.Type == InputAction.TEXT_TO_KERNEL){
-                                softKeyboard8.sendMsgToQKKernel(ia.text);
+                                softKeyboard8.sendMsgToQKKernel(ia.text.toString());
                             } else {
-                                softKeyboard8.CommitText(ia.text);
+                                softKeyboard8.CommitText(ia.text.toString());
                             }
                         }
                     }
