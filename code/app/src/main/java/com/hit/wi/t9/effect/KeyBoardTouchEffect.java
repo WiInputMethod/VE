@@ -13,7 +13,13 @@ import com.hit.wi.t9.values.Global;
  * Created by Administrator on 2015/5/22.
  */
 public class KeyBoardTouchEffect implements KeyboardTouchEffectInterface {
+    /**
+     * 键盘震动
+     */
     VibrateManager vibrateManager;
+    /**
+     * 键盘声音
+     */
     SoundManager soundManager;
 
     public KeyBoardTouchEffect(Context context) {
@@ -31,7 +37,6 @@ public class KeyBoardTouchEffect implements KeyboardTouchEffectInterface {
     public final void onPressEffect() {
         vibrateManager.Vibrate();
         soundManager.playSound();
-
     }
 
     public final void onSlideEffect() {

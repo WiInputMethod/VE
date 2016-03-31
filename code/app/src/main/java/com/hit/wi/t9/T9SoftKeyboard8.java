@@ -139,6 +139,7 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
     private static final int REPEAT_INTERVAL = 50; // 重复按键的时间
     public static final int REPEAT_START_DELAY = 400;// 重复按键
 
+    //屏幕信息
     private int DEFAULT_FULL_WIDTH;
     private int DEFAULT_FULL_WIDTH_X;
     private String FULL_WIDTH_S = "FULL_WIDTH";
@@ -287,7 +288,7 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
 		/*
          * 初始化SharedPreferences数据
 		 */
-        SharedPreferenceManager.initSharedPreferencesData(this);
+        SharedPreferenceManager.initSharedPreferencesData(this);//初始化系统默认的点划设置
 
         iniComponent();
 
@@ -1008,7 +1009,6 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
             qkCandidatesViewGroup.create(T9SoftKeyboard8.this);
             qkCandidatesViewGroup.addThisToView(keyboardLayout);
         }
-
         private void CreatePreEditView() {
             preEditLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             preEdit.setPadding(0, 0, 0, 0);
@@ -1089,7 +1089,6 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
             } else {
                 skinInfoManager.loadConfigurationFromXML(themeType, res);
             }
-
             Global.currentSkinType = themeType;
         }
 
