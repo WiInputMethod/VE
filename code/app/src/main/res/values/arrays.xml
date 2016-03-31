@@ -187,14 +187,14 @@
         <item>emoji</item>
     </string-array>
     <string-array name="KEY_SYMBOL_SEND_TEXT">
-        <item>\'</item>
-        <item>\'f</item>
-        <item>\'h</item>
-        <item>\'s</item>
-        <item>\'u</item>
-        <item>\'e</item>
-        <item>\'8</item>
-        <item>\'o</item>
+        <item></item>
+        <item>f</item>
+        <item>h</item>
+        <item>s</item>
+        <item>u</item>
+        <item>e</item>
+        <item>8</item>
+        <item>o</item>
     </string-array>
     <string-array name="OTHER_SYMBOL_TEXT">
         <item>特殊</item>
