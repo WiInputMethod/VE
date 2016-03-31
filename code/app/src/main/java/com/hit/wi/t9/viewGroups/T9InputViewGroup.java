@@ -1,6 +1,7 @@
 package com.hit.wi.t9.viewGroups;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -392,16 +393,17 @@ public class T9InputViewGroup extends NonScrollViewGroup {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 WIInputMethodNK.CLeanKernel();
                 softKeyboard8.qkCandidatesViewGroup.clearCandidates();
-                if ((int)v.getTag() ==  KEY_OTHER_TAG) {
+                Log.d("Test",buttonList.indexOf((QuickButton)v)+"");
+                if ((v.getTag()!=null)&&((int)v.getTag() ==  KEY_OTHER_TAG)){
                     switchSymbolToFunc(mOtherSymbolTypeList, mOtherSymbolTypeSendKeyList);
                     softKeyboard8.qkCandidatesViewGroup.displayCandidates(Global.SYMBOL,Global.convertStringtoList(softKeyboard8.symbolsManager.SPECIAL),100);
-                } else if (v.getId() == 6){
+                } else if (buttonList.indexOf((QuickButton) v) == 6){
                     softKeyboard8.qkCandidatesViewGroup.displayCandidates(Global.SYMBOL,Global.convertStringtoList(softKeyboard8.symbolsManager.NUMBER),100);
-                } else if (v.getId() == 7){
+                } else if (buttonList.indexOf((QuickButton) v) == 7){
                     softKeyboard8.qkCandidatesViewGroup.displayCandidates(Global.SYMBOL,Global.convertStringtoList(softKeyboard8.symbolsManager.MATH),100);
                 } else {
                     switchBackFunc();
-                    softKeyboard8.sendMsgToKernel(mSymbolKeySendText[v.getId()]);
+                    softKeyboard8.sendMsgToKernel(mSymbolKeySendText[buttonList.indexOf((QuickButton)v)]);
                 }
             }
             onTouchEffectWithAnim(v, event.getAction(),skinInfoManager.skinData.backcolor_t9keys);
