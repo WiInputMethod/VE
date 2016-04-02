@@ -35,9 +35,13 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
     /**
      * Maximum number of displaying candidates par one line (full view mode)
      */
-    private static final int CAND_DIV_NUM = 4;
+    private final int CAND_DIV_NUM = 4;
     /**
-     * general infomation about a display
+    * min value of the layer show num
+    * */
+    private final int MIN_LAYER_SHOWNUM = 10;
+    /**
+     * general information about a display
      */
     private final DisplayMetrics mMetrics = new DisplayMetrics();
     /**
@@ -58,6 +62,7 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
 
     private List<LinearLayout> layerList;
     private LinearLayout.LayoutParams layerParams;
+    private int layerPointer;
 
     public QKCandidatesViewGroup() {
         mMetrics.setToDefaults();
@@ -132,8 +137,7 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
     public void displayCandidates(String type,int show_num){
         displayCandidates(type, Collections.EMPTY_LIST,show_num);
     }
-    /**
-     */
+
     List<String> symbols;
     public void displayCandidates(String type,List<String> strings,int show_num) {
         mQPOrEmoji = type;
@@ -161,11 +165,11 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
         scrollView.fullScroll(View.FOCUS_UP);//go to top
     }
 
-    private LinearLayout getBottomLayer() {
-        if (layerList.size()==0){
+    private LinearLayout getWorkingLayer(int position) {
+        if (layerList.size() <= position){
             return addLayer();
         } else {
-            return layerList.get(layerList.size()-1);
+            return layerList.get(position);
         }
     }
 
@@ -195,8 +199,7 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
         button.setOnTouchListener(mCandidateOnTouch);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                measureTextLength(text),
-                standardButtonHeight
+                measureTextLength(text), ViewGroup.LayoutParams.MATCH_PARENT
         );
         button.itsLayoutParams = params;
         button.setLayoutParams(params);
@@ -208,34 +211,54 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
     /**
      * Add a candidate into the list
      */
-    public QuickButton addButtonQ(String text) {
-        QuickButton button = initNewButton(text);
-        LinearLayout layer = getBottomLayer();
+    public QuickButton addButtonQ(String text, QuickButton button) {
+        LinearLayout layer = getWorkingLayer(layerPointer);
         int remainLength = getLayerRemainLength(layer);
+        button.setText(text);
+        button.itsLayoutParams.width = measureTextLength(text);
         if(remainLength < button.itsLayoutParams.width){
             if(remainLength > 0){
                 QuickButton fillButton = initNewButton("");
                 fillButton.setWidth(remainLength);
                 layer.addView(fillButton);
             }
-            layer = addLayer();
+            layer = getWorkingLayer(layerPointer++);
         }
         layer.addView(button,button.itsLayoutParams);
-        button.setEllipsize(
-                standardButtonWidth * CAND_DIV_NUM <= measureTextLength(text)?TextUtils.TruncateAt.END:null);
+        button.setEllipsize(standardButtonWidth * CAND_DIV_NUM <= measureTextLength(text)?TextUtils.TruncateAt.END:null);
         return button;
 
     }
 
     @SuppressLint("NewApi")
     public void setCandidates(List<String> words) {
-        clearCandidates();
+//        clearCandidates();
         int i = 0;
-        for (String text: words) {
-                QuickButton button = addButtonQ(text);
-                button.setId(i);
-                buttonList.add(button);
-            i++;
+        for (LinearLayout layout:layerList){
+            layout.removeAllViews();
+        }
+        layerPointer = 0;
+
+        for (;i<buttonList.size() && i<words.size();i++){
+            addButtonQ(words.get(i),buttonList.get(i));
+        }
+        for (;i<words.size();i++){
+            QuickButton button = initNewButton(words.get(i));
+            button.setVisibility(View.VISIBLE);
+            button.setId(i);
+            buttonList.add(button);
+            addButtonQ(words.get(i),button);
+        }
+        for (;i<buttonList.size();i++){
+            buttonList.get(i).setVisibility(View.GONE);
+        }
+
+        int j=0;
+        for (;i<layerPointer;j++){
+            layerList.get(j).setVisibility(View.VISIBLE);
+        }
+        for(;j > MIN_LAYER_SHOWNUM && j<layerList.size();j++){
+            layerList.get(j).setVisibility(View.GONE);
         }
         touched = false;
     }
@@ -246,9 +269,9 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
     }
 
     public void clearCandidates() {
-      layoutforWrapButtons.removeAllViews();
-      layerList.clear();
-      buttonList.clear();
+//      layoutforWrapButtons.removeAllViews();
+//      layerList.clear();
+//      buttonList.clear();
     }
 
     public void updateSkin() {
@@ -299,7 +322,6 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
     private void commitT9Candidate(View v){
         String text = WIInputMethodNK.GetWordSelectedWord(v.getId());
         if ( text!=null ){
-//            mEmojiUtil.commitEmoji(text,softKeyboard8);
             softKeyboard8.CommitText(text);
         }
     }
@@ -352,15 +374,15 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
                         } else if (mQPOrEmoji == Global.SYMBOL) {
                             CharSequence text = ((TextView)v).getText();
                             softKeyboard8.CommitText(text);
-                            clearCandidates();
+//                            clearCandidates();
                             softKeyboard8.refreshDisplay();
                         } else if (mQPOrEmoji == Global.QUANPIN ) {
                             commitQKCandidate(v);
-                            clearCandidates();
+//                            clearCandidates();
                             softKeyboard8.refreshDisplay();
                         } else {
                             commitT9Candidate(v);
-                            clearCandidates();
+//                            clearCandidates();
                             softKeyboard8.refreshDisplay();
                         }
                         touched = false;

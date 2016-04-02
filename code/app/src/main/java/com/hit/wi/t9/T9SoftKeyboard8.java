@@ -237,7 +237,7 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
                     break;
                 case MSG_SEND_TO_KERNEL:
                     WIInputMethodNK.GetAllWords((String) msg.obj);
-                    refreshDisplay();
+                     refreshDisplay();
                     t9InputViewGroup.updateFirstKeyText();
                     break;
                 case QP_MSG_SEND_TO_KERNEL:
