@@ -225,14 +225,17 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
             layer = getWorkingLayer(layerPointer++);
         }
         layer.addView(button,button.itsLayoutParams);
+        button.clearAnimation();
         button.setEllipsize(standardButtonWidth * CAND_DIV_NUM <= measureTextLength(text)?TextUtils.TruncateAt.END:null);
+        button.getBackground().setAlpha((int) (Global.mCurrentAlpha*255));
+        button.setPressed(false);
+        button.setTextSize(2*Global.textsizeFactor*standardButtonHeight/8);
         return button;
 
     }
 
     @SuppressLint("NewApi")
     public void setCandidates(List<String> words) {
-//        clearCandidates();
         int i = 0;
         for (LinearLayout layout:layerList){
             layout.removeAllViews();
@@ -241,23 +244,25 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
 
         for (;i<buttonList.size() && i<words.size();i++){
             addButtonQ(words.get(i),buttonList.get(i));
+//            buttonList.get(i).setVisibility(View.VISIBLE);
         }
         for (;i<words.size();i++){
             QuickButton button = initNewButton(words.get(i));
             button.setVisibility(View.VISIBLE);
-            button.setId(i);
+//            button.setId(i);
             buttonList.add(button);
             addButtonQ(words.get(i),button);
         }
         for (;i<buttonList.size();i++){
-            buttonList.get(i).setVisibility(View.GONE);
+            buttonList.get(i).setText("");//clear button
         }
 
         int j=0;
-        for (;i<layerPointer;j++){
+        for (;j<layerPointer;j++){
             layerList.get(j).setVisibility(View.VISIBLE);
         }
-        for(;j > MIN_LAYER_SHOWNUM && j<layerList.size();j++){
+        if(j<MIN_LAYER_SHOWNUM)j=MIN_LAYER_SHOWNUM;
+        for(;j<layerList.size();j++){
             layerList.get(j).setVisibility(View.GONE);
         }
         touched = false;
@@ -266,12 +271,6 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
     public int measureTextLength(CharSequence text) {
         Paint paint = new Paint();
         return Math.min(((int)(3*paint.measureText((String) text)))/standardButtonWidth +1, 4)*standardButtonWidth;
-    }
-
-    public void clearCandidates() {
-//      layoutforWrapButtons.removeAllViews();
-//      layerList.clear();
-//      buttonList.clear();
     }
 
     public void updateSkin() {
@@ -307,7 +306,7 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
     }
 
     private void commitQKCandidate(View v) {
-        String text = WIInputMethod.GetWordSelectedWord(v.getId());
+        String text = WIInputMethod.GetWordSelectedWord(buttonList.indexOf(v));
         scrollView.fullScroll(ScrollView.FOCUS_UP);
         InputConnection ic = softKeyboard8.getCurrentInputConnection();
         if (ic != null && text!= null) {
@@ -320,7 +319,7 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
     }
 
     private void commitT9Candidate(View v){
-        String text = WIInputMethodNK.GetWordSelectedWord(v.getId());
+        String text = WIInputMethodNK.GetWordSelectedWord(buttonList.indexOf(v));
         if ( text!=null ){
             softKeyboard8.CommitText(text);
         }
@@ -365,24 +364,21 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
                         if (Global.currentKeyboard == Global.KEYBOARD_SYM){
                             CharSequence text = ((TextView)v).getText();
                             if (!softKeyboard8.quickSymbolViewGroup.islock()) {
-                                int inputeyboard = PreferenceManager.getDefaultSharedPreferences(context).getString("KEYBOARD_SELECTOR", "2").equals("1") ?
+                                int inputKeyboard = PreferenceManager.getDefaultSharedPreferences(context).getString("KEYBOARD_SELECTOR", "2").equals("1") ?
                                         Global.KEYBOARD_T9 : Global.KEYBOARD_QP;
-                                softKeyboard8.keyBoardSwitcher.SwitchKeyboard(inputeyboard, true);
+                                softKeyboard8.keyBoardSwitcher.SwitchKeyboard(inputKeyboard, true);
                                 softKeyboard8.refreshDisplay();
                             }
                             softKeyboard8.CommitText(text);
                         } else if (mQPOrEmoji == Global.SYMBOL) {
                             CharSequence text = ((TextView)v).getText();
                             softKeyboard8.CommitText(text);
-//                            clearCandidates();
                             softKeyboard8.refreshDisplay();
                         } else if (mQPOrEmoji == Global.QUANPIN ) {
                             commitQKCandidate(v);
-//                            clearCandidates();
                             softKeyboard8.refreshDisplay();
                         } else {
                             commitT9Candidate(v);
-//                            clearCandidates();
                             softKeyboard8.refreshDisplay();
                         }
                         touched = false;

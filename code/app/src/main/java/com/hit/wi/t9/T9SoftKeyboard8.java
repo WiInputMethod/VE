@@ -779,7 +779,6 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
                 Global.redoTextForDeleteAll_preedit = WIInputMethod.GetWordsPinyin(0);
                 Global.redoTextForDeleteAll = "";
             }
-            qkCandidatesViewGroup.clearCandidates();
             if (Global.currentKeyboard == Global.KEYBOARD_T9 || Global.currentKeyboard == Global.KEYBOARD_SYM || Global.currentKeyboard == Global.KEYBOARD_NUM) {
                 WIInputMethodNK.CLeanKernel();
                 t9InputViewGroup.updateFirstKeyText();

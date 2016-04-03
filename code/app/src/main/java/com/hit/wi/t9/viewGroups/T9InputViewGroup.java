@@ -394,7 +394,6 @@ public class T9InputViewGroup extends NonScrollViewGroup {
             softKeyboard8.transparencyHandle.handleAlpha(event.getAction());
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 WIInputMethodNK.CLeanKernel();
-                softKeyboard8.qkCandidatesViewGroup.clearCandidates();
                 int index = buttonList.indexOf(v);
                 if (v.getTag()!= null && (int)v.getTag() ==  KEY_OTHER_TAG) {
                     switchSymbolToFunc(mOtherSymbolTypeList, mOtherSymbolTypeSendKeyList);
