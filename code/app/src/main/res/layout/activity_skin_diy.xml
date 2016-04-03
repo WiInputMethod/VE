@@ -3,6 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/snow"
+    android:gravity="center"
     >
     <LinearLayout
         android:layout_margin="10dp"
@@ -10,6 +11,7 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         android:layout_weight="4"
+        android:gravity="center"
         >
 
         <LinearLayout
@@ -175,9 +177,10 @@
         </RadioGroup>
     </LinearLayout>
     <android.support.v4.view.ViewPager
-        android:background="@drawable/content_back"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:background="#eceff1"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:padding="5dp"
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_weight="5"
@@ -192,6 +195,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:gravity="center"
+
         >
         <Button
             android:layout_width="wrap_content"

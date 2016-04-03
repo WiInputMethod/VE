@@ -141,6 +141,7 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
     private static final int REPEAT_INTERVAL = 50; // 重复按键的时间
     public static final int REPEAT_START_DELAY = 400;// 重复按键
 
+    //屏幕信息
     private int DEFAULT_FULL_WIDTH;
     private int DEFAULT_FULL_WIDTH_X;
     private String FULL_WIDTH_S = "FULL_WIDTH";
@@ -283,13 +284,14 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
         /*
          * 加载内核
 		 */
+        Log.i("Test","onCreate");
         NKInitDictFile.NKInitWiDict(this);
         initInputParam = new InitInputParam();
 
 		/*
          * 初始化SharedPreferences数据
 		 */
-        SharedPreferenceManager.initSharedPreferencesData(this);
+        SharedPreferenceManager.initSharedPreferencesData(this);//初始化系统默认的点划设置
 
         iniComponent();
 
@@ -358,6 +360,7 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
      */
     @Override
     public void onDestroy() {
+        Log.i("Test","onDestroy");
         viewManagerC.removeInputView();
         lightViewManager.removeView();
         WIInputMethodNK.CLeanKernel();
@@ -510,6 +513,9 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
      * 每次有候选词跟新的时候统一刷新界面，因为影响到的因素比较多，统一使用状态机解决
      */
     public void refreshDisplay(boolean special) {
+
+        Log.i("Test","refreshDisplay");
+
         boolean isNK = Global.currentKeyboard == Global.KEYBOARD_T9 || Global.currentKeyboard == Global.KEYBOARD_SYM;
         int candidatenum = isNK ? WIInputMethodNK.GetWordsNumber() : WIInputMethod.GetWordsNumber();
         boolean hidecandidate = candidatenum != 0 ? false : (special ? false : true);
@@ -1004,7 +1010,6 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
             qkCandidatesViewGroup.create(T9SoftKeyboard8.this);
             qkCandidatesViewGroup.addThisToView(keyboardLayout);
         }
-
         private void CreatePreEditView() {
             preEditLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             preEdit.setPadding(0, 0, 0, 0);
@@ -1085,7 +1090,6 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
             } else {
                 skinInfoManager.loadConfigurationFromXML(themeType, res);
             }
-
             Global.currentSkinType = themeType;
         }
 
@@ -1707,6 +1711,7 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
 
     @Override
     public View onCreateInputView() {
+        Log.i("Test","onCreateInputView");
         return super.onCreateInputView();
     }
 
@@ -1715,6 +1720,7 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
      * */
     @Override
     public void onStartInputView(EditorInfo info, boolean restarting) {
+        Log.i("Test","onStartInputView");
         initInputParam.initKernal(this.getApplicationContext());
 
         Global.inLarge = false;
@@ -1745,6 +1751,7 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
      * */
     @Override
     public void onWindowShown() {
+        Log.i("Test","onWindowShown");
         MobclickAgent.onResume(this);
         mWindowShown = true;
         mHandler.removeMessages(MSG_HIDE);
@@ -1783,6 +1790,7 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
      * */
     @Override
     public void onWindowHidden() {
+        Log.i("Test","onWindowHidden");
         MobclickAgent.onPause(this);
         mWindowShown = false;
         WIInputMethodNK.CLeanKernel();
@@ -1798,6 +1806,7 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
+        Log.i("Test","onKeyUp");
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (mSetKeyboardSizeViewOn) {
                 mOnSizeChangeListener.onFinishSetting();
@@ -1809,6 +1818,7 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        Log.i("Test","onKeyDown");
         if (keyCode >= KeyEvent.KEYCODE_A && keyCode <= KeyEvent.KEYCODE_Z) {
             char key = (char) ('a' + keyCode - KeyEvent.KEYCODE_A);
             WIInputMethodNK.GetAllWords(key + "");

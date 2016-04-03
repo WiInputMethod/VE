@@ -8,7 +8,7 @@ android {
     defaultConfig {
         applicationId "com.hit.wi.t9"
         minSdkVersion 17
-        targetSdkVersion 23
+        targetSdkVersion 19
         sourceSets.main {
             jni.srcDirs = []
             jniLibs.srcDir 'src/main/libs'

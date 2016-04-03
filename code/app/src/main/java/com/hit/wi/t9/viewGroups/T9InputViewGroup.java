@@ -406,6 +406,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
                     softKeyboard8.refreshDisplay(true);
                 } else {
                     switchBackFunc();
+
                     softKeyboard8.sendMsgToKernel("'"+mSymbolKeySendText[index]);
                 }
             }

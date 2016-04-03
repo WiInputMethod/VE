@@ -3,6 +3,7 @@ package com.hit.wi.t9.values;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import com.hit.wi.t9.R;
@@ -89,24 +90,24 @@ public class SkinInfoManager {
         Log.i("颜色值",""+sp.getInt("THEME_TYPE", 0));
         skinData.skinId = sp.getInt("THEME_TYPE", 0);
         skinData.textcolors_functionKeys = sp.getInt("textcolors_functionKeys",0);
-        skinData.textcolors_functionKeys = sp.getInt("textcolors_functionKeys",0);
         skinData.textcolors_quickSymbol = sp.getInt("textcolors_quickSymbol",0);
 
         skinData.textcolors_delete = sp.getInt("textcolors_26keys",0);
         skinData.textcolors_t9keys = sp.getInt("textcolors_t9keys",0);
         skinData.textcolors_26keys = sp.getInt("textcolors_26keys",0);
+        skinData.textcolors_candidate_qk = sp.getInt("textcolors_candidate",0);
 
         skinData.textcolors_zero = sp.getInt("textcolors_bottom",0);
         skinData.textcolors_space = sp.getInt("textcolors_bottom",0);
         skinData.textcolors_enter = sp.getInt("textcolors_bottom",0);
 
-        skinData.textcolors_candidate_t9 = sp.getInt("textcolors_candidate",0);
-        skinData.textcolors_preEdit = sp.getInt("textcolors_preEdit",0);
+        skinData.textcolors_candidate_t9 = sp.getInt("textcolors_candidate",0);//中文九键第二栏候选词中文字体颜色
+        skinData.textcolors_preEdit = sp.getInt("textcolors_preEdit",0);//中文输入最上方的拼音栏
         skinData.textcolors_shift = sp.getInt("textcolors_26keys",0);
 
 
         skinData.backcolor_functionKeys = sp.getInt("backcolor_functionKeys",0);
-        skinData.backcolor_candidate_qk = sp.getInt("backcolor_candidate",0);
+        skinData.backcolor_candidate_qk =sp.getInt("backcolor_candidate",0);
         skinData.backcolor_quickSymbol = sp.getInt("backcolor_quickSymbol",0);
 
         skinData.backcolor_delete = sp.getInt("backcolor_26keys",0);
@@ -117,15 +118,15 @@ public class SkinInfoManager {
         skinData.backcolor_space = sp.getInt("backcolor_bottom",0);
         skinData.backcolor_enter = sp.getInt("backcolor_bottom",0);
 
-        skinData.backcolor_candidate_t9 = sp.getInt("backcolor_candidate",0);
+        skinData.backcolor_candidate_t9 = sp.getInt("backcolor_candidate",0);//中文九键的候选词背景色
         skinData.backcolor_shift = sp.getInt("backcolor_26keys",0);
         skinData.backcolor_smile = sp.getInt("backcolor_26keys",0);
 
-        skinData.backcolor_prefix = sp.getInt("backcolor_touchdown",0);
+        skinData.backcolor_prefix =sp.getInt("backcolor_touchdown",0);//长按Shift键之后的颜色
         skinData.backcolor_touchdown = sp.getInt("backcolor_touchdown",0);
         skinData.backcolor_preEdit = sp.getInt("backcolor_preEdit",0);
 
-        skinData.backcolor_editText = sp.getInt("backcolor_26keys",0);
+        skinData.backcolor_editText = sp.getInt("backcolor_26keys",0);//不知道这是干什么的,暂时与全键的颜色一致
         skinData.shadow = sp.getInt("shadow",0);
 
     }
