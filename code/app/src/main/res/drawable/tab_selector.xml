@@ -7,10 +7,10 @@
         <layer-list>
             <item>
                 <shape android:shape="rectangle">
-                    <stroke android:width="5dp" android:color="#FF0000"/>
+                    <stroke android:width="4dp" android:color="#3F51B5"/>
                 </shape>
             </item>
-            <item android:bottom="5dp">
+            <item android:bottom="4dp">
 
                 <shape android:shape="rectangle">
 
@@ -18,13 +18,10 @@
                 </shape>
             </item>
         </layer-list>
-
     </item>
     <item>
-
         <shape>
             <solid android:color="#FAFAFA"/>
         </shape>
     </item>
-
 </selector>

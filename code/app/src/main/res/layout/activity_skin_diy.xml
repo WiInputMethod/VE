@@ -6,7 +6,7 @@
     android:gravity="center"
     >
     <LinearLayout
-        android:layout_margin="10dp"
+        android:layout_margin="8dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -15,12 +15,14 @@
         >
 
         <LinearLayout
-            android:layout_margin="10dp"
+            android:layout_margin="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:gravity="center"
             >
             <TextView
+                android:layout_margin="4dp"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:text="编辑框背景"
@@ -29,11 +31,12 @@
             <View
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginRight="10dp"
+                android:layout_margin="4dp"
                 android:id="@+id/v_diy_editbox_back"
                 android:background="@color/light_sea_green"
                 />
             <TextView
+                android:layout_margin="4dp"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:text="编辑框字体"
@@ -41,6 +44,7 @@
                 />
             <View
 
+                android:layout_margin="4dp"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:id="@+id/v_diy_editbox_text"
@@ -49,12 +53,14 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_margin="10dp"
+            android:layout_margin="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:gravity="center"
             >
             <TextView
+                android:layout_margin="4dp"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:text="候选框背景"
@@ -63,11 +69,12 @@
             <View
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginRight="10dp"
+                android:layout_margin="4dp"
                 android:id="@+id/v_diy_candidate_back"
                 android:background="@color/light_sea_green"
                 />
             <TextView
+                android:layout_margin="4dp"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:text="候选框字体"
@@ -75,6 +82,7 @@
                 />
             <View
 
+                android:layout_margin="4dp"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:id="@+id/v_diy_candidate_text"
@@ -87,37 +95,42 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:gravity="center"
             >
 
             </LinearLayout>
         <LinearLayout
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_margin="10dp"
+            android:layout_margin="8dp"
             >
             <TextView
-            android:layout_width="110dp"
-            android:layout_height="wrap_content"
-            android:text="按下背景色"
-            android:textSize="20dp"
+                android:layout_margin="4dp"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:text="按下背景色"
+                android:textSize="20dp"
             />
 
             <View
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginRight="10dp"
+                android:layout_margin="4dp"
                 android:id="@+id/v_diy_touchdown"
                 android:background="@color/light_sea_green"
                 />
             <TextView
+                android:layout_margin="4dp"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
-                android:text="Shadow色"
+                android:text="文字阴影色"
                 android:textSize="20dp"
                 />
 
             <View
+                android:layout_margin="4dp"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:id="@+id/v_diy_shadow"
@@ -126,31 +139,23 @@
         </LinearLayout>
 
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_weight="0.1"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_gravity="center_horizontal"
-
-        >
-
         <RadioGroup
             android:id="@+id/rgTab"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_gravity="center"
-            
-            android:layout_weight="2"
+            android:gravity="center"
+            android:layout_margin="8dp"
+            android:layout_weight="0.1"
+            android:padding="4dp"
+            android:background="@color/snow"
             >
 
             <RadioButton
                 android:id="@+id/rb_qk"
+
                 android:layout_width="match_parent"
-                android:layout_margin="5dp"
+                android:layout_margin="4dp"
                 android:layout_height="match_parent"
                 android:background="@drawable/tab_selector"
                 android:layout_weight="1"
@@ -167,7 +172,7 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/tab_selector"
                 android:text="九键"
-                android:layout_margin="5dp"
+                android:layout_margin="4dp"
                 android:textSize="20dp"
                 android:textColor="@color/light_sea_green"
                 android:button="@null"
@@ -175,12 +180,14 @@
                 android:layout_weight="1"
                 />
         </RadioGroup>
-    </LinearLayout>
+
+
     <android.support.v4.view.ViewPager
-        android:background="#eceff1"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:padding="5dp"
+        android:background="@color/snow"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:padding="4dp"
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_weight="5"
@@ -189,12 +196,15 @@
     </android.support.v4.view.ViewPager>
 
     <LinearLayout
+        android:background="@color/snow"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
         android:gravity="center"
+        android:padding="4dp"
 
         >
         <Button
@@ -203,9 +213,9 @@
             android:layout_weight="1"
             android:text="取消"
             android:id="@+id/bt_cancel"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="4dp"
             android:textColor="@color/snow"
+            android:background="#03A9F4"
             />
         <Button
             android:layout_width="wrap_content"
@@ -214,8 +224,8 @@
             android:text="保存"
             android:textColor="@color/snow"
             android:id="@+id/bt_save"
-            android:layout_marginLeft="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginRight="4dp"
+            android:background="#03A9F4"
             />
     </LinearLayout>
 </LinearLayout>
