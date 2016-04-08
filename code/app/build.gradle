@@ -6,7 +6,7 @@ android {
 
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
-        applicationId "com.hit.wi.t9"
+        applicationId "com.hit.wi.ve"
         minSdkVersion 17
         targetSdkVersion 19
         sourceSets.main {
