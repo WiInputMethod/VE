@@ -10,6 +10,11 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="anim_preedit">
+        <item name="android:windowEnterAnimation">@anim/preedit_in</item>
+        <item name="android:windowExitAnimation">@anim/preedit_out</item>
+    </style>
+
     <style name="LAYOUT_STYLE">
         <item name="android:windowEnterAnimation">@anim/layout_anim</item>
         <item name="android:windowExitAnimation">@anim/layout_slide_anim</item>

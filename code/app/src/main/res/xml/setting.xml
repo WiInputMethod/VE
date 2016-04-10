@@ -60,7 +60,7 @@
                     <!--android:key="@string/key_left_hand"-->
                     <!--android:summary="@string/summary_left_hand"-->
                     <!--android:title="@string/title_left_hand"/>-->
-            <com.hit.wi.t9.view.DefSpacePreference
+            <com.hit.wi.ve.view.DefSpacePreference
                     android:key="USER_DEF_SPACE_TEXT"
                     android:dialogLayout="@layout/def_space_text"
                     android:summary="@string/summary_user_def_space_text"
@@ -74,8 +74,8 @@
                     android:title="@string/title_skin_picker">
                 <intent
                         android:action="android.intent.action.MAIN"
-                        android:targetPackage="com.hit.wi.t9"
-                        android:targetClass="com.hit.wi.t9.settings.SkinPickerActivity"/>
+                        android:targetPackage="com.hit.wi.ve"
+                        android:targetClass="com.hit.wi.ve.settings.SkinPickerActivity"/>
             </Preference>
 
         </PreferenceCategory>
@@ -125,13 +125,13 @@
                     android:key="KEY_SOUND_EFFECT_SELECTOR"
                     android:summary="@string/summary_sound_effect"
                     android:title="@string/title_sound_effect"/>
-            <com.hit.wi.t9.view.SeekbarPreference
+            <com.hit.wi.ve.view.SeekbarPreference
                     android:dialogLayout="@layout/sound_setting"
                     android:dialogTitle="@string/sound"
                     android:key="SOUND"
                     android:summary="@string/summary_sound"
                     android:title="@string/sound"/>
-            <com.hit.wi.t9.view.SeekbarPreference
+            <com.hit.wi.ve.view.SeekbarPreference
                     android:dialogLayout="@layout/sound_setting"
                     android:dialogTitle="@string/vibrator"
                     android:key="VIBRATOR"
@@ -158,7 +158,7 @@
                 android:key="slide_pin_mode"
                 android:enabled="false">
 
-            <com.hit.wi.t9.view.SeekbarPreference
+            <com.hit.wi.ve.view.SeekbarPreference
                     android:dialogLayout="@layout/sound_setting"
                     android:dialogTitle="@string/title_slide_pin_volume"
                     android:key="SLIDE_PIN_VOLUME"
@@ -237,32 +237,32 @@
                     android:title="@string/title_user_skill">
                 <intent
                         android:action="android.intent.action.MAIN"
-                        android:targetClass="com.hit.wi.t9.settings.HandBookActivity"
-                        android:targetPackage="com.hit.wi.t9"/>
+                        android:targetClass="com.hit.wi.ve.settings.HandBookActivity"
+                        android:targetPackage="com.hit.wi.ve"/>
             </Preference>
             <Preference
                     android:key="donate"
                     android:title="@string/title_donate">
                 <intent
                         android:action="android.intent.action.MAIN"
-                        android:targetClass="com.hit.wi.t9.settings.DonateWiActivity"
-                        android:targetPackage="com.hit.wi.t9"/>
+                        android:targetClass="com.hit.wi.ve.settings.DonateWiActivity"
+                        android:targetPackage="com.hit.wi.ve"/>
             </Preference>
             <Preference
                     android:key="about_us"
                     android:title="@string/title_about_us">
                 <intent
                         android:action="android.intent.action.MAIN"
-                        android:targetClass="com.hit.wi.t9.settings.AboutWiActivity"
-                        android:targetPackage="com.hit.wi.t9"/>
+                        android:targetClass="com.hit.wi.ve.settings.AboutWiActivity"
+                        android:targetPackage="com.hit.wi.ve"/>
             </Preference>
             <Preference
                     android:key="update_log"
                     android:title="@string/title_update_log">
                 <intent
                         android:action="android.intent.action.MAIN"
-                        android:targetClass="com.hit.wi.t9.settings.UpdateLogActivity"
-                        android:targetPackage="com.hit.wi.t9"/>
+                        android:targetClass="com.hit.wi.ve.settings.UpdateLogActivity"
+                        android:targetPackage="com.hit.wi.ve"/>
             </Preference>
         </PreferenceScreen>
         <Preference
@@ -271,8 +271,8 @@
                 android:summary="@string/summary_unshown_help">
             <intent
                     android:action="android.intent.action.MAIN"
-                    android:targetClass="com.hit.wi.t9.settings.UnshownHelpActivity"
-                    android:targetPackage="com.hit.wi.t9"/>
+                    android:targetClass="com.hit.wi.ve.settings.UnshownHelpActivity"
+                    android:targetPackage="com.hit.wi.ve"/>
         </Preference>
         <!-- 分享部分 -->
         <Preference
@@ -281,8 +281,8 @@
                 android:title="@string/title_share">
             <intent
                     android:action="android.intent.action.MAIN"
-                    android:targetClass="com.hit.wi.t9.settings.ShareActivity"
-                    android:targetPackage="com.hit.wi.t9"/>
+                    android:targetClass="com.hit.wi.ve.settings.ShareActivity"
+                    android:targetPackage="com.hit.wi.ve"/>
         </Preference>
     </PreferenceCategory>
 

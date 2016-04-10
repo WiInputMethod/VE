@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.hit.wi.t9"
+    package="com.hit.wi.ve"
     android:versionCode="15"
     android:versionName="1.2">
 
@@ -31,7 +31,7 @@
         android:icon="@drawable/wi_ve_v1"
         android:label="@string/app_name">
         <service
-            android:name=".T9SoftKeyboard8"
+            android:name="com.hit.wi.ve.SoftKeyboard"
             android:permission="android.permission.BIND_INPUT_METHOD">
             <intent-filter>
                 <action android:name="android.view.InputMethod" />
@@ -43,7 +43,7 @@
         </service>
 
         <activity
-            android:name=".settings.GuideActivity"
+            android:name="com.hit.wi.ve.settings.GuideActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
@@ -54,7 +54,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".settings.WIT9Activity"
+            android:name="com.hit.wi.ve.settings.WIT9Activity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme">
             <intent-filter>
@@ -62,7 +62,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".settings.HandBookActivity"
+            android:name="com.hit.wi.ve.settings.HandBookActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/user_guide"
             android:screenOrientation="portrait">
@@ -71,7 +71,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".settings.AboutWiActivity"
+            android:name="com.hit.wi.ve.settings.AboutWiActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/about"
             android:screenOrientation="portrait">
@@ -80,7 +80,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".settings.DonateWiActivity"
+            android:name="com.hit.wi.ve.settings.DonateWiActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/donate"
             android:screenOrientation="portrait">
@@ -89,7 +89,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".settings.UpdateLogActivity"
+            android:name="com.hit.wi.ve.settings.UpdateLogActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/title_update_log"
             android:screenOrientation="portrait">
@@ -98,7 +98,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".settings.UnshownHelpActivity"
+            android:name="com.hit.wi.ve.settings.UnshownHelpActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
@@ -107,7 +107,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".settings.ShareActivity"
+            android:name="com.hit.wi.ve.settings.ShareActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/title_share"
             android:screenOrientation="portrait">
@@ -116,11 +116,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".settings.SkinPickerActivity"
+            android:name="com.hit.wi.ve.settings.SkinPickerActivity"
             android:label="@string/title_activity_skin_picker"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".settings.QuickSymbolAddActivity"
+            android:name="com.hit.wi.ve.settings.QuickSymbolAddActivity"
             android:theme="@style/AppTheme" />
 
         <meta-data
@@ -131,7 +131,7 @@
             android:value="WanDouJia" />
 
         <activity
-            android:name=".settings.SkinDiyActivity"
+            android:name="com.hit.wi.ve.settings.SkinDiyActivity"
             android:label="@string/title_activity_skin_picker"
             android:theme="@style/AppBaseTheme" />
     </application>
