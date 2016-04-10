@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import com.hit.wi.jni.WIInputMethodNK;
 import com.hit.wi.t9.values.Global;
 import com.hit.wi.t9.view.QuickButton;
+import com.hit.wi.util.WIMath;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +67,7 @@ public class PreFixViewGroup extends ScrolledViewGroup {
                 buttonList.add(button);
                 i++;
             }
-            button.setTextSize(2 * Global.min(buttonWidth, height) / 9);
+            button.setTextSize(2 * WIMath.min(buttonWidth, height) / 9);
             button.setText(text);
             button.setVisibility(View.VISIBLE);
         }

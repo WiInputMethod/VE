@@ -15,6 +15,8 @@ import com.hit.wi.t9.R;
 import com.hit.wi.t9.values.Global;
 import com.hit.wi.t9.values.QuickSymbolsDataStruct;
 import com.hit.wi.t9.viewGroups.QuickSymbolViewGroup;
+import com.hit.wi.util.CommonFuncs;
+import com.hit.wi.util.WIStringManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -106,7 +108,7 @@ public class QuickSymbolAddActivity extends Activity {
                 theSymbols = symbolsDataStruct.chineseSymbols;
                 break;
         }
-        return Global.convertStringtoList(theSymbols);
+        return WIStringManager.convertStringstoList(theSymbols);
     }
 
     private void setSymbolsDataStruct(int keyboard, String[] theSymbols) {
@@ -399,12 +401,12 @@ public class QuickSymbolAddActivity extends Activity {
                 for (Item item : itemList) {
                     symbols.add((String) item.textView.getText());
                 }
-                String[] symbolsForUpdate = Global.convertListToString(symbols);
+                String[] symbolsForUpdate = WIStringManager.convertListToString(symbols);
                 setSymbolsDataStruct(currentSymbolFlag, symbolsForUpdate);
                 try {
                     quickSymbolInterface.writeSymbolsToFile("default", symbolsDataStruct);
                 } catch (IOException e) {
-                    Global.showToast(QuickSymbolAddActivity.this, getResources().getString(R.string.file_write_wrong));
+                    CommonFuncs.showToast(QuickSymbolAddActivity.this, getResources().getString(R.string.file_write_wrong));
                 }
                 finish();
             }

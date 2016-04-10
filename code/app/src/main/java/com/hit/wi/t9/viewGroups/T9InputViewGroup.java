@@ -1,7 +1,6 @@
 package com.hit.wi.t9.viewGroups;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -11,8 +10,7 @@ import com.hit.wi.t9.R;
 import com.hit.wi.t9.datastruct.InputAction;
 import com.hit.wi.t9.values.Global;
 import com.hit.wi.t9.view.QuickButton;
-
-import java.io.UnsupportedEncodingException;
+import com.hit.wi.util.WIStringManager;
 
 /**
  * Created by admin on 2016/2/29.
@@ -397,12 +395,12 @@ public class T9InputViewGroup extends NonScrollViewGroup {
                 int index = buttonList.indexOf(v);
                 if (v.getTag()!= null && (int)v.getTag() ==  KEY_OTHER_TAG) {
                     switchSymbolToFunc(mOtherSymbolTypeList, mOtherSymbolTypeSendKeyList);
-                    softKeyboard8.qkCandidatesViewGroup.displayCandidates(Global.SYMBOL,Global.convertStringtoList(softKeyboard8.symbolsManager.SPECIAL),100);
+                    softKeyboard8.qkCandidatesViewGroup.displayCandidates(Global.SYMBOL,WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.SPECIAL),100);
                 } else if (index == 6){
-                    softKeyboard8.qkCandidatesViewGroup.displayCandidates(Global.SYMBOL,Global.convertStringtoList(softKeyboard8.symbolsManager.NUMBER),100);
+                    softKeyboard8.qkCandidatesViewGroup.displayCandidates(Global.SYMBOL,WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.NUMBER),100);
                     softKeyboard8.refreshDisplay(true);
                 } else if (index == 7){
-                    softKeyboard8.qkCandidatesViewGroup.displayCandidates(Global.SYMBOL,Global.convertStringtoList(softKeyboard8.symbolsManager.MATH),100);
+                    softKeyboard8.qkCandidatesViewGroup.displayCandidates(Global.SYMBOL, WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.MATH),100);
                     softKeyboard8.refreshDisplay(true);
                 } else {
                     switchBackFunc();

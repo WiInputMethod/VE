@@ -28,7 +28,6 @@ import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.provider.Settings;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,10 +35,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hit.wi.jni.DictManager;
-import com.hit.wi.jni.InitInputParam;
 import com.hit.wi.jni.WIInputMethodNK;
 import com.hit.wi.t9.R;
 import com.hit.wi.t9.values.Global;
+import com.hit.wi.util.CommonFuncs;
 import com.umeng.analytics.MobclickAgent;
 /* 自定义点滑 */
 /* 添加自定义点滑 */
@@ -363,15 +362,15 @@ public final class WIT9Activity extends PreferenceActivity implements OnPreferen
                 final String key = tvPinyin.getText().toString();
                 final String word = tvWord.getText().toString();
                 if (key.length() == 0) {
-                    Global.showToast(WIT9Activity.this, "添加失败\n按键不能为空");
+                    CommonFuncs.showToast(WIT9Activity.this, "添加失败\n按键不能为空");
                 } else if (word.length() == 0) {
-                    Global.showToast(WIT9Activity.this, "添加失败\n文字不能为空");
+                    CommonFuncs.showToast(WIT9Activity.this, "添加失败\n文字不能为空");
                 } else {
                     final SharedPreferences sp = PreferenceManager
                             .getDefaultSharedPreferences(WIT9Activity.this);
                     final String tag = "SLIDE_PIN_" + Character.toUpperCase(key.charAt(0));
                     if (sp.getString(tag, null) != null) {
-                        Global.showToast(WIT9Activity.this, "添加失败\n'" + key + "'上已经设置了点滑文字\n请点击进行修改");
+                        CommonFuncs.showToast(WIT9Activity.this, "添加失败\n'" + key + "'上已经设置了点滑文字\n请点击进行修改");
                     } else {
                         sp.edit().putString(tag, word).commit();
                         refreshSlidPinList();
@@ -407,7 +406,7 @@ public final class WIT9Activity extends PreferenceActivity implements OnPreferen
                     final String key = tvPinyin.getText().toString();
                     final String word = tvWord.getText().toString();
                     if (word.length() == 0) {
-                        Global.showToast(WIT9Activity.this, "修改失败\n文字不能为空");
+                        CommonFuncs.showToast(WIT9Activity.this, "修改失败\n文字不能为空");
                     } else {
                         final SharedPreferences sp = PreferenceManager
                                 .getDefaultSharedPreferences(WIT9Activity.this);
@@ -452,7 +451,7 @@ public final class WIT9Activity extends PreferenceActivity implements OnPreferen
             sp.edit().putString(tag, recommendSlide[type][i]).commit();
         }
         refreshSlidPinList();
-        Global.showToast(this, "成功加载点滑方案");
+        CommonFuncs.showToast(this, "成功加载点滑方案");
     }
 
     /**

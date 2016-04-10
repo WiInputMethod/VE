@@ -5,6 +5,7 @@ import android.util.Log;
 import com.hit.wi.t9.functions.data.SymbolEmoji;
 import com.hit.wi.t9.functions.data.emojicon.Emojicon;
 import com.hit.wi.t9.values.Global;
+import com.hit.wi.util.WIStringManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,17 +39,17 @@ public class SymbolsManager {
         iniAnalysis = new IniAnalysis(context);
         symbols = new Symbols();
         try {
-            SMILE       = Global.convertListToString(iniAnalysis.getValuesFromFile(symbols.SMILE));
-            MATH        = Global.convertListToString(iniAnalysis.getValuesFromFile(symbols.MATH));
-            BU_SHOU     = Global.convertListToString(iniAnalysis.getValuesFromFile(symbols.BU_SHOU));
-            SPECIAL     = Global.convertListToString(iniAnalysis.getValuesFromFile(symbols.SPECIAL));
-            NET         = Global.convertListToString(iniAnalysis.getValuesFromFile(symbols.NET));
-            RUSSIAN     = Global.convertListToString(iniAnalysis.getValuesFromFile(symbols.RUSSIAN));
-            PHONETIC    = Global.convertListToString(iniAnalysis.getValuesFromFile(symbols.PHONETIC));
-            NUMBER      = Global.convertListToString(iniAnalysis.getValuesFromFile(symbols.NUMBER));
-            BOPOMOFO    = Global.convertListToString(iniAnalysis.getValuesFromFile(symbols.BOPOMOFO));
-            JAPANESE    = Global.convertListToString(iniAnalysis.getValuesFromFile(symbols.JAPNAESE));
-            GREECE      = Global.convertListToString(iniAnalysis.getValuesFromFile(symbols.GREECE));
+            SMILE       = WIStringManager.convertListToString(iniAnalysis.getValuesFromFile(symbols.SMILE));
+            MATH        = WIStringManager.convertListToString(iniAnalysis.getValuesFromFile(symbols.MATH));
+            BU_SHOU     = WIStringManager.convertListToString(iniAnalysis.getValuesFromFile(symbols.BU_SHOU));
+            SPECIAL     = WIStringManager.convertListToString(iniAnalysis.getValuesFromFile(symbols.SPECIAL));
+            NET         = WIStringManager.convertListToString(iniAnalysis.getValuesFromFile(symbols.NET));
+            RUSSIAN     = WIStringManager.convertListToString(iniAnalysis.getValuesFromFile(symbols.RUSSIAN));
+            PHONETIC    = WIStringManager.convertListToString(iniAnalysis.getValuesFromFile(symbols.PHONETIC));
+            NUMBER      = WIStringManager.convertListToString(iniAnalysis.getValuesFromFile(symbols.NUMBER));
+            BOPOMOFO    = WIStringManager.convertListToString(iniAnalysis.getValuesFromFile(symbols.BOPOMOFO));
+            JAPANESE    = WIStringManager.convertListToString(iniAnalysis.getValuesFromFile(symbols.JAPNAESE));
+            GREECE      = WIStringManager.convertListToString(iniAnalysis.getValuesFromFile(symbols.GREECE));
         } catch (IOException e) {
             Log.d("WIVE","lightViewAnimate"+e.toString());
             e.printStackTrace();

@@ -9,14 +9,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.SimpleAdapter;
 
 import com.hit.wi.t9.R;
-import com.hit.wi.t9.values.Global;
+import com.hit.wi.util.CommonFuncs;
 import com.umeng.analytics.MobclickAgent;
 
 
@@ -106,7 +105,7 @@ public class SkinPickerActivity extends Activity {
 
                 }else{
 
-                    Global.showToast(context, "您选择了主题:" + themelist[position]);
+                    CommonFuncs.showToast(context, "您选择了主题:" + themelist[position]);
 
                     if (position != lastItem) {//发生了变化
                         HashMap<String, Object> map = (HashMap<String, Object>) adapter.getItem(lastItem);

@@ -103,7 +103,6 @@ public class FunctionViewGroup extends NonScrollViewGroup implements ViewGroupIn
 
         button.setBackgroundResource(R.drawable.middle_button);
         button.setId(Global.generateViewId());
-
         button.itsLayoutParams = new LinearLayout.LayoutParams(0, 0);
         viewGroupWrapper.addView(button, button.itsLayoutParams);
         return button;
@@ -338,4 +337,8 @@ public class FunctionViewGroup extends NonScrollViewGroup implements ViewGroupIn
         setBackgroundAlpha((int) (Global.mCurrentAlpha * 255));
     }
 
+    @Override
+    public void setBackgroundColor(int color) {
+        super.setBackgroundColor(color);
+    }
 }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -13,6 +12,8 @@ import android.widget.TextView;
 import com.hit.wi.t9.R;
 import com.hit.wi.t9.T9SoftKeyboard8;
 import com.hit.wi.t9.values.Global;
+import com.hit.wi.util.ViewFuncs;
+import com.hit.wi.util.WIStringManager;
 
 /**
  * Created by admin on 2016/3/2.
@@ -176,7 +177,7 @@ public class LightViewManager {
     }
 
     public int lightViewAnimate(View v, MotionEvent event){
-        int index = Global.computePosition(event.getX(),event.getY(),v.getHeight(),v.getWidth());
+        int index = ViewFuncs.computePosition(event.getX(), event.getY(), v.getHeight(), v.getWidth());
         if (index == Global.ERR){
             for (int i = 0;i <mLightNum ;i++){
                 if(mLightView[i].isShown())animate(mLightView[i],offAnim_noraml_hide[i],View.GONE);
@@ -218,7 +219,7 @@ public class LightViewManager {
     }
 
     public boolean HideLightView(float x, float y, float width, float height) {
-        int index = Global.computePosition(x,y,(int)height,(int)width);
+        int index = ViewFuncs.computePosition(x, y, (int) height, (int) width);
         for (int i =0;i<mLightNum;i++){
             if (i == index )continue;
             if(mLightView[i].isShown())
@@ -253,12 +254,12 @@ public class LightViewManager {
         for (int i = 0; i < 4; ++i) {
             mLightShow |= mLightView[i].isShown();
         }
-        int index = Global.computePosition(x,y,(int)height, (int) width);
+        int index = ViewFuncs.computePosition(x, y, (int) height, (int) width);
         int[] follow = {1,3,0,2};
         if (index!= -1 && !mLightShow) {
             animate(mLightView[index],showAnim[index],View.VISIBLE);
             String showText = " ";
-            if(softKeyboard.functionsC.isAllLetter(text)){
+            if(WIStringManager.isAllLetter(text)){
                 if(text.length() > follow[index])
                     showText = (String) text.subSequence(follow[index], follow[index]+1);
             } else {

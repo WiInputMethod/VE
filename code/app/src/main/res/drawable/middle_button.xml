@@ -8,6 +8,7 @@
             android:left="5dip"
             android:right="5dip"
             android:top="5dip"/>
+
     <stroke android:width="1dip"
             android:color="#333333"
     />

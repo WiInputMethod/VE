@@ -2,7 +2,6 @@ package com.hit.wi.t9.viewGroups;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,6 +18,7 @@ import com.hit.wi.t9.values.Global;
 import com.hit.wi.t9.values.QuickSymbolsDataStruct;
 import com.hit.wi.t9.values.SkinInfoManager;
 import com.hit.wi.t9.view.QuickButton;
+import com.hit.wi.util.WIStringManager;
 
 import java.io.*;
 
@@ -121,7 +121,7 @@ public class QuickSymbolViewGroup extends ScrolledViewGroup implements QuickSymb
         currentSymbolFlag = keyboard;
         setCurrentSymbolsByKeyboard(keyboard);
         firstButton.setText(res.getString(R.string.symbol));
-        List<String> quickSymbolContent = Global.convertStringtoList(currentSymbols);
+        List<String> quickSymbolContent = WIStringManager.convertStringstoList(currentSymbols);
         setText(quickSymbolContent);
     }
 

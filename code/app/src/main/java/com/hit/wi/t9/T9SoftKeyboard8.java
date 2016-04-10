@@ -32,7 +32,6 @@ import android.widget.*;
 import com.hit.wi.jni.WIInputMethodNK;
 import com.hit.wi.jni.WIInputMethod;
 import com.hit.wi.t9.Interfaces.T9SoftKeyboard8Interface;
-import com.hit.wi.t9.datastruct.InputAction;
 import com.hit.wi.t9.effect.KeyBoardTouchEffect;
 import com.hit.wi.t9.functions.GenerateMessage;
 import com.hit.wi.jni.NKInitDictFile;
@@ -47,12 +46,14 @@ import com.hit.wi.t9.view.SetKeyboardSizeView;
 import com.hit.wi.t9.view.SetKeyboardSizeView.OnChangeListener;
 import com.hit.wi.t9.view.SetKeyboardSizeView.SettingType;
 import com.hit.wi.t9.viewGroups.*;
+import com.hit.wi.util.CommonFuncs;
+import com.hit.wi.util.InputMode;
+import com.hit.wi.util.ViewFuncs;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 
 public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftKeyboard8Interface {
@@ -665,6 +666,7 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
             edit.remove(KEYBOARD_WIDTH_S + orientation);
             edit.remove(KEYBOARD_X_S + orientation);
             edit.remove(KEYBOARD_Y_S + orientation);
+
             edit.remove(FULL_WIDTH_S + orientation);
             edit.remove(FULL_WIDTH_X_S + orientation);
             edit.commit();
@@ -688,7 +690,7 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
     }
 
     /**
-     * 键盘切换类，实际运用基本只调用期中的SwitchKeyBoard
+     * 键盘切换类，实际运用基本只调用其中的SwitchKeyBoard
      */
     public class KeyBoardSwitcherC {
 
@@ -772,7 +774,7 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
     /**
      * 一些工具函数集中存放的地方
      */
-    public class FunctionsC {
+    public class  FunctionsC {
         //For Listeners
         public void DeleteAll() {
             if ((WIInputMethodNK.GetWordsNumber() == 0 && WIInputMethod.GetWordsNumber() == 0) || Global.currentKeyboard == Global.KEYBOARD_SYM) {
@@ -839,7 +841,7 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
          *
          * @param ei
          * @return
-         */
+        */
         private boolean isToShowEmail(EditorInfo ei) {
             if (ei != null) {
                 if ((ei.inputType & EditorInfo.TYPE_MASK_CLASS) == EditorInfo.TYPE_CLASS_TEXT
@@ -927,22 +929,22 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
             preEdit.getBackground().setAlpha((int) (Global.mCurrentAlpha * 255));
         }
 
-        /**
-         * 检验字符串str中是否全为英文字母
-         *
-         * @param str
-         * @return
-         */
-        public boolean isAllLetter(String str) {
-            char tmp;
-            for (int i = 0; i < str.length(); i++) {
-                tmp = str.charAt(i);
-                if (!((tmp >= 'a' && tmp <= 'z') || (tmp >= 'A' && tmp <= 'Z'))) {
-                    return false;
-                }
-            }
-            return true;
-        }
+//        /**
+//         * 检验字符串str中是否全为英文字母
+//         *
+//         * @param str
+//         * @return
+//         */
+//        public boolean isAllLetter(String str) {
+//            char tmp;
+//            for (int i = 0; i < str.length(); i++) {
+//                tmp = str.charAt(i);
+//                if (!((tmp >= 'a' && tmp <= 'z') || (tmp >= 'A' && tmp <= 'Z'))) {
+//                    return false;
+//                }
+//            }
+//            return true;
+//        }
 
         /**
          * 判断输入域类型，返回确定键盘类型
@@ -1675,7 +1677,7 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
      * 键盘的退出动画
      * */
     private void startOutAnimation() {
-        if (!Global.isQK(Global.currentKeyboard)) {
+        if (!ViewFuncs.isQK(Global.currentKeyboard)) {
             qkInputViewGroups.setVisibility(View.GONE);
             t9InputViewGroup.startHideAnimation();
         } else {
@@ -1769,7 +1771,7 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
         try {
             quickSymbolViewGroup.updateSymbolsFromFile();
         } catch (IOException e) {
-            Global.showToast(this, "Sorry,There is an error when program load symbols from file");
+            CommonFuncs.showToast(this, "Sorry,There is an error when program load symbols from file");
         }
 
         EditorInfo info = this.getCurrentInputEditorInfo();
@@ -1777,7 +1779,7 @@ public final class T9SoftKeyboard8 extends InputMethodService implements T9SoftK
         //显示键盘出场动画
         startAnimation();
         //设置空格键文字
-        bottomBarViewGroup.spaceButton.setText(Global.halfToFull(sp.getString("ZH_SPACE_TEXT", "空格")));
+        bottomBarViewGroup.spaceButton.setText(InputMode.halfToFull(sp.getString("ZH_SPACE_TEXT", "空格")));
         //更新当前键盘皮肤
         skinUpdateC.updateSkin();
         //音效设置加载

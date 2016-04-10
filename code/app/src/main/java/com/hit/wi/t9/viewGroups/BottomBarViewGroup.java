@@ -15,6 +15,10 @@ import com.hit.wi.jni.WIInputMethod;
 import com.hit.wi.t9.R;
 import com.hit.wi.t9.values.Global;
 import com.hit.wi.t9.view.QuickButton;
+import com.hit.wi.util.CommonFuncs;
+import com.hit.wi.util.InputMode;
+import com.hit.wi.util.ViewFuncs;
+import com.hit.wi.util.WIStringManager;
 
 import java.util.*;
 
@@ -40,7 +44,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         super.create(context);
         mContext = context;
         button_text = res.getStringArray(R.array.BOTTOMBAR_TEXT);
-        spaceText = Global.fullToHalf(PreferenceManager.getDefaultSharedPreferences(context).getString("ZH_SPACE_TEXT", button_text[2]));
+        spaceText = InputMode.fullToHalf(PreferenceManager.getDefaultSharedPreferences(context).getString("ZH_SPACE_TEXT", button_text[2]));
         switchKeyboardButton = addButtonB(button_text[0]);
         expressionButton = addButtonB(button_text[1]);
         spaceButton = addButtonB(spaceText);
@@ -241,7 +245,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
                     removeButton(spaceButton);
                     removeButton(zeroButton);
                     removeButton(enterButton);
-                    setText(Global.convertStringtoList(res.getStringArray(R.array.KEYBOARD_TYPE)));
+                    setText(WIStringManager.convertStringstoList(res.getStringArray(R.array.KEYBOARD_TYPE)));
                     setButtonWidth(paramsForViewGroup.width / buttonList.size() - padding);
                     setBackgroundColor(skinInfoManager.skinData.backcolor_26keys);
                     break;
@@ -283,9 +287,9 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
     private List<String> getExpression(int flag){
         List<String> expression;
         if (flag == 0){
-            expression = Global.convertStringtoList(softKeyboard8.symbolsManager.EmojiFace);
+            expression = WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.EmojiFace);
         } else if (flag == 1){
-            expression = Global.convertStringtoList(softKeyboard8.symbolsManager.SMILE);
+            expression = WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.SMILE);
         } else {
             expression = new ArrayList<>();
         }
@@ -304,7 +308,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
                         if (Global.inLarge)softKeyboard8.qkCandidatesViewGroup.largeTheCandidate();
                         softKeyboard8.refreshDisplay(true);
                     }else {
-                        Global.showToast(context,"很抱歉，我们暂时不能再您的手机上获取emoji库，正在修复中……");
+                        CommonFuncs.showToast(context, "很抱歉，我们暂时不能再您的手机上获取emoji库，正在修复中……");
                     }
                     expressionFlag = (expressionFlag + 1) % 2;
                 }
@@ -327,7 +331,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
                 if ((WIInputMethodNK.GetWordsNumber() > 0) || (WIInputMethod.GetWordsNumber() > 0) && Global.currentKeyboard != Global.KEYBOARD_SYM) {
                     softKeyboard8.ChooseWord(0);
                 } else{
-                    int index = Global.computePosition(event.getX(),event.getY(),v .getHeight(),v.getWidth());
+                    int index = ViewFuncs.computePosition(event.getX(), event.getY(), v.getHeight(), v.getWidth());
                     if (index == Global.ERR)index = 4;
                     softKeyboard8.CommitText(commit_text_space[index]);
                 }
@@ -340,7 +344,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
                 }
             } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
                 softKeyboard8.lightViewManager.HideLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight());
-                int index = Global.computePosition(event.getX(),event.getY(),v.getHeight(),v.getWidth());
+                int index = ViewFuncs.computePosition(event.getX(), event.getY(), v.getHeight(), v.getWidth());
                 if (index == Global.ERR)index = 4;
                 softKeyboard8.lightViewManager.ShowLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight(),commit_text_space[index]);
             }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.view.*;
 import android.view.animation.Animation;
@@ -72,6 +73,7 @@ public class NonScrollViewGroup extends myViewGroup {
     public void setBackgroundColor(int color) {
         backgroundColor = color;
         for (QuickButton quickButton : buttonList) {
+            //quickButton.getBackground().setColorFilter(backgroundColor, PorterDuff.Mode.DARKEN);
             quickButton.setBackgroundColor(color);
         }
     }
