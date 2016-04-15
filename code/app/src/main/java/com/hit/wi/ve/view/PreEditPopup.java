@@ -81,7 +81,6 @@ public class PreEditPopup {
     public void show(CharSequence text){
         editText.setText(text);
         editText.setTextSize(Math.min((float) (container.getHeight()*0.33),container.getWidth()/1+(text.length()/4)));
-        if(editText.getSelectionEnd()<text.length()-3)editText.setSelection(text.length());
         if (!isShown()){
             container.showAsDropDown(softKeyboard.keyboardLayout,leftMargin,-container.getHeight()-softKeyboard.keyboardParams.height);
         }

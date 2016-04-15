@@ -28,8 +28,6 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.widget.*;
 
-import com.hit.wi.jni.WIInputMethodNK;
-import com.hit.wi.jni.WIInputMethod;
 import com.hit.wi.jni.NKInitDictFile;
 import com.hit.wi.jni.InitInputParam;
 import com.hit.wi.util.CommonFuncs;
@@ -136,9 +134,9 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     private final int QP_MSG_SEND_TO_KERNEL = 3;
     private final int MSG_CHOOSE_WORD = 4;
     private final int MSG_HEART = 5;
+    private final int MSG_LAZY_LOAD_CANDIDATE = 6;
     private final int MSG_DOUBLE_CLICK_REFRESH = 7;
     private final int MSG_KERNEL_CLEAN = 8;
-    private final int MSG_LAZY_LOAD_CANDIDATE = 6;
 
     private static final int REPEAT_INTERVAL = 50; // 重复按键的时间
     public static final int REPEAT_START_DELAY = 400;// 重复按键
@@ -238,8 +236,8 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                     sendEmptyMessageDelayed(MSG_REPEAT, REPEAT_INTERVAL);
                     break;
                 case MSG_SEND_TO_KERNEL:
-                    WIInputMethodNK.GetAllWords((String) msg.obj);
-                     refreshDisplay();
+                    Kernel.inputPinyin((String) msg.obj);
+                    refreshDisplay();
                     t9InputViewGroup.updateFirstKeyText();
                     break;
                 case QP_MSG_SEND_TO_KERNEL:
@@ -251,9 +249,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                 case MSG_LAZY_LOAD_CANDIDATE:
                     qkCandidatesViewGroup.setCandidates((List<String>) msg.obj);
                     break;
-                case MSG_HEART:
-                    transparencyHandle.HeartAlpha();
-                    break;
                 case MSG_DOUBLE_CLICK_REFRESH:
                     if (bottomBarViewGroup != null) {
                         bottomBarViewGroup.expressionFlag = 0;
@@ -262,13 +257,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                     mHandler.sendEmptyMessageDelayed(MSG_DOUBLE_CLICK_REFRESH, 3 * Global.metaRefreshTime);
                     break;
                 case MSG_KERNEL_CLEAN:
-//                    try {
-//                        WIInputMethod.FreeIme();
-//                        WIInputMethodNK.FreeIme();
-//                    } catch (Exception e){
-//                    }
                     mHandler.removeMessages(MSG_KERNEL_CLEAN);
-//                    mHandler.sendEmptyMessageDelayed(MSG_KERNEL_CLEAN, maxFreeKernelTime * Global.metaRefreshTime);
                     break;
             }
 
@@ -364,10 +353,9 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         Log.i("Test","onDestroy");
         viewManagerC.removeInputView();
         lightViewManager.removeView();
-        WIInputMethodNK.CLeanKernel();
-        WIInputMethod.ResetWiIme(InitInputParam.RESET);
-        WIInputMethodNK.FreeIme();
-        WIInputMethod.FreeIme();
+        Kernel.cleanKernel();
+        Kernel.resetWiIme(InitInputParam.RESET);
+        Kernel.freeIme();
         super.onDestroy();
     }
 
@@ -405,7 +393,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         final InputConnection ic = getCurrentInputConnection();
         if (ic == null) return;
         //开始处理真正的句内编辑
-        final String candicateString = WIInputMethod.GetWordsPinyin(0);
+        final String candicateString = Kernel.getWordsShowPinyin();
         if (candicateString.length() != candicateEnd - candicateStart) return;
         //切割字符串
         final int isDel = delete && selectionStart == selectionEnd ? 1 : 0;
@@ -415,11 +403,11 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         int i, j;
         if (sBegin.length() > 0 && Character.getType(sBegin.charAt(0)) != Character.OTHER_LETTER) {
             final String sylla = sBegin + sEnd;
-            WIInputMethod.CLeanKernel();
-            WIInputMethod.GetAllWords(sylla);
+            Kernel.cleanKernel();
+            Kernel.inputPinyin(sylla);
             refreshDisplay();
             qkInputViewGroups.refreshQKKeyboardPredict();
-            String r = WIInputMethod.GetWordsPinyin(0);
+            String r = Kernel.getWordsShowPinyin();
             for (i = 0, j = 0; i < sBegin.length() && j < r.length(); i++) {
                 if (r.charAt(j) == '\'')
                     j++;
@@ -429,8 +417,8 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             ic.setSelection(candicateStart + j, candicateStart + j);
             return ;
         } else if ((sBegin.length() == 0) && (sEnd.length() > 0 ? Character.getType(sEnd.charAt(0)) != Character.OTHER_LETTER : true)) {
-            WIInputMethod.CLeanKernel();
-            WIInputMethod.GetAllWords(sEnd);
+            Kernel.cleanKernel();
+            Kernel.inputPinyin(sEnd);
             qkInputViewGroups.refreshQKKeyboardPredict();
             refreshDisplay();
             ic.setSelection(0, 0);
@@ -445,7 +433,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                     ;
                 if (j != 0) {
                     if (!delete) {
-                        WIInputMethod.GetAllWords(s);
+                        Kernel.inputPinyin(s);
                         qkInputViewGroups.refreshQKKeyboardPredict();
                         refreshDisplay();
                         return ;
@@ -455,11 +443,11 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                     ic.commitText(sBegin, 1);
                     ic.commitText(sEnd.substring(0, j), 1);
                     final String sylla = sEnd.substring(j);
-                    WIInputMethod.CLeanKernel();
-                    WIInputMethod.GetAllWords(sylla);
+                    Kernel.cleanKernel();
+                    Kernel.inputPinyin(sylla);
                     qkInputViewGroups.refreshQKKeyboardPredict();
                     refreshDisplay();
-                    String r = WIInputMethod.GetWordsPinyin(0);
+                    String r = Kernel.getWordsShowPinyin();
                     ic.setComposingText(r, 1);
                     ic.setSelection(candicateStart + i + j, candicateStart + i + j);
                     return ;
@@ -467,8 +455,8 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                 if (!delete && j == 0) {
                     if (sBegin.length() > 0) {
                         ic.commitText(sBegin.substring(0, sBegin.length() - 1), 1);
-                        WIInputMethod.CLeanKernel();
-                        WIInputMethod.GetAllWords(s + sEnd);
+                        Kernel.cleanKernel();
+                        Kernel.inputPinyin(s + sEnd);
                         qkInputViewGroups.refreshQKKeyboardPredict();
                         refreshDisplay();
                         ic.setSelection(mCandicateStart + 1, mCandicateStart + 1);
@@ -478,11 +466,11 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                 // 光标前不是汉字
                 ic.commitText(sBegin.substring(0, i), 1);
                 final String sylla = sBegin.substring(i) + sEnd;
-                WIInputMethod.CLeanKernel();
-                WIInputMethod.GetAllWords(sylla);
+                Kernel.cleanKernel();
+                Kernel.inputPinyin(sylla);
                 qkInputViewGroups.refreshQKKeyboardPredict();
                 refreshDisplay();
-                final String r = WIInputMethod.GetWordsPinyin(0);
+                final String r = Kernel.getWordsShowPinyin();
                 int k;
                 for (k = i, j = 0; k < sBegin.length()
                         && j < r.length(); k++) {
@@ -514,7 +502,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     public void refreshDisplay(boolean special) {
         Log.i("Test","refreshDisplay");
         boolean isNK = Global.currentKeyboard == Global.KEYBOARD_T9 || Global.currentKeyboard == Global.KEYBOARD_SYM;
-        int candidatenum = isNK ? WIInputMethodNK.GetWordsNumber() : WIInputMethod.GetWordsNumber();
+        int candidatenum = Kernel.getWordsNumber();
         boolean hidecandidate = candidatenum != 0 ? false : (special ? false : true);
         Kernel.setKernelType(isNK?Kernel.NINE_KEY:Kernel.QWERT);
 
@@ -543,41 +531,36 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     }
 
     public void deleteLast() {
-        if ((WIInputMethodNK.GetWordsNumber() == 0 && WIInputMethod.GetWordsNumber() == 0) || Global.currentKeyboard == Global.KEYBOARD_SYM) {
+        if ((Kernel.getWordsNumber() == 0) || Global.currentKeyboard == Global.KEYBOARD_SYM) {
             this.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL);
         } else {
             if (Global.currentKeyboard == Global.KEYBOARD_T9) {
-                String pinyin = WIInputMethodNK.GetWordsPinyin(0);
+                String pinyin = Kernel.getWordsShowPinyin();
                 Global.addToRedo(pinyin.substring(pinyin.length()-1));
-                WIInputMethodNK.DeleteAction();
+                Kernel.deleteAction();
                 t9InputViewGroup.updateFirstKeyText();
                 refreshDisplay();
             } else if (Global.currentKeyboard == Global.KEYBOARD_QP) {
                 if (mQPOrEmoji == Global.QUANPIN) {
-                    String pinyin = WIInputMethod.GetWordsPinyin(0);
+                    String pinyin = Kernel.getWordsShowPinyin();
                     Global.addToRedo(pinyin.substring(pinyin.length()-1));
                     innerEdit("", true);
                 } else if (mQPOrEmoji == Global.EMOJI) {
-                    WIInputMethodNK.CLeanKernel();
+                    Kernel.cleanKernel();
                     refreshDisplay(true);
                 }
             } else if (Global.currentKeyboard == Global.KEYBOARD_EN) {
-                WIInputMethodNK.CLeanKernel();
-                WIInputMethod.CLeanKernel();
+                Kernel.cleanKernel();
                 refreshDisplay(true);
             }
         }
     }
 
     public void chooseWord(int index) {
-        String text = null;
+        String text = Kernel.getWordSelectedWord(index);
+        refreshDisplay();
         if (Global.currentKeyboard == Global.KEYBOARD_T9) {
-            text = WIInputMethodNK.GetWordSelectedWord(index);
-            refreshDisplay();
             t9InputViewGroup.updateFirstKeyText();
-        } else if (Global.currentKeyboard == Global.KEYBOARD_QP) {
-            text = WIInputMethod.GetWordSelectedWord(index);
-            refreshDisplay();
         }
         if (text != null) {
             InputConnection ic = getCurrentInputConnection();
@@ -601,7 +584,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             ic.commitText(text, 1);
         }
         qkInputViewGroups.refreshQKKeyboardPredict();//刷新点滑预测
-//		refreshDisplay();
     }
 
     /**
@@ -609,7 +591,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
      * @param msg
     * */
     public void sendMsgToKernel(String msg) {
-//        Global.redoTextForDeleteAll_preedit = "";
         mHandler.sendMessage(mHandler.obtainMessage(MSG_SEND_TO_KERNEL, msg));
     }
 
@@ -619,7 +600,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
      * @param msg
      * */
     public void sendMsgToQKKernel(String msg) {
-//        Global.redoTextForDeleteAll_preedit = "";
         mHandler.sendMessage(mHandler.obtainMessage(QP_MSG_SEND_TO_KERNEL, msg));
     }
 
@@ -754,7 +734,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
          */
         public void switchKeyboard(int keyboard, boolean showAnim) {
             qkInputViewGroups.reloadPredictText(keyboard);
-            WIInputMethodNK.CLeanKernel();
+            Kernel.cleanKernel();
 
             hideKeyboard(keyboard, showAnim);
             showKeyboard(keyboard, showAnim);
@@ -772,26 +752,23 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     public class  FunctionsC {
         //For Listeners
         public void deleteAll() {
-            if ((WIInputMethodNK.GetWordsNumber() == 0 && WIInputMethod.GetWordsNumber() == 0) || Global.currentKeyboard == Global.KEYBOARD_SYM) {
+            if (Kernel.getWordsNumber()==0 || Global.currentKeyboard == Global.KEYBOARD_SYM) {
                 InputConnection ic = SoftKeyboard.this.getCurrentInputConnection();
                 if (ic != null) {
                     Global.redoTextForDeleteAll = ic.getTextBeforeCursor(200,0);
                     ic.deleteSurroundingText(Integer.MAX_VALUE, 0);
                 }
             } else {
-                Global.redoTextForDeleteAll_preedit = WIInputMethod.GetWordsPinyin(0);
+                Global.redoTextForDeleteAll_preedit = Kernel.getWordsShowPinyin();
                 Global.redoTextForDeleteAll = "";
             }
+            Kernel.cleanKernel();
             if (Global.currentKeyboard == Global.KEYBOARD_T9 || Global.currentKeyboard == Global.KEYBOARD_SYM || Global.currentKeyboard == Global.KEYBOARD_NUM) {
-                WIInputMethodNK.CLeanKernel();
                 t9InputViewGroup.updateFirstKeyText();
                 refreshDisplay();
             } else if (Global.currentKeyboard == Global.KEYBOARD_QP) {
-                WIInputMethod.CLeanKernel();
                 refreshDisplay(mQPOrEmoji != Global.QUANPIN);
             } else if (Global.currentKeyboard == Global.KEYBOARD_EN) {
-                WIInputMethodNK.CLeanKernel();
-                WIInputMethod.CLeanKernel();
                 refreshDisplay();
             }
             qkInputViewGroups.refreshQKKeyboardPredict();//刷新点滑预测
@@ -800,12 +777,12 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         //For others
         public void computeCursorPosition() {
             //计算光标位置
-            int cursor = WIInputMethod.GetWordsPinyin(0) == null ? 0 : WIInputMethod.GetWordsPinyin(0).length();
+            int cursor = Kernel.getWordsShowPinyin() == null ? 0 : Kernel.getWordsShowPinyin().length();
             //上屏
             InputConnection ic = getCurrentInputConnection();
             if (ic != null) {
                 ic.beginBatchEdit();
-                ic.setComposingText(WIInputMethod.GetWordsPinyin(0), cursor);
+                ic.setComposingText(Kernel.getWordsShowPinyin(), cursor);
                 ic.endBatchEdit();
             }
         }
@@ -1399,28 +1376,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
      * 键盘透明度处理，包括一些动画
      */
     public class TransparencyHandle {
-
-        List<ValueAnimator> valueAnimators = new ArrayList<ValueAnimator>();
-        List<View> allKeyList = new ArrayList<View>();
-
-        boolean heartAlphaStarted = false;
-
-        /**
-         * 功能：开始心跳动画
-         * 调用时机：五秒内没有touch
-         */
-        private void HeartAlpha() {
-
-            if (heartAlphaStarted) return;//避免重复开启动画的防御措施，慎删@purebluesong
-            if (!mWindowShown) return;
-            if (WIInputMethodNK.GetWordsNumber() > 0 || !show || WIInputMethod.GetWordsNumber() > 0)
-                return;
-            if (quickSymbolViewGroup.isShown()) {
-                quickSymbolViewGroup.clearAnimation();
-            }
-            heartAlphaStarted = true;
-        }
-
         private void startAutoDownAlpha() {
             mHandler.sendEmptyMessageDelayed(MSG_HIDE, 1000);
         }
@@ -1458,7 +1413,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
         private void UpAlpha() {
             if (!mWindowShown) return;
-            if (WIInputMethodNK.GetWordsNumber() > 0 || !show || WIInputMethod.GetWordsNumber() > 0)
+            if (Kernel.getWordsNumber() >0 || !show )
                 return;
             Animation anim = AnimationUtils.loadAnimation(SoftKeyboard.this, R.anim.hide);
             if (Global.currentKeyboard == Global.KEYBOARD_T9 ||
@@ -1727,8 +1682,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         Log.i("Test","onWindowHidden");
         MobclickAgent.onPause(this);
         mWindowShown = false;
-        WIInputMethodNK.CLeanKernel();
-        WIInputMethod.CLeanKernel();
+        Kernel.cleanKernel();
         refreshDisplay();
         t9InputViewGroup.updateFirstKeyText();
         startOutAnimation();
@@ -1755,12 +1709,12 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         Log.i("Test","onKeyDown");
         if (keyCode >= KeyEvent.KEYCODE_A && keyCode <= KeyEvent.KEYCODE_Z) {
             char key = (char) ('a' + keyCode - KeyEvent.KEYCODE_A);
-            WIInputMethodNK.GetAllWords(key + "");
+            Kernel.inputPinyin(key + "");
             refreshDisplay();
             return true;
         }
-        if (keyCode == KeyEvent.KEYCODE_DEL && WIInputMethodNK.GetWordsNumber() > 0) {
-            WIInputMethodNK.DeleteAction();
+        if (keyCode == KeyEvent.KEYCODE_DEL && Kernel.getWordsNumber() > 0) {
+            Kernel.deleteAction();
             refreshDisplay();
             return true;
         }
