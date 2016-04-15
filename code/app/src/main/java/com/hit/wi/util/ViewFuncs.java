@@ -1,6 +1,6 @@
 package com.hit.wi.util;
 
-import com.hit.wi.t9.values.Global;
+import com.hit.wi.ve.values.Global;
 
 /**
  * Created by daofa on 2016/4/10.

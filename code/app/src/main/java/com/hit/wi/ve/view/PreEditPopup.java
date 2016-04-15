@@ -1,13 +1,13 @@
 package com.hit.wi.ve.view;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputConnection;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 import com.hit.wi.jni.Kernel;
@@ -38,18 +38,18 @@ public class PreEditPopup {
         editText.setBackgroundResource(R.drawable.blank);
         editText.setBackgroundColor(softKeyboard.skinInfoManager.skinData.backcolor_editText);
         editText.getBackground().setAlpha((int) (Global.mCurrentAlpha * 255));
+        editText.setEllipsize(TextUtils.TruncateAt.END);
+        editText.setOnFocusChangeListener(editFocusListener);
         if (Global.shadowSwitch) editText.setShadowLayer(Global.shadowRadius, 0, 0, softKeyboard.skinInfoManager.skinData.shadow);
 
         container = new PopupWindow(editText, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
         container.setFocusable(false);
         container.setTouchable(true);
         container.setClippingEnabled(false);
-        container.setAnimationStyle(R.style.anim_preedit);
         container.setBackgroundDrawable(null);
     }
 
     public void upadteSize(int width,int height,int leftMargin){
-        editText.setTextSize((float) (height*0.33));
         container.setHeight(height);
         container.setWidth(width);
         this.leftMargin = leftMargin;
@@ -69,19 +69,19 @@ public class PreEditPopup {
     }
 
     public void refresh(){
-        if(editText==null)
-             return;
+        if(editText==null) return;
         String pinyin = Kernel.getWordsShowPinyin();
         if(pinyin.length()>0){
-            show(pinyin,pinyin.length());
+            show(pinyin);
         } else {
             dismiss();
         }
     }
 
-    public void show(CharSequence text,int cursor){
+    public void show(CharSequence text){
         editText.setText(text);
-        editText.setSelection(cursor);
+        editText.setTextSize(Math.min((float) (container.getHeight()*0.33),container.getWidth()/1+(text.length()/4)));
+        if(editText.getSelectionEnd()<text.length()-3)editText.setSelection(text.length());
         if (!isShown()){
             container.showAsDropDown(softKeyboard.keyboardLayout,leftMargin,-container.getHeight()-softKeyboard.keyboardParams.height);
         }
@@ -90,4 +90,22 @@ public class PreEditPopup {
     public void dismiss(){
         container.dismiss();
     }
+
+    public void setCursor(int start,int stop) {
+        Log.d("WIVE",start+"fuck"+stop+" length"+editText.getText());
+        int textlength = editText.getText().length();
+        if (textlength >start && textlength>stop)
+            editText.setSelection(start,stop);
+    }
+
+    private View.OnFocusChangeListener editFocusListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            Log.d("WIVE","focus change"+hasFocus);
+            if (!hasFocus) {
+                InputConnection ic = softKeyboard.getCurrentInputConnection();
+                ic.setSelection(editText.getSelectionStart(),editText.getSelectionEnd());
+            }
+        }
+    };
 }

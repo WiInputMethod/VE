@@ -5,7 +5,7 @@ import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.hit.wi.t9.R;
+import com.hit.wi.ve.R;
 
 /**
  * Created by Administrator on 2015/5/12.

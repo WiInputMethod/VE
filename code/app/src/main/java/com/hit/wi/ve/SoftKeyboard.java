@@ -132,13 +132,13 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
     private final int MSG_HIDE = 0;
     public final int MSG_REPEAT = 1;
-    public final int MSG_SEND_TO_KERNEL = 2;
-    public final int QP_MSG_SEND_TO_KERNEL = 3;
+    private final int MSG_SEND_TO_KERNEL = 2;
+    private final int QP_MSG_SEND_TO_KERNEL = 3;
     private final int MSG_CHOOSE_WORD = 4;
     private final int MSG_HEART = 5;
-    public final int MSG_DOUBLE_CLICK_REFRESH = 7;
+    private final int MSG_DOUBLE_CLICK_REFRESH = 7;
     private final int MSG_KERNEL_CLEAN = 8;
-    public final int MSG_LAZY_LOAD_CANDIDATE = 6;
+    private final int MSG_LAZY_LOAD_CANDIDATE = 6;
 
     private static final int REPEAT_INTERVAL = 50; // 重复按键的时间
     public static final int REPEAT_START_DELAY = 400;// 重复按键
@@ -374,128 +374,126 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     /**
      * 功能：编辑功能，负责向内核传递字符，句内编辑也是在这里做
      * 调用时机：{@link #mHandler}处理{@link #MSG_SEND_TO_KERNEL}时调用
-     *
+     * @author huangzhiwei
+     * @auther purebluesong
      * @param s 向内核传入的字符,delete 是否删除操作
      */
-    public boolean innerEdit(String s, boolean delete) {
-        if (Global.currentKeyboard != Global.KEYBOARD_QP && Global.currentKeyboard != Global.KEYBOARD_EN) return false;
+    public void innerEdit(String s, boolean delete) {
+        if (Global.currentKeyboard != Global.KEYBOARD_QP && Global.currentKeyboard != Global.KEYBOARD_EN) return ;
         mQPOrEmoji = Global.QUANPIN;
         final int selectionStart = Math.min(mNewStart, mNewEnd);
         final int selectionEnd = Math.max(mNewStart, mNewEnd);
         final int candicateStart = Math.min(mCandicateStart, mCandicateEnd);
         final int candicateEnd = Math.max(mCandicateStart, mCandicateEnd);
-        if (delete) {
-            if (selectionStart <= candicateStart || selectionStart > candicateEnd) {
+        preEditPopup.setCursor(selectionStart,selectionEnd);
+        if (selectionStart <= candicateStart || selectionStart > candicateEnd) {
+            if (delete) {
                 this.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL);
-                return true;
+                return;
             }
         }
-
-        if (candicateEnd > selectionStart) {
-            final InputConnection ic = getCurrentInputConnection();
-            if (ic != null) {
-                //开始处理真正的句内编辑
-                final String candicateString = WIInputMethod.GetWordsPinyin(0);
-                if (candicateString.length() == candicateEnd - candicateStart) {
-                    //切割字符串
-                    final int isDel = delete && selectionStart == selectionEnd ? 1 : 0;
-                    String sBegin = selectionStart > candicateStart ? candicateString.substring(0, selectionStart - candicateStart - isDel) : "";
-                    sBegin = sBegin.replace("'", "") + s;
-                    String sEnd = selectionEnd <= candicateStart ? candicateString : (selectionEnd < candicateEnd ? candicateString.substring(selectionEnd - candicateStart).replace("'", "") : "");
-                    int i, j;
-                    if (sBegin.length() > 0 && Character.getType(sBegin.charAt(0)) != Character.OTHER_LETTER) {
-                        final String sylla = sBegin + sEnd;
-                        WIInputMethod.CLeanKernel();
-                        WIInputMethod.GetAllWords(sylla);
-                        refreshDisplay();
-                        qkInputViewGroups.refreshQKKeyboardPredict();
-                        String r = WIInputMethod.GetWordsPinyin(0);
-                        for (i = 0, j = 0; i < sBegin.length() && j < r.length(); i++) {
-                            if (r.charAt(j) == '\'')
-                                j++;
-                            j++;
-                        }
-                        ic.setComposingText(r, 1);
-                        ic.setSelection(candicateStart + j, candicateStart + j);
-                        return true;
-                    } else if ((sBegin.length() == 0) && (sEnd.length() > 0 ? Character.getType(sEnd.charAt(0)) != Character.OTHER_LETTER : true)) {
-                        WIInputMethod.CLeanKernel();
-                        WIInputMethod.GetAllWords(sEnd);
-                        qkInputViewGroups.refreshQKKeyboardPredict();
-                        refreshDisplay();
-                        ic.setSelection(0, 0);
-                        //未上屏字符中有中文
-                    } else {
-                        for (i = 0; i < sBegin.length() && Character.getType(sBegin.charAt(i)) == Character.OTHER_LETTER; i++)
-                            ;
-                        // 光标前是汉字
-                        if (i == sBegin.length() || (i == sBegin.length() - 1 && !delete)) {
-                            for (j = 0; j < sEnd.length()
-                                    && Character.getType(sEnd.charAt(j)) == Character.OTHER_LETTER; j++)
-                                ;
-                            if (j != 0) {
-                                if (!delete) {
-                                    WIInputMethod.GetAllWords(s);
-                                    qkInputViewGroups.refreshQKKeyboardPredict();
-                                    refreshDisplay();
-                                    return true;
-                                }
-                            }
-                            if (delete) {
-                                ic.commitText(sBegin, 1);
-                                ic.commitText(sEnd.substring(0, j), 1);
-                                final String sylla = sEnd.substring(j);
-                                WIInputMethod.CLeanKernel();
-                                WIInputMethod.GetAllWords(sylla);
-                                qkInputViewGroups.refreshQKKeyboardPredict();
-                                refreshDisplay();
-                                String r = WIInputMethod.GetWordsPinyin(0);
-                                ic.setComposingText(r, 1);
-                                ic.setSelection(candicateStart + i + j, candicateStart + i + j);
-                                return true;
-                            }
-                            if (!delete && j == 0) {
-                                if (sBegin.length() > 0) {
-                                    ic.commitText(sBegin.substring(0, sBegin.length() - 1), 1);
-                                    WIInputMethod.CLeanKernel();
-                                    WIInputMethod.GetAllWords(s + sEnd);
-                                    qkInputViewGroups.refreshQKKeyboardPredict();
-                                    refreshDisplay();
-                                    ic.setSelection(mCandicateStart + 1, mCandicateStart + 1);
-                                }
-                            }
-                        } else {
-                            // 光标前不是汉字
-                            ic.commitText(sBegin.substring(0, i), 1);
-                            final String sylla = sBegin.substring(i) + sEnd;
-                            WIInputMethod.CLeanKernel();
-                            WIInputMethod.GetAllWords(sylla);
-                            qkInputViewGroups.refreshQKKeyboardPredict();
-                            refreshDisplay();
-                            final String r = WIInputMethod.GetWordsPinyin(0);
-                            int k;
-                            for (k = i, j = 0; k < sBegin.length()
-                                    && j < r.length(); k++) {
-                                if (r.charAt(j) == '\'')
-                                    j++;
-                                j++;
-                            }
-                            ic.setComposingText(r, 1);
-                            ic.setSelection(candicateStart + i + j, candicateStart + i + j);
-                        }
-                    }
-                }
-            }
-        } else {
+        if (candicateEnd <= selectionStart) {
             if (delete) {
-                WIInputMethod.DeleteAction();
+                Kernel.deleteAction();
             } else {
-                WIInputMethod.GetAllWords((String) s);
+                Kernel.inputPinyin(s);
             }
             qkInputViewGroups.refreshQKKeyboardPredict();
             refreshDisplay();
+            return;
         }
-        return true;
+        final InputConnection ic = getCurrentInputConnection();
+        if (ic == null) return;
+        //开始处理真正的句内编辑
+        final String candicateString = WIInputMethod.GetWordsPinyin(0);
+        if (candicateString.length() != candicateEnd - candicateStart) return;
+        //切割字符串
+        final int isDel = delete && selectionStart == selectionEnd ? 1 : 0;
+        String sBegin = selectionStart > candicateStart ? candicateString.substring(0, selectionStart - candicateStart - isDel).replace("'", "") : "";
+        sBegin += s;
+        String sEnd = selectionEnd <= candicateStart ? candicateString : (selectionEnd < candicateEnd ? candicateString.substring(selectionEnd - candicateStart).replace("'", "") : "");
+        int i, j;
+        if (sBegin.length() > 0 && Character.getType(sBegin.charAt(0)) != Character.OTHER_LETTER) {
+            final String sylla = sBegin + sEnd;
+            WIInputMethod.CLeanKernel();
+            WIInputMethod.GetAllWords(sylla);
+            refreshDisplay();
+            qkInputViewGroups.refreshQKKeyboardPredict();
+            String r = WIInputMethod.GetWordsPinyin(0);
+            for (i = 0, j = 0; i < sBegin.length() && j < r.length(); i++) {
+                if (r.charAt(j) == '\'')
+                    j++;
+                j++;
+            }
+            ic.setComposingText(r, 1);
+            ic.setSelection(candicateStart + j, candicateStart + j);
+            return ;
+        } else if ((sBegin.length() == 0) && (sEnd.length() > 0 ? Character.getType(sEnd.charAt(0)) != Character.OTHER_LETTER : true)) {
+            WIInputMethod.CLeanKernel();
+            WIInputMethod.GetAllWords(sEnd);
+            qkInputViewGroups.refreshQKKeyboardPredict();
+            refreshDisplay();
+            ic.setSelection(0, 0);
+            //未上屏字符中有中文
+        } else {
+            for (i = 0; i < sBegin.length() && Character.getType(sBegin.charAt(i)) == Character.OTHER_LETTER; i++)
+            ;
+            // 光标前是汉字
+            if (i == sBegin.length() || (i == sBegin.length() - 1 && !delete)) {
+                for (j = 0; j < sEnd.length()
+                        && Character.getType(sEnd.charAt(j)) == Character.OTHER_LETTER; j++)
+                    ;
+                if (j != 0) {
+                    if (!delete) {
+                        WIInputMethod.GetAllWords(s);
+                        qkInputViewGroups.refreshQKKeyboardPredict();
+                        refreshDisplay();
+                        return ;
+                    }
+                }
+                if (delete) {
+                    ic.commitText(sBegin, 1);
+                    ic.commitText(sEnd.substring(0, j), 1);
+                    final String sylla = sEnd.substring(j);
+                    WIInputMethod.CLeanKernel();
+                    WIInputMethod.GetAllWords(sylla);
+                    qkInputViewGroups.refreshQKKeyboardPredict();
+                    refreshDisplay();
+                    String r = WIInputMethod.GetWordsPinyin(0);
+                    ic.setComposingText(r, 1);
+                    ic.setSelection(candicateStart + i + j, candicateStart + i + j);
+                    return ;
+                }
+                if (!delete && j == 0) {
+                    if (sBegin.length() > 0) {
+                        ic.commitText(sBegin.substring(0, sBegin.length() - 1), 1);
+                        WIInputMethod.CLeanKernel();
+                        WIInputMethod.GetAllWords(s + sEnd);
+                        qkInputViewGroups.refreshQKKeyboardPredict();
+                        refreshDisplay();
+                        ic.setSelection(mCandicateStart + 1, mCandicateStart + 1);
+                    }
+                }
+            } else {
+                // 光标前不是汉字
+                ic.commitText(sBegin.substring(0, i), 1);
+                final String sylla = sBegin.substring(i) + sEnd;
+                WIInputMethod.CLeanKernel();
+                WIInputMethod.GetAllWords(sylla);
+                qkInputViewGroups.refreshQKKeyboardPredict();
+                refreshDisplay();
+                final String r = WIInputMethod.GetWordsPinyin(0);
+                int k;
+                for (k = i, j = 0; k < sBegin.length()
+                        && j < r.length(); k++) {
+                    if (r.charAt(j) == '\'')
+                        j++;
+                    j++;
+                }
+                ic.setComposingText(r, 1);
+                ic.setSelection(candicateStart + i + j, candicateStart + i + j);
+            }
+        }
     }
 
     /**
