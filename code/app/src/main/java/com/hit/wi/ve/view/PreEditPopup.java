@@ -19,11 +19,13 @@ import com.hit.wi.ve.values.Global;
  * Created by purebleusong on 2016/4/7.
  */
 public class PreEditPopup {
-    public PopupWindow container;
+    private PopupWindow container;
     private EditText editText;
     private SoftKeyboard softKeyboard;
 
-    int leftMargin = 0;
+    private int leftMargin = 0;
+    private int selectStart;
+    private int selectStop;
 
     public void setSoftKeyboard(SoftKeyboard softKeyboard){
         this.softKeyboard = softKeyboard;
@@ -38,8 +40,7 @@ public class PreEditPopup {
         editText.setBackgroundResource(R.drawable.blank);
         editText.setBackgroundColor(softKeyboard.skinInfoManager.skinData.backcolor_editText);
         editText.getBackground().setAlpha((int) (Global.mCurrentAlpha * 255));
-        editText.setEllipsize(TextUtils.TruncateAt.END);
-        editText.setOnFocusChangeListener(editFocusListener);
+        editText.setOnClickListener(editOnClickListener);
         if (Global.shadowSwitch) editText.setShadowLayer(Global.shadowRadius, 0, 0, softKeyboard.skinInfoManager.skinData.shadow);
 
         container = new PopupWindow(editText, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
@@ -63,7 +64,6 @@ public class PreEditPopup {
         editText.setShadowLayer(Global.shadowRadius,0,0,softKeyboard.skinInfoManager.skinData.shadow);
     }
 
-
     public boolean isShown() {
         return container.isShowing() | editText.isShown();
     }
@@ -73,6 +73,8 @@ public class PreEditPopup {
         String pinyin = Kernel.getWordsShowPinyin();
         if(pinyin.length()>0){
             show(pinyin);
+            editText.setSelection(Math.min(selectStart,pinyin.length()),Math.min(selectStop,pinyin.length()));
+            Log.d("WIVE",selectStart+"  fuck"+selectStop);
         } else {
             dismiss();
         }
@@ -80,7 +82,8 @@ public class PreEditPopup {
 
     public void show(CharSequence text){
         editText.setText(text);
-        editText.setTextSize(Math.min((float) (container.getHeight()*0.33),container.getWidth()/1+(text.length()/4)));
+        Log.d("WIVE","length " + container.getWidth()/(1+(text.length()/2)));
+        editText.setTextSize(Math.min((float) (container.getHeight()*0.33),container.getWidth()/(1+(text.length()/2))));
         if (!isShown()){
             container.showAsDropDown(softKeyboard.keyboardLayout,leftMargin,-container.getHeight()-softKeyboard.keyboardParams.height);
         }
@@ -90,21 +93,23 @@ public class PreEditPopup {
         container.dismiss();
     }
 
-    public void setCursor(int start,int stop) {
-        Log.d("WIVE",start+"fuck"+stop+" length"+editText.getText());
-        int textlength = editText.getText().length();
-        if (textlength >start && textlength>stop)
-            editText.setSelection(start,stop);
+    public void setCursor(int cursor) {
+        this.selectStart = Math.max(cursor,0);
+        this.selectStop = Math.max(cursor,0);
     }
 
-    private View.OnFocusChangeListener editFocusListener = new View.OnFocusChangeListener() {
+    public void setCursor(int start,int stop) {
+        this.selectStart = Math.max(start,0);
+        this.selectStop = Math.max(stop,0);
+    }
+
+    private View.OnClickListener editOnClickListener = new View.OnClickListener() {
         @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            Log.d("WIVE","focus change"+hasFocus);
-            if (!hasFocus) {
-                InputConnection ic = softKeyboard.getCurrentInputConnection();
-                ic.setSelection(editText.getSelectionStart(),editText.getSelectionEnd());
-            }
+        public void onClick(View v) {
+            InputConnection ic = softKeyboard.getCurrentInputConnection();
+            Log.d("WIVE",editText.getSelectionEnd()+" "+editText.getSelectionStart());
+            ic.setSelection(editText.getSelectionStart(),editText.getSelectionEnd());
         }
     };
+
 }
