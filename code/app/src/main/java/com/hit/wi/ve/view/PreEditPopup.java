@@ -2,7 +2,6 @@ package com.hit.wi.ve.view;
 
 import android.content.Context;
 import android.text.InputType;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -74,7 +73,6 @@ public class PreEditPopup {
         if(pinyin.length()>0){
             show(pinyin);
             editText.setSelection(Math.min(selectStart,pinyin.length()),Math.min(selectStop,pinyin.length()));
-            Log.d("WIVE",selectStart+"  fuck"+selectStop);
         } else {
             dismiss();
         }
@@ -82,7 +80,7 @@ public class PreEditPopup {
 
     public void show(CharSequence text){
         editText.setText(text);
-        Log.d("WIVE","length " + container.getWidth()/(1+(text.length()/2)));
+        Log.d("WIVE","length " + container.getWidth()/(1+(text.length()/2))+" "+container.getHeight()*0.33);
         editText.setTextSize(Math.min((float) (container.getHeight()*0.33),container.getWidth()/(1+(text.length()/2))));
         if (!isShown()){
             container.showAsDropDown(softKeyboard.keyboardLayout,leftMargin,-container.getHeight()-softKeyboard.keyboardParams.height);
@@ -107,7 +105,6 @@ public class PreEditPopup {
         @Override
         public void onClick(View v) {
             InputConnection ic = softKeyboard.getCurrentInputConnection();
-            Log.d("WIVE",editText.getSelectionEnd()+" "+editText.getSelectionStart());
             ic.setSelection(editText.getSelectionStart(),editText.getSelectionEnd());
         }
     };

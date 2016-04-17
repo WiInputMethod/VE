@@ -236,8 +236,9 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                     sendEmptyMessageDelayed(MSG_REPEAT, REPEAT_INTERVAL);
                     break;
                 case MSG_SEND_TO_KERNEL:
-                    Kernel.inputPinyin((String) msg.obj);
-                    refreshDisplay();
+                    innerEdit((String)msg.obj,false);
+//                    Kernel.inputPinyin((String) msg.obj);
+//                    refreshDisplay();
                     t9InputViewGroup.updateFirstKeyText();
                     break;
                 case QP_MSG_SEND_TO_KERNEL:
@@ -367,7 +368,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
      * @param s 向内核传入的字符,delete 是否删除操作
      */
     public void innerEdit(String s, boolean delete) {
-        if (Global.currentKeyboard != Global.KEYBOARD_QP && Global.currentKeyboard != Global.KEYBOARD_EN) return ;
         mQPOrEmoji = Global.QUANPIN;
         final int selectionStart = Math.min(mNewStart, mNewEnd);
         final int selectionEnd = Math.max(mNewStart, mNewEnd);
@@ -375,7 +375,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         final int candicateEnd = Math.max(mCandicateStart, mCandicateEnd);
         if (selectionStart <= candicateStart || selectionStart > candicateEnd) {
             if (delete) {
-                Log.d("WIVE","a ----- selectStart"+selectionStart+" "+selectionEnd);
                 this.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL);
                 preEditPopup.setCursor(selectionStart-1,selectionEnd-1);
                 return;
@@ -416,7 +415,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                 }
                 j++;
             }
-            Log.d("WIVE","c ----- selectStart"+candicateStart+" "+candicateEnd+" "+selectionEnd);
             preEditPopup.setCursor(candicateStart + j, candicateStart + j);
             refreshDisplay();
             qkInputViewGroups.refreshQKKeyboardPredict();
@@ -427,13 +425,12 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             Kernel.cleanKernel();
             Kernel.inputPinyin(sEnd);
             qkInputViewGroups.refreshQKKeyboardPredict();
-            ic.setSelection(0, 0);
             preEditPopup.setCursor(0,0);
             refreshDisplay();
+            ic.setSelection(0, 0);
             //未上屏字符中有中文
         } else {
-            for (i = 0; i < sBegin.length() && Character.getType(sBegin.charAt(i)) == Character.OTHER_LETTER; i++)
-            ;
+            for (i = 0; i < sBegin.length() && Character.getType(sBegin.charAt(i)) == Character.OTHER_LETTER; i++);
             // 光标前是汉字
             if (i == sBegin.length() || (i == sBegin.length() - 1 && !delete)) {
                 for (j = 0; j < sEnd.length()
@@ -443,7 +440,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                     if (!delete) {
                         Kernel.inputPinyin(s);
                         qkInputViewGroups.refreshQKKeyboardPredict();
-                        Log.d("WIVE","d ----- selectStart"+selectionStart+" "+selectionEnd);
                         preEditPopup.setCursor(selectionStart,selectionEnd);
                         refreshDisplay();
                         return ;
@@ -458,7 +454,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                     String r = Kernel.getWordsShowPinyin();
                     ic.setComposingText(r, 1);
                     ic.setSelection(candicateStart + i + j, candicateStart + i + j);
-                    Log.d("WIVE","e ----- selectStart"+candicateStart+i+j);
                     preEditPopup.setCursor(candicateStart + i + j,candicateStart + i + j);
                     refreshDisplay();
                     qkInputViewGroups.refreshQKKeyboardPredict();
@@ -470,7 +465,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                         Kernel.cleanKernel();
                         Kernel.inputPinyin(s + sEnd);
                         ic.setSelection(mCandicateStart + 1, mCandicateStart + 1);
-                        Log.d("WIVE","e ----- selectStart"+mCandicateStart +1);
                         preEditPopup.setCursor(mCandicateStart + 1, mCandicateStart + 1);
                         refreshDisplay();
                         qkInputViewGroups.refreshQKKeyboardPredict();
@@ -492,7 +486,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                 }
                 ic.setComposingText(r, 1);
                 ic.setSelection(candicateStart + i + j, candicateStart + i + j);
-                Log.d("WIVE","e ----- selectStart"+candicateStart+i+j);
                 preEditPopup.setCursor(candicateStart + i + j,candicateStart + i + j);
                 refreshDisplay();
                 qkInputViewGroups.refreshQKKeyboardPredict();
@@ -553,9 +546,8 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             if (Global.currentKeyboard == Global.KEYBOARD_T9) {
                 String pinyin = Kernel.getWordsShowPinyin();
                 Global.addToRedo(pinyin.substring(pinyin.length()-1));
-                Kernel.deleteAction();
                 t9InputViewGroup.updateFirstKeyText();
-                refreshDisplay();
+                innerEdit("", true);
             } else if (Global.currentKeyboard == Global.KEYBOARD_QP) {
                 if (mQPOrEmoji == Global.QUANPIN) {
                     String pinyin = Kernel.getWordsShowPinyin();
