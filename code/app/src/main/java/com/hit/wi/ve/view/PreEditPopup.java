@@ -1,6 +1,7 @@
 package com.hit.wi.ve.view;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
@@ -22,6 +23,7 @@ public class PreEditPopup {
     private EditText editText;
     private SoftKeyboard softKeyboard;
 
+    private Paint toolPaint;
     private int leftMargin = 0;
     private int selectStart;
     private int selectStop;
@@ -31,14 +33,15 @@ public class PreEditPopup {
     }
 
     public void create(Context context){
+        toolPaint = new Paint();
         editText = new EditText(context);
         editText.setPadding(0, 0, 0, 0);
-        editText.setGravity(Gravity.LEFT);
+        editText.setGravity(Gravity.LEFT & Gravity.CENTER_VERTICAL);
         editText.setVisibility(View.VISIBLE);
         editText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         editText.setBackgroundResource(R.drawable.blank);
         editText.setBackgroundColor(softKeyboard.skinInfoManager.skinData.backcolor_editText);
-        editText.getBackground().setAlpha((int) (Global.mCurrentAlpha * 255));
+        editText.getBackground().setAlpha(Global.getCurrentAlpha());
         editText.setOnClickListener(editOnClickListener);
         if (Global.shadowSwitch) editText.setShadowLayer(Global.shadowRadius, 0, 0, softKeyboard.skinInfoManager.skinData.shadow);
 
@@ -59,7 +62,7 @@ public class PreEditPopup {
         editText.setBackgroundResource(R.drawable.blank);
         editText.setBackgroundColor(softKeyboard.skinInfoManager.skinData.backcolor_preEdit);
         editText.setTextColor(softKeyboard.skinInfoManager.skinData.textcolors_preEdit);
-        editText.getBackground().setAlpha((int) (Global.mCurrentAlpha*255));
+        editText.getBackground().setAlpha(Global.getCurrentAlpha());
         editText.setShadowLayer(Global.shadowRadius,0,0,softKeyboard.skinInfoManager.skinData.shadow);
     }
 
@@ -80,8 +83,9 @@ public class PreEditPopup {
 
     public void show(CharSequence text){
         editText.setText(text);
-        Log.d("WIVE","length " + container.getWidth()/(1+(text.length()/2))+" "+container.getHeight()*0.33);
-        editText.setTextSize(Math.min((float) (container.getHeight()*0.33),container.getWidth()/(1+(text.length()/2))));
+        float length = toolPaint.measureText((String) text);
+        //这两个magic number都是调参来的……
+        editText.setTextSize(Math.min((float) (container.getHeight()*0.33),6*container.getWidth()/length));
         if (!isShown()){
             container.showAsDropDown(softKeyboard.keyboardLayout,leftMargin,-container.getHeight()-softKeyboard.keyboardParams.height);
         }
@@ -101,6 +105,9 @@ public class PreEditPopup {
         this.selectStop = Math.max(stop,0);
     }
 
+    /**
+     * for sync the cursor of inputConnection and edit
+     * */
     private View.OnClickListener editOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {

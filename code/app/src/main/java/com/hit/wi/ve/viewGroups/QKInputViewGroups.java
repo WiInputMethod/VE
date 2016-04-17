@@ -297,7 +297,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         v.setTextColor(textcolor);
         //v.setBackgroundColor(backgroundcolor);
         v.getBackground().setColorFilter(backgroundcolor, PorterDuff.Mode.DARKEN);
-        v.getBackground().setAlpha((int) (Global.mCurrentAlpha * 255));
+        v.getBackground().setAlpha(Global.getCurrentAlpha());
         v.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
     }
 
@@ -308,11 +308,11 @@ public class QKInputViewGroups extends NonScrollViewGroup {
             main_text.setTextColor(skinInfoManager.skinData.textcolors_26keys);
             main_text.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
             main_text.setBackgroundColor(skinInfoManager.skinData.backcolor_26keys);
-            main_text.getBackground().setAlpha((int) (Global.mCurrentAlpha*255));
+            main_text.getBackground().setAlpha(Global.getCurrentAlpha());
             predict_text.setTextColor(skinInfoManager.skinData.textcolors_26keys);
             predict_text.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
             predict_text.setBackgroundColor(skinInfoManager.skinData.backcolor_26keys);
-            predict_text.getBackground().setAlpha((int) (Global.mCurrentAlpha * 255)); //设置透明度
+            predict_text.getBackground().setAlpha(Global.getCurrentAlpha()); //设置透明度
         }
 
         tool_updateSkin(shiftButton,
@@ -466,7 +466,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
     private void showSmile() {
         softKeyboard8.quickSymbolViewGroup.setVisibility(View.GONE);
         softKeyboard8.preFixViewGroup.setText(WIStringManager.convertStringstoList(mAllSmileText));
-        softKeyboard8.preFixViewGroup.setBackgroundAlpha((int) (Global.mCurrentAlpha * 255));
+        softKeyboard8.preFixViewGroup.setBackgroundAlpha(Global.getCurrentAlpha());
         softKeyboard8.preFixViewGroup.updateSkin();
         softKeyboard8.preFixViewGroup.setVisibility(View.VISIBLE);
         softKeyboard8.transparencyHandle.DownAlpha();
@@ -615,7 +615,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
                     } else {
                         preFixViewGroup.setBackgroundColor(skinInfoManager.skinData.backcolor_prefix);
                     }
-                    preFixViewGroup.setBackgroundAlpha((int) (Global.mCurrentAlpha * 255));
+                    preFixViewGroup.setBackgroundAlpha(Global.getCurrentAlpha());
                     break;
                 case MotionEvent.ACTION_UP:
                     hideSmile();

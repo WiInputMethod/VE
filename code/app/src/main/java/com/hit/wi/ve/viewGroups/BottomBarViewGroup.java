@@ -10,6 +10,7 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import com.hit.wi.jni.Kernel;
 import com.hit.wi.jni.WIInputMethodNK;
 import com.hit.wi.jni.WIInputMethod;
 
@@ -139,7 +140,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         receiveButtonToTail(returnButton);
         ((LinearLayout.LayoutParams)returnButton.itsLayoutParams).leftMargin = padding;
         setButtonWidthByRate(res.getIntArray(R.array.BOTTOMBAR_RETURN_WIDTH));
-        returnButton.getBackground().setAlpha((int) (Global.mCurrentAlpha * 255));
+        returnButton.getBackground().setAlpha(Global.getCurrentAlpha());
     }
 
     public void backReturnState () {
@@ -222,7 +223,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         returnButton.setTextColor(skinInfoManager.skinData.textcolors_enter);
         returnButton.setBackgroundColor(skinInfoManager.skinData.backcolor_enter);
 
-        setBackgroundAlpha((int) (Global.mCurrentAlpha * 255));
+        setBackgroundAlpha(Global.getCurrentAlpha());
     }
 
 
@@ -271,7 +272,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
                     break;
             }
             }
-            setBackgroundAlpha((int) (Global.mCurrentAlpha * 255));
+            setBackgroundAlpha(Global.getCurrentAlpha());
             onTouchEffect(v, event.getAction(),
                     skinInfoManager.skinData.backcolor_touchdown,
                     skinInfoManager.skinData.backcolor_enter
@@ -299,7 +300,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         public boolean onTouch(View v, MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 if(Global.isInView(v,event)) {
-                    Global.clearKernel();
+                    Kernel.cleanKernel();
                     List<String> expressions = getExpression(expressionFlag);
                     if(expressions != Collections.EMPTY_LIST){
                         softKeyboard8.qkCandidatesViewGroup.displayCandidates(Global.SYMBOL,expressions, Global.inLarge?200:9);

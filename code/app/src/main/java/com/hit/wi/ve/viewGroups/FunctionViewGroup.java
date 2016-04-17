@@ -332,7 +332,7 @@ public class FunctionViewGroup extends NonScrollViewGroup implements ViewGroupIn
     public void updateSkin() {
         setTextColor(skinInfoManager.skinData.textcolors_functionKeys);
         setBackgroundColor(skinInfoManager.skinData.backcolor_functionKeys);
-        setBackgroundAlpha((int) (Global.mCurrentAlpha * 255));
+        setBackgroundAlpha(Global.getCurrentAlpha());
     }
 
     @Override

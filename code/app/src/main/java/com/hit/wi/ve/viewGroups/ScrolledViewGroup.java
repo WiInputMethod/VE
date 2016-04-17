@@ -145,7 +145,7 @@ public class ScrolledViewGroup extends myViewGroup {
         for (QuickButton button : buttonList) {
             button.setTextColor(textcolor);
             button.setBackgroundColor(backgroundcolor);
-            button.getBackground().setAlpha((int) (Global.mCurrentAlpha * 255));
+            button.getBackground().setAlpha(Global.getCurrentAlpha());
         }
     }
 
@@ -290,7 +290,7 @@ public class ScrolledViewGroup extends myViewGroup {
         button.setTextColor(textColor);
         button.setBackgroundColor(backgroundColor);
 
-        button.getBackground().setAlpha((int) (Global.mCurrentAlpha * 255));
+        button.getBackground().setAlpha(Global.getCurrentAlpha());
         return button;
     }
 

@@ -861,13 +861,13 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             } else {
                 largeCandidateButton.setVisibility(View.VISIBLE);
             }
-            largeCandidateButton.getBackground().setAlpha((int) (Global.mCurrentAlpha * 255));
+            largeCandidateButton.getBackground().setAlpha(Global.getCurrentAlpha());
         }
 
         public void updateSkin(TextView v, int textcolor, int backgroundcolor) {
             v.setTextColor(textcolor);
             v.setBackgroundColor(backgroundcolor);
-            v.getBackground().setAlpha((int) (Global.mCurrentAlpha * 255));
+            v.getBackground().setAlpha(Global.getCurrentAlpha());
         }
 
         /**
@@ -1023,7 +1023,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             largeCandidateButton = new QuickButton(SoftKeyboard.this);
             largeCandidateButton.setTextColor(skinInfoManager.skinData.textcolors_quickSymbol);
             largeCandidateButton.setBackgroundColor(skinInfoManager.skinData.backcolor_quickSymbol);
-            largeCandidateButton.getBackground().setAlpha((int) (Global.mCurrentAlpha * 255));
+            largeCandidateButton.getBackground().setAlpha(Global.getCurrentAlpha());
             largeCandidateButton.setTypeface(mTypeface);
             largeCandidateButton.setText(res.getString(R.string.largecandidate));
             largeCandidateButton.setOnTouchListener(listeners.largeCandidateOnTouchListener);

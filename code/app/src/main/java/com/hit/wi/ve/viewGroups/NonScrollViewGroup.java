@@ -254,7 +254,7 @@ public class NonScrollViewGroup extends myViewGroup {
         button.setBackgroundResource(R.drawable.button_back_x);
         button.setGravity(Gravity.CENTER);
         button.setVisibility(View.GONE);
-        button.getBackground().setAlpha((int) (Global.mCurrentAlpha * 255));
+        button.getBackground().setAlpha(Global.getCurrentAlpha());
         button.setText(text);
         button.setSingleLine();
 
@@ -274,7 +274,7 @@ public class NonScrollViewGroup extends myViewGroup {
         QuickButton button = this.addButton(text);
         button.setTextColor(textColor);
         button.setBackgroundColor(backgroundColor);
-        button.getBackground().setAlpha((int) (Global.mCurrentAlpha * 255));
+        button.getBackground().setAlpha(Global.getCurrentAlpha());
 
         return  button;
     }
