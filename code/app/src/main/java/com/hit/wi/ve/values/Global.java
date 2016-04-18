@@ -52,6 +52,7 @@ public final class Global {
     public static String redoTextForDeleteAll_preedit = "";
     public static Stack<InputAction> redoText_single = new Stack<>();
     public static int redo_MAX_NUM = 60;
+
     public static String FilePath = "/data/data/com.hit.wi.ve/dict_qk/";
 
     public static String QUANPIN = "qp";

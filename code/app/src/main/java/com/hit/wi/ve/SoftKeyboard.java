@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.inputmethodservice.InputMethodService;
@@ -1245,6 +1246,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                 keyboardLayout.getBackground().setAlpha((int) (Global.keyboardViewBackgroundAlpha * 255));
             else {
                 keyboardLayout.setBackgroundResource(R.drawable.blank);
+
                 keyboardLayout.setBackgroundColor(skinInfoManager.skinData.backcolor_touchdown);
                 keyboardLayout.getBackground().setAlpha((int) (Global.keyboardViewBackgroundAlpha * 255));
             }

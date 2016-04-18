@@ -298,8 +298,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
 
     public void tool_updateSkin(TextView v, int textcolor, int backgroundcolor) {
         v.setTextColor(textcolor);
-        //v.setBackgroundColor(backgroundcolor);
-        v.getBackground().setColorFilter(backgroundcolor, PorterDuff.Mode.DARKEN);
+        v.setBackgroundColor(backgroundcolor);
         v.getBackground().setAlpha(Global.getCurrentAlpha());
         v.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
     }
@@ -309,11 +308,11 @@ public class QKInputViewGroups extends NonScrollViewGroup {
             TextView main_text = ((TextView) button.findViewById(R.id.main_text));
             TextView predict_text = ((TextView) button.findViewById(R.id.predict_text));
             main_text.setTextColor(skinInfoManager.skinData.textcolors_26keys);
-            main_text.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
+            main_text.setShadowLayer(Global.shadowRadius, 0, 0, skinInfoManager.skinData.shadow);
             main_text.setBackgroundColor(skinInfoManager.skinData.backcolor_26keys);
             main_text.getBackground().setAlpha(Global.getCurrentAlpha());
             predict_text.setTextColor(skinInfoManager.skinData.textcolors_26keys);
-            predict_text.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
+            predict_text.setShadowLayer(Global.shadowRadius, 0, 0, skinInfoManager.skinData.shadow);
             predict_text.setBackgroundColor(skinInfoManager.skinData.backcolor_26keys);
             predict_text.getBackground().setAlpha(Global.getCurrentAlpha()); //设置透明度
         }

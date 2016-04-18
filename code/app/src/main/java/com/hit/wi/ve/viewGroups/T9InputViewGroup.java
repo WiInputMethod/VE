@@ -1,6 +1,7 @@
 package com.hit.wi.ve.viewGroups;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -11,6 +12,7 @@ import com.hit.wi.util.WIStringManager;
 import com.hit.wi.ve.R;
 import com.hit.wi.ve.datastruct.InputAction;
 import com.hit.wi.ve.values.Global;
+import com.hit.wi.ve.values.SkinInfoManager;
 import com.hit.wi.ve.view.QuickButton;
 
 /**

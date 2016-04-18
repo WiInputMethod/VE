@@ -10,7 +10,7 @@
             android:top="5dip"/>
 
     <stroke android:width="1dip"
-            android:color="#333333"
+            android:color="#ed0606"
     />
-
+    <corners android:radius="100dp"/>
 </shape>

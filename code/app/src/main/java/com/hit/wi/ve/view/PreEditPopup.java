@@ -65,7 +65,6 @@ public class PreEditPopup {
         editText.getBackground().setAlpha(Global.getCurrentAlpha());
         editText.setShadowLayer(Global.shadowRadius,0,0,softKeyboard.skinInfoManager.skinData.shadow);
     }
-
     public boolean isShown() {
         return container.isShowing() | editText.isShown();
     }

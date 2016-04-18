@@ -2,6 +2,7 @@ package com.hit.wi.ve.viewGroups;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 import android.view.*;
@@ -208,20 +209,26 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         switchKeyboardButton.setTextColor(skinInfoManager.skinData.textcolors_enter);
         switchKeyboardButton.setBackgroundColor(skinInfoManager.skinData.backcolor_enter);
 
+
         expressionButton.setTextColor(skinInfoManager.skinData.textcolors_space);
         expressionButton.setBackgroundColor(skinInfoManager.skinData.backcolor_space);
+
 
         spaceButton.setTextColor(skinInfoManager.skinData.textcolors_space);
         spaceButton.setBackgroundColor(skinInfoManager.skinData.backcolor_space);
 
+
         enterButton.setTextColor(skinInfoManager.skinData.textcolors_enter);
         enterButton.setBackgroundColor(skinInfoManager.skinData.backcolor_enter);
+
 
         zeroButton.setTextColor(skinInfoManager.skinData.textcolors_zero);
         zeroButton.setBackgroundColor(skinInfoManager.skinData.backcolor_zero);
 
+
         returnButton.setTextColor(skinInfoManager.skinData.textcolors_enter);
         returnButton.setBackgroundColor(skinInfoManager.skinData.backcolor_enter);
+
 
         setBackgroundAlpha(Global.getCurrentAlpha());
     }
