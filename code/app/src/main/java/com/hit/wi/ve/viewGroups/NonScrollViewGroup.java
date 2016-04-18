@@ -3,7 +3,11 @@ package com.hit.wi.ve.viewGroups;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -71,11 +75,10 @@ public class NonScrollViewGroup extends myViewGroup {
     public void setBackgroundColor(int color) {
         backgroundColor = color;
         for (QuickButton quickButton : buttonList) {
-            //quickButton.getBackground().setColorFilter(backgroundColor, PorterDuff.Mode.DARKEN);
-            quickButton.setBackgroundColor(color);
+            //quickButton.setBackgroundColor(color);
+            quickButton.getBackground().setColorFilter(backgroundColor, PorterDuff.Mode.SRC);
         }
     }
-
     @Override
     public void setBackgroundAlpha(int alpha) {
         backgroundAlpha = alpha;
@@ -272,8 +275,11 @@ public class NonScrollViewGroup extends myViewGroup {
 
     public QuickButton addButton(String text,int textColor,int backgroundColor) {
         QuickButton button = this.addButton(text);
+
+        button.setBackgroundResource(R.drawable.middle_button);
         button.setTextColor(textColor);
-        button.setBackgroundColor(backgroundColor);
+        //button.setBackgroundColor(backgroundColor);
+        button.getBackground().setColorFilter(backgroundColor, PorterDuff.Mode.SRC);
         button.getBackground().setAlpha((int) (Global.mCurrentAlpha * 255));
 
         return  button;

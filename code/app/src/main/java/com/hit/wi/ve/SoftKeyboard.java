@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.inputmethodservice.InputMethodService;
@@ -858,27 +859,10 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
         public void updateSkin(TextView v, int textcolor, int backgroundcolor) {
             v.setTextColor(textcolor);
-            v.setBackgroundColor(backgroundcolor);
+            //v.setBackgroundColor(backgroundcolor);
+            v.getBackground().setColorFilter(backgroundcolor, PorterDuff.Mode.SRC);
             v.getBackground().setAlpha((int) (Global.mCurrentAlpha * 255));
         }
-
-
-//        /**
-//         * 检验字符串str中是否全为英文字母
-//         *
-//         * @param str
-//         * @return
-//         */
-//        public boolean isAllLetter(String str) {
-//            char tmp;
-//            for (int i = 0; i < str.length(); i++) {
-//                tmp = str.charAt(i);
-//                if (!((tmp >= 'a' && tmp <= 'z') || (tmp >= 'A' && tmp <= 'Z'))) {
-//                    return false;
-//                }
-//            }
-//            return true;
-//        }
 
         /**
          * 判断输入域类型，返回确定键盘类型
@@ -1257,7 +1241,9 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                 keyboardLayout.getBackground().setAlpha((int) (Global.keyboardViewBackgroundAlpha * 255));
             else {
                 keyboardLayout.setBackgroundResource(R.drawable.blank);
+
                 keyboardLayout.setBackgroundColor(skinInfoManager.skinData.backcolor_touchdown);
+                //keyboardLayout.getBackground().setColorFilter(skinInfoManager.skinData.backcolor_touchdown, PorterDuff.Mode.SRC);
                 keyboardLayout.getBackground().setAlpha((int) (Global.keyboardViewBackgroundAlpha * 255));
             }
         }

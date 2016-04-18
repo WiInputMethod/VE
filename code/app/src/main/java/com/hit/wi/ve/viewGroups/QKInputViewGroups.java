@@ -296,7 +296,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
     public void tool_updateSkin(TextView v, int textcolor, int backgroundcolor) {
         v.setTextColor(textcolor);
         //v.setBackgroundColor(backgroundcolor);
-        v.getBackground().setColorFilter(backgroundcolor, PorterDuff.Mode.DARKEN);
+        v.getBackground().setColorFilter(backgroundcolor, PorterDuff.Mode.SRC);
         v.getBackground().setAlpha((int) (Global.mCurrentAlpha * 255));
         v.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
     }
@@ -306,12 +306,14 @@ public class QKInputViewGroups extends NonScrollViewGroup {
             TextView main_text = ((TextView) button.findViewById(R.id.main_text));
             TextView predict_text = ((TextView) button.findViewById(R.id.predict_text));
             main_text.setTextColor(skinInfoManager.skinData.textcolors_26keys);
-            main_text.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
+            main_text.setShadowLayer(Global.shadowRadius, 0, 0, skinInfoManager.skinData.shadow);
             main_text.setBackgroundColor(skinInfoManager.skinData.backcolor_26keys);
-            main_text.getBackground().setAlpha((int) (Global.mCurrentAlpha*255));
+            //main_text.getBackground().setColorFilter(skinInfoManager.skinData.backcolor_26keys, PorterDuff.Mode.SRC);
+            main_text.getBackground().setAlpha((int) (Global.mCurrentAlpha * 255));
             predict_text.setTextColor(skinInfoManager.skinData.textcolors_26keys);
-            predict_text.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
+            predict_text.setShadowLayer(Global.shadowRadius, 0, 0, skinInfoManager.skinData.shadow);
             predict_text.setBackgroundColor(skinInfoManager.skinData.backcolor_26keys);
+            //predict_text.getBackground().setColorFilter(skinInfoManager.skinData.backcolor_26keys, PorterDuff.Mode.SRC);
             predict_text.getBackground().setAlpha((int) (Global.mCurrentAlpha * 255)); //设置透明度
         }
 

@@ -1,6 +1,7 @@
 package com.hit.wi.ve.viewGroups;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -11,6 +12,7 @@ import com.hit.wi.util.WIStringManager;
 import com.hit.wi.ve.R;
 import com.hit.wi.ve.datastruct.InputAction;
 import com.hit.wi.ve.values.Global;
+import com.hit.wi.ve.values.SkinInfoManager;
 import com.hit.wi.ve.view.QuickButton;
 
 /**
@@ -159,7 +161,8 @@ public class T9InputViewGroup extends NonScrollViewGroup {
     public void updateSkin(){
         for(QuickButton button:buttonList){
             button.setTextColor(skinInfoManager.skinData.textcolors_t9keys);
-            button.setBackgroundColor(skinInfoManager.skinData.backcolor_t9keys);
+            //button.setBackgroundColor(skinInfoManager.skinData.backcolor_t9keys);
+            button.getBackground().setColorFilter(skinInfoManager.skinData.backcolor_t9keys, PorterDuff.Mode.SRC);
             button.getBackground().setAlpha((int) (Global.mCurrentAlpha*255));
             button.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
         }

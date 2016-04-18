@@ -3,6 +3,7 @@ package com.hit.wi.ve.viewGroups;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.view.Gravity;
 import android.view.View;
@@ -144,7 +145,8 @@ public class ScrolledViewGroup extends myViewGroup {
         this.backgroundColor = backgroundcolor;
         for (QuickButton button : buttonList) {
             button.setTextColor(textcolor);
-            button.setBackgroundColor(backgroundcolor);
+            //button.setBackgroundColor(backgroundcolor);
+            button.getBackground().setColorFilter(backgroundcolor, PorterDuff.Mode.SRC);
             button.getBackground().setAlpha((int) (Global.mCurrentAlpha * 255));
         }
     }
@@ -288,8 +290,8 @@ public class ScrolledViewGroup extends myViewGroup {
     protected QuickButton addButton(int textColor, int backgroundColor, String text) {
         QuickButton button = addButton(text);
         button.setTextColor(textColor);
-        button.setBackgroundColor(backgroundColor);
-
+        button.getBackground().setColorFilter(backgroundColor, PorterDuff.Mode.SRC);
+        //button.setBackgroundColor(backgroundColor);
         button.getBackground().setAlpha((int) (Global.mCurrentAlpha * 255));
         return button;
     }

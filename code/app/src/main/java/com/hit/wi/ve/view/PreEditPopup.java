@@ -1,6 +1,7 @@
 package com.hit.wi.ve.view;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -57,13 +58,12 @@ public class PreEditPopup {
 
     public void updateSkin() {
         editText.setBackgroundResource(R.drawable.blank);
-        editText.setBackgroundColor(softKeyboard.skinInfoManager.skinData.backcolor_preEdit);
+        //editText.setBackgroundColor(softKeyboard.skinInfoManager.skinData.backcolor_preEdit);
+        editText.getBackground().setColorFilter(softKeyboard.skinInfoManager.skinData.backcolor_preEdit, PorterDuff.Mode.SRC);
         editText.setTextColor(softKeyboard.skinInfoManager.skinData.textcolors_preEdit);
         editText.getBackground().setAlpha((int) (Global.mCurrentAlpha*255));
         editText.setShadowLayer(Global.shadowRadius,0,0,softKeyboard.skinInfoManager.skinData.shadow);
     }
-
-
     public boolean isShown() {
         return container.isShowing() | editText.isShown();
     }

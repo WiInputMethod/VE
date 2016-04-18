@@ -2,6 +2,7 @@ package com.hit.wi.ve.viewGroups;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 import android.view.*;
@@ -205,22 +206,28 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
 
     public void updateSkin() {
         switchKeyboardButton.setTextColor(skinInfoManager.skinData.textcolors_enter);
-        switchKeyboardButton.setBackgroundColor(skinInfoManager.skinData.backcolor_enter);
+        //switchKeyboardButton.setBackgroundColor(skinInfoManager.skinData.backcolor_enter);
+        switchKeyboardButton.getBackground().setColorFilter(skinInfoManager.skinData.backcolor_enter, PorterDuff.Mode.SRC);
 
         expressionButton.setTextColor(skinInfoManager.skinData.textcolors_space);
-        expressionButton.setBackgroundColor(skinInfoManager.skinData.backcolor_space);
+        //expressionButton.setBackgroundColor(skinInfoManager.skinData.backcolor_space);
+        expressionButton.getBackground().setColorFilter(skinInfoManager.skinData.backcolor_space, PorterDuff.Mode.SRC);
 
         spaceButton.setTextColor(skinInfoManager.skinData.textcolors_space);
-        spaceButton.setBackgroundColor(skinInfoManager.skinData.backcolor_space);
+        //spaceButton.setBackgroundColor(skinInfoManager.skinData.backcolor_space);
+        spaceButton.getBackground().setColorFilter(skinInfoManager.skinData.backcolor_space, PorterDuff.Mode.SRC);
 
         enterButton.setTextColor(skinInfoManager.skinData.textcolors_enter);
-        enterButton.setBackgroundColor(skinInfoManager.skinData.backcolor_enter);
+        //enterButton.setBackgroundColor(skinInfoManager.skinData.backcolor_enter);
+        enterButton.getBackground().setColorFilter(skinInfoManager.skinData.backcolor_enter, PorterDuff.Mode.SRC);
 
         zeroButton.setTextColor(skinInfoManager.skinData.textcolors_zero);
-        zeroButton.setBackgroundColor(skinInfoManager.skinData.backcolor_zero);
+        //zeroButton.setBackgroundColor(skinInfoManager.skinData.backcolor_zero);
+        zeroButton.getBackground().setColorFilter(skinInfoManager.skinData.backcolor_zero, PorterDuff.Mode.SRC);
 
         returnButton.setTextColor(skinInfoManager.skinData.textcolors_enter);
-        returnButton.setBackgroundColor(skinInfoManager.skinData.backcolor_enter);
+        //returnButton.setBackgroundColor(skinInfoManager.skinData.backcolor_enter);
+        returnButton.getBackground().setColorFilter(skinInfoManager.skinData.backcolor_enter, PorterDuff.Mode.SRC);
 
         setBackgroundAlpha((int) (Global.mCurrentAlpha * 255));
     }
