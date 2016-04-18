@@ -32,6 +32,7 @@ public class FunctionViewGroup extends NonScrollViewGroup implements ViewGroupIn
     int[] showAnima = {R.anim.func_key_1_in, R.anim.func_key_2_in, R.anim.func_key_3_in, R.anim.func_key_4_in, R.anim.func_key_5_in};
     Point lastTouchPoint = new Point();
 
+
     SkinInfoManager skinInfoManager = SkinInfoManager.getSkinInfoManagerInstance();
     private VerticalSeekBar mVerticalSeekBar;
     private ImageView mSeekbarBackImage;
@@ -72,10 +73,6 @@ public class FunctionViewGroup extends NonScrollViewGroup implements ViewGroupIn
             ((LinearLayout.LayoutParams) button.itsLayoutParams).leftMargin = padding;
         }
     }
-
-//    public void setSoftKeyboard(SoftKeyboard softKeyboard) {
-//        softKeyboard8 = softKeyboard;
-//    }
 
     public void refreshState(Boolean show){
         if(!show)hide();

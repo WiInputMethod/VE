@@ -269,7 +269,9 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         return shown;
     }
 
+    private int lastState = -1;
     public void refreshState(){
+        if (lastState == Global.currentKeyboard)return;
         if (Global.currentKeyboard == Global.KEYBOARD_QP){
             if(!isShown())setVisibility(View.VISIBLE);
             smileButton.clearAnimation();
@@ -291,6 +293,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         } else {
             setVisibility(View.GONE);
         }
+        lastState = Global.currentKeyboard;
     }
 
     public void tool_updateSkin(TextView v, int textcolor, int backgroundcolor) {

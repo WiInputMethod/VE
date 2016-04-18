@@ -234,7 +234,9 @@ public class T9InputViewGroup extends NonScrollViewGroup {
         deleteButton.itsLayoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
     }
 
+    private  int lastState = -1;
     public void refreshState(){
+        if (lastState==Global.currentKeyboard)return;
         int i = 0;
         if(Global.currentKeyboard == Global.KEYBOARD_T9){
             setVisibility(View.VISIBLE);
@@ -257,9 +259,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
         } else {
             setVisibility(View.GONE);
         }
-        for(QuickButton button:buttonList){
-            button.setVisibility(View.VISIBLE);
-        }
+        lastState = Global.currentKeyboard;
     }
     /**
      * 功能：显示九键

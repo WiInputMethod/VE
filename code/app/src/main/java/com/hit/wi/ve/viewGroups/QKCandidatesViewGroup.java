@@ -35,7 +35,7 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
     /**
      * Maximum number of displaying candidates par one line (full view mode)
      */
-    private final int CAND_DIV_NUM = 4;
+    private final int CAND_DIV_NUM = 6;
     /**
     * min value of the layer show num
     * */
@@ -131,7 +131,7 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
     }
 
     public void displayCandidates(String type){
-        displayCandidates(type,9);
+        displayCandidates(type,6);
     }
 
     public void displayCandidates(String type,int show_num){
@@ -216,13 +216,13 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
         int remainLength = getLayerRemainLength(layer);
         button.setText(text);
         button.itsLayoutParams.width = measureTextLength(text);
-        if(remainLength < button.itsLayoutParams.width){
-            if(remainLength > 0){
+        if(button.itsLayoutParams.width > remainLength){
+            if(remainLength > 3){
                 QuickButton fillButton = initNewButton("");
                 fillButton.setWidth(remainLength);
                 layer.addView(fillButton);
             }
-            layer = getWorkingLayer(layerPointer++);
+            layer = getWorkingLayer(++layerPointer);
         }
         layer.addView(button,button.itsLayoutParams);
         button.clearAnimation();
@@ -231,7 +231,6 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
         button.setPressed(false);
         button.setTextSize(2*Global.textsizeFactor*standardButtonHeight/8);
         return button;
-
     }
 
     @SuppressLint("NewApi")

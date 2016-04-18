@@ -5,6 +5,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import com.hit.wi.jni.Kernel;
 import com.hit.wi.jni.WIInputMethodNK;
 import com.hit.wi.util.WIMath;
 import com.hit.wi.ve.values.Global;
@@ -36,12 +37,14 @@ public class PreFixViewGroup extends ScrolledViewGroup {
         return button;
     }
 
+    private int lastState = -1;
     public void refresh() {
-        int prefixnum = WIInputMethodNK.GetPrefixNumber();
+        int prefixnum = Kernel.getPrefixNumber();
+        if(lastState == prefixnum)return;
         if (prefixnum > 1 && Global.currentKeyboard == Global.KEYBOARD_T9 && !Global.inLarge) {
             List<String> texts = new ArrayList<>();
             for (int i = prefixnum - 1; i > 0; i--) {
-                texts.add(WIInputMethodNK.GetPrefixByIndex(i));
+                texts.add(Kernel.getPrefix(i));
             }
             setText(texts);
             softKeyboard8.quickSymbolViewGroup.setVisibility(View.GONE);
@@ -51,6 +54,7 @@ public class PreFixViewGroup extends ScrolledViewGroup {
             softKeyboard8.quickSymbolViewGroup.setVisibility(View.VISIBLE);
             setVisibility(View.GONE);
         }
+        lastState = prefixnum;
     }
 
 

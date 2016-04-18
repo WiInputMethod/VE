@@ -505,6 +505,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         mSetKeyboardSizeView.SetPos(keyboardRect);
     }
 
+    private boolean lastHideState = false;
     /**
      * 每次有候选词跟新的时候统一刷新界面，因为影响到的因素比较多，统一使用状态机解决
      */
@@ -517,9 +518,9 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
         if (mInputViewGG.isShown()) mInputViewGG.setVisibility(View.VISIBLE);
         functionViewGroup.refreshState(hidecandidate);
-        functionsC.refreshStateForSecondLayout(hidecandidate);
+        functionsC.refreshStateForSecondLayout();
         functionsC.refreshStateForLargeCandidate(hidecandidate);
-        if (!hidecandidate) {
+        if (lastHideState!=hidecandidate && !hidecandidate) {
             viewSizeUpdate.UpdatePreEditSize();
             viewSizeUpdate.UpdateQKCandidateSize();
             viewSizeUpdate.UpdateLargeCandidateSize();
@@ -530,7 +531,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         preFixViewGroup.refresh();
         t9InputViewGroup.refreshState();
         qkInputViewGroups.refreshState();
-        quickSymbolViewGroup.refreshState(hidecandidate);
+        quickSymbolViewGroup.refreshState();
         functionsC.computeCursorPosition();
         preEditPopup.refresh();
     }
@@ -847,7 +848,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             }
         }
 
-        public void refreshStateForSecondLayout(boolean show) {
+        public void refreshStateForSecondLayout() {
             if (Global.inLarge) {
                 secondLayerLayout.setVisibility(View.GONE);
             } else {
@@ -864,16 +865,16 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             largeCandidateButton.getBackground().setAlpha(Global.getCurrentAlpha());
         }
 
-        public void updateSkin(TextView v, int textcolor, int backgroundcolor) {
-            v.setTextColor(textcolor);
-            v.setBackgroundColor(backgroundcolor);
+        public void updateSkin(TextView v, int textColor, int backgroundColor) {
+            v.setTextColor(textColor);
+            v.setBackgroundColor(backgroundColor);
             v.getBackground().setAlpha(Global.getCurrentAlpha());
         }
 
         /**
          * 判断输入域类型，返回确定键盘类型
          */
-        private final int getKeyboardType(EditorInfo pEditorInfo) {
+        private int getKeyboardType(EditorInfo pEditorInfo) {
             int keyboardType;
             // 判断输入框类型,选择对应的键盘
             switch (pEditorInfo.inputType & EditorInfo.TYPE_MASK_CLASS) {
@@ -927,13 +928,10 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     }
 
     /**
-     * 各种view的创建函数，不初始化位置
+     * 各种view的创建函数，不初始化位置,只初始一些设置以及分配相应内存
      */
     private class KeyBoardCreate {
 
-        /**
-         * 加载资源
-         */
         private void LoadResources() {
             Resources res = getResources();
             mTypeface = Typeface.createFromAsset(getAssets(), res.getString(R.string.font_file_path));// 加载自定义字体
