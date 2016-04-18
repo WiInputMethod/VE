@@ -56,7 +56,7 @@ public class KeyBoardTouchEffect implements KeyboardTouchEffectInterface {
                 v.setBackgroundColor(normal_color);
                 break;
         }
-        v.getBackground().setAlpha((int) (Global.mCurrentAlpha * 255));
+        v.getBackground().setAlpha(Global.getCurrentAlpha());
     }
 
     public void animEffect(View v,int action,Context context){

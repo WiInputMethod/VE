@@ -11,6 +11,7 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import com.hit.wi.jni.Kernel;
 import com.hit.wi.jni.WIInputMethodNK;
 import com.hit.wi.jni.WIInputMethod;
 
@@ -140,7 +141,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         receiveButtonToTail(returnButton);
         ((LinearLayout.LayoutParams)returnButton.itsLayoutParams).leftMargin = padding;
         setButtonWidthByRate(res.getIntArray(R.array.BOTTOMBAR_RETURN_WIDTH));
-        returnButton.getBackground().setAlpha((int) (Global.mCurrentAlpha * 255));
+        returnButton.getBackground().setAlpha(Global.getCurrentAlpha());
     }
 
     public void backReturnState () {
@@ -206,30 +207,30 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
 
     public void updateSkin() {
         switchKeyboardButton.setTextColor(skinInfoManager.skinData.textcolors_enter);
-        //switchKeyboardButton.setBackgroundColor(skinInfoManager.skinData.backcolor_enter);
-        switchKeyboardButton.getBackground().setColorFilter(skinInfoManager.skinData.backcolor_enter, PorterDuff.Mode.SRC);
+        switchKeyboardButton.setBackgroundColor(skinInfoManager.skinData.backcolor_enter);
+
 
         expressionButton.setTextColor(skinInfoManager.skinData.textcolors_space);
-        //expressionButton.setBackgroundColor(skinInfoManager.skinData.backcolor_space);
-        expressionButton.getBackground().setColorFilter(skinInfoManager.skinData.backcolor_space, PorterDuff.Mode.SRC);
+        expressionButton.setBackgroundColor(skinInfoManager.skinData.backcolor_space);
+
 
         spaceButton.setTextColor(skinInfoManager.skinData.textcolors_space);
-        //spaceButton.setBackgroundColor(skinInfoManager.skinData.backcolor_space);
-        spaceButton.getBackground().setColorFilter(skinInfoManager.skinData.backcolor_space, PorterDuff.Mode.SRC);
+        spaceButton.setBackgroundColor(skinInfoManager.skinData.backcolor_space);
+
 
         enterButton.setTextColor(skinInfoManager.skinData.textcolors_enter);
-        //enterButton.setBackgroundColor(skinInfoManager.skinData.backcolor_enter);
-        enterButton.getBackground().setColorFilter(skinInfoManager.skinData.backcolor_enter, PorterDuff.Mode.SRC);
+        enterButton.setBackgroundColor(skinInfoManager.skinData.backcolor_enter);
+
 
         zeroButton.setTextColor(skinInfoManager.skinData.textcolors_zero);
-        //zeroButton.setBackgroundColor(skinInfoManager.skinData.backcolor_zero);
-        zeroButton.getBackground().setColorFilter(skinInfoManager.skinData.backcolor_zero, PorterDuff.Mode.SRC);
+        zeroButton.setBackgroundColor(skinInfoManager.skinData.backcolor_zero);
+
 
         returnButton.setTextColor(skinInfoManager.skinData.textcolors_enter);
-        //returnButton.setBackgroundColor(skinInfoManager.skinData.backcolor_enter);
-        returnButton.getBackground().setColorFilter(skinInfoManager.skinData.backcolor_enter, PorterDuff.Mode.SRC);
+        returnButton.setBackgroundColor(skinInfoManager.skinData.backcolor_enter);
 
-        setBackgroundAlpha((int) (Global.mCurrentAlpha * 255));
+
+        setBackgroundAlpha(Global.getCurrentAlpha());
     }
 
 
@@ -278,7 +279,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
                     break;
             }
             }
-            setBackgroundAlpha((int) (Global.mCurrentAlpha * 255));
+            setBackgroundAlpha(Global.getCurrentAlpha());
             onTouchEffect(v, event.getAction(),
                     skinInfoManager.skinData.backcolor_touchdown,
                     skinInfoManager.skinData.backcolor_enter
@@ -306,7 +307,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         public boolean onTouch(View v, MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 if(Global.isInView(v,event)) {
-                    Global.clearKernel();
+                    Kernel.cleanKernel();
                     List<String> expressions = getExpression(expressionFlag);
                     if(expressions != Collections.EMPTY_LIST){
                         softKeyboard8.qkCandidatesViewGroup.displayCandidates(Global.SYMBOL,expressions, Global.inLarge?200:9);

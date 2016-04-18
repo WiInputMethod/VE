@@ -75,8 +75,8 @@ public class NonScrollViewGroup extends myViewGroup {
     public void setBackgroundColor(int color) {
         backgroundColor = color;
         for (QuickButton quickButton : buttonList) {
-            //quickButton.setBackgroundColor(color);
-            quickButton.getBackground().setColorFilter(backgroundColor, PorterDuff.Mode.SRC);
+            quickButton.setBackgroundColor(color);
+
         }
     }
     @Override
@@ -257,7 +257,7 @@ public class NonScrollViewGroup extends myViewGroup {
         button.setBackgroundResource(R.drawable.button_back_x);
         button.setGravity(Gravity.CENTER);
         button.setVisibility(View.GONE);
-        button.getBackground().setAlpha((int) (Global.mCurrentAlpha * 255));
+        button.getBackground().setAlpha(Global.getCurrentAlpha());
         button.setText(text);
         button.setSingleLine();
 
@@ -278,10 +278,8 @@ public class NonScrollViewGroup extends myViewGroup {
 
         button.setBackgroundResource(R.drawable.middle_button);
         button.setTextColor(textColor);
-        //button.setBackgroundColor(backgroundColor);
-        button.getBackground().setColorFilter(backgroundColor, PorterDuff.Mode.SRC);
-        button.getBackground().setAlpha((int) (Global.mCurrentAlpha * 255));
-
+        button.setBackgroundColor(backgroundColor);
+        button.getBackground().setAlpha(Global.getCurrentAlpha());
         return  button;
     }
 

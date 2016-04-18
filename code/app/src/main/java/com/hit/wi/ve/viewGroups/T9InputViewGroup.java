@@ -161,15 +161,14 @@ public class T9InputViewGroup extends NonScrollViewGroup {
     public void updateSkin(){
         for(QuickButton button:buttonList){
             button.setTextColor(skinInfoManager.skinData.textcolors_t9keys);
-            //button.setBackgroundColor(skinInfoManager.skinData.backcolor_t9keys);
-            button.getBackground().setColorFilter(skinInfoManager.skinData.backcolor_t9keys, PorterDuff.Mode.SRC);
-            button.getBackground().setAlpha((int) (Global.mCurrentAlpha*255));
+            button.setBackgroundColor(skinInfoManager.skinData.backcolor_t9keys);
+            button.getBackground().setAlpha(Global.getCurrentAlpha());
             button.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
         }
 
         deleteButton.setTextColor(skinInfoManager.skinData.textcolors_delete);
         deleteButton.setBackgroundColor(skinInfoManager.skinData.backcolor_delete);
-        deleteButton.getBackground().setAlpha((int) (Global.mCurrentAlpha*255));
+        deleteButton.getBackground().setAlpha(Global.getCurrentAlpha());
         deleteButton.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
     }
 

@@ -145,9 +145,10 @@ public class ScrolledViewGroup extends myViewGroup {
         this.backgroundColor = backgroundcolor;
         for (QuickButton button : buttonList) {
             button.setTextColor(textcolor);
-            //button.setBackgroundColor(backgroundcolor);
-            button.getBackground().setColorFilter(backgroundcolor, PorterDuff.Mode.SRC);
-            button.getBackground().setAlpha((int) (Global.mCurrentAlpha * 255));
+
+            button.setBackgroundColor(backgroundcolor);
+            button.getBackground().setAlpha(Global.getCurrentAlpha());
+
         }
     }
 
@@ -290,9 +291,10 @@ public class ScrolledViewGroup extends myViewGroup {
     protected QuickButton addButton(int textColor, int backgroundColor, String text) {
         QuickButton button = addButton(text);
         button.setTextColor(textColor);
-        button.getBackground().setColorFilter(backgroundColor, PorterDuff.Mode.SRC);
-        //button.setBackgroundColor(backgroundColor);
-        button.getBackground().setAlpha((int) (Global.mCurrentAlpha * 255));
+
+        button.setBackgroundColor(backgroundColor);
+
+        button.getBackground().setAlpha(Global.getCurrentAlpha());
         return button;
     }
 

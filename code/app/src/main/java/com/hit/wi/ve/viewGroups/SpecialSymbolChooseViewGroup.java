@@ -44,7 +44,7 @@ public class SpecialSymbolChooseViewGroup extends NonScrollViewGroup implements 
     @Override
     public void updateSkin() {
         setBackgroundColor(skinInfoManager.skinData.backcolor_quickSymbol);
-        setBackgroundAlpha((int) (Global.mCurrentAlpha * 255));
+        setBackgroundAlpha(Global.getCurrentAlpha());
     }
 
     public void refreshState(boolean show) {

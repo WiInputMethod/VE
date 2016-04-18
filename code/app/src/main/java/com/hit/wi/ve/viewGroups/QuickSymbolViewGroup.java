@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import android.widget.*;
 
+import com.hit.wi.jni.Kernel;
 import com.hit.wi.util.WIStringManager;
 import com.hit.wi.ve.Interfaces.QuickSymbolInterface;
 import com.hit.wi.ve.Interfaces.ViewGroupInterface;
@@ -244,7 +245,7 @@ public class QuickSymbolViewGroup extends ScrolledViewGroup implements QuickSymb
         public boolean onTouch(View v, MotionEvent event) {
             onTouchEffect(v, event);
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                Global.clearKernel();
+                Kernel.cleanKernel();
                 Intent intent = new Intent(context, QuickSymbolAddActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 Bundle bundle = new Bundle();
@@ -259,7 +260,7 @@ public class QuickSymbolViewGroup extends ScrolledViewGroup implements QuickSymb
         public boolean onTouch(View v, MotionEvent event) {
             onTouchEffect(v, event);
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                Global.clearKernel();
+                Kernel.cleanKernel();
                 softKeyboard8.commitText(((Button) v).getText());
             }
             return true;
@@ -271,7 +272,7 @@ public class QuickSymbolViewGroup extends ScrolledViewGroup implements QuickSymb
         public boolean onTouch(View view, MotionEvent motionEvent) {
             onTouchEffect(view, motionEvent);
             if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                Global.clearKernel();
+                Kernel.cleanKernel();
                 Global.refreshState(softKeyboard8);
                 if (Global.currentKeyboard == Global.KEYBOARD_SYM) {
                     firstButton.setText(mLockSymbolState?mUnLockSymbol:mLockSymbol);

@@ -227,7 +227,7 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
         layer.addView(button,button.itsLayoutParams);
         button.clearAnimation();
         button.setEllipsize(standardButtonWidth * CAND_DIV_NUM <= measureTextLength(text)?TextUtils.TruncateAt.END:null);
-        button.getBackground().setAlpha((int) (Global.mCurrentAlpha*255));
+        button.getBackground().setAlpha(Global.getCurrentAlpha());
         button.setPressed(false);
         button.setTextSize(2*Global.textsizeFactor*standardButtonHeight/8);
         return button;
