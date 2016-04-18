@@ -7,6 +7,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
 import com.hit.wi.jni.WIInputMethodNK;
+import com.hit.wi.util.ViewFuncs;
 import com.hit.wi.util.WIStringManager;
 
 import com.hit.wi.ve.R;
@@ -161,13 +162,13 @@ public class T9InputViewGroup extends NonScrollViewGroup {
     public void updateSkin(){
         for(QuickButton button:buttonList){
             button.setTextColor(skinInfoManager.skinData.textcolors_t9keys);
-            button.setBackgroundColor(skinInfoManager.skinData.backcolor_t9keys);
+            ViewFuncs.setBackgroundWithGradientDrawable(button, skinInfoManager.skinData.backcolor_t9keys);
             button.getBackground().setAlpha(Global.getCurrentAlpha());
             button.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
         }
 
         deleteButton.setTextColor(skinInfoManager.skinData.textcolors_delete);
-        deleteButton.setBackgroundColor(skinInfoManager.skinData.backcolor_delete);
+        ViewFuncs.setBackgroundWithGradientDrawable(deleteButton,skinInfoManager.skinData.backcolor_delete);
         deleteButton.getBackground().setAlpha(Global.getCurrentAlpha());
         deleteButton.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
     }

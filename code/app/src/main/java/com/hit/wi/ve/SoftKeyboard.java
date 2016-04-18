@@ -868,7 +868,8 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
         public void updateSkin(TextView v, int textColor, int backgroundColor) {
             v.setTextColor(textColor);
-            v.setBackgroundColor(backgroundColor);
+            ViewFuncs.setBackgroundWithGradientDrawable(v, backgroundColor);
+            //v.setBackgroundColor(backgroundColor);
             v.getBackground().setAlpha(Global.getCurrentAlpha());
         }
 
@@ -1021,7 +1022,8 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         private void CreateLargeButton() {
             largeCandidateButton = new QuickButton(SoftKeyboard.this);
             largeCandidateButton.setTextColor(skinInfoManager.skinData.textcolors_quickSymbol);
-            largeCandidateButton.setBackgroundColor(skinInfoManager.skinData.backcolor_quickSymbol);
+            //largeCandidateButton.setBackgroundColor(skinInfoManager.skinData.backcolor_quickSymbol);
+            ViewFuncs.setBackgroundWithGradientDrawable(largeCandidateButton,skinInfoManager.skinData.backcolor_quickSymbol);
             largeCandidateButton.getBackground().setAlpha(Global.getCurrentAlpha());
             largeCandidateButton.setTypeface(mTypeface);
             largeCandidateButton.setText(res.getString(R.string.largecandidate));

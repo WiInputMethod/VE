@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import com.hit.wi.jni.Kernel;
 import com.hit.wi.jni.WIInputMethodNK;
+import com.hit.wi.util.ViewFuncs;
 import com.hit.wi.util.WIMath;
 import com.hit.wi.ve.values.Global;
 import com.hit.wi.ve.view.QuickButton;
@@ -84,7 +85,8 @@ public class PreFixViewGroup extends ScrolledViewGroup {
     }
 
     public void setBackgroundColorByIndex(int color, int index) {
-        buttonList.get(index).setBackgroundColor(color);
+        ViewFuncs.setBackgroundWithGradientDrawable(buttonList.get(index),color);
+        //buttonList.get(index).setBackgroundColor(color);
     }
 
     public void updateSkin() {

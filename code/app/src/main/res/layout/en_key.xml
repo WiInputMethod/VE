@@ -16,7 +16,6 @@
             android:layout_weight="2"
             android:gravity="center_vertical|center"
             android:text=""
-
     />
 
 

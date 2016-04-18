@@ -11,6 +11,7 @@ import android.view.inputmethod.InputConnection;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 import com.hit.wi.jni.Kernel;
+import com.hit.wi.util.ViewFuncs;
 import com.hit.wi.ve.R;
 import com.hit.wi.ve.SoftKeyboard;
 import com.hit.wi.ve.values.Global;
@@ -40,7 +41,8 @@ public class PreEditPopup {
         editText.setVisibility(View.VISIBLE);
         editText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         editText.setBackgroundResource(R.drawable.blank);
-        editText.setBackgroundColor(softKeyboard.skinInfoManager.skinData.backcolor_editText);
+        ViewFuncs.setBackgroundWithGradientDrawable(editText,softKeyboard.skinInfoManager.skinData.backcolor_editText);
+        //editText.setBackgroundColor(softKeyboard.skinInfoManager.skinData.backcolor_editText);
         editText.getBackground().setAlpha(Global.getCurrentAlpha());
         editText.setOnClickListener(editOnClickListener);
         if (Global.shadowSwitch) editText.setShadowLayer(Global.shadowRadius, 0, 0, softKeyboard.skinInfoManager.skinData.shadow);
@@ -60,7 +62,8 @@ public class PreEditPopup {
 
     public void updateSkin() {
         editText.setBackgroundResource(R.drawable.blank);
-        editText.setBackgroundColor(softKeyboard.skinInfoManager.skinData.backcolor_preEdit);
+        ViewFuncs.setBackgroundWithGradientDrawable(editText, softKeyboard.skinInfoManager.skinData.backcolor_preEdit);
+        //editText.setBackgroundColor(softKeyboard.skinInfoManager.skinData.backcolor_preEdit);
         editText.setTextColor(softKeyboard.skinInfoManager.skinData.textcolors_preEdit);
         editText.getBackground().setAlpha(Global.getCurrentAlpha());
         editText.setShadowLayer(Global.shadowRadius,0,0,softKeyboard.skinInfoManager.skinData.shadow);
