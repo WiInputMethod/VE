@@ -1,18 +1,8 @@
 
 package com.hit.wi.ve.values;
 
-import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.graphics.Color;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-import com.hit.wi.jni.WIInputMethodNK;
-import com.hit.wi.jni.WIInputMethod;
 import com.hit.wi.ve.SoftKeyboard;
 import com.hit.wi.ve.datastruct.InputAction;
 

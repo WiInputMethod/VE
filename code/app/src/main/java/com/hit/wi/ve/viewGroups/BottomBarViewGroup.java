@@ -2,7 +2,6 @@ package com.hit.wi.ve.viewGroups;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 import android.view.*;
@@ -12,8 +11,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import com.hit.wi.jni.Kernel;
-import com.hit.wi.jni.WIInputMethodNK;
-import com.hit.wi.jni.WIInputMethod;
 
 import com.hit.wi.util.CommonFuncs;
 import com.hit.wi.util.InputMode;
@@ -334,7 +331,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         public boolean onTouch(View v, MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 softKeyboard8.lightViewManager.lightViewAnimate(v,event);
-                if ((WIInputMethodNK.GetWordsNumber() > 0) || (WIInputMethod.GetWordsNumber() > 0) && Global.currentKeyboard != Global.KEYBOARD_SYM) {
+                if (Kernel.getWordsNumber()>0 && Global.currentKeyboard != Global.KEYBOARD_SYM) {
                     softKeyboard8.chooseWord(0);
                 } else{
                     int index = ViewFuncs.computePosition(event.getX(), event.getY(), v.getHeight(), v.getWidth());
@@ -363,15 +360,11 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                if (Global.currentKeyboard == Global.KEYBOARD_T9 && WIInputMethodNK.GetWordsNumber() > 0) {
+                if (Kernel.getWordsNumber()>0) {
                     if (event.getY() > 0) {
-                        softKeyboard8.commitText(WIInputMethodNK.ReturnAction());
+                        softKeyboard8.commitText(Kernel.returnAction());
                     }
                     softKeyboard8.t9InputViewGroup.updateFirstKeyText();
-                } else if (Global.currentKeyboard == Global.KEYBOARD_QP && WIInputMethod.GetWordsNumber() > 0) {
-                    if (event.getY() > 0) {
-                        softKeyboard8.commitText(WIInputMethod.ReturnAction());
-                    }
                 } else {
                     if (!softKeyboard8.sendDefaultEditorAction(true) && Global.isInView(v,event)) {
                         softKeyboard8.sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER);

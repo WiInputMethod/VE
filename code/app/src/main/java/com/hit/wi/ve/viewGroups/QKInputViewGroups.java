@@ -1,7 +1,6 @@
 package com.hit.wi.ve.viewGroups;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.view.*;
 import android.view.animation.Animation;
@@ -10,7 +9,7 @@ import android.view.inputmethod.InputConnection;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.hit.wi.jni.WIInputMethod;
+import com.hit.wi.jni.Kernel;
 import com.hit.wi.util.InputMode;
 import com.hit.wi.util.ViewFuncs;
 import com.hit.wi.util.WIStringManager;
@@ -206,22 +205,22 @@ public class QKInputViewGroups extends NonScrollViewGroup {
     }
 
     public void refreshQKKeyboardPredict() {
-        toolfunc_refreshQKKeyboardPredict(WIInputMethod.GetPredictA(),
+        toolfunc_refreshQKKeyboardPredict(Kernel.getPredictA(),
                 buttonList.get(KEY_A_INDEX),predictManager.qkPredict[KEY_A_INDEX]);
 
-        toolfunc_refreshQKKeyboardPredict(WIInputMethod.GetPredictE(),
+        toolfunc_refreshQKKeyboardPredict(Kernel.getPredictE(),
                 buttonList.get(KEY_E_INDEX),predictManager.qkPredict[KEY_E_INDEX]);
 
-        toolfunc_refreshQKKeyboardPredict(WIInputMethod.GetPredictI(),
+        toolfunc_refreshQKKeyboardPredict(Kernel.getPredictI(),
                 buttonList.get(KEY_I_INDEX),predictManager.qkPredict[KEY_I_INDEX]);
 
-        toolfunc_refreshQKKeyboardPredict(WIInputMethod.GetPredictO(),
+        toolfunc_refreshQKKeyboardPredict(Kernel.getPredictO(),
                 buttonList.get(KEY_O_INDEX),predictManager.qkPredict[KEY_O_INDEX]);
 
-        toolfunc_refreshQKKeyboardPredict(WIInputMethod.GetPredictU(),
+        toolfunc_refreshQKKeyboardPredict(Kernel.getPredictU(),
                 buttonList.get(KEY_U_INDEX),predictManager.qkPredict[KEY_U_INDEX]);
 
-        toolfunc_refreshQKKeyboardPredict(WIInputMethod.GetPredictH(),
+        toolfunc_refreshQKKeyboardPredict(Kernel.getPredictH(),
                 buttonList.get(KEY_H_INDEX),predictManager.qkPredict[KEY_H_INDEX]);
     }
 
@@ -489,7 +488,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         softKeyboard8.preFixViewGroup.setText(WIStringManager.convertStringstoList(softKeyboard8.mFuncKeyboardText));
         softKeyboard8.preFixViewGroup.setVisibility(View.GONE);
         softKeyboard8.quickSymbolViewGroup.setVisibility(View.VISIBLE);
-        if (WIInputMethod.GetWordsNumber() > 0) {
+        if (Kernel.getWordsNumber() > 0) {
             softKeyboard8.quickSymbolViewGroup.setVisibility(View.GONE);
             softKeyboard8.secondLayerLayout.setVisibility(View.GONE);
             softKeyboard8.qkCandidatesViewGroup.setVisibility(View.VISIBLE);

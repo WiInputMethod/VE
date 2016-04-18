@@ -14,8 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import android.widget.TextView;
-import com.hit.wi.jni.WIInputMethodNK;
-import com.hit.wi.jni.WIInputMethod;
+import com.hit.wi.jni.Kernel;
 import com.hit.wi.ve.functions.QKEmojiUtil;
 import com.hit.wi.ve.values.Global;
 import com.hit.wi.ve.view.QuickButton;
@@ -85,13 +84,13 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
     // state machine
     public void refreshState(boolean hide,String type){
         if (hide) {
-            WIInputMethodNK.CLeanKernel();
+            Kernel.cleanKernel();
             if (scrollView.isShown()) {hide();}
         } else {
             if (!scrollView.isShown()) {
                 show();
             }
-            if (WIInputMethod.GetWordsNumber()>0 || WIInputMethodNK.GetWordsNumber()>0){
+            if (Kernel.getWordsNumber()>0){
                 displayCandidates(type);
             }
             scrollView.fullScroll(ScrollView.FOCUS_UP);
@@ -147,21 +146,14 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
         symbols = strings;
         if(!strings.equals(Collections.EMPTY_LIST)){
             words = strings.subList(0,Math.min(show_num,strings.size()-1));
-        }else if(type.equals(Global.QUANPIN)) {
-            int total = Math.min(show_num,WIInputMethod.GetWordsNumber()-1);
+        }else {
+            int total = Math.min(show_num,Kernel.getWordsNumber()-1);
             while(i<total){
-                String text = WIInputMethod.GetWordByIndex(i);
+                String text = Kernel.getWordByIndex(i);
                 words.add(mQKEmojiUtil.getShowString(text));
                 i++;
             }
-        } else {
-            int total = Math.min(show_num,WIInputMethodNK.GetWordsNumber()-1);
-            while(i<total){
-                words.add(mQKEmojiUtil.getShowString(WIInputMethodNK.GetWordByIndex(i)));
-                i++;
-            }
         }
-
         setCandidates(words);
         scrollView.fullScroll(View.FOCUS_UP);//go to top
     }
@@ -302,7 +294,7 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
     }
 
     private void commitQKCandidate(View v) {
-        String text = WIInputMethod.GetWordSelectedWord(buttonList.indexOf(v));
+        String text = Kernel.getWordSelectedWord(buttonList.indexOf(v));
         scrollView.fullScroll(ScrollView.FOCUS_UP);
         InputConnection ic = softKeyboard8.getCurrentInputConnection();
         if (ic != null && text!= null) {
@@ -315,7 +307,7 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
     }
 
     private void commitT9Candidate(View v){
-        String text = WIInputMethodNK.GetWordSelectedWord(buttonList.indexOf(v));
+        String text = Kernel.getWordSelectedWord(buttonList.indexOf(v));
         if ( text!=null ){
             softKeyboard8.commitText(text);
         }
