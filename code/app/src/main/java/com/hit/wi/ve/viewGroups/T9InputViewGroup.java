@@ -100,7 +100,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
     private String[] mOtherSymbolTypeSendKeyList;
     private final int KEY_NUM = 9;
     private final int LAYER_NUM = 3;
-    private final int KEY_OTHER_TAG = 123;
+    private final int KEY_OTHER_INDEX = 8;
 
     public QuickButton deleteButton;
     private LinearLayout[] linears = new LinearLayout[LAYER_NUM];
@@ -132,7 +132,6 @@ public class T9InputViewGroup extends NonScrollViewGroup {
             }
             viewGroupWrapper.addView(linears[i],linearParams[i]);
         }
-        buttonList.get(8).setTag(KEY_OTHER_TAG);
 
         addDeleteButton();
     }
@@ -396,7 +395,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 WIInputMethodNK.CLeanKernel();
                 int index = buttonList.indexOf(v);
-                if (v.getTag()!= null && (int)v.getTag() ==  KEY_OTHER_TAG) {
+                if (buttonList.indexOf(v) == KEY_OTHER_INDEX) {
                     switchSymbolToFunc(mOtherSymbolTypeList, mOtherSymbolTypeSendKeyList);
                     softKeyboard8.qkCandidatesViewGroup.displayCandidates(Global.SYMBOL,WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.SPECIAL),100);
                 } else if (index == 6){
@@ -407,7 +406,6 @@ public class T9InputViewGroup extends NonScrollViewGroup {
                     softKeyboard8.refreshDisplay(true);
                 } else {
                     switchBackFunc();
-
                     softKeyboard8.sendMsgToKernel("'"+mSymbolKeySendText[index]);
                 }
             }

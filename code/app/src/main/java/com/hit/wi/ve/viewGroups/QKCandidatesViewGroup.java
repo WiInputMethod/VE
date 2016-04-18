@@ -16,7 +16,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import com.hit.wi.jni.WIInputMethodNK;
 import com.hit.wi.jni.WIInputMethod;
-//import com.hit.wi.t9.functions.EmojiUtil;
 import com.hit.wi.ve.functions.QKEmojiUtil;
 import com.hit.wi.ve.values.Global;
 import com.hit.wi.ve.view.QuickButton;
@@ -32,6 +31,9 @@ import java.util.List;
  */
 public class QKCandidatesViewGroup extends ScrolledViewGroup {
 
+    private static final int TEXT_LENGTH_FACTOR = 4;
+    private static final int WORD_MAX_NUM = 300;
+    private static final int WORD_NUM_LAZY_LOAD = 6;
     /**
      * Maximum number of displaying candidates par one line (full view mode)
      */
@@ -55,7 +57,7 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
     private int mTextColor;
     private int mBackColor;
 
-    public String mQPOrEmoji = Global.QUANPIN;
+    private String mQPOrEmoji = Global.QUANPIN;
 
     private int standardButtonWidth;
     private int standardButtonHeight;
@@ -109,13 +111,12 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
         super.setSize(width,height);
         standardButtonWidth = width/ CAND_DIV_NUM;
         standardButtonHeight = height;
-        resetButtonWidthAndresetLayerHeight();
+        resetButtonWidthAndResetLayerHeight();
     }
 
-    public void resetButtonWidthAndresetLayerHeight(){
+    public void resetButtonWidthAndResetLayerHeight(){
         for (QuickButton button :buttonList) {
-            int length  = measureTextLength(button.getText());
-            button.itsLayoutParams.width = length;
+            button.itsLayoutParams.width = measureTextLength(button.getText());
             button.itsLayoutParams.height = standardButtonHeight;
         }
         layerParams.height = standardButtonHeight;
@@ -123,15 +124,15 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
     }
 
     public void displayCandidates() {
-        if (mQPOrEmoji == Global.QUANPIN || mQPOrEmoji == Global.EMOJI){
-            displayCandidates(mQPOrEmoji,300);
+        if (mQPOrEmoji.equals(Global.QUANPIN)|| mQPOrEmoji.equals(Global.EMOJI)){
+            displayCandidates(mQPOrEmoji,WORD_MAX_NUM);
         } else {
-            displayCandidates(mQPOrEmoji,symbols,300);
+            displayCandidates(mQPOrEmoji,symbols,WORD_MAX_NUM);
         }
     }
 
     public void displayCandidates(String type){
-        displayCandidates(type,6);
+        displayCandidates(type,WORD_NUM_LAZY_LOAD);
     }
 
     public void displayCandidates(String type,int show_num){
@@ -146,7 +147,7 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
         symbols = strings;
         if(!strings.equals(Collections.EMPTY_LIST)){
             words = strings.subList(0,Math.min(show_num,strings.size()-1));
-        }else if(type == Global.QUANPIN) {
+        }else if(type.equals(Global.QUANPIN)) {
             int total = Math.min(show_num,WIInputMethod.GetWordsNumber()-1);
             while(i<total){
                 String text = WIInputMethod.GetWordByIndex(i);
@@ -182,7 +183,7 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
         return remainLength;
     }
 
-    public LinearLayout addLayer(){
+    private LinearLayout addLayer(){
         LinearLayout layout = new LinearLayout(context);
         layout.setOrientation(LinearLayout.HORIZONTAL);
         layout.setVisibility(View.VISIBLE);
@@ -211,7 +212,7 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
     /**
      * Add a candidate into the list
      */
-    public QuickButton addButtonQ(String text, QuickButton button) {
+    private QuickButton addButtonQ(String text, QuickButton button) {
         LinearLayout layer = getWorkingLayer(layerPointer);
         int remainLength = getLayerRemainLength(layer);
         button.setText(text);
@@ -265,9 +266,9 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
         touched = false;
     }
 
-    public int measureTextLength(CharSequence text) {
+    private int measureTextLength(CharSequence text) {
         Paint paint = new Paint();
-        return Math.min(((int)(3*paint.measureText((String) text)))/standardButtonWidth +1, 4)*standardButtonWidth;
+        return Math.min(((int)(TEXT_LENGTH_FACTOR*paint.measureText((String) text)))/standardButtonWidth +1, CAND_DIV_NUM)*standardButtonWidth;
     }
 
     public void updateSkin() {
@@ -320,7 +321,7 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
         }
     }
 
-    float downX, downY;
+    private float downX, downY;
     private boolean touched = false;
     /**
      * Event listener for touching a candidate
@@ -365,11 +366,11 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
                                 softKeyboard8.refreshDisplay();
                             }
                             softKeyboard8.commitText(text);
-                        } else if (mQPOrEmoji == Global.SYMBOL) {
+                        } else if (mQPOrEmoji.equals(Global.SYMBOL)) {
                             CharSequence text = ((TextView)v).getText();
                             softKeyboard8.commitText(text);
                             softKeyboard8.refreshDisplay();
-                        } else if (mQPOrEmoji == Global.QUANPIN ) {
+                        } else if (mQPOrEmoji.equals(Global.QUANPIN )) {
                             commitQKCandidate(v);
                             softKeyboard8.refreshDisplay();
                         } else {

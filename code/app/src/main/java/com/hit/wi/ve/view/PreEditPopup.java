@@ -3,7 +3,6 @@ package com.hit.wi.ve.view;
 import android.content.Context;
 import android.graphics.Paint;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,9 @@ import com.hit.wi.ve.values.Global;
  * Created by purebleusong on 2016/4/7.
  */
 public class PreEditPopup {
+    private final int TEXTSIZE_RATE_BY_WIDTH = 6;
+    private final float TEXTSIZE_RATE_BY_HEIGHT = (float) 0.33;
+
     private PopupWindow container;
     private EditText editText;
     private SoftKeyboard softKeyboard;
@@ -83,8 +85,7 @@ public class PreEditPopup {
     public void show(CharSequence text){
         editText.setText(text);
         float length = toolPaint.measureText((String) text);
-        //这两个magic number都是调参来的……
-        editText.setTextSize(Math.min((float) (container.getHeight()*0.33),6*container.getWidth()/length));
+        editText.setTextSize(Math.min((float) (container.getHeight()*TEXTSIZE_RATE_BY_HEIGHT),TEXTSIZE_RATE_BY_WIDTH * container.getWidth()/length));
         if (!isShown()){
             container.showAsDropDown(softKeyboard.keyboardLayout,leftMargin,-container.getHeight()-softKeyboard.keyboardParams.height);
         }

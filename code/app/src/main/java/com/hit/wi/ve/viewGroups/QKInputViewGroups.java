@@ -29,6 +29,16 @@ import java.util.List;
 public class QKInputViewGroups extends NonScrollViewGroup {
 
 
+    private final int KEY_A_INDEX = 10;
+    private final int KEY_E_INDEX = 2;
+    private final int KEY_I_INDEX = 7;
+    private final int KEY_O_INDEX = 8;
+    private final int KEY_U_INDEX = 6;
+    private final int KEY_H_INDEX = 15;
+    private final int KEY_Z_INDEX = 19;
+    private final int KEY_M_INDEX = 25;
+
+    private final int SMILE_FUNC_NUM = 4;
     /**
      * 英文显示时的动画资源
      */
@@ -197,22 +207,22 @@ public class QKInputViewGroups extends NonScrollViewGroup {
 
     public void refreshQKKeyboardPredict() {
         toolfunc_refreshQKKeyboardPredict(WIInputMethod.GetPredictA(),
-                buttonList.get(10),predictManager.qkPredict[10]);
+                buttonList.get(KEY_A_INDEX),predictManager.qkPredict[KEY_A_INDEX]);
 
         toolfunc_refreshQKKeyboardPredict(WIInputMethod.GetPredictE(),
-                buttonList.get(2),predictManager.qkPredict[2]);
+                buttonList.get(KEY_E_INDEX),predictManager.qkPredict[KEY_E_INDEX]);
 
         toolfunc_refreshQKKeyboardPredict(WIInputMethod.GetPredictI(),
-                buttonList.get(7),predictManager.qkPredict[7]);
+                buttonList.get(KEY_I_INDEX),predictManager.qkPredict[KEY_I_INDEX]);
 
         toolfunc_refreshQKKeyboardPredict(WIInputMethod.GetPredictO(),
-                buttonList.get(8),predictManager.qkPredict[8]);
+                buttonList.get(KEY_O_INDEX),predictManager.qkPredict[KEY_O_INDEX]);
 
         toolfunc_refreshQKKeyboardPredict(WIInputMethod.GetPredictU(),
-                buttonList.get(6),predictManager.qkPredict[6]);
+                buttonList.get(KEY_U_INDEX),predictManager.qkPredict[KEY_U_INDEX]);
 
         toolfunc_refreshQKKeyboardPredict(WIInputMethod.GetPredictH(),
-                buttonList.get(15),predictManager.qkPredict[15]);
+                buttonList.get(KEY_H_INDEX),predictManager.qkPredict[KEY_H_INDEX]);
     }
 
     public void setSize(int width,int height,int horGap){
@@ -375,15 +385,15 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         if (Global.currentKeyboard == Global.KEYBOARD_EN) {
             shiftButton.setVisibility(View.VISIBLE);
             smileButton.setVisibility(View.GONE);
-            if(show)shiftButton.startAnimation(AnimationUtils.loadAnimation(context, enShow[19]));
+            if(show)shiftButton.startAnimation(AnimationUtils.loadAnimation(context, enShow[KEY_Z_INDEX]));
         } else if (Global.currentKeyboard == Global.KEYBOARD_QP) {
             smileButton.setVisibility(View.VISIBLE);
             shiftButton.setVisibility(View.GONE);
-            if(show)smileButton.startAnimation(AnimationUtils.loadAnimation(context, enShow[19]));
+            if(show)smileButton.startAnimation(AnimationUtils.loadAnimation(context, enShow[KEY_Z_INDEX]));
         }
         deleteButton.clearAnimation();
         deleteButton.setVisibility(View.VISIBLE);
-        if(show)deleteButton.startAnimation(AnimationUtils.loadAnimation(context, enShow[25]));
+        if(show)deleteButton.startAnimation(AnimationUtils.loadAnimation(context, enShow[KEY_M_INDEX]));
     }
 
     public void startShowAnimation(){
@@ -611,7 +621,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
                     float perWidth = softKeyboard8.keyboardWidth / SMILE_KEYS_NUM;
                     if (Y <= 0) {
                         preFixViewGroup.setBackgroundColor(skinInfoManager.skinData.backcolor_prefix);
-                        if (0 < X && X < perWidth * 4) {
+                        if (0 < X && X < perWidth * SMILE_FUNC_NUM) {
                             preFixViewGroup.setBackgroundColorByIndex(skinInfoManager.skinData.backcolor_touchdown, (int) (X / perWidth));
                         }
                     } else {
