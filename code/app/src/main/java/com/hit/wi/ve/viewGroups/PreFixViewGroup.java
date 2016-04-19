@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import com.hit.wi.jni.Kernel;
-import com.hit.wi.jni.WIInputMethodNK;
 import com.hit.wi.util.ViewFuncs;
 import com.hit.wi.util.WIMath;
 import com.hit.wi.ve.values.Global;
@@ -105,7 +104,7 @@ public class PreFixViewGroup extends ScrolledViewGroup {
         public boolean onTouch(View v, MotionEvent event) {
             softKeyboard8.transparencyHandle.handleAlpha(event.getAction());
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                String words = WIInputMethodNK.GetPrefixSelectedPrefix(buttonList.size() - buttonList.indexOf(v));
+                String words = Kernel.getPrefix(buttonList.size() - buttonList.indexOf(v));
                 if (words != null) {
                     softKeyboard8.commitText(words);
                 }

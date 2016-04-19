@@ -1,19 +1,17 @@
 package com.hit.wi.ve.viewGroups;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
-import com.hit.wi.jni.WIInputMethodNK;
 import com.hit.wi.util.ViewFuncs;
+import com.hit.wi.jni.Kernel;
 import com.hit.wi.util.WIStringManager;
 
 import com.hit.wi.ve.R;
 import com.hit.wi.ve.datastruct.InputAction;
 import com.hit.wi.ve.values.Global;
-import com.hit.wi.ve.values.SkinInfoManager;
 import com.hit.wi.ve.view.QuickButton;
 
 /**
@@ -101,7 +99,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
     private String[] mOtherSymbolTypeSendKeyList;
     private final int KEY_NUM = 9;
     private final int LAYER_NUM = 3;
-    private final int KEY_OTHER_TAG = 123;
+    private final int KEY_OTHER_INDEX = 8;
 
     public QuickButton deleteButton;
     private LinearLayout[] linears = new LinearLayout[LAYER_NUM];
@@ -133,7 +131,6 @@ public class T9InputViewGroup extends NonScrollViewGroup {
             }
             viewGroupWrapper.addView(linears[i],linearParams[i]);
         }
-        buttonList.get(8).setTag(KEY_OTHER_TAG);
 
         addDeleteButton();
     }
@@ -175,7 +172,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
 
     public void updateFirstKeyText() {
         if (Global.currentKeyboard == Global.KEYBOARD_T9) {
-            buttonList.get(0).setText(WIInputMethodNK.GetWordsPinyin(0) == null || WIInputMethodNK.GetWordsPinyin(0).length() == 0 ? mT9keyText[0] : "'");
+            buttonList.get(0).setText(Kernel.getWordsShowPinyin() == null || Kernel.getWordsShowPinyin().length() == 0 ? mT9keyText[0] : "'");
         }
     }
 
@@ -395,9 +392,9 @@ public class T9InputViewGroup extends NonScrollViewGroup {
         public boolean onTouch(View v, MotionEvent event) {
             softKeyboard8.transparencyHandle.handleAlpha(event.getAction());
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                WIInputMethodNK.CLeanKernel();
+                Kernel.cleanKernel();
                 int index = buttonList.indexOf(v);
-                if (v.getTag()!= null && (int)v.getTag() ==  KEY_OTHER_TAG) {
+                if (buttonList.indexOf(v) == KEY_OTHER_INDEX) {
                     switchSymbolToFunc(mOtherSymbolTypeList, mOtherSymbolTypeSendKeyList);
                     softKeyboard8.qkCandidatesViewGroup.displayCandidates(Global.SYMBOL,WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.SPECIAL),100);
                 } else if (index == 6){
@@ -408,7 +405,6 @@ public class T9InputViewGroup extends NonScrollViewGroup {
                     softKeyboard8.refreshDisplay(true);
                 } else {
                     switchBackFunc();
-
                     softKeyboard8.sendMsgToKernel("'"+mSymbolKeySendText[index]);
                 }
             }
@@ -443,7 +439,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
                     if (index > 0 && text.length() > follow[index])
                         commitText = text.substring(follow[index], follow[index]+1);
                     if (buttonIndex == 0) {
-                        if (WIInputMethodNK.GetWordsNumber() > 0) {
+                        if (Kernel.getWordsNumber() > 0) {
                             if (Global.isInView(v,event)) {
                                 softKeyboard8.sendMsgToKernel("'");
                             } else {

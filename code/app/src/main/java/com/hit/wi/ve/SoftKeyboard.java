@@ -1,12 +1,10 @@
 package com.hit.wi.ve;
 
-import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.inputmethodservice.InputMethodService;
@@ -52,7 +50,6 @@ import com.hit.wi.ve.viewGroups.*;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -85,32 +82,32 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     /**
      * 设置键盘大小界面是否显示
      */
-    boolean mSetKeyboardSizeViewOn = false;
+    private boolean mSetKeyboardSizeViewOn = false;
 
     /**
      * 是全拼还是Emoji
      */
-    public String mQPOrEmoji = Global.QUANPIN;
+    private String mQPOrEmoji = Global.QUANPIN;
 
     /**
      * 中文键盘类型
      */
-    int zhKeyboard;
+    private int zhKeyboard;
 
     /**
      * 屏幕宽度
      */
-    int mScreenWidth;
+    private int mScreenWidth;
 
     /**
      * 屏幕高度
      */
-    int mScreenHeight;
+    private int mScreenHeight;
 
     /**
      * 状态栏高度
      */
-    int mStatusBarHeight;
+    private int mStatusBarHeight;
 
     public String[] mFuncKeyboardText;
 
@@ -120,9 +117,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     private static final int DISABLE_LAYOUTPARAMS_FLAG = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
             | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
             | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
-    private static final int LOCK_LAYOUTPARAMS_FLAG = WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-            | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-            | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
     private static final int ABLE_LAYOUTPARAMS_FLAG = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
     //默认是FLAG_NOT_FOCUSABLE，否则会抢夺输入框的焦点导致键盘收回
 
@@ -513,22 +507,22 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     public void refreshDisplay(boolean special) {
         Log.i("Test","refreshDisplay");
         boolean isNK = Global.currentKeyboard == Global.KEYBOARD_T9 || Global.currentKeyboard == Global.KEYBOARD_SYM;
-        int candidatenum = Kernel.getWordsNumber();
-        boolean hidecandidate = candidatenum != 0 ? false : (special ? false : true);
+        int candidateNum = Kernel.getWordsNumber();
+        boolean hideCandidate = candidateNum != 0 ? false : (special ? false : true);
         Kernel.setKernelType(isNK?Kernel.NINE_KEY:Kernel.QWERT);
 
         if (mInputViewGG.isShown()) mInputViewGG.setVisibility(View.VISIBLE);
-        functionViewGroup.refreshState(hidecandidate);
+        functionViewGroup.refreshState(hideCandidate);
         functionsC.refreshStateForSecondLayout();
-        functionsC.refreshStateForLargeCandidate(hidecandidate);
-        if (lastHideState!=hidecandidate && !hidecandidate) {
+        functionsC.refreshStateForLargeCandidate(hideCandidate);
+        if (lastHideState!=hideCandidate && !hideCandidate) {
             viewSizeUpdate.UpdatePreEditSize();
             viewSizeUpdate.UpdateQKCandidateSize();
             viewSizeUpdate.UpdateLargeCandidateSize();
         }
         viewSizeUpdate.UpdateQuickSymbolSize();
-        qkCandidatesViewGroup.refreshState(hidecandidate, isNK ? Global.EMOJI : Global.QUANPIN);
-        specialSymbolChooseViewGroup.refreshState(hidecandidate);
+        qkCandidatesViewGroup.refreshState(hideCandidate, isNK ? Global.EMOJI : Global.QUANPIN);
+        specialSymbolChooseViewGroup.refreshState(hideCandidate);
         preFixViewGroup.refresh();
         t9InputViewGroup.refreshState();
         qkInputViewGroups.refreshState();
@@ -551,11 +545,11 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                 t9InputViewGroup.updateFirstKeyText();
                 innerEdit("", true);
             } else if (Global.currentKeyboard == Global.KEYBOARD_QP) {
-                if (mQPOrEmoji == Global.QUANPIN) {
+                if (mQPOrEmoji.equals(Global.QUANPIN)) {
                     String pinyin = Kernel.getWordsShowPinyin();
                     Global.addToRedo(pinyin.substring(pinyin.length()-1));
                     innerEdit("", true);
-                } else if (mQPOrEmoji == Global.EMOJI) {
+                } else if (mQPOrEmoji.equals(Global.EMOJI)) {
                     Kernel.cleanKernel();
                     refreshDisplay(true);
                 }
@@ -679,13 +673,15 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
      */
     public class KeyBoardSwitcherC {
 
+        private static final int HOR_GAP_NUM = 2;
+
         /**
          * 功能：使键盘占满屏幕的Width
          * 调用时机：从九键切到英文键盘
          */
         private void fullWidth() {
-            quickSymbolViewGroup.setSize(keyboardWidth - 2 * standardHorizantalGapDistance, ViewGroup.LayoutParams.MATCH_PARENT);
-            preFixViewGroup.setSize(keyboardWidth * -2 * standardHorizantalGapDistance, ViewGroup.LayoutParams.MATCH_PARENT);
+            quickSymbolViewGroup.setSize(keyboardWidth - HOR_GAP_NUM * standardHorizantalGapDistance, ViewGroup.LayoutParams.MATCH_PARENT);
+            preFixViewGroup.setSize(keyboardWidth -HOR_GAP_NUM * standardHorizantalGapDistance, ViewGroup.LayoutParams.MATCH_PARENT);
             updateWindowManager();
         }
 
@@ -760,12 +756,14 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
      * 一些工具函数集中存放的地方
      */
     public class  FunctionsC {
+        private static final int TEXT_MAX_LENGTH = 100;
+
         //For Listeners
         public void deleteAll() {
             if (Kernel.getWordsNumber()==0 || Global.currentKeyboard == Global.KEYBOARD_SYM) {
                 InputConnection ic = SoftKeyboard.this.getCurrentInputConnection();
                 if (ic != null) {
-                    Global.redoTextForDeleteAll = ic.getTextBeforeCursor(200,0);
+                    Global.redoTextForDeleteAll = ic.getTextBeforeCursor(TEXT_MAX_LENGTH,0);
                     ic.deleteSurroundingText(Integer.MAX_VALUE, 0);
                 }
             } else {
@@ -777,7 +775,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                 t9InputViewGroup.updateFirstKeyText();
                 refreshDisplay();
             } else if (Global.currentKeyboard == Global.KEYBOARD_QP) {
-                refreshDisplay(mQPOrEmoji != Global.QUANPIN);
+                refreshDisplay(!mQPOrEmoji.equals(Global.QUANPIN));
             } else if (Global.currentKeyboard == Global.KEYBOARD_EN) {
                 refreshDisplay();
             }
@@ -1079,12 +1077,18 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
      * 整合所有view大小和位置更新方法到一个内部类中
      */
     public class ViewSizeUpdateC {
+        private final int PREFIX_WIDTH_RATE = 44;
+        private final double PREEDIT_HEIGHT_RATE = 0.5;
+        private final double TEXTSIZE_RATE = 0.4;
+        private final int HOR_GAP_NUM = 2;
+        private final int BUTTON_SHOW_NUM = 6;
+
         private int[] layerHeightRate;
 
         private void UpdatePrefixSize() {
             preFixViewGroup.setPosition(0, 0);
             if (Global.currentKeyboard == Global.KEYBOARD_NUM || Global.currentKeyboard == Global.KEYBOARD_SYM || Global.currentKeyboard == Global.KEYBOARD_T9) {
-                preFixViewGroup.setSize(keyboardWidth * 44 / 100, keyboardHeight * layerHeightRate[1] / 100);
+                preFixViewGroup.setSize(keyboardWidth * PREFIX_WIDTH_RATE / 100, keyboardHeight * layerHeightRate[1] / 100);
             } else {
                 preFixViewGroup.setSize(keyboardWidth - standardHorizantalGapDistance, keyboardHeight * layerHeightRate[1] / 100);
             }
@@ -1093,8 +1097,8 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         }
 
         private void UpdatePreEditSize() {
-            preEditPopup.upadteSize(keyboardParams.width-2*standardHorizantalGapDistance,
-                    (int) (0.5*layerHeightRate[0]*keyboardParams.height/100),
+            preEditPopup.upadteSize(keyboardParams.width-HOR_GAP_NUM*standardHorizantalGapDistance,
+                    (int) (PREEDIT_HEIGHT_RATE*layerHeightRate[0]*keyboardParams.height/100),
                     standardHorizantalGapDistance);
         }
 
@@ -1110,15 +1114,15 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
         private void UpdateQuickSymbolSize() {
             int height = keyboardHeight * layerHeightRate[1] / 100;
-            int width = keyboardWidth - 2 * standardHorizantalGapDistance;
-            int buttonWidth = width / 6;
+            int width = keyboardWidth - HOR_GAP_NUM * standardHorizantalGapDistance;
+            int buttonWidth = width / BUTTON_SHOW_NUM;
             quickSymbolViewGroup.setPosition(0, 0);
             quickSymbolViewGroup.setButtonPadding(standardHorizantalGapDistance);
             quickSymbolViewGroup.setButtonWidth(buttonWidth);
-            float textSize = 2 * Math.min(buttonWidth, height) / 5;
+            float textSize = (float) (Math.min(buttonWidth, height) * TEXTSIZE_RATE);
             quickSymbolViewGroup.setTextSize(textSize);
             if (t9InputViewGroup.deleteButton.isShown() && largeCandidateButton.isShown()) {
-                quickSymbolViewGroup.setSize(keyboardWidth * 44 / 100, height);
+                quickSymbolViewGroup.setSize(keyboardWidth * PREFIX_WIDTH_RATE / 100, height);
             } else if (t9InputViewGroup.deleteButton.isShown() || largeCandidateButton.isShown()) {
                 quickSymbolViewGroup.setSize(keyboardWidth * res.getInteger(R.integer.PREEDIT_WIDTH) / 100, height);
             } else {
@@ -1131,7 +1135,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             int height = keyboardHeight * layerHeightRate[1] / 100;
             specialSymbolChooseViewGroup.updateSize(keyboardWidth * res.getInteger(R.integer.PREEDIT_WIDTH) / 100, height);
             specialSymbolChooseViewGroup.setPosition(0, 0);
-            specialSymbolChooseViewGroup.setTextSize(2 * height / 5);
+            specialSymbolChooseViewGroup.setTextSize((float) (TEXTSIZE_RATE * height));
         }
 
         private void UpdateT9Size() {
@@ -1156,7 +1160,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
         public void UpdateQKCandidateSize() {
             qkCandidatesViewGroup.setPosition(standardHorizantalGapDistance, 0);
-            qkCandidatesViewGroup.setSize(keyboardWidth - 2 * standardHorizantalGapDistance, keyboardHeight * layerHeightRate[0] / 100);
+            qkCandidatesViewGroup.setSize(keyboardWidth - HOR_GAP_NUM * standardHorizantalGapDistance, keyboardHeight * layerHeightRate[0] / 100);
             qkCandidatesViewGroup.updateViewLayout();
         }
 
@@ -1270,6 +1274,10 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
      */
     public class ScreenInfoC {
 
+        private final float KEYBOARD_Y_RATE = (float) 0.33;
+        private final float KEYBOARD_WIDTH_RATE = (float) 0.66;
+        private final float KEYBOARD_HEIGHT_RATE = (float) 0.5;
+
         /**
          * 功能：刷新界面信息
          * 调用时机：在初始化和旋转手机方向时需要调用以及时刷新信息
@@ -1283,18 +1291,13 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             orientation = mScreenWidth > mScreenHeight ? ORI_HOR : ORI_VER;
             mStatusBarHeight = getStatusBarHeight();
 
-            DEFAULT_KEYBOARD_Y = mScreenHeight / 3;
-            DEFAULT_KEYBOARD_WIDTH = mScreenWidth * 2 / 3;
-            DEFAULT_KEYBOARD_HEIGHT = mScreenHeight / 2;
+            DEFAULT_KEYBOARD_Y = (int) (mScreenHeight * KEYBOARD_Y_RATE);
+            DEFAULT_KEYBOARD_WIDTH = (int) (mScreenWidth * KEYBOARD_WIDTH_RATE);
+            DEFAULT_KEYBOARD_HEIGHT = (int) (mScreenHeight * KEYBOARD_HEIGHT_RATE);
 
             DEFAULT_FULL_WIDTH = mScreenWidth;
             DEFAULT_FULL_WIDTH_X = 0;
-
-            if (mLeftHand) {
-                DEFAULT_KEYBOARD_X = DEFAULT_KEYBOARD_WIDTH;
-            } else {
-                DEFAULT_KEYBOARD_X = mScreenWidth / 3;
-            }
+            DEFAULT_KEYBOARD_X = DEFAULT_KEYBOARD_WIDTH;
         }
 
         public int getStatusBarHeight() {
@@ -1313,17 +1316,9 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         private void LoadKeyboardSizeInfoFromSharedPreference() {
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(SoftKeyboard.this);
 
-            /**
-             * 若为英文键盘，则为FULL_WIDTH
-             */
-//            if (zhKeyboard == Global.KEYBOARD_QP) {
             keyboardParams.x = sp.getInt(FULL_WIDTH_X_S + orientation, DEFAULT_FULL_WIDTH_X);
-            keyboardWidth = sp.getInt(FULL_WIDTH_S + orientation, DEFAULT_FULL_WIDTH);
-//            } else {
-//                keyboardParams.x = sp.getInt(KEYBOARD_X_S + orientation, DEFAULT_KEYBOARD_X);
-//                keyboardWidth = sp.getInt(KEYBOARD_WIDTH_S + orientation, DEFAULT_KEYBOARD_WIDTH);
-//            }
             keyboardParams.y = sp.getInt(KEYBOARD_Y_S + orientation, DEFAULT_KEYBOARD_Y);
+            keyboardWidth = sp.getInt(FULL_WIDTH_S + orientation, DEFAULT_FULL_WIDTH);
             keyboardHeight = sp.getInt(KEYBOARD_HEIGHT_S + orientation, DEFAULT_KEYBOARD_HEIGHT);
 
             keyboardParams.width = keyboardWidth;
@@ -1331,11 +1326,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
             standardVerticalGapDistance = keyboardHeight * 2 / 100;
             standardHorizantalGapDistance = keyboardWidth * 2 / 100;
-
-//            mCandiParams.x = sp.getInt(CANDIDATE_X_S + orientation, DEFAULT_CANDIDATE_X);
-//            mCandiParams.y = sp.getInt(CANDIDATE_Y_S + orientation, DEFAULT_CANDIDATE_Y);
-//            mCandiParams.width = sp.getInt(CANDIDATE_WIDTH + orientation, DEFAULT_CANDIDATE_WIDTH);
-//            mCandiParams.height = sp.getInt(CANDIDATE_HEIGHT + orientation, DEFAULT_CANDIDATE_HEIGHT);
         }
 
         /**
@@ -1349,17 +1339,8 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             editor.putInt(KEYBOARD_Y_S + orientation, keyboardParams.y);
             editor.putInt(KEYBOARD_HEIGHT_S + orientation, keyboardHeight);
 
-//            if (mSetKeyboardSizeView.isJustKeyboard()) {
             editor.putInt(FULL_WIDTH_X_S + orientation, keyboardParams.x);
             editor.putInt(FULL_WIDTH_S + orientation, keyboardWidth);
-//            } else {
-//                editor.putInt(KEYBOARD_X_S + orientation, keyboardParams.x);
-//                editor.putInt(KEYBOARD_WIDTH_S + orientation, keyboardWidth);
-//            }
-//            editor.putInt(CANDIDATE_X_S + orientation, mCandiParams.x);
-//            editor.putInt(CANDIDATE_Y_S + orientation, mCandiParams.y);
-//            editor.putInt(CANDIDATE_WIDTH + orientation, mCandiParams.width);
-//            editor.putInt(CANDIDATE_HEIGHT + orientation, mCandiParams.height);
             editor.commit();
         }
     }
