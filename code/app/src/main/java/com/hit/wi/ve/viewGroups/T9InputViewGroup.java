@@ -14,14 +14,15 @@ import com.hit.wi.ve.values.Global;
 import com.hit.wi.ve.view.QuickButton;
 
 /**
- * Created by admin on 2016/2/29.
+ * Created by purebluesong on 2016/2/29.
  */
 public class T9InputViewGroup extends NonScrollViewGroup {
 
+    private static final float KEY_WIDTH_RATE = (float) 0.33;
     /**
      * 九键切换出去时的动画资源
      */
-    int[] keyS = {
+    private int[] keyS = {
             R.anim.key_1_switch_out,
             R.anim.key_2_switch_out,
             R.anim.key_3_switch_out,
@@ -37,7 +38,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
     /**
      * 九键切换回来时的动画资源
      */
-    int[] keyShow = {
+    private int[] keyShow = {
             R.anim.key_1_switch_in,
             R.anim.key_2_switch_in,
             R.anim.key_3_switch_in,
@@ -52,7 +53,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
     /**
      * 九键键盘打开时的动画资源
      */
-    int[] keyA = {
+    private int[] keyA = {
             R.anim.key_1_in,
             R.anim.key_2_in,
             R.anim.key_3_in,
@@ -72,7 +73,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
     /**
      * 九键隐藏时的动画资源
      */
-    int[] keyO = {
+    private int[] keyO = {
             R.anim.key_1_out,
             R.anim.key_2_out,
             R.anim.key_3_out,
@@ -90,8 +91,8 @@ public class T9InputViewGroup extends NonScrollViewGroup {
     };
 
     private String[] mSlideText;
-    public String[] mT9keyText;
-    public String[] mNumKeyText;
+    private String[] mT9keyText;
+    private String[] mNumKeyText;
     private String[] mSymbolKeyText;
     private String[] mSymbolKeySendText;
     private String[] mOtherSymbolTypeList;
@@ -134,7 +135,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
         addDeleteButton();
     }
 
-    public void addDeleteButton(){
+    private void addDeleteButton(){
         deleteButton = super.addButton(res.getString(R.string.delete_text),
                 skinInfoManager.skinData.textcolors_delete,
                 skinInfoManager.skinData.backcolor_delete);
@@ -145,13 +146,12 @@ public class T9InputViewGroup extends NonScrollViewGroup {
         deleteButton.setOnTouchListener(mDeleteOnTouchListener);
     }
 
-    public QuickButton addButtonT(String text){
+    private QuickButton addButtonT(String text){
         QuickButton button = super.addButton(text,
                 skinInfoManager.skinData.textcolors_delete,
                 skinInfoManager.skinData.backcolor_delete);
         button.setOnTouchListener(mInputViewOnTouchListener);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0,0);
-        button.itsLayoutParams = params;
+        button.itsLayoutParams = new LinearLayout.LayoutParams(0,0);
         return button;
     }
 
@@ -214,13 +214,11 @@ public class T9InputViewGroup extends NonScrollViewGroup {
             params.width = ViewGroup.LayoutParams.MATCH_PARENT;
             params.height = height/LAYER_NUM - 2*horGap/3;
             params.bottomMargin = horGap;
-            params.leftMargin = horGap;
-            params.rightMargin = horGap;
         }
         linearParams[2].bottomMargin = 0;
         int margin = horGap/2;
         for(QuickButton button:buttonList){
-            button.itsLayoutParams.width = keyboardWidth / 3 - horGap;
+            button.itsLayoutParams.width = (int) (keyboardWidth * KEY_WIDTH_RATE - horGap);
             button.itsLayoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT;
             ((LinearLayout.LayoutParams)button.itsLayoutParams).leftMargin = margin;
             ((LinearLayout.LayoutParams)button.itsLayoutParams).rightMargin = margin;
@@ -344,7 +342,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
      * @param text        要显示的字符串列表
      * @param sendKeyList 要向内核传递的字符
      */
-    public void switchSymbolToFunc(String[] text, String[] sendKeyList) {
+    private void switchSymbolToFunc(String[] text, String[] sendKeyList) {
         softKeyboard8.quickSymbolViewGroup.hide();
         softKeyboard8.specialSymbolChooseViewGroup.show();
         softKeyboard8.specialSymbolChooseViewGroup.setFlagTextandKeys(text, sendKeyList);
@@ -354,7 +352,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
      * 功能：切换回字符键盘显示更多选项后的功能键
      * 调用时机：切换键盘或者按下除“其他”或者“emoji时”调用
      */
-    public void switchBackFunc() {
+    private void switchBackFunc() {
         softKeyboard8.quickSymbolViewGroup.setVisibility(View.VISIBLE);
         softKeyboard8.specialSymbolChooseViewGroup.hide();
     }
@@ -370,7 +368,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
      * 功能：监听数字键盘的touch事件
      * 调用时机：touch 数字键盘
      */
-    public View.OnTouchListener mNumKeyboardOnTouchListener = new View.OnTouchListener() {
+    private View.OnTouchListener mNumKeyboardOnTouchListener = new View.OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
             softKeyboard8.transparencyHandle.handleAlpha(event.getAction());
             if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -386,7 +384,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
      * 功能：监听符号键盘的touch 事件
      * 调用时机：touch 符号键盘
      */
-    public View.OnTouchListener mSymbolKeyOnTouchListener = new View.OnTouchListener() {
+    private View.OnTouchListener mSymbolKeyOnTouchListener = new View.OnTouchListener() {
 
         public boolean onTouch(View v, MotionEvent event) {
             softKeyboard8.transparencyHandle.handleAlpha(event.getAction());
@@ -416,7 +414,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
      * 功能：监听九键键盘的touch事件
      * 调用时机：touch 九键键盘
      */
-    public View.OnTouchListener mInputViewOnTouchListener = new View.OnTouchListener() {
+    private View.OnTouchListener mInputViewOnTouchListener = new View.OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
             softKeyboard8.transparencyHandle.handleAlpha(event.getAction());
             String text = "";
@@ -464,7 +462,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
         }
     };
 
-    View.OnTouchListener mDeleteOnTouchListener = new View.OnTouchListener() {
+    private View.OnTouchListener mDeleteOnTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             softKeyboard8.transparencyHandle.handleAlpha(event.getAction());
@@ -490,7 +488,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
                         softKeyboard8.commitText(Global.redoTextForDeleteAll);
                         Global.redoTextForDeleteAll = "";
                     }
-                    if(Global.redoTextForDeleteAll_preedit != ""){
+                    if(!Global.redoTextForDeleteAll_preedit.equals("")){
                         softKeyboard8.sendMsgToKernel(Global.redoTextForDeleteAll_preedit);
                         Global.redoTextForDeleteAll_preedit = "";
                     } else {
