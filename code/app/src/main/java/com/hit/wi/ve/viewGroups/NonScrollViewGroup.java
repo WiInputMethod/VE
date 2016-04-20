@@ -12,6 +12,9 @@ import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
+
+import com.hit.wi.util.CommonFuncs;
+import com.hit.wi.util.ViewFuncs;
 import com.hit.wi.ve.R;
 import com.hit.wi.ve.SoftKeyboard;
 import com.hit.wi.ve.values.Global;
@@ -75,8 +78,7 @@ public class NonScrollViewGroup extends myViewGroup {
     public void setBackgroundColor(int color) {
         backgroundColor = color;
         for (QuickButton quickButton : buttonList) {
-            quickButton.setBackgroundColor(color);
-
+            ViewFuncs.setBackgroundWithGradientDrawable(quickButton, color);
         }
     }
     @Override
@@ -278,7 +280,8 @@ public class NonScrollViewGroup extends myViewGroup {
 
         button.setBackgroundResource(R.drawable.middle_button);
         button.setTextColor(textColor);
-        button.setBackgroundColor(backgroundColor);
+        ViewFuncs.setBackgroundWithGradientDrawable(button,backgroundColor);
+        //button.setBackgroundColor(backgroundColor);
         button.getBackground().setAlpha(Global.getCurrentAlpha());
         return  button;
     }

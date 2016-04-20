@@ -204,29 +204,24 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
 
     public void updateSkin() {
         switchKeyboardButton.setTextColor(skinInfoManager.skinData.textcolors_enter);
-        switchKeyboardButton.setBackgroundColor(skinInfoManager.skinData.backcolor_enter);
-
+        ViewFuncs.setBackgroundWithGradientDrawable(switchKeyboardButton, skinInfoManager.skinData.backcolor_enter);
 
         expressionButton.setTextColor(skinInfoManager.skinData.textcolors_space);
-        expressionButton.setBackgroundColor(skinInfoManager.skinData.backcolor_space);
+        ViewFuncs.setBackgroundWithGradientDrawable(expressionButton, skinInfoManager.skinData.backcolor_space);
 
 
         spaceButton.setTextColor(skinInfoManager.skinData.textcolors_space);
-        spaceButton.setBackgroundColor(skinInfoManager.skinData.backcolor_space);
+        ViewFuncs.setBackgroundWithGradientDrawable(spaceButton, skinInfoManager.skinData.backcolor_space);
 
 
         enterButton.setTextColor(skinInfoManager.skinData.textcolors_enter);
-        enterButton.setBackgroundColor(skinInfoManager.skinData.backcolor_enter);
-
+        ViewFuncs.setBackgroundWithGradientDrawable(enterButton, skinInfoManager.skinData.backcolor_enter);
 
         zeroButton.setTextColor(skinInfoManager.skinData.textcolors_zero);
-        zeroButton.setBackgroundColor(skinInfoManager.skinData.backcolor_zero);
-
+        ViewFuncs.setBackgroundWithGradientDrawable(zeroButton,skinInfoManager.skinData.backcolor_zero);
 
         returnButton.setTextColor(skinInfoManager.skinData.textcolors_enter);
-        returnButton.setBackgroundColor(skinInfoManager.skinData.backcolor_enter);
-
-
+        ViewFuncs.setBackgroundWithGradientDrawable(returnButton,skinInfoManager.skinData.backcolor_enter);
         setBackgroundAlpha(Global.getCurrentAlpha());
     }
 
@@ -250,11 +245,14 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
                     removeButton(enterButton);
                     setText(WIStringManager.convertStringstoList(res.getStringArray(R.array.KEYBOARD_TYPE)));
                     setButtonWidth(paramsForViewGroup.width / buttonList.size() - padding);
-                    setBackgroundColor(skinInfoManager.skinData.backcolor_26keys);
+                    //setBackgroundColor(skinInfoManager.skinData.backcolor_26keys);
+                    ViewFuncs.setBackgroundWithGradientDrawable(v,skinInfoManager.skinData.backcolor_26keys);
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    setBackgroundColor(skinInfoManager.skinData.backcolor_26keys);
-                    buttonList.get(position).setBackgroundColor(skinInfoManager.skinData.backcolor_touchdown);
+                    //setBackgroundColor(skinInfoManager.skinData.backcolor_26keys);
+                    ViewFuncs.setBackgroundWithGradientDrawable(v, skinInfoManager.skinData.backcolor_26keys);
+                    //buttonList.get(position).setBackgroundColor(skinInfoManager.skinData.backcolor_touchdown);
+                    ViewFuncs.setBackgroundWithGradientDrawable(buttonList.get(position), skinInfoManager.skinData.backcolor_touchdown);
                     break;
                 case MotionEvent.ACTION_UP:
                     setText(Collections.EMPTY_LIST);
