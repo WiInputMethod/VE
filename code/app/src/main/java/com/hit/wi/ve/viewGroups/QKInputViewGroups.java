@@ -2,6 +2,7 @@ package com.hit.wi.ve.viewGroups;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.graphics.drawable.ShapeDrawable;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -229,8 +230,8 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         int keyHeight = height / 3;
         for (int j = 0; j < 3; ++j) {
             linearsParams[j].height = keyHeight;
-            linearsParams[j].leftMargin = horGap;
-            linearsParams[j].rightMargin = horGap;
+//            linearsParams[j].leftMargin = horGap;
+//            linearsParams[j].rightMargin = horGap;
         }
         int padding = horGap/2;
         for (LinearLayout button:buttonList){
@@ -320,13 +321,13 @@ public class QKInputViewGroups extends NonScrollViewGroup {
 
             main_text.setTextColor(skinInfoManager.skinData.textcolors_26keys);
             main_text.setShadowLayer(Global.shadowRadius, 0, 0, skinInfoManager.skinData.shadow);
-            //ViewFuncs.setBackgroundWithGradientDrawable(main_text, skinInfoManager.skinData.backcolor_26keys);
-            main_text.setBackgroundColor(skinInfoManager.skinData.backcolor_26keys);
+            ViewFuncs.setBackgroundWithGradientDrawable(main_text, skinInfoManager.skinData.backcolor_26keys);
+            //main_text.setBackgroundColor(skinInfoManager.skinData.backcolor_26keys);
             main_text.getBackground().setAlpha(Global.getCurrentAlpha());
             predict_text.setTextColor(skinInfoManager.skinData.textcolors_26keys);
             predict_text.setShadowLayer(Global.shadowRadius, 0, 0, skinInfoManager.skinData.shadow);
-            predict_text.setBackgroundColor(skinInfoManager.skinData.backcolor_26keys);
-            //ViewFuncs.setBackgroundWithGradientDrawable(predict_text,skinInfoManager.skinData.backcolor_26keys);
+            //predict_text.setBackgroundColor(skinInfoManager.skinData.backcolor_26keys);
+            ViewFuncs.setBackgroundWithGradientDrawable(predict_text,skinInfoManager.skinData.backcolor_26keys);
             predict_text.getBackground().setAlpha(Global.getCurrentAlpha()); //设置透明度
         }
 

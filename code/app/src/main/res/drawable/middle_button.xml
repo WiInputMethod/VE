@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
-       android:shape="rectangle">
+       android:shape="rectangle"
+
+    >
+
 
 
     <padding
@@ -12,7 +15,5 @@
     <stroke android:width="1dip"
             android:color="#333333"
     />
-    <gradient android:startColor="#ffffff"
-        android:endColor="#ffffff"/>
     <corners android:radius="5dip"/>
 </shape>

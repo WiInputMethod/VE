@@ -16,6 +16,7 @@
             android:layout_weight="2"
             android:gravity="center_vertical|center"
             android:text=""
+        android:background="@drawable/predict_text"
     />
 
 
@@ -29,6 +30,7 @@
             android:layout_weight="7"
             android:gravity="center_vertical|center"
             android:text=""
+        android:background="@drawable/main_text"
     />
 
 </LinearLayout>

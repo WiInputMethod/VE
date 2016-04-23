@@ -19,6 +19,7 @@ import com.hit.wi.ve.view.QuickButton;
  */
 public class T9InputViewGroup extends NonScrollViewGroup {
 
+    private final float BUTTON_WIDTH_RATE = (float) 0.32;
     /**
      * 九键切换出去时的动画资源
      */
@@ -118,17 +119,18 @@ public class T9InputViewGroup extends NonScrollViewGroup {
         mOtherSymbolTypeSendKeyList = res.getStringArray(R.array.OTHER_SYMBOL_SEND_TEXT);
         mSymbolKeyText = res.getStringArray(R.array.KEY_SYMBOL_TEXT);
 
+
         int count = 0;
         for (int i = 0; i < LAYER_NUM; ++i) {
             linears[i] = new LinearLayout(context);
             linearParams[i] = new LinearLayout.LayoutParams(0,0);
             linears[i].setOrientation(LinearLayout.HORIZONTAL);
-            linears[i].setGravity(Gravity.CENTER);
             for (int j = 0; j < KEY_NUM/LAYER_NUM;j++){
                 QuickButton button = addButtonT(mT9keyText[count++]);
-                linears[i].addView(button,button.itsLayoutParams);
+                linears[i].addView(button, button.itsLayoutParams);
                 buttonList.add(button);
             }
+            linears[i].setGravity(Gravity.CENTER | Gravity.CENTER_HORIZONTAL);
             viewGroupWrapper.addView(linears[i],linearParams[i]);
         }
 
@@ -215,13 +217,13 @@ public class T9InputViewGroup extends NonScrollViewGroup {
             params.width = ViewGroup.LayoutParams.MATCH_PARENT;
             params.height = height/LAYER_NUM - 2*horGap/3;
             params.bottomMargin = horGap;
-            params.leftMargin = horGap;
-            params.rightMargin = horGap;
+//            params.leftMargin = horGap;
+//            params.rightMargin = horGap;
         }
         linearParams[2].bottomMargin = 0;
         int margin = horGap/2;
         for(QuickButton button:buttonList){
-            button.itsLayoutParams.width = keyboardWidth / 3 - horGap;
+            button.itsLayoutParams.width = (int) (keyboardWidth * BUTTON_WIDTH_RATE - horGap);
             button.itsLayoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT;
             ((LinearLayout.LayoutParams)button.itsLayoutParams).leftMargin = margin;
             ((LinearLayout.LayoutParams)button.itsLayoutParams).rightMargin = margin;
