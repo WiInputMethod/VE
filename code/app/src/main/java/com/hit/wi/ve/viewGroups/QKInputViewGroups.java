@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by zrp on 2016/2/26.
+ * Created by purebluesong on 2016/2/26.
  */
 public class QKInputViewGroups extends NonScrollViewGroup {
 
@@ -104,19 +104,18 @@ public class QKInputViewGroups extends NonScrollViewGroup {
     };
 
     private String[] enKeyText;
-    private int EN_KEY_TEXT_SIZE = 80;
     private int SMILE_KEYS_NUM = 4;
     private int[] linear_keys_num = {10,9,7};
     private String[] shiftText;
     private String smileText;
-    public boolean mShiftOn = false;
+    private boolean mShiftOn = false;
 
     private LinearLayout[] linears = new LinearLayout[3];
     private LinearLayout.LayoutParams[] linearsParams = new LinearLayout.LayoutParams[3];
     private PredictManager predictManager  = new PredictManager();
-    public QuickButton shiftButton ;
-    public QuickButton smileButton ;
-    public QuickButton deleteButton;
+    private QuickButton shiftButton ;
+    private QuickButton smileButton ;
+    private QuickButton deleteButton;
     public List<LinearLayout> buttonList;
     private String[] mAllSmileText;
 
@@ -156,8 +155,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
                 skinInfoManager.skinData.textcolors_shift,
                 skinInfoManager.skinData.backcolor_shift);
         shiftButton.setOnTouchListener(mShiftKeyOnTouchListener);
-        LinearLayout.LayoutParams shiftparams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
-        shiftButton.itsLayoutParams = shiftparams;
+        shiftButton.itsLayoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
         linears[2].addView(shiftButton,0);
     }
 
@@ -166,8 +164,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
                 skinInfoManager.skinData.textcolors_shift,
                 skinInfoManager.skinData.backcolor_shift);
         smileButton.setOnTouchListener(mSmileKeyOnTouchListener);
-        LinearLayout.LayoutParams smileparams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
-        smileButton.itsLayoutParams = smileparams;
+        smileButton.itsLayoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
         linears[2].addView(smileButton,1);
     }
 
@@ -177,8 +174,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
                 skinInfoManager.skinData.backcolor_delete
         );
         deleteButton.setOnTouchListener(mDeleteOnTouchListener);
-        LinearLayout.LayoutParams deleteparams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
-        deleteButton.itsLayoutParams = deleteparams;
+        deleteButton.itsLayoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
         linears[2].addView(deleteButton);
     }
 
@@ -200,7 +196,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         }
     }
 
-    public void toolfunc_refreshQKKeyboardPredict(String text, LinearLayout button, String predictText) {
+    private void toolfunc_refreshQKKeyboardPredict(String text, LinearLayout button, String predictText) {
         text = text.length()<1 ? Global.currentKeyboard == Global.KEYBOARD_EN ? "" : predictText:text;
         ((TextView) button.findViewById(R.id.predict_text)).setText(InputMode.halfToFull(text));
     }
@@ -306,7 +302,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         lastState = Global.currentKeyboard;
     }
 
-    public void tool_updateSkin(TextView v, int textcolor, int backgroundcolor) {
+    private void tool_updateSkin(TextView v, int textcolor, int backgroundcolor) {
         v.setTextColor(textcolor);
         ViewFuncs.setBackgroundWithGradientDrawable(v, backgroundcolor);
 
@@ -426,7 +422,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         return button;
     }
 
-    public View getEnKeyInflaterView(String text,String predict){
+    private View getEnKeyInflaterView(String text,String predict){
         LayoutInflater enKeyInflater = LayoutInflater.from(softKeyboard8);
         View button = enKeyInflater.inflate(R.layout.en_key, null);
         TextView main_text = (TextView) button.findViewById(R.id.main_text);
@@ -460,21 +456,21 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         smileButton.setTypeface(typeface);
     }
 
-    private void onTouchEffect(View view, int action,int backgroundcolor){
+    private void onTouchEffect(View view, int action,int backgroundColor){
         softKeyboard8.transparencyHandle.handleAlpha(action);
         softKeyboard8.keyBoardTouchEffect.onTouchEffectWithAnim(
                 view,action,
                 skinInfoManager.skinData.backcolor_touchdown,
-                backgroundcolor,
+                backgroundColor,
                 context
         );
     }
 
-    private void onTouchEffectSpecial(View view,int action,int backgroundcolor){
+    private void onTouchEffectSpecial(View view,int action,int backgroundColor){
         softKeyboard8.transparencyHandle.handleAlpha(action);
         softKeyboard8.keyBoardTouchEffect.onTouchEffectWithAnimForQK(view,action,
                 skinInfoManager.skinData.backcolor_touchdown,
-                backgroundcolor,
+                backgroundColor,
                 context
         );
     }
@@ -501,8 +497,9 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         softKeyboard8.transparencyHandle.DownAlpha();
     }
 
-    String alphabetUpCase = "QWERTYUIOPASDFGHJKLZXCVBNM";
-    String alphabet = "qwertyuiopasdfghjklzxcvbnm";
+    //of course it should be in stack
+    private String alphabetUpCase = "QWERTYUIOPASDFGHJKLZXCVBNM";
+    private String alphabet = "qwertyuiopasdfghjklzxcvbnm";
 
     private View.OnTouchListener qkInputOnTouchListener = new View.OnTouchListener() {
         @Override
@@ -564,7 +561,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         }
     };
 
-    View.OnTouchListener enInputOnTouchListener = new View.OnTouchListener() {
+    private View.OnTouchListener enInputOnTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
             onTouchEffectSpecial(view,motionEvent.getAction(),skinInfoManager.skinData.backcolor_26keys);
@@ -587,7 +584,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
      * 功能：监听英文键盘Shift键的touch事件
      * 调用时机：touch英文键盘的Shift键
      */
-    View.OnTouchListener mShiftKeyOnTouchListener = new View.OnTouchListener() {
+    private View.OnTouchListener mShiftKeyOnTouchListener = new View.OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
             softKeyboard8.transparencyHandle.handleAlpha(event.getAction());
             if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -611,7 +608,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
             android.R.id.paste
     };
 
-    View.OnTouchListener mSmileKeyOnTouchListener = new View.OnTouchListener() {
+    private View.OnTouchListener mSmileKeyOnTouchListener = new View.OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
             softKeyboard8.transparencyHandle.handleAlpha(event.getAction());
             switch (event.getAction()) {
@@ -655,7 +652,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
     };
 
 
-    View.OnTouchListener mDeleteOnTouchListener = new View.OnTouchListener() {
+    private View.OnTouchListener mDeleteOnTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             softKeyboard8.transparencyHandle.handleAlpha(event.getAction());
@@ -680,7 +677,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
                         softKeyboard8.commitText(Global.redoTextForDeleteAll);
                         Global.redoTextForDeleteAll = "";
                     }
-                    if(Global.redoTextForDeleteAll_preedit != ""){
+                    if(!Global.redoTextForDeleteAll_preedit.equals("")){
                         softKeyboard8.sendMsgToQKKernel(Global.redoTextForDeleteAll_preedit);
                         Global.redoTextForDeleteAll_preedit = "";
                     } else {
