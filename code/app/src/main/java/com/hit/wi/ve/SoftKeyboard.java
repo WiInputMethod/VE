@@ -36,6 +36,7 @@ import com.hit.wi.jni.*;
 import com.hit.wi.ve.Interfaces.SoftKeyboardInterface;
 import com.hit.wi.ve.effect.KeyBoardTouchEffect;
 import com.hit.wi.ve.functions.GenerateMessage;
+import com.hit.wi.ve.functions.PinyinEditProcess;
 import com.hit.wi.ve.functions.SharedPreferenceManager;
 import com.hit.wi.ve.functions.SymbolsManager;
 import com.hit.wi.ve.values.Global;
@@ -152,18 +153,15 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     private final String KEYBOARD_HEIGHT_S = "KEYBOARD_HEIGHT";
 
     private boolean mWindowShown = false;
-    /**
-     * 左手模式
-     */
-    private boolean mLeftHand = false;
+
     private boolean show = true;
     /**
      * 光标位置处理
      */
-    private int mNewStart;
-    private int mNewEnd;
-    private int mCandicateStart;
-    private int mCandicateEnd;
+    private int mSelStart;
+    private int mSelEnd;
+    private int mCandidateStart;
+    private int mCandidateEnd;
 
     public int keyboardWidth = 0;
     private int keyboardHeight = 0;
@@ -208,6 +206,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     public SymbolsManager symbolsManager;
     public KeyBoardTouchEffect keyBoardTouchEffect;
     public SkinInfoManager skinInfoManager;
+    public PinyinEditProcess pinyinEditProcess;
     private Resources res;
 
     /**
@@ -231,13 +230,11 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                     sendEmptyMessageDelayed(MSG_REPEAT, REPEAT_INTERVAL);
                     break;
                 case MSG_SEND_TO_KERNEL:
-                    innerEdit((String)msg.obj,false);
-//                    Kernel.inputPinyin((String) msg.obj);
-//                    refreshDisplay();
+                    editPinyin((String)msg.obj,false);
                     t9InputViewGroup.updateFirstKeyText();
                     break;
                 case QP_MSG_SEND_TO_KERNEL:
-                    innerEdit((String) msg.obj, false);
+                    editPinyin((String) msg.obj, false);
                     break;
                 case MSG_CHOOSE_WORD:
                     chooseWord(msg.arg1);
@@ -303,6 +300,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         t9InputViewGroup = new T9InputViewGroup();
         preEditPopup = new PreEditPopup();
         lightViewManager = new LightViewManager();
+        pinyinEditProcess = new PinyinEditProcess(this);
 
         secondLayerLayout = new LinearLayout(this);
         keyboardLayout = new LinearLayout(this);
@@ -332,10 +330,10 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     public void onUpdateSelection(int oldSelStart, int oldSelEnd,
                                   int newSelStart, int newSelEnd,
                                   int candidatesStart, int candidatesEnd) {
-        this.mNewStart = newSelStart;
-        this.mNewEnd = newSelEnd;
-        this.mCandicateStart = candidatesStart;
-        this.mCandicateEnd = candidatesEnd;
+        pinyinEditProcess.mSelStart = Math.min(newSelStart,newSelEnd);
+        pinyinEditProcess.mSelEnd = Math.max(newSelStart,newSelEnd);
+        pinyinEditProcess.mCandidateStart = Math.min(candidatesStart,candidatesEnd);
+        pinyinEditProcess.mCandidateEnd = Math.max(candidatesStart,candidatesEnd);
         super.onUpdateSelection(oldSelStart, oldSelEnd, newSelStart, newSelEnd,
                 candidatesStart, candidatesEnd);
     }
@@ -357,135 +355,25 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
     /**
      * 功能：编辑功能，负责向内核传递字符，句内编辑也是在这里做
+     * selstart意思是 selection Start 被选中区域的开头部分，selEnd同理
      * 调用时机：{@link #mHandler}处理{@link #MSG_SEND_TO_KERNEL}时调用
-     * @author huangzhiwei
-     * @auther purebluesong
      * @param s 向内核传入的字符,delete 是否删除操作
      */
-    public void innerEdit(String s, boolean delete) {
+    public void editPinyin(String s, boolean delete) {
+        if(pinyinEditProcess.borderEditProcess(s,delete))return;// promise candidateStart<selStart<candidateEnd
         mQPOrEmoji = Global.QUANPIN;
-        final int selectionStart = Math.min(mNewStart, mNewEnd);
-        final int selectionEnd = Math.max(mNewStart, mNewEnd);
-        final int candicateStart = Math.min(mCandicateStart, mCandicateEnd);
-        final int candicateEnd = Math.max(mCandicateStart, mCandicateEnd);
-        if (selectionStart <= candicateStart || selectionStart > candicateEnd) {
-            if (delete) {
-                this.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL);
-                preEditPopup.setCursor(selectionStart-1,selectionEnd-1);
-                return;
-            }
-        }
-        //cursor is after selection end
-        if (candicateEnd <= selectionStart) {
-            if (delete) {
-                Kernel.deleteAction();
-            } else {
-                Kernel.inputPinyin(s);
-            }
-            qkInputViewGroups.refreshQKKeyboardPredict();
-            if(selectionEnd !=0)
-                preEditPopup.setCursor(Kernel.getWordsShowPinyin().length());
-            refreshDisplay();
-            return;
-        }
+
         final InputConnection ic = getCurrentInputConnection();
         if (ic == null) return;
-        //开始处理真正的句内编辑
-        final String candicateString = Kernel.getWordsShowPinyin();
-        if (candicateString.length() != candicateEnd - candicateStart) return;
+        final String pinyin = Kernel.getWordsShowPinyin();
+        if (pinyin.length() != mCandidateEnd - mCandidateStart) return;
+
         //切割字符串
-        final int isDel = delete && selectionStart == selectionEnd ? 1 : 0;
-        String sBegin = selectionStart > candicateStart ? candicateString.substring(0, selectionStart - candicateStart - isDel).replace("'", "") : "";
-        sBegin += s;
-        String sEnd = selectionEnd <= candicateStart ? candicateString : (selectionEnd < candicateEnd ? candicateString.substring(selectionEnd - candicateStart).replace("'", "") : "");
-        int i, j;
-        if (sBegin.length() > 0 && Character.getType(sBegin.charAt(0)) != Character.OTHER_LETTER) {
-            final String sylla = sBegin + sEnd;
-            Kernel.cleanKernel();
-            Kernel.inputPinyin(sylla);
-            String r = Kernel.getWordsShowPinyin();
-            for (i = 0, j = 0; i < sBegin.length() && j < r.length(); i++) {
-                if (r.charAt(j) == '\'') {
-                    j++;
-                }
-                j++;
-            }
-            preEditPopup.setCursor(candicateStart + j, candicateStart + j);
-            refreshDisplay();
-            qkInputViewGroups.refreshQKKeyboardPredict();
-            ic.setComposingText(r, 1);
-            ic.setSelection(candicateStart + j, candicateStart + j);
-            return ;
-        } else if ((sBegin.length() == 0) && (sEnd.length() > 0 ? Character.getType(sEnd.charAt(0)) != Character.OTHER_LETTER : true)) {
-            Kernel.cleanKernel();
-            Kernel.inputPinyin(sEnd);
-            qkInputViewGroups.refreshQKKeyboardPredict();
-            preEditPopup.setCursor(0,0);
-            refreshDisplay();
-            ic.setSelection(0, 0);
-            //未上屏字符中有中文
-        } else {
-            for (i = 0; i < sBegin.length() && Character.getType(sBegin.charAt(i)) == Character.OTHER_LETTER; i++);
-            // 光标前是汉字
-            if (i == sBegin.length() || (i == sBegin.length() - 1 && !delete)) {
-                for (j = 0; j < sEnd.length()
-                        && Character.getType(sEnd.charAt(j)) == Character.OTHER_LETTER; j++)
-                    ;
-                if (j != 0) {
-                    if (!delete) {
-                        Kernel.inputPinyin(s);
-                        qkInputViewGroups.refreshQKKeyboardPredict();
-                        preEditPopup.setCursor(selectionStart,selectionEnd);
-                        refreshDisplay();
-                        return ;
-                    }
-                }
-                if (delete) {
-                    ic.commitText(sBegin, 1);
-                    ic.commitText(sEnd.substring(0, j), 1);
-                    final String sylla = sEnd.substring(j);
-                    Kernel.cleanKernel();
-                    Kernel.inputPinyin(sylla);
-                    String r = Kernel.getWordsShowPinyin();
-                    ic.setComposingText(r, 1);
-                    ic.setSelection(candicateStart + i + j, candicateStart + i + j);
-                    preEditPopup.setCursor(candicateStart + i + j,candicateStart + i + j);
-                    refreshDisplay();
-                    qkInputViewGroups.refreshQKKeyboardPredict();
-                    return ;
-                }
-                if (!delete && j == 0) {
-                    if (sBegin.length() > 0) {
-                        ic.commitText(sBegin.substring(0, sBegin.length() - 1), 1);
-                        Kernel.cleanKernel();
-                        Kernel.inputPinyin(s + sEnd);
-                        ic.setSelection(mCandicateStart + 1, mCandicateStart + 1);
-                        preEditPopup.setCursor(mCandicateStart + 1, mCandicateStart + 1);
-                        refreshDisplay();
-                        qkInputViewGroups.refreshQKKeyboardPredict();
-                    }
-                }
-            } else {
-                // 光标前不是汉字
-                ic.commitText(sBegin.substring(0, i), 1);
-                final String sylla = sBegin.substring(i) + sEnd;
-                Kernel.cleanKernel();
-                Kernel.inputPinyin(sylla);
-                final String r = Kernel.getWordsShowPinyin();
-                int k;
-                for (k = i, j = 0; k < sBegin.length() && j < r.length(); k++) {
-                    if (r.charAt(j) == '\'') {
-                        j++;
-                    }
-                    j++;
-                }
-                ic.setComposingText(r, 1);
-                ic.setSelection(candicateStart + i + j, candicateStart + i + j);
-                preEditPopup.setCursor(candicateStart + i + j,candicateStart + i + j);
-                refreshDisplay();
-                qkInputViewGroups.refreshQKKeyboardPredict();
-            }
-        }
+        final int isDel = delete && mSelStart == mSelEnd ? 1 : 0;
+        Log.d("WIVE","selStart"+mSelStart+"　"+mSelEnd+" "+mCandidateStart+""+mCandidateEnd+" -"+pinyin+"-");
+        String sBefore = pinyin.substring(0, mSelStart - mCandidateStart - isDel).replace("'", "")+s;
+        String sAfter = mSelEnd <= mCandidateStart ? pinyin : (mSelEnd < mCandidateEnd ? pinyin.substring(mSelEnd - mCandidateStart).replace("'", "") : "");
+        pinyinEditProcess.innerEditProcess(ic,sBefore,s,sAfter,delete);
     }
 
     /**
@@ -507,8 +395,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     public void refreshDisplay(boolean special) {
         Log.i("Test","refreshDisplay");
         boolean isNK = Global.currentKeyboard == Global.KEYBOARD_T9 || Global.currentKeyboard == Global.KEYBOARD_SYM;
-        int candidateNum = Kernel.getWordsNumber();
-        boolean hideCandidate = candidateNum != 0 ? false : (special ? false : true);
+        boolean hideCandidate = Kernel.getWordsNumber()==0 && !special;
         Kernel.setKernelType(isNK?Kernel.NINE_KEY:Kernel.QWERT);
 
         if (mInputViewGG.isShown()) mInputViewGG.setVisibility(View.VISIBLE);
@@ -543,12 +430,12 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                 String pinyin = Kernel.getWordsShowPinyin();
                 Global.addToRedo(pinyin.substring(pinyin.length()-1));
                 t9InputViewGroup.updateFirstKeyText();
-                innerEdit("", true);
+                editPinyin("", true);
             } else if (Global.currentKeyboard == Global.KEYBOARD_QP) {
                 if (mQPOrEmoji.equals(Global.QUANPIN)) {
                     String pinyin = Kernel.getWordsShowPinyin();
                     Global.addToRedo(pinyin.substring(pinyin.length()-1));
-                    innerEdit("", true);
+                    editPinyin("", true);
                 } else if (mQPOrEmoji.equals(Global.EMOJI)) {
                     Kernel.cleanKernel();
                     refreshDisplay(true);
@@ -558,6 +445,30 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                 refreshDisplay(true);
             }
         }
+    }
+
+    private static final int TEXT_MAX_LENGTH = 100;
+    public void deleteAll() {
+        if (Kernel.getWordsNumber()==0 || Global.currentKeyboard == Global.KEYBOARD_SYM) {
+            InputConnection ic = SoftKeyboard.this.getCurrentInputConnection();
+            if (ic != null) {
+                Global.redoTextForDeleteAll = ic.getTextBeforeCursor(TEXT_MAX_LENGTH,0);
+                ic.deleteSurroundingText(Integer.MAX_VALUE, 0);
+            }
+        } else {
+            Global.redoTextForDeleteAll_preedit = Kernel.getWordsShowPinyin();
+            Global.redoTextForDeleteAll = "";
+        }
+        Kernel.cleanKernel();
+        if (Global.currentKeyboard == Global.KEYBOARD_T9 || Global.currentKeyboard == Global.KEYBOARD_SYM || Global.currentKeyboard == Global.KEYBOARD_NUM) {
+            t9InputViewGroup.updateFirstKeyText();
+            refreshDisplay();
+        } else if (Global.currentKeyboard == Global.KEYBOARD_QP) {
+            refreshDisplay(!mQPOrEmoji.equals(Global.QUANPIN));
+        } else if (Global.currentKeyboard == Global.KEYBOARD_EN) {
+            refreshDisplay();
+        }
+        qkInputViewGroups.refreshQKKeyboardPredict();//刷新点滑预测
     }
 
     public void chooseWord(int index) {
@@ -578,8 +489,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
     /**
      * 上屏,从这里传输的文字会直接填写到文本框里
-     *
-     * @param text
+     * @param text 上传文字
      */
     public void commitText(CharSequence text) {
         InputConnection ic = getCurrentInputConnection();
@@ -592,7 +502,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
     /**
      * 如其名，向九键内核传递拼音串
-     * @param msg
+     * @param msg pinyin
     * */
     public void sendMsgToKernel(String msg) {
         mHandler.sendMessage(mHandler.obtainMessage(MSG_SEND_TO_KERNEL, msg));
@@ -600,8 +510,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
     /**
      * 向全键内核传递拼音串
-     *
-     * @param msg
+     * @param msg pinyin
      * */
     public void sendMsgToQKKernel(String msg) {
         mHandler.sendMessage(mHandler.obtainMessage(QP_MSG_SEND_TO_KERNEL, msg));
@@ -648,7 +557,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
             edit.remove(FULL_WIDTH_S + orientation);
             edit.remove(FULL_WIDTH_X_S + orientation);
-            edit.commit();
+            edit.apply();
             screenInfoC.LoadKeyboardSizeInfoFromSharedPreference();
 
             viewSizeUpdate.updateViewSizeAndPosition();
@@ -756,34 +665,8 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
      * 一些工具函数集中存放的地方
      */
     public class  FunctionsC {
-        private static final int TEXT_MAX_LENGTH = 100;
-
-        //For Listeners
-        public void deleteAll() {
-            if (Kernel.getWordsNumber()==0 || Global.currentKeyboard == Global.KEYBOARD_SYM) {
-                InputConnection ic = SoftKeyboard.this.getCurrentInputConnection();
-                if (ic != null) {
-                    Global.redoTextForDeleteAll = ic.getTextBeforeCursor(TEXT_MAX_LENGTH,0);
-                    ic.deleteSurroundingText(Integer.MAX_VALUE, 0);
-                }
-            } else {
-                Global.redoTextForDeleteAll_preedit = Kernel.getWordsShowPinyin();
-                Global.redoTextForDeleteAll = "";
-            }
-            Kernel.cleanKernel();
-            if (Global.currentKeyboard == Global.KEYBOARD_T9 || Global.currentKeyboard == Global.KEYBOARD_SYM || Global.currentKeyboard == Global.KEYBOARD_NUM) {
-                t9InputViewGroup.updateFirstKeyText();
-                refreshDisplay();
-            } else if (Global.currentKeyboard == Global.KEYBOARD_QP) {
-                refreshDisplay(!mQPOrEmoji.equals(Global.QUANPIN));
-            } else if (Global.currentKeyboard == Global.KEYBOARD_EN) {
-                refreshDisplay();
-            }
-            qkInputViewGroups.refreshQKKeyboardPredict();//刷新点滑预测
-        }
-
         //For others
-        public void computeCursorPosition() {
+        void computeCursorPosition() {
             //计算光标位置
             int cursor = Kernel.getWordsShowPinyin() == null ? 0 : Kernel.getWordsShowPinyin().length();
             //上屏
@@ -803,33 +686,20 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
          * @return 是否要输入网址
          */
         private boolean isToShowUrl(EditorInfo ei) {
-            if (ei != null) {
-                if ((ei.inputType & EditorInfo.TYPE_MASK_CLASS) == EditorInfo.TYPE_CLASS_TEXT
-                        && (EditorInfo.TYPE_MASK_VARIATION & ei.inputType) == EditorInfo.TYPE_TEXT_VARIATION_URI) {
-                    return true;
-                }
-                if ((ei.imeOptions & (EditorInfo.IME_MASK_ACTION | EditorInfo.IME_FLAG_NO_ENTER_ACTION)) == EditorInfo.IME_ACTION_GO) {
-                    return true;
-                }
-            }
-            return false;
+            return ei!=null && ((ei.inputType & EditorInfo.TYPE_MASK_CLASS) == EditorInfo.TYPE_CLASS_TEXT
+                  && (EditorInfo.TYPE_MASK_VARIATION & ei.inputType) == EditorInfo.TYPE_TEXT_VARIATION_URI
+                  || (ei.imeOptions & (EditorInfo.IME_MASK_ACTION | EditorInfo.IME_FLAG_NO_ENTER_ACTION)) == EditorInfo.IME_ACTION_GO);
         }
 
         /**
          * 功能：判断输入框是否要输入邮箱
          * 调用时机：切换为符号键盘
-         *
-         * @param ei
-         * @return
+         * @param ei 编辑框信息
+         * @return 是否要输入邮箱的boolean
         */
         private boolean isToShowEmail(EditorInfo ei) {
-            if (ei != null) {
-                if ((ei.inputType & EditorInfo.TYPE_MASK_CLASS) == EditorInfo.TYPE_CLASS_TEXT
-                        && (EditorInfo.TYPE_MASK_VARIATION & ei.inputType) == EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS) {
-                    return true;
-                }
-            }
-            return false;
+            return ei!=null && (ei.inputType & EditorInfo.TYPE_MASK_CLASS) == EditorInfo.TYPE_CLASS_TEXT &&
+                        (EditorInfo.TYPE_MASK_VARIATION & ei.inputType) == EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS;
         }
 
         /**
@@ -847,7 +717,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             }
         }
 
-        public void refreshStateForSecondLayout() {
+        void refreshStateForSecondLayout() {
             if (Global.inLarge) {
                 secondLayerLayout.setVisibility(View.GONE);
             } else {
@@ -855,7 +725,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             }
         }
 
-        public void refreshStateForLargeCandidate(boolean show) {
+        void refreshStateForLargeCandidate(boolean show) {
             if (Global.inLarge || show) {
                 largeCandidateButton.setVisibility(View.GONE);
             } else {
@@ -1196,7 +1066,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             largeCandidateButton.getPaint().setTextSize(textsize);
         }
 
-        public void updateViewSizeAndPosition() {
+        void updateViewSizeAndPosition() {
             layerHeightRate = res.getIntArray(R.array.LAYER_HEIGHT);
             UpdateT9Size();
             secondParams.height = keyboardHeight * layerHeightRate[1] / 100;
@@ -1256,7 +1126,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             }
         }
 
-        public void updateShadowLayer() {
+        void updateShadowLayer() {
             qkCandidatesViewGroup.setShadowLayer(Global.shadowRadius, skinInfoManager.skinData.shadow);
             preFixViewGroup.setShadowLayer(Global.shadowRadius, skinInfoManager.skinData.shadow);
             quickSymbolViewGroup.setShadowLayer(Global.shadowRadius, skinInfoManager.skinData.shadow);
@@ -1298,7 +1168,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             DEFAULT_KEYBOARD_X = DEFAULT_KEYBOARD_WIDTH;
         }
 
-        public int getStatusBarHeight() {
+        int getStatusBarHeight() {
             int result = 0;
             int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
             if (resourceId > 0) {
@@ -1339,7 +1209,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
             editor.putInt(FULL_WIDTH_X_S + orientation, keyboardParams.x);
             editor.putInt(FULL_WIDTH_S + orientation, keyboardWidth);
-            editor.commit();
+            editor.apply();
         }
     }
 
@@ -1352,8 +1222,8 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         }
 
         /**
-         * @param alpha
-         * @author:purebluesong 参数说明：一个0到1的单精度浮点型
+         * author:purebluesong
+         * @param alpha 一个0到1的单精度浮点型表示透明度
          */
         public void setKeyBoardAlpha(float alpha) {
             int alphaInt = (int) (alpha * 255);
@@ -1361,8 +1231,8 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         }
 
         /**
-         * @param alphaInt
-         * @param alphaFloat 参数是0~255的整形值 和0~1的单精度浮点,不应该对外使用
+         * @param alphaInt 0~255的整形值
+         * @param alphaFloat  0~1的单精度浮点
          */
         @SuppressLint("NewApi")
         private void setKeyboardAlphaRaw(int alphaInt, float alphaFloat) {

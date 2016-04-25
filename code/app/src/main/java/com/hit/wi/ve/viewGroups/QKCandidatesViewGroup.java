@@ -334,7 +334,7 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
                     }
                     downX = event.getX();downY = event.getY();
                 case MotionEvent.ACTION_MOVE:
-                    if (Math.abs(event.getY() - downY) + Math.abs(event.getX() - downX) < 50) break;
+                    if (Math.abs(event.getY() - downY) + Math.abs(event.getX() - downX) < standardButtonHeight) break;
                     if (!Global.inLarge) {
                         largeTheCandidate();
                         softKeyboard8.bottomBarViewGroup.intoReturnState();
