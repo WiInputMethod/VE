@@ -2,9 +2,13 @@ package com.hit.wi.ve.effect;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.GradientDrawable;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+
+import com.hit.wi.util.ViewFuncs;
 import com.hit.wi.ve.R;
 import com.hit.wi.ve.values.Global;
 
@@ -46,14 +50,14 @@ public class KeyBoardTouchEffect implements KeyboardTouchEffectInterface {
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 onPressEffect();
-                v.setBackgroundColor(touchdown_color);
+                ViewFuncs.setBackgroundWithGradientDrawable(v,touchdown_color);
                 break;
             case MotionEvent.ACTION_MOVE:
                 onSlideEffect();
                 break;
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
-                v.setBackgroundColor(normal_color);
+                ViewFuncs.setBackgroundWithGradientDrawable(v,normal_color);
                 break;
         }
         v.getBackground().setAlpha(Global.getCurrentAlpha());

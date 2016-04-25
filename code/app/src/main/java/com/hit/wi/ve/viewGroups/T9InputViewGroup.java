@@ -5,6 +5,7 @@ import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
+import com.hit.wi.util.ViewFuncs;
 import com.hit.wi.jni.Kernel;
 import com.hit.wi.util.WIStringManager;
 
@@ -18,6 +19,11 @@ import com.hit.wi.ve.view.QuickButton;
  */
 public class T9InputViewGroup extends NonScrollViewGroup {
 
+<<<<<<< HEAD
+    private final float BUTTON_WIDTH_RATE = (float) 0.32;
+=======
+    private static final float KEY_WIDTH_RATE = (float) 0.33;
+>>>>>>> 0bd9c68db144b991259dc9c2f673c838994a5d06
     /**
      * 九键切换出去时的动画资源
      */
@@ -117,17 +123,18 @@ public class T9InputViewGroup extends NonScrollViewGroup {
         mOtherSymbolTypeSendKeyList = res.getStringArray(R.array.OTHER_SYMBOL_SEND_TEXT);
         mSymbolKeyText = res.getStringArray(R.array.KEY_SYMBOL_TEXT);
 
+
         int count = 0;
         for (int i = 0; i < LAYER_NUM; ++i) {
             linears[i] = new LinearLayout(context);
             linearParams[i] = new LinearLayout.LayoutParams(0,0);
             linears[i].setOrientation(LinearLayout.HORIZONTAL);
-            linears[i].setGravity(Gravity.CENTER);
             for (int j = 0; j < KEY_NUM/LAYER_NUM;j++){
                 QuickButton button = addButtonT(mT9keyText[count++]);
-                linears[i].addView(button,button.itsLayoutParams);
+                linears[i].addView(button, button.itsLayoutParams);
                 buttonList.add(button);
             }
+            linears[i].setGravity(Gravity.CENTER | Gravity.CENTER_HORIZONTAL);
             viewGroupWrapper.addView(linears[i],linearParams[i]);
         }
 
@@ -157,13 +164,13 @@ public class T9InputViewGroup extends NonScrollViewGroup {
     public void updateSkin(){
         for(QuickButton button:buttonList){
             button.setTextColor(skinInfoManager.skinData.textcolors_t9keys);
-            button.setBackgroundColor(skinInfoManager.skinData.backcolor_t9keys);
+            ViewFuncs.setBackgroundWithGradientDrawable(button, skinInfoManager.skinData.backcolor_t9keys);
             button.getBackground().setAlpha(Global.getCurrentAlpha());
             button.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
         }
 
         deleteButton.setTextColor(skinInfoManager.skinData.textcolors_delete);
-        deleteButton.setBackgroundColor(skinInfoManager.skinData.backcolor_delete);
+        ViewFuncs.setBackgroundWithGradientDrawable(deleteButton,skinInfoManager.skinData.backcolor_delete);
         deleteButton.getBackground().setAlpha(Global.getCurrentAlpha());
         deleteButton.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
     }
@@ -213,13 +220,13 @@ public class T9InputViewGroup extends NonScrollViewGroup {
             params.width = ViewGroup.LayoutParams.MATCH_PARENT;
             params.height = height/LAYER_NUM - 2*horGap/3;
             params.bottomMargin = horGap;
-            params.leftMargin = horGap;
-            params.rightMargin = horGap;
+
         }
         linearParams[2].bottomMargin = 0;
         int margin = horGap/2;
         for(QuickButton button:buttonList){
-            button.itsLayoutParams.width = keyboardWidth / 3 - horGap;
+
+            button.itsLayoutParams.width = (int) (keyboardWidth * KEY_WIDTH_RATE - horGap);
             button.itsLayoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT;
             ((LinearLayout.LayoutParams)button.itsLayoutParams).leftMargin = margin;
             ((LinearLayout.LayoutParams)button.itsLayoutParams).rightMargin = margin;
@@ -262,6 +269,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
     /**
      * 功能：显示九键
      * 调用时机：切换键盘时调用
+     *
      * @param showAnim 是否播放动画
      */
     public void showT9(boolean showAnim) {
@@ -282,6 +290,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
     /**
      * 功能：隐藏九键键盘
      * 调用时机：切换键盘时调用
+     *
      * @param showAnim 是否播放动画
      */
     public void hideT9(boolean showAnim) {
@@ -356,10 +365,10 @@ public class T9InputViewGroup extends NonScrollViewGroup {
         softKeyboard8.specialSymbolChooseViewGroup.hide();
     }
 
-    private void onTouchEffectWithAnim(View v,int action,int backgroundColor){
+    private void onTouchEffectWithAnim(View v,int action,int backcolor){
         softKeyboard8.keyBoardTouchEffect.onTouchEffectWithAnim(v,action,
                 skinInfoManager.skinData.backcolor_touchdown,
-                backgroundColor,
+                backcolor,
                 context);
     }
 
@@ -452,6 +461,8 @@ public class T9InputViewGroup extends NonScrollViewGroup {
                         softKeyboard8.sendMsgToKernel(commitText);
                     }
                     Global.keyboardRestTimeCount = 0;
+//                    softKeyboard8.mHandler.removeMessages(softKeyboard8.MSG_DOUBLE_CLICK_REFRESH);
+//                    softKeyboard8.mHandler.sendEmptyMessageDelayed(softKeyboard8.MSG_DOUBLE_CLICK_REFRESH,Global.metaRefreshTime);
                     break;
             }
             onTouchEffectWithAnim(v, event.getAction(), skinInfoManager.skinData.backcolor_t9keys);
@@ -479,13 +490,13 @@ public class T9InputViewGroup extends NonScrollViewGroup {
                 softKeyboard8.mHandler.removeMessages(softKeyboard8.MSG_REPEAT);
                 softKeyboard8.lightViewManager.lightViewAnimate(v,event);
                 if (event.getX() < 0 && Global.slideDeleteSwitch) {
-                    softKeyboard8.deleteAll();
+                    softKeyboard8.functionsC.deleteAll();
                 } else if (event.getY() < 0) {
                     if(Global.redoTextForDeleteAll != ""){
                         softKeyboard8.commitText(Global.redoTextForDeleteAll);
                         Global.redoTextForDeleteAll = "";
                     }
-                    if(Global.redoTextForDeleteAll_preedit != ""){
+                    if(!Global.redoTextForDeleteAll_preedit.equals("")){
                         softKeyboard8.sendMsgToKernel(Global.redoTextForDeleteAll_preedit);
                         Global.redoTextForDeleteAll_preedit = "";
                     } else {

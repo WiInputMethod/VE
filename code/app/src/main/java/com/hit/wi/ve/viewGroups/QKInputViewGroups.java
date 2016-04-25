@@ -2,6 +2,7 @@ package com.hit.wi.ve.viewGroups;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.graphics.drawable.ShapeDrawable;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by zrp on 2016/2/26.
+ * Created by purebluesong on 2016/2/26.
  */
 public class QKInputViewGroups extends NonScrollViewGroup {
 
@@ -41,7 +42,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
     /**
      * 英文显示时的动画资源
      */
-    private int[] enShow = {
+    int[] enShow = {
             R.anim.en_key_q_switch_in,
             R.anim.en_key_w_switch_in,
             R.anim.en_key_e_switch_in,
@@ -73,7 +74,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
     /**
      * 英文隐藏时的动画资源
      */
-    private int[] enHide = {
+    int[] enHide = {
             R.anim.en_key_q_switch_out,
             R.anim.en_key_w_switch_out,
             R.anim.en_key_e_switch_out,
@@ -103,7 +104,6 @@ public class QKInputViewGroups extends NonScrollViewGroup {
     };
 
     private String[] enKeyText;
-    private int EN_KEY_TEXT_SIZE = 80;
     private int SMILE_KEYS_NUM = 4;
     private int[] linear_keys_num = {10,9,7};
     private String[] shiftText;
@@ -226,8 +226,8 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         int keyHeight = height / 3;
         for (int j = 0; j < 3; ++j) {
             linearsParams[j].height = keyHeight;
-            linearsParams[j].leftMargin = horGap;
-            linearsParams[j].rightMargin = horGap;
+//            linearsParams[j].leftMargin = horGap;
+//            linearsParams[j].rightMargin = horGap;
         }
         int padding = horGap/2;
         for (LinearLayout button:buttonList){
@@ -304,7 +304,8 @@ public class QKInputViewGroups extends NonScrollViewGroup {
 
     private void tool_updateSkin(TextView v, int textcolor, int backgroundcolor) {
         v.setTextColor(textcolor);
-        v.setBackgroundColor(backgroundcolor);
+        ViewFuncs.setBackgroundWithGradientDrawable(v, backgroundcolor);
+
         v.getBackground().setAlpha(Global.getCurrentAlpha());
         v.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
     }
@@ -313,13 +314,16 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         for (LinearLayout button :buttonList) {
             TextView main_text = ((TextView) button.findViewById(R.id.main_text));
             TextView predict_text = ((TextView) button.findViewById(R.id.predict_text));
+
             main_text.setTextColor(skinInfoManager.skinData.textcolors_26keys);
             main_text.setShadowLayer(Global.shadowRadius, 0, 0, skinInfoManager.skinData.shadow);
-            main_text.setBackgroundColor(skinInfoManager.skinData.backcolor_26keys);
+            ViewFuncs.setBackgroundWithGradientDrawable(main_text, skinInfoManager.skinData.backcolor_26keys);
+            //main_text.setBackgroundColor(skinInfoManager.skinData.backcolor_26keys);
             main_text.getBackground().setAlpha(Global.getCurrentAlpha());
             predict_text.setTextColor(skinInfoManager.skinData.textcolors_26keys);
             predict_text.setShadowLayer(Global.shadowRadius, 0, 0, skinInfoManager.skinData.shadow);
-            predict_text.setBackgroundColor(skinInfoManager.skinData.backcolor_26keys);
+            //predict_text.setBackgroundColor(skinInfoManager.skinData.backcolor_26keys);
+            ViewFuncs.setBackgroundWithGradientDrawable(predict_text,skinInfoManager.skinData.backcolor_26keys);
             predict_text.getBackground().setAlpha(Global.getCurrentAlpha()); //设置透明度
         }
 
@@ -418,7 +422,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         return button;
     }
 
-    private View getEnKeyInflaterView(String text, String predict){
+    private View getEnKeyInflaterView(String text,String predict){
         LayoutInflater enKeyInflater = LayoutInflater.from(softKeyboard8);
         View button = enKeyInflater.inflate(R.layout.en_key, null);
         TextView main_text = (TextView) button.findViewById(R.id.main_text);
@@ -452,21 +456,21 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         smileButton.setTypeface(typeface);
     }
 
-    private void onTouchEffect(View view, int action,int backgroundcolor){
+    private void onTouchEffect(View view, int action,int backgroundColor){
         softKeyboard8.transparencyHandle.handleAlpha(action);
         softKeyboard8.keyBoardTouchEffect.onTouchEffectWithAnim(
                 view,action,
                 skinInfoManager.skinData.backcolor_touchdown,
-                backgroundcolor,
+                backgroundColor,
                 context
         );
     }
 
-    private void onTouchEffectSpecial(View view,int action,int backgroundcolor){
+    private void onTouchEffectSpecial(View view,int action,int backgroundColor){
         softKeyboard8.transparencyHandle.handleAlpha(action);
         softKeyboard8.keyBoardTouchEffect.onTouchEffectWithAnimForQK(view,action,
                 skinInfoManager.skinData.backcolor_touchdown,
-                backgroundcolor,
+                backgroundColor,
                 context
         );
     }
@@ -493,6 +497,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         softKeyboard8.transparencyHandle.DownAlpha();
     }
 
+    //of course it should be in stack
     private String alphabetUpCase = "QWERTYUIOPASDFGHJKLZXCVBNM";
     private String alphabet = "qwertyuiopasdfghjklzxcvbnm";
 
@@ -636,7 +641,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
                         int select = ((int) (x / perwidth));
                         ic.performContextMenuAction(performActions[select]);
                         if (select == 2){
-                            softKeyboard8.editPinyin("",false);
+                            softKeyboard8.innerEdit("",false);
                         }
                     }
                     break;
@@ -666,13 +671,13 @@ public class QKInputViewGroups extends NonScrollViewGroup {
                 softKeyboard8.mHandler.removeMessages(softKeyboard8.MSG_REPEAT);
                 softKeyboard8.lightViewManager.lightViewAnimate(v,event);
                 if (event.getX() < 0 && Global.slideDeleteSwitch) {
-                    softKeyboard8.deleteAll();
+                    softKeyboard8.functionsC.deleteAll();
                 } else if (event.getY() < 0) {
                     if(Global.redoTextForDeleteAll != ""){
                         softKeyboard8.commitText(Global.redoTextForDeleteAll);
                         Global.redoTextForDeleteAll = "";
                     }
-                    if(Global.redoTextForDeleteAll_preedit != ""){
+                    if(!Global.redoTextForDeleteAll_preedit.equals("")){
                         softKeyboard8.sendMsgToQKKernel(Global.redoTextForDeleteAll_preedit);
                         Global.redoTextForDeleteAll_preedit = "";
                     } else {

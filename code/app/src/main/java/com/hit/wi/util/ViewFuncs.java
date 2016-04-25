@@ -1,5 +1,8 @@
 package com.hit.wi.util;
 
+import android.graphics.drawable.GradientDrawable;
+import android.view.View;
+
 import com.hit.wi.ve.values.Global;
 
 /**
@@ -28,5 +31,22 @@ public class ViewFuncs {
     }
     public static boolean isQK(int keyboard){
         return keyboard == Global.KEYBOARD_EN || keyboard==Global.KEYBOARD_QP;
+    }
+
+    /**
+     * 设置View的背景颜色而不改变View的shape
+     * todo 这里用强转的时候会报错，暂时没有更好的解决方法所以用了try-catch
+     * @param v
+     * @param color
+     */
+    public static void setBackgroundWithGradientDrawable(View v,int color){
+        if(v!=null){
+        try {
+            GradientDrawable gd=(GradientDrawable)v.getBackground();
+            gd.setColor(color);
+        }catch (ClassCastException e){
+
+        }
+        }
     }
 }

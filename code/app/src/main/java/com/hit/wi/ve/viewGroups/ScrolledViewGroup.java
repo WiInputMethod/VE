@@ -12,6 +12,8 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
+
+import com.hit.wi.util.ViewFuncs;
 import com.hit.wi.ve.R;
 import com.hit.wi.ve.SoftKeyboard;
 import com.hit.wi.ve.values.Global;
@@ -89,6 +91,7 @@ public class ScrolledViewGroup extends myViewGroup {
     public void setBackgroundColor(int color) {
         backgroundColor = color;
         for (QuickButton quickButton : buttonList) {
+            ViewFuncs.setBackgroundWithGradientDrawable(quickButton,color);
             quickButton.setBackgroundColor(color);
         }
     }
@@ -145,8 +148,7 @@ public class ScrolledViewGroup extends myViewGroup {
         this.backgroundColor = backgroundcolor;
         for (QuickButton button : buttonList) {
             button.setTextColor(textcolor);
-
-            button.setBackgroundColor(backgroundcolor);
+            ViewFuncs.setBackgroundWithGradientDrawable(button,backgroundcolor);
             button.getBackground().setAlpha(Global.getCurrentAlpha());
 
         }
@@ -291,9 +293,7 @@ public class ScrolledViewGroup extends myViewGroup {
     protected QuickButton addButton(int textColor, int backgroundColor, String text) {
         QuickButton button = addButton(text);
         button.setTextColor(textColor);
-
-        button.setBackgroundColor(backgroundColor);
-
+        ViewFuncs.setBackgroundWithGradientDrawable(button,backgroundColor);
         button.getBackground().setAlpha(Global.getCurrentAlpha());
         return button;
     }
