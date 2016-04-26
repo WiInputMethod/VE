@@ -641,7 +641,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
                         int select = ((int) (x / perwidth));
                         ic.performContextMenuAction(performActions[select]);
                         if (select == 2){
-                            softKeyboard8.innerEdit("",false);
+                            softKeyboard8.editPinyin("",false);
                         }
                     }
                     break;
@@ -671,7 +671,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
                 softKeyboard8.mHandler.removeMessages(softKeyboard8.MSG_REPEAT);
                 softKeyboard8.lightViewManager.lightViewAnimate(v,event);
                 if (event.getX() < 0 && Global.slideDeleteSwitch) {
-                    softKeyboard8.functionsC.deleteAll();
+                    softKeyboard8.deleteAll();
                 } else if (event.getY() < 0) {
                     if(Global.redoTextForDeleteAll != ""){
                         softKeyboard8.commitText(Global.redoTextForDeleteAll);

@@ -30,9 +30,9 @@ import java.util.List;
  */
 public class QKCandidatesViewGroup extends ScrolledViewGroup {
 
-    private static final int TEXT_LENGTH_FACTOR = 4;
-    private static final int WORD_MAX_NUM = 300;
-    private static final int WORD_NUM_LAZY_LOAD = 6;
+    private final int TEXT_LENGTH_FACTOR = 4;
+    private final int WORD_MAX_NUM = 300;
+    private final int WORD_NUM_LAZY_LOAD = 6;
     /**
      * Maximum number of displaying candidates par one line (full view mode)
      */
@@ -210,13 +210,15 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
         button.setText(text);
         button.itsLayoutParams.width = measureTextLength(text);
         if(button.itsLayoutParams.width > remainLength){
-            if(remainLength > 3){
+            if(remainLength > 20){
                 QuickButton fillButton = initNewButton("");
                 fillButton.setWidth(remainLength);
                 layer.addView(fillButton);
             }
-            layer = getWorkingLayer(++layerPointer);
+            layerPointer++;
+            layer = getWorkingLayer(layerPointer);
         }
+        Log.d("WIVE",""+layerList.indexOf(layer)+" "+layerPointer);
         layer.addView(button,button.itsLayoutParams);
         button.clearAnimation();
         button.setEllipsize(standardButtonWidth * CAND_DIV_NUM <= measureTextLength(text)?TextUtils.TruncateAt.END:null);

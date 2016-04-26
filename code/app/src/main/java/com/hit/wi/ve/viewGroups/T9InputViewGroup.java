@@ -19,11 +19,8 @@ import com.hit.wi.ve.view.QuickButton;
  */
 public class T9InputViewGroup extends NonScrollViewGroup {
 
-<<<<<<< HEAD
     private final float BUTTON_WIDTH_RATE = (float) 0.32;
-=======
-    private static final float KEY_WIDTH_RATE = (float) 0.33;
->>>>>>> 0bd9c68db144b991259dc9c2f673c838994a5d06
+
     /**
      * 九键切换出去时的动画资源
      */
@@ -226,7 +223,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
         int margin = horGap/2;
         for(QuickButton button:buttonList){
 
-            button.itsLayoutParams.width = (int) (keyboardWidth * KEY_WIDTH_RATE - horGap);
+            button.itsLayoutParams.width = (int) (keyboardWidth * BUTTON_WIDTH_RATE - horGap);
             button.itsLayoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT;
             ((LinearLayout.LayoutParams)button.itsLayoutParams).leftMargin = margin;
             ((LinearLayout.LayoutParams)button.itsLayoutParams).rightMargin = margin;
@@ -490,7 +487,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
                 softKeyboard8.mHandler.removeMessages(softKeyboard8.MSG_REPEAT);
                 softKeyboard8.lightViewManager.lightViewAnimate(v,event);
                 if (event.getX() < 0 && Global.slideDeleteSwitch) {
-                    softKeyboard8.functionsC.deleteAll();
+                    softKeyboard8.deleteAll();
                 } else if (event.getY() < 0) {
                     if(Global.redoTextForDeleteAll != ""){
                         softKeyboard8.commitText(Global.redoTextForDeleteAll);
