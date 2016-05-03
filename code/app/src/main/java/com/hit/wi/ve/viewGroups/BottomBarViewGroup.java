@@ -228,7 +228,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
 
     private void onTouchEffect(View view, int action, int touchdowncolor, int nomalcolor) {
         softKeyboard8.transparencyHandle.handleAlpha(action);
-        softKeyboard8.keyBoardTouchEffect.onTouchEffectWithAnim(view, action, touchdowncolor, nomalcolor, context);
+        softKeyboard8.keyboardTouchEffect.onTouchEffectWithAnim(view, action, touchdowncolor, nomalcolor, context);
     }
 
 
@@ -305,8 +305,8 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
                     Kernel.cleanKernel();
                     List<String> expressions = getExpression(expressionFlag);
                     if(expressions != Collections.EMPTY_LIST){
-                        softKeyboard8.qkCandidatesViewGroup.displayCandidates(Global.SYMBOL,expressions, Global.inLarge?200:9);
-                        if (Global.inLarge)softKeyboard8.qkCandidatesViewGroup.largeTheCandidate();
+                        softKeyboard8.candidatesViewGroup.displayCandidates(Global.SYMBOL,expressions, Global.inLarge?200:9);
+                        if (Global.inLarge)softKeyboard8.candidatesViewGroup.largeTheCandidate();
                         softKeyboard8.refreshDisplay(true);
                     }else {
                         CommonFuncs.showToast(context, "很抱歉，我们暂时不能再您的手机上获取emoji库，正在修复中……");
@@ -337,8 +337,8 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
                     softKeyboard8.commitText(commit_text_space[index]);
                 }
 
-                if (Global.inLarge && softKeyboard8.qkCandidatesViewGroup.isShown()) {
-                    softKeyboard8.qkCandidatesViewGroup.largeTheCandidate();
+                if (Global.inLarge && softKeyboard8.candidatesViewGroup.isShown()) {
+                    softKeyboard8.candidatesViewGroup.largeTheCandidate();
                 } else {
                     softKeyboard8.refreshDisplay();
                     backReturnState();
@@ -368,7 +368,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
                         softKeyboard8.sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER);
                     }
                 }
-                softKeyboard8.qkCandidatesViewGroup.smallTheCandidate();
+                softKeyboard8.candidatesViewGroup.smallTheCandidate();
                 backReturnState();
                 Global.inLarge = false;
                 Global.refreshState(softKeyboard8);
@@ -400,7 +400,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         public boolean onTouch(View view, MotionEvent motionEvent) {
             if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                 if (Global.isInView(view,motionEvent) && Global.inLarge){
-                    softKeyboard8.qkCandidatesViewGroup.smallTheCandidate();
+                    softKeyboard8.candidatesViewGroup.smallTheCandidate();
                     backReturnState();
                     Global.inLarge = false;
                     Global.refreshState(softKeyboard8);

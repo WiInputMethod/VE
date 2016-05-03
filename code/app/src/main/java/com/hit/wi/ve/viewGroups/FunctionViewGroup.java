@@ -173,7 +173,7 @@ public class FunctionViewGroup extends NonScrollViewGroup implements ViewGroupIn
 
     private void onTouchEffect(View view, int action) {
         softKeyboard8.transparencyHandle.handleAlpha(action);
-        softKeyboard8.keyBoardTouchEffect.onTouchEffectWithAnim(view, action,
+        softKeyboard8.keyboardTouchEffect.onTouchEffectWithAnim(view, action,
                 skinInfoManager.skinData.backcolor_touchdown,
                 skinInfoManager.skinData.backcolor_functionKeys,
                 context
@@ -298,7 +298,7 @@ public class FunctionViewGroup extends NonScrollViewGroup implements ViewGroupIn
                         mVerticalSeekBar.setProgress(tmp);
                         Global.mCurrentAlpha = ((float) tmp - (float) mVerticalSeekBar.getMax() / 2) / ((float) mVerticalSeekBar.getMax()) + mLastAlpha;
                         Global.mCurrentAlpha = Math.max(0f, Math.min(1f, Global.mCurrentAlpha));
-                        softKeyboard8.transparencyHandle.setKeyBoardAlpha(Global.mCurrentAlpha);
+                        softKeyboard8.transparencyHandle.setKeyBoardAlpha(Global.getCurrentAlpha());
                     }
                     break;
                 case MotionEvent.ACTION_UP:

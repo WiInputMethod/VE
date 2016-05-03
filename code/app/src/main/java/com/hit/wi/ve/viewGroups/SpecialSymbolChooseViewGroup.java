@@ -102,31 +102,31 @@ public class SpecialSymbolChooseViewGroup extends NonScrollViewGroup implements 
 
     private void showSymbolsByIndex(int index){
         if (index == 0){
-            softKeyboard8.qkCandidatesViewGroup.displayCandidates(
+            softKeyboard8.candidatesViewGroup.displayCandidates(
                     Global.SYMBOL,
                     WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.SPECIAL),100);
         } else if (index == 1){
-            softKeyboard8.qkCandidatesViewGroup.displayCandidates(
+            softKeyboard8.candidatesViewGroup.displayCandidates(
                     Global.SYMBOL,
                     WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.BU_SHOU),100);
         } else if (index == 2){
-            softKeyboard8.qkCandidatesViewGroup.displayCandidates(
+            softKeyboard8.candidatesViewGroup.displayCandidates(
                     Global.SYMBOL,
                     WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.PHONETIC),100);
         } else if (index == 3){
-            softKeyboard8.qkCandidatesViewGroup.displayCandidates(
+            softKeyboard8.candidatesViewGroup.displayCandidates(
                     Global.SYMBOL,
                     WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.RUSSIAN),100);
         } else if (index == 4){
-            softKeyboard8.qkCandidatesViewGroup.displayCandidates(
+            softKeyboard8.candidatesViewGroup.displayCandidates(
                     Global.SYMBOL,
                     WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.JAPANESE),100);
         } else if (index == 5){
-            softKeyboard8.qkCandidatesViewGroup.displayCandidates(
+            softKeyboard8.candidatesViewGroup.displayCandidates(
                     Global.SYMBOL,
                     WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.BOPOMOFO),100);
         } else if (index == 6){
-            softKeyboard8.qkCandidatesViewGroup.displayCandidates(
+            softKeyboard8.candidatesViewGroup.displayCandidates(
                     Global.SYMBOL,
                     WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.GREECE),50);
         }
@@ -134,7 +134,7 @@ public class SpecialSymbolChooseViewGroup extends NonScrollViewGroup implements 
 
     View.OnTouchListener mOnTouchListener = new View.OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
-            softKeyboard8.keyBoardTouchEffect.onTouchEffectWithAnim(v, event.getAction(),
+            softKeyboard8.keyboardTouchEffect.onTouchEffectWithAnim(v, event.getAction(),
                     skinInfoManager.skinData.backcolor_touchdown,
                     skinInfoManager.skinData.backcolor_quickSymbol,
                     context

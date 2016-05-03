@@ -363,7 +363,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
     }
 
     private void onTouchEffectWithAnim(View v,int action,int backcolor){
-        softKeyboard8.keyBoardTouchEffect.onTouchEffectWithAnim(v,action,
+        softKeyboard8.keyboardTouchEffect.onTouchEffectWithAnim(v,action,
                 skinInfoManager.skinData.backcolor_touchdown,
                 backcolor,
                 context);
@@ -398,12 +398,12 @@ public class T9InputViewGroup extends NonScrollViewGroup {
                 int index = buttonList.indexOf(v);
                 if (buttonList.indexOf(v) == KEY_OTHER_INDEX) {
                     switchSymbolToFunc(mOtherSymbolTypeList, mOtherSymbolTypeSendKeyList);
-                    softKeyboard8.qkCandidatesViewGroup.displayCandidates(Global.SYMBOL,WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.SPECIAL),100);
+                    softKeyboard8.candidatesViewGroup.displayCandidates(Global.SYMBOL,WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.SPECIAL),100);
                 } else if (index == 6){
-                    softKeyboard8.qkCandidatesViewGroup.displayCandidates(Global.SYMBOL,WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.NUMBER),100);
+                    softKeyboard8.candidatesViewGroup.displayCandidates(Global.SYMBOL,WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.NUMBER),100);
                     softKeyboard8.refreshDisplay(true);
                 } else if (index == 7){
-                    softKeyboard8.qkCandidatesViewGroup.displayCandidates(Global.SYMBOL, WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.MATH),100);
+                    softKeyboard8.candidatesViewGroup.displayCandidates(Global.SYMBOL, WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.MATH),100);
                     softKeyboard8.refreshDisplay(true);
                 } else {
                     switchBackFunc();

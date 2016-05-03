@@ -12,11 +12,11 @@ import android.os.Build;
 import android.os.Handler;
 import android.view.inputmethod.InputConnection;
 
-public class QKEmojiUtil {
+public class QKEmojiManager {
     HashMap<String, String> mSoftBank2UnifiedMap;
     Handler mHandler = new Handler();
 
-    public QKEmojiUtil(InputMethodService context) {
+    public QKEmojiManager(InputMethodService context) {
         try {
             InputStream file = context.getAssets().open("dict_qk/emoji/emoji_softbank2unified.ser");
             ObjectInputStream ois = new ObjectInputStream(file);

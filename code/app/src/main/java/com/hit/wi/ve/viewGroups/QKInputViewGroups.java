@@ -2,7 +2,6 @@ package com.hit.wi.ve.viewGroups;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.graphics.drawable.ShapeDrawable;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -222,12 +221,10 @@ public class QKInputViewGroups extends NonScrollViewGroup {
     }
 
     public void setSize(int width,int height,int horGap){
-        int keyWidth = (width-2*horGap)/linear_keys_num[0];
+        int keyWidth = (width - 2*horGap)/linear_keys_num[0];
         int keyHeight = height / 3;
         for (int j = 0; j < 3; ++j) {
             linearsParams[j].height = keyHeight;
-//            linearsParams[j].leftMargin = horGap;
-//            linearsParams[j].rightMargin = horGap;
         }
         int padding = horGap/2;
         for (LinearLayout button:buttonList){
@@ -237,23 +234,18 @@ public class QKInputViewGroups extends NonScrollViewGroup {
             ((TextView)button.findViewById(R.id.predict_text)).getPaint().setTextSize(80 * Math.min(keyWidth, keyHeight * 7/9)/300);
             ((LinearLayout)button.getParent()).updateViewLayout(button,button.getLayoutParams());
         }
+        int widthKeyWidth = keyWidth * 3 / 2 - padding;
 
-        shiftButton.itsLayoutParams.width = keyWidth * 3 / 2 ;
-        ((LinearLayout.LayoutParams)shiftButton.itsLayoutParams).topMargin = padding;
-        ((LinearLayout.LayoutParams)shiftButton.itsLayoutParams).bottomMargin = padding;
-        ((LinearLayout.LayoutParams)shiftButton.itsLayoutParams).rightMargin = padding;
+        shiftButton.itsLayoutParams.width = widthKeyWidth;
+        ((LinearLayout.LayoutParams)shiftButton.itsLayoutParams).setMargins(padding,padding,padding,padding);
         linears[2].updateViewLayout(shiftButton,shiftButton.itsLayoutParams);
 
-        smileButton.itsLayoutParams.width = keyWidth * 3 / 2 ;
-        ((LinearLayout.LayoutParams)smileButton.itsLayoutParams).topMargin = padding;
-        ((LinearLayout.LayoutParams)smileButton.itsLayoutParams).bottomMargin = padding;
-        ((LinearLayout.LayoutParams)smileButton.itsLayoutParams).rightMargin = padding;
+        smileButton.itsLayoutParams.width = widthKeyWidth ;
+        ((LinearLayout.LayoutParams)smileButton.itsLayoutParams).setMargins(padding,padding,padding,padding);
         linears[2].updateViewLayout(smileButton,smileButton.itsLayoutParams);
 
-        deleteButton.itsLayoutParams.width = keyWidth * 3 / 2;
-        ((LinearLayout.LayoutParams)deleteButton.itsLayoutParams).topMargin = padding;
-        ((LinearLayout.LayoutParams)deleteButton.itsLayoutParams).bottomMargin = padding;
-        ((LinearLayout.LayoutParams)deleteButton.itsLayoutParams).leftMargin = padding;
+        deleteButton.itsLayoutParams.width = widthKeyWidth;
+        ((LinearLayout.LayoutParams)deleteButton.itsLayoutParams).setMargins(padding,padding,padding,padding);
         deleteButton.getPaint().setTextSize(3 * Math.min(keyWidth *3/2,keyHeight)/5);
         linears[2].updateViewLayout(deleteButton,deleteButton.itsLayoutParams);
     }
@@ -346,20 +338,12 @@ public class QKInputViewGroups extends NonScrollViewGroup {
     }
 
     public void startHideAnimation(boolean show){
-        if(show){
-            shiftButton.clearAnimation();
-            smileButton.clearAnimation();
-            Animation anim = AnimationUtils.loadAnimation(context, enHide[19]);
-            if (Global.currentKeyboard == Global.KEYBOARD_QP){
-                anim.setAnimationListener(getMyAnimationListener(smileButton));
-                smileButton.startAnimation(anim);
-                shiftButton.setVisibility(View.GONE);
-            } else if (Global.currentKeyboard == Global.KEYBOARD_EN){
-                anim.setAnimationListener(getMyAnimationListener(shiftButton));
-                shiftButton.startAnimation(anim);
-                smileButton.setVisibility(View.GONE);
-            }
-        }
+        shiftButton.clearAnimation();
+        smileButton.clearAnimation();
+        deleteButton.clearAnimation();
+
+        shiftButton.setVisibility(View.GONE);
+        smileButton.setVisibility(View.GONE);
         deleteButton.setVisibility(View.GONE);
         int i = 0;
         for (LinearLayout button :buttonList) {
@@ -458,7 +442,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
 
     private void onTouchEffect(View view, int action,int backgroundColor){
         softKeyboard8.transparencyHandle.handleAlpha(action);
-        softKeyboard8.keyBoardTouchEffect.onTouchEffectWithAnim(
+        softKeyboard8.keyboardTouchEffect.onTouchEffectWithAnim(
                 view,action,
                 skinInfoManager.skinData.backcolor_touchdown,
                 backgroundColor,
@@ -468,7 +452,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
 
     private void onTouchEffectSpecial(View view,int action,int backgroundColor){
         softKeyboard8.transparencyHandle.handleAlpha(action);
-        softKeyboard8.keyBoardTouchEffect.onTouchEffectWithAnimForQK(view,action,
+        softKeyboard8.keyboardTouchEffect.onTouchEffectWithAnimForQK(view,action,
                 skinInfoManager.skinData.backcolor_touchdown,
                 backgroundColor,
                 context
@@ -481,7 +465,6 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         softKeyboard8.preFixViewGroup.setBackgroundAlpha(Global.getCurrentAlpha());
         softKeyboard8.preFixViewGroup.updateSkin();
         softKeyboard8.preFixViewGroup.setVisibility(View.VISIBLE);
-        softKeyboard8.transparencyHandle.DownAlpha();
     }
 
     private void hideSmile() {
@@ -492,9 +475,8 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         if (Kernel.getWordsNumber() > 0) {
             softKeyboard8.quickSymbolViewGroup.setVisibility(View.GONE);
             softKeyboard8.secondLayerLayout.setVisibility(View.GONE);
-            softKeyboard8.qkCandidatesViewGroup.setVisibility(View.VISIBLE);
+            softKeyboard8.candidatesViewGroup.setVisibility(View.VISIBLE);
         }
-        softKeyboard8.transparencyHandle.DownAlpha();
     }
 
     //of course it should be in stack

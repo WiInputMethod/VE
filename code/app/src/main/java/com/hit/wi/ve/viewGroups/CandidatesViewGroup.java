@@ -15,7 +15,7 @@ import android.widget.ScrollView;
 
 import android.widget.TextView;
 import com.hit.wi.jni.Kernel;
-import com.hit.wi.ve.functions.QKEmojiUtil;
+import com.hit.wi.ve.functions.QKEmojiManager;
 import com.hit.wi.ve.values.Global;
 import com.hit.wi.ve.view.QuickButton;
 
@@ -28,7 +28,7 @@ import java.util.List;
  *
  * @author 郭高扬
  */
-public class QKCandidatesViewGroup extends ScrolledViewGroup {
+public class CandidatesViewGroup extends ScrolledViewGroup {
 
     private final int TEXT_LENGTH_FACTOR = 4;
     private final int WORD_MAX_NUM = 300;
@@ -48,7 +48,7 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
     /**
      * EmojiUtil of QK
      */
-    private QKEmojiUtil mQKEmojiUtil;
+    private QKEmojiManager mQKEmojiManager;
     /**
      * EmojiUtil of T9
      */
@@ -65,7 +65,7 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
     private LinearLayout.LayoutParams layerParams;
     private int layerPointer;
 
-    public QKCandidatesViewGroup() {
+    public CandidatesViewGroup() {
         mMetrics.setToDefaults();
         layerList = new ArrayList<>();
         layerParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -75,7 +75,7 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
         super.create(vertical,context);
         mTextColor = softKeyboard8.skinInfoManager.skinData.textcolors_candidate_t9;
         mBackColor = softKeyboard8.skinInfoManager.skinData.backcolor_candidate_t9;
-        mQKEmojiUtil = new QKEmojiUtil(softKeyboard8);
+        mQKEmojiManager = new QKEmojiManager(softKeyboard8);
         standardButtonHeight = 0;
         standardButtonWidth = 0;
 //        SharedPreferences sp = SharedPreferenceManager.getDefaultSharedPreferences(context);
@@ -150,7 +150,7 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
             int total = Math.min(show_num,Kernel.getWordsNumber()-1);
             while(i<total){
                 String text = Kernel.getWordByIndex(i);
-                words.add(mQKEmojiUtil.getShowString(text));
+                words.add(mQKEmojiManager.getShowString(text));
                 i++;
             }
         }
@@ -286,7 +286,7 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
     }
 
     public  void smallTheCandidate() {
-        softKeyboard8.viewSizeUpdate.UpdateQKCandidateSize();
+        softKeyboard8.viewSizeUpdate.UpdateCandidateSize();
         if (Global.currentKeyboard == Global.KEYBOARD_QP || Global.currentKeyboard == Global.KEYBOARD_EN) {
             softKeyboard8.functionViewGroup.setVisibility(View.VISIBLE);
         } else {
@@ -301,7 +301,7 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
         InputConnection ic = softKeyboard8.getCurrentInputConnection();
         if (ic != null && text!= null) {
             try {
-                mQKEmojiUtil.commitEmoji(softKeyboard8, text);
+                mQKEmojiManager.commitEmoji(softKeyboard8, text);
             } catch (Exception e ){
                 Log.d("WIVE","expception"+e.toString());
             }
@@ -322,7 +322,7 @@ public class QKCandidatesViewGroup extends ScrolledViewGroup {
      */
     private OnTouchListener mCandidateOnTouch = new OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
-            softKeyboard8.keyBoardTouchEffect.onTouchEffectWithAnim(v,event.getAction(),
+            softKeyboard8.keyboardTouchEffect.onTouchEffectWithAnim(v,event.getAction(),
                     skinInfoManager.skinData.backcolor_touchdown,
                     mBackColor,
                     context

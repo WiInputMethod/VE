@@ -237,7 +237,7 @@ public class QuickSymbolViewGroup extends ScrolledViewGroup implements QuickSymb
 
     private void onTouchEffect(View v, MotionEvent event) {
         softKeyboard8.transparencyHandle.handleAlpha(event.getAction());
-        softKeyboard8.keyBoardTouchEffect.onTouchEffectWithAnim(v, event.getAction(),
+        softKeyboard8.keyboardTouchEffect.onTouchEffectWithAnim(v, event.getAction(),
                 skinInfoManager.skinData.backcolor_touchdown,
                 skinInfoManager.skinData.backcolor_quickSymbol,
                 context

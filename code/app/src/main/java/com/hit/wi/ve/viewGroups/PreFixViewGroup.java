@@ -110,7 +110,7 @@ public class PreFixViewGroup extends ScrolledViewGroup {
                 }
                 softKeyboard8.refreshDisplay();
             }
-            softKeyboard8.keyBoardTouchEffect.onTouchEffectWithAnim(v, event.getAction(),
+            softKeyboard8.keyboardTouchEffect.onTouchEffectWithAnim(v, event.getAction(),
                     skinInfoManager.skinData.backcolor_touchdown,
                     skinInfoManager.skinData.backcolor_prefix,
                     context);

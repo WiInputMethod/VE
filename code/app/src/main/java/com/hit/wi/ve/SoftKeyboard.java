@@ -134,6 +134,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     private final int MSG_DOUBLE_CLICK_REFRESH = 7;
     private final int MSG_KERNEL_CLEAN = 8;
 
+    private final int ALPHA_DOWN_TIME = 7;
     private static final int REPEAT_INTERVAL = 50; // 重复按键的时间
     public static final int REPEAT_START_DELAY = 400;// 重复按键
 
@@ -156,9 +157,9 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
 
     public int keyboardWidth = 0;
-    private int keyboardHeight = 0;
+    public int keyboardHeight = 0;
     private int standardVerticalGapDistance = 10;
-    private int standardHorizantalGapDistance = 0;
+    private int standardHorizontalGapDistance = 0;
     private int maxFreeKernelTime = 60;
 
     private InitInputParam initInputParam;
@@ -168,7 +169,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     public WindowManager.LayoutParams keyboardParams = new WindowManager.LayoutParams();
     public LinearLayout secondLayerLayout;
     private LinearLayout.LayoutParams secondParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-    public ViewGroup mInputViewGG;
+    public LinearLayout mInputViewGG;
     public LinearLayout.LayoutParams mGGParams = new LinearLayout.LayoutParams(0, 0);
 
     public WindowManager.LayoutParams mSetKeyboardSizeParams = new WindowManager.LayoutParams();
@@ -190,13 +191,13 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     public QuickSymbolViewGroup quickSymbolViewGroup;
     public PreFixViewGroup preFixViewGroup;
     public BottomBarViewGroup bottomBarViewGroup;
-    public QKCandidatesViewGroup qkCandidatesViewGroup;
+    public CandidatesViewGroup candidatesViewGroup;
     public T9InputViewGroup t9InputViewGroup;
     public LightViewManager lightViewManager;
     public PreEditPopup preEditPopup;
 
     public SymbolsManager symbolsManager;
-    public KeyBoardTouchEffect keyBoardTouchEffect;
+    public KeyBoardTouchEffect keyboardTouchEffect;
     public SkinInfoManager skinInfoManager;
     public PinyinEditProcess pinyinProc;
     private Resources res;
@@ -209,7 +210,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_HIDE:
-                    if (Global.keyboardRestTimeCount > 7) {
+                    if (Global.keyboardRestTimeCount > ALPHA_DOWN_TIME) {
                         transparencyHandle.UpAlpha();
                         Global.keyboardRestTimeCount = 0;
                     } else
@@ -233,7 +234,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                     chooseWord(msg.arg1);
                     break;
                 case MSG_LAZY_LOAD_CANDIDATE:
-                    qkCandidatesViewGroup.setCandidates((List<String>) msg.obj);
+                    candidatesViewGroup.setCandidates((List<String>) msg.obj);
                     break;
                 case MSG_DOUBLE_CLICK_REFRESH:
                     if (bottomBarViewGroup != null) {
@@ -282,13 +283,13 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
     private void iniComponent() {
         res = getResources();
-        keyBoardTouchEffect = new KeyBoardTouchEffect(this);
+        keyboardTouchEffect = new KeyBoardTouchEffect(this);
         specialSymbolChooseViewGroup = new SpecialSymbolChooseViewGroup();
         functionViewGroup = new FunctionViewGroup();
         quickSymbolViewGroup = new QuickSymbolViewGroup();
         preFixViewGroup = new PreFixViewGroup();
         bottomBarViewGroup = new BottomBarViewGroup();
-        qkCandidatesViewGroup = new QKCandidatesViewGroup();
+        candidatesViewGroup = new CandidatesViewGroup();
         qkInputViewGroups = new QKInputViewGroups();
         t9InputViewGroup = new T9InputViewGroup();
         preEditPopup = new PreEditPopup();
@@ -364,7 +365,9 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         //切割字符串
         final int isDel = delete && pinyinProc.mSelStart == pinyinProc.mSelEnd ? 1 : 0;
         String sBefore = pinyin.substring(0, pinyinProc.mSelStart - pinyinProc.mCandidateStart - isDel).replace("'", "")+s;
-        String sAfter = pinyinProc.mSelEnd <= pinyinProc.mCandidateStart ? pinyin : (pinyinProc.mSelEnd < pinyinProc.mCandidateEnd ? pinyin.substring(pinyinProc.mSelEnd - pinyinProc.mCandidateStart).replace("'", "") : "");
+        String sAfter = pinyinProc.mSelEnd <= pinyinProc.mCandidateStart ? pinyin :
+                (pinyinProc.mSelEnd >= pinyinProc.mCandidateEnd ? "":
+                        pinyin.substring(pinyinProc.mSelEnd - pinyinProc.mCandidateStart).replace("'", ""));
         pinyinProc.innerEditProcess(ic,sBefore,s,sAfter,delete);
     }
 
@@ -381,8 +384,10 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     }
 
     private boolean lastHideState = false;
+
     /**
      * 每次有候选词跟新的时候统一刷新界面，因为影响到的因素比较多，统一使用状态机解决
+     *
      */
     public void refreshDisplay(boolean special) {
         boolean isNK = Global.currentKeyboard == Global.KEYBOARD_T9 || Global.currentKeyboard == Global.KEYBOARD_SYM;
@@ -395,11 +400,11 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         functionsC.refreshStateForLargeCandidate(hideCandidate);
         if (lastHideState!=hideCandidate && !hideCandidate) {
             viewSizeUpdate.UpdatePreEditSize();
-            viewSizeUpdate.UpdateQKCandidateSize();
+            viewSizeUpdate.UpdateCandidateSize();
             viewSizeUpdate.UpdateLargeCandidateSize();
         }
         viewSizeUpdate.UpdateQuickSymbolSize();
-        qkCandidatesViewGroup.refreshState(hideCandidate, isNK ? Global.EMOJI : Global.QUANPIN);
+        candidatesViewGroup.refreshState(hideCandidate, isNK ? Global.EMOJI : Global.QUANPIN);
         specialSymbolChooseViewGroup.refreshState(hideCandidate);
         preFixViewGroup.refresh();
         t9InputViewGroup.refreshState();
@@ -409,6 +414,10 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         preEditPopup.refresh();
     }
 
+    /**
+     * 但是貌似因为太好用了而导致滥用，使得可能一个过程中多次重复刷新界面，所以还是要 todo：增加状态表示使得如果状态未变则不刷新
+     * 同时：避免滥用，能不用的情况就不用
+     * */
     public void refreshDisplay() {
         refreshDisplay(false);
     }
@@ -528,7 +537,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             keyboardParams.width = keyboardWidth;
             keyboardParams.height = keyboardHeight;
 
-            standardHorizantalGapDistance = keyboardWidth * 2 / 100;
+            standardHorizontalGapDistance = keyboardWidth * 2 / 100;
             standardVerticalGapDistance = keyboardHeight * 2 / 100;
 
             viewSizeUpdate.updateViewSizeAndPosition();
@@ -580,9 +589,8 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
          * 调用时机：从九键切到英文键盘
          */
         private void fullWidth() {
-            quickSymbolViewGroup.setSize(keyboardWidth - HOR_GAP_NUM * standardHorizantalGapDistance, ViewGroup.LayoutParams.MATCH_PARENT);
-            preFixViewGroup.setSize(keyboardWidth -HOR_GAP_NUM * standardHorizantalGapDistance, ViewGroup.LayoutParams.MATCH_PARENT);
-            updateWindowManager();
+            quickSymbolViewGroup.setSize(keyboardWidth - HOR_GAP_NUM * standardHorizontalGapDistance, ViewGroup.LayoutParams.MATCH_PARENT);
+            preFixViewGroup.setSize(keyboardWidth -HOR_GAP_NUM * standardHorizontalGapDistance, ViewGroup.LayoutParams.MATCH_PARENT);
         }
 
         /**
@@ -592,7 +600,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         private void fullWidthBack() {
             quickSymbolViewGroup.setSize(keyboardWidth * res.getInteger(R.integer.PREEDIT_WIDTH) / 100, ViewGroup.LayoutParams.MATCH_PARENT);
             preFixViewGroup.setSize(keyboardWidth * res.getInteger(R.integer.PREEDIT_WIDTH) / 100, ViewGroup.LayoutParams.MATCH_PARENT);
-            updateWindowManager();
         }
 
         private void hideKeyboard(int keyboard, boolean showAnim) {
@@ -768,17 +775,18 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
      * 存放listener
      */
     private class Listeners {
+        //todo: largeCandidate button should belonged to candidateViewGroups, needs to refactor
         OnTouchListener largeCandidateOnTouchListener = new OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 transparencyHandle.handleAlpha(motionEvent.getAction());
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    qkCandidatesViewGroup.displayCandidates();
-                    qkCandidatesViewGroup.largeTheCandidate();
+                    candidatesViewGroup.displayCandidates();
+                    candidatesViewGroup.largeTheCandidate();
                     Global.inLarge = true;
                     bottomBarViewGroup.intoReturnState();
                 }
-                keyBoardTouchEffect.onTouchEffectWithAnim(view, motionEvent.getAction(),
+                keyboardTouchEffect.onTouchEffectWithAnim(view, motionEvent.getAction(),
                         skinInfoManager.skinData.backcolor_touchdown,
                         skinInfoManager.skinData.backcolor_quickSymbol,
                         SoftKeyboard.this);
@@ -817,9 +825,9 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         }
 
         private void CreateCandidateView() {
-            qkCandidatesViewGroup.setSoftKeyboard(SoftKeyboard.this);
-            qkCandidatesViewGroup.create(SoftKeyboard.this);
-            qkCandidatesViewGroup.addThisToView(keyboardLayout);
+            candidatesViewGroup.setSoftKeyboard(SoftKeyboard.this);
+            candidatesViewGroup.create(SoftKeyboard.this);
+            candidatesViewGroup.addThisToView(keyboardLayout);
         }
 
         private void CreatePreEditView() {
@@ -921,6 +929,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                 CreateSpecialSymbolChoose();
                 CreateLargeButton();
                 mInputViewGG = new LinearLayout(SoftKeyboard.this);
+                mInputViewGG.setGravity(Gravity.CENTER_HORIZONTAL);
                 mGGParams = new LinearLayout.LayoutParams(0, 0);
                 CreateT9Keyboard();
                 CreateEnglishKeyboard();
@@ -949,34 +958,30 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             if (Global.currentKeyboard == Global.KEYBOARD_NUM || Global.currentKeyboard == Global.KEYBOARD_SYM || Global.currentKeyboard == Global.KEYBOARD_T9) {
                 preFixViewGroup.setSize(keyboardWidth * PREFIX_WIDTH_RATE / 100, keyboardHeight * layerHeightRate[1] / 100);
             } else {
-                preFixViewGroup.setSize(keyboardWidth - standardHorizantalGapDistance, keyboardHeight * layerHeightRate[1] / 100);
+                preFixViewGroup.setSize(keyboardWidth - standardHorizontalGapDistance, keyboardHeight * layerHeightRate[1] / 100);
             }
-            preFixViewGroup.setButtonPadding(standardHorizantalGapDistance);
+            preFixViewGroup.setButtonPadding(standardHorizontalGapDistance);
             preFixViewGroup.updateViewLayout();
         }
 
         private void UpdatePreEditSize() {
-            preEditPopup.upadteSize(keyboardParams.width-HOR_GAP_NUM*standardHorizantalGapDistance,
+            preEditPopup.upadteSize(keyboardParams.width-HOR_GAP_NUM* standardHorizontalGapDistance,
                     (int) (PREEDIT_HEIGHT_RATE*layerHeightRate[0]*keyboardParams.height/100),
-                    standardHorizantalGapDistance);
+                    standardHorizontalGapDistance);
         }
 
         private void UpdateEnglishKeyboardSize() {
             qkInputViewGroups.setPosition(0, 0);
-            qkInputViewGroups.setSize(
-                    keyboardWidth,
-                    keyboardHeight * layerHeightRate[2] / 100,
-                    standardHorizantalGapDistance
-            );
+            qkInputViewGroups.setSize(keyboardWidth, keyboardHeight * layerHeightRate[2] / 100,standardHorizontalGapDistance);
             qkInputViewGroups.updateViewLayout();
         }
 
         private void UpdateQuickSymbolSize() {
             int height = keyboardHeight * layerHeightRate[1] / 100;
-            int width = keyboardWidth - HOR_GAP_NUM * standardHorizantalGapDistance;
+            int width = keyboardWidth - HOR_GAP_NUM * standardHorizontalGapDistance;
             int buttonWidth = width / BUTTON_SHOW_NUM;
             quickSymbolViewGroup.setPosition(0, 0);
-            quickSymbolViewGroup.setButtonPadding(standardHorizantalGapDistance);
+            quickSymbolViewGroup.setButtonPadding(standardHorizontalGapDistance);
             quickSymbolViewGroup.setButtonWidth(buttonWidth);
             float textSize = (float) (Math.min(buttonWidth, height) * TEXTSIZE_RATE);
             quickSymbolViewGroup.setTextSize(textSize);
@@ -998,7 +1003,10 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         }
 
         private void UpdateT9Size() {
-            UpdateT9Layout();
+            t9InputViewGroup.setSize(keyboardWidth, mGGParams.height, standardHorizontalGapDistance);
+            t9InputViewGroup.deleteButton.getPaint()
+                    .setTextSize(3 * Math.min(t9InputViewGroup.deleteButton.itsLayoutParams.width, layerHeightRate[1] * keyboardHeight / 100) / 5);
+            keyboardLayout.updateViewLayout(mInputViewGG, mGGParams);
         }
 
         private void UpdateLightSize() {
@@ -1010,24 +1018,24 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
         private void UpdateFunctionsSize() {
             int height = keyboardHeight * layerHeightRate[0] / 100;
-            int buttonwidth = keyboardWidth / 5 - standardHorizantalGapDistance * 6 / 5;
+            int buttonwidth = keyboardWidth / 5 - standardHorizontalGapDistance * 6 / 5;
             functionViewGroup.updatesize(keyboardWidth, height);
-            functionViewGroup.setButtonPadding(standardHorizantalGapDistance);
+            functionViewGroup.setButtonPadding(standardHorizontalGapDistance);
             functionViewGroup.setButtonWidth(buttonwidth);
             functionViewGroup.setTextSize(50 * Math.min(buttonwidth, height) / 100);
         }
 
-        public void UpdateQKCandidateSize() {
-            qkCandidatesViewGroup.setPosition(standardHorizantalGapDistance, 0);
-            qkCandidatesViewGroup.setSize(keyboardWidth - HOR_GAP_NUM * standardHorizantalGapDistance, keyboardHeight * layerHeightRate[0] / 100);
-            qkCandidatesViewGroup.updateViewLayout();
+        public void UpdateCandidateSize() {
+            candidatesViewGroup.setPosition(standardHorizontalGapDistance, 0);
+            candidatesViewGroup.setSize(keyboardWidth - HOR_GAP_NUM * standardHorizontalGapDistance, keyboardHeight * layerHeightRate[0] / 100);
+            candidatesViewGroup.updateViewLayout();
         }
 
         private void UpdateBottomBarSize() {
 
             bottomBarViewGroup.setPosition(0, standardVerticalGapDistance);
-            bottomBarViewGroup.setSize(keyboardWidth - standardHorizantalGapDistance, keyboardHeight * layerHeightRate[3] / 100);
-            bottomBarViewGroup.setButtonPadding(standardHorizantalGapDistance);
+            bottomBarViewGroup.setSize(keyboardWidth - standardHorizontalGapDistance, keyboardHeight * layerHeightRate[3] / 100);
+            bottomBarViewGroup.setButtonPadding(standardHorizontalGapDistance);
             if (Global.currentKeyboard == Global.KEYBOARD_NUM) {
                 bottomBarViewGroup.setButtonWidthByRate(res.getIntArray(R.array.BOTTOMBAR_NUM_KEY_WIDTH));
             } else {
@@ -1037,33 +1045,29 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             bottomBarViewGroup.updateViewLayout();
         }
 
-        private void UpdateT9Layout() {
-            mGGParams.topMargin = standardVerticalGapDistance;
-            mGGParams.height = keyboardHeight * layerHeightRate[2] / 100;
-            mGGParams.width = keyboardWidth;
-            t9InputViewGroup.setSize(keyboardWidth, mGGParams.height,
-                    standardHorizantalGapDistance);
-            t9InputViewGroup.deleteButton.getPaint().setTextSize(
-                    3 * Math.min(t9InputViewGroup.deleteButton.itsLayoutParams.width, layerHeightRate[1] * keyboardHeight / 100) / 5);
-            keyboardLayout.updateViewLayout(mInputViewGG, mGGParams);
-        }
-
         private void UpdateLargeCandidateSize() {
             largeCandidateButton.itsLayoutParams.height = LayoutParams.MATCH_PARENT;
-            largeCandidateButton.itsLayoutParams.width = keyboardWidth - 3 * standardHorizantalGapDistance - res.getInteger(R.integer.PREEDIT_WIDTH) * keyboardWidth / 100;
-            ((LinearLayout.LayoutParams) largeCandidateButton.itsLayoutParams).leftMargin = standardHorizantalGapDistance;
+            largeCandidateButton.itsLayoutParams.width = keyboardWidth - 3 * standardHorizontalGapDistance - res.getInteger(R.integer.PREEDIT_WIDTH) * keyboardWidth / 100;
+            ((LinearLayout.LayoutParams) largeCandidateButton.itsLayoutParams).leftMargin = standardHorizontalGapDistance;
 
-            float textsize = Math.min(3 * Math.min(secondParams.height, (100 - res.getInteger(R.integer.PREEDIT_WIDTH)) * keyboardWidth / 100) / 5, 30);
-            largeCandidateButton.getPaint().setTextSize(textsize);
+            largeCandidateButton.getPaint().setTextSize(
+                    Math.min(3 * Math.min(secondParams.height, (100 - res.getInteger(R.integer.PREEDIT_WIDTH)) * keyboardWidth / 100) / 5, 30)
+            );
         }
 
         void updateViewSizeAndPosition() {
             layerHeightRate = res.getIntArray(R.array.LAYER_HEIGHT);
-            UpdateT9Size();
+
+            mGGParams.topMargin = standardVerticalGapDistance;
+            mGGParams.height = keyboardHeight * layerHeightRate[2] / 100;
+            mGGParams.width = keyboardWidth;
+
             secondParams.height = keyboardHeight * layerHeightRate[1] / 100;
             secondParams.topMargin = standardVerticalGapDistance;
-            secondParams.leftMargin = standardHorizantalGapDistance;
-            UpdateQKCandidateSize();
+            secondParams.leftMargin = standardHorizontalGapDistance;
+
+            UpdateT9Size();
+            UpdateCandidateSize();
             UpdatePreEditSize();
             UpdateEnglishKeyboardSize();
             UpdatePrefixSize();
@@ -1097,7 +1101,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                 skinInfoManager.loadConfigurationFromDIY(SoftKeyboard.this);
             }
 
-            qkCandidatesViewGroup.updateSkin();
+            candidatesViewGroup.updateSkin();
             t9InputViewGroup.updateSkin();
             preEditPopup.updateSkin();
             preFixViewGroup.updateSkin();
@@ -1118,7 +1122,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         }
 
         void updateShadowLayer() {
-            qkCandidatesViewGroup.setShadowLayer(Global.shadowRadius, skinInfoManager.skinData.shadow);
+            candidatesViewGroup.setShadowLayer(Global.shadowRadius, skinInfoManager.skinData.shadow);
             preFixViewGroup.setShadowLayer(Global.shadowRadius, skinInfoManager.skinData.shadow);
             quickSymbolViewGroup.setShadowLayer(Global.shadowRadius, skinInfoManager.skinData.shadow);
             functionViewGroup.setShadowLayer(Global.shadowRadius, skinInfoManager.skinData.shadow);
@@ -1184,7 +1188,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             keyboardParams.height = keyboardHeight;
 
             standardVerticalGapDistance = keyboardHeight * 2 / 100;
-            standardHorizantalGapDistance = keyboardWidth * 2 / 100;
+            standardHorizontalGapDistance = keyboardWidth * 2 / 100;
         }
 
         /**
@@ -1208,7 +1212,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
      * 键盘透明度处理，包括一些动画
      */
     public class TransparencyHandle {
-        private boolean show = true;
 
         private void startAutoDownAlpha() {
             mHandler.sendEmptyMessageDelayed(MSG_HIDE, 1000);
@@ -1218,55 +1221,32 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
          * author:purebluesong
          * @param alpha 一个0到1的单精度浮点型表示透明度
          */
-        public void setKeyBoardAlpha(float alpha) {
-            int alphaInt = (int) (alpha * 255);
-            setKeyboardAlphaRaw(alphaInt, 1);
-        }
-
-        /**
-         * @param alphaInt 0~255的整形值
-         * @param alphaFloat  0~1的单精度浮点
-         */
-        @SuppressLint("NewApi")
-        private void setKeyboardAlphaRaw(int alphaInt, float alphaFloat) {
-            t9InputViewGroup.setBackgroundAlpha(alphaInt);
-            functionViewGroup.setBackgroundAlpha(alphaInt);
-            functionViewGroup.setButtonAlpha(alphaFloat);
-            bottomBarViewGroup.setBackgroundAlpha(alphaInt);
-            bottomBarViewGroup.setButtonAlpha(alphaFloat);
-            qkCandidatesViewGroup.setBackgroundAlpha(alphaInt);
-            specialSymbolChooseViewGroup.setBackgroundAlpha(alphaInt);
-            specialSymbolChooseViewGroup.setButtonAlpha(alphaFloat);
-            preFixViewGroup.setBackgroundAlpha(alphaInt);
-            preFixViewGroup.setButtonAlpha(alphaFloat);
-            qkInputViewGroups.setBackgroundAlpha(alphaInt);
-            quickSymbolViewGroup.setBackgroundAlpha(alphaInt);
-            quickSymbolViewGroup.setButtonAlpha(alphaFloat);
-            largeCandidateButton.getBackground().setAlpha(alphaInt);
+        public void setKeyBoardAlpha(int alpha) {
+            t9InputViewGroup.setBackgroundAlpha(alpha);
+            functionViewGroup.setBackgroundAlpha(alpha);
+            bottomBarViewGroup.setBackgroundAlpha(alpha);
+            candidatesViewGroup.setBackgroundAlpha(alpha);
+            specialSymbolChooseViewGroup.setBackgroundAlpha(alpha);
+            preFixViewGroup.setBackgroundAlpha(alpha);
+            qkInputViewGroups.setBackgroundAlpha(alpha);
+            quickSymbolViewGroup.setBackgroundAlpha(alpha);
+            largeCandidateButton.getBackground().setAlpha(alpha);
         }
 
         private void UpAlpha() {
-            if (!mWindowShown) return;
-            if (Kernel.getWordsNumber() >0 || !show )
-                return;
+            if (!mWindowShown)return;
             Animation anim = AnimationUtils.loadAnimation(SoftKeyboard.this, R.anim.hide);
-            if (Global.currentKeyboard == Global.KEYBOARD_T9 ||
-                    Global.currentKeyboard == Global.KEYBOARD_NUM ||
-                    Global.currentKeyboard == Global.KEYBOARD_SYM) {
-                t9InputViewGroup.startAnimation(anim);
+            if (!ViewFuncs.isQK(Global.currentKeyboard)) {
+                if(t9InputViewGroup.isShown())t9InputViewGroup.startAnimation(anim);
             } else {
-                qkInputViewGroups.startAnimation(anim);
+                if(qkInputViewGroups.isShown())qkInputViewGroups.startAnimation(anim);
             }
             if (bottomBarViewGroup.isShown()) bottomBarViewGroup.startAnimation(anim);
             if (functionViewGroup.isShown()) functionViewGroup.startAnimation(anim);
             if (specialSymbolChooseViewGroup.isShown()) specialSymbolChooseViewGroup.startAnimation(anim);
-            if (quickSymbolViewGroup.isShown())
-                quickSymbolViewGroup.startAnimation(anim);
-            if (qkCandidatesViewGroup.isShown())
-                qkCandidatesViewGroup.startAnimation(anim);
-            if (largeCandidateButton.isShown())
-                largeCandidateButton.startAnimation(anim);
-            show = false;
+            if (quickSymbolViewGroup.isShown()) quickSymbolViewGroup.startAnimation(anim);
+            if (candidatesViewGroup.isShown()) candidatesViewGroup.startAnimation(anim);
+            if (largeCandidateButton.isShown()) largeCandidateButton.startAnimation(anim);
         }
 
         /**
@@ -1274,31 +1254,31 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
          * 调用时机：键盘上的任意touch事件
          */
         public void DownAlpha() {
-            if (show || !mWindowShown) return;
-            show = true;
+            if (!mWindowShown) return;
             Animation anim = AnimationUtils.loadAnimation(SoftKeyboard.this, R.anim.show);
-            if (Global.currentKeyboard == Global.KEYBOARD_T9 || Global.currentKeyboard == Global.KEYBOARD_NUM || Global.currentKeyboard == Global.KEYBOARD_SYM) {
-                if (t9InputViewGroup.isShown()) {
-                    t9InputViewGroup.startAnimation(anim);
-                }
+            if (!ViewFuncs.isQK(Global.currentKeyboard)) {
+                if (t9InputViewGroup.isShown())t9InputViewGroup.startAnimation(anim);
             } else {
-                qkInputViewGroups.startAnimation(anim);
+                if (qkInputViewGroups.isShown())qkInputViewGroups.startAnimation(anim);
             }
             if (bottomBarViewGroup.isShown()) bottomBarViewGroup.startAnimation(anim);
             if (functionViewGroup.isShown()) functionViewGroup.startAnimation(anim);
             if (specialSymbolChooseViewGroup.isShown()) specialSymbolChooseViewGroup.startAnimation(anim);
             if (quickSymbolViewGroup.isShown()) quickSymbolViewGroup.startAnimation(anim);
             if (preFixViewGroup.isShown()) preFixViewGroup.startAnimation(anim);
-            if (qkCandidatesViewGroup.isShown()) qkCandidatesViewGroup.startAnimation(anim);
+            if (candidatesViewGroup.isShown()) candidatesViewGroup.startAnimation(anim);
             if (largeCandidateButton.isShown()) largeCandidateButton.startAnimation(anim);
         }
 
         public void handleAlpha(int eventAction) {
             Global.keyboardRestTimeCount = 0;
             if (eventAction == MotionEvent.ACTION_DOWN) {
-                DownAlpha();
+                if (Global.keyboardRestTimeCount > ALPHA_DOWN_TIME ){
+                    DownAlpha();
+                }
             }
         }
+
     }
 
     /**
@@ -1392,7 +1372,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             WindowManager wm = (WindowManager) getApplicationContext().getSystemService(WINDOW_SERVICE);
             wm.updateViewLayout(keyboardLayout, keyboardParams);
         }
-        transparencyHandle.show = true;
     }
 
     /**
@@ -1421,7 +1400,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         preFixViewGroup.hide();
         functionViewGroup.starthideAnimation();
         bottomBarViewGroup.startHideAnimation();
-        qkCandidatesViewGroup.setVisibility(View.GONE);
+        candidatesViewGroup.setVisibility(View.GONE);
 
         lightViewManager.invisibleLightView();
         keyboardParams.flags = DISABLE_LAYOUTPARAMS_FLAG;
@@ -1429,7 +1408,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             WindowManager wm = (WindowManager) getApplicationContext().getSystemService(WINDOW_SERVICE);
             wm.updateViewLayout(keyboardLayout, keyboardParams);
         }
-        transparencyHandle.show = false;
     }
 
     @Override
@@ -1496,12 +1474,10 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         keyBoardSwitcher.switchKeyboard(functionsC.getKeyboardType(info), false);
         //显示键盘出场动画
         startAnimation();
-        //设置空格键文字
+
         bottomBarViewGroup.spaceButton.setText(InputMode.halfToFull(sp.getString("ZH_SPACE_TEXT", "空格")));
-        //更新当前键盘皮肤
         skinUpdateC.updateSkin();
-        //音效设置加载
-        keyBoardTouchEffect.loadSetting(sp);
+        keyboardTouchEffect.loadSetting(sp);
         super.onWindowShown();
     }
 
