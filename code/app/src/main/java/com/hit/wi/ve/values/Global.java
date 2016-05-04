@@ -21,7 +21,7 @@ public final class Global {
     public static final int KEYBOARD_T9 = 0;
     public static final int KEYBOARD_EN = 1;
     public static final int KEYBOARD_NUM = 2;
-    public static final int KEYBOARD_QP = 3;
+    public static final int KEYBOARD_QK = 3;
     public static final int KEYBOARD_SYM = 4;
 //	public static final int KEYBOARD_NULL = 5;
 
@@ -45,7 +45,7 @@ public final class Global {
 
     public static String FilePath = "/data/data/com.hit.wi.ve/dict_qk/";
 
-    public static String QUANPIN = "qp";
+    public static String QUANPIN = "qk";
     public static String EMOJI = "emoji";
     public static String SYMBOL = "s";
 

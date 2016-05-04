@@ -56,7 +56,7 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
     private int mTextColor;
     private int mBackColor;
 
-    private String mQPOrEmoji = Global.QUANPIN;
+    private String mQKOrEmoji = Global.QUANPIN;
 
     private int standardButtonWidth;
     private int standardButtonHeight;
@@ -123,10 +123,10 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
     }
 
     public void displayCandidates() {
-        if (mQPOrEmoji.equals(Global.QUANPIN)|| mQPOrEmoji.equals(Global.EMOJI)){
-            displayCandidates(mQPOrEmoji,WORD_MAX_NUM);
+        if (mQKOrEmoji.equals(Global.QUANPIN)|| mQKOrEmoji.equals(Global.EMOJI)){
+            displayCandidates(mQKOrEmoji,WORD_MAX_NUM);
         } else {
-            displayCandidates(mQPOrEmoji,symbols,WORD_MAX_NUM);
+            displayCandidates(mQKOrEmoji,symbols,WORD_MAX_NUM);
         }
     }
 
@@ -140,7 +140,7 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
 
     List<String> symbols;
     public void displayCandidates(String type,List<String> strings,int show_num) {
-        mQPOrEmoji = type;
+        mQKOrEmoji = type;
         int i=0;
         List<String> words = new ArrayList<>();
         symbols = strings;
@@ -218,7 +218,6 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
             layerPointer++;
             layer = getWorkingLayer(layerPointer);
         }
-        Log.d("WIVE",""+layerList.indexOf(layer)+" "+layerPointer);
         layer.addView(button,button.itsLayoutParams);
         button.clearAnimation();
         button.setEllipsize(standardButtonWidth * CAND_DIV_NUM <= measureTextLength(text)?TextUtils.TruncateAt.END:null);
@@ -266,7 +265,7 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
     }
 
     public void updateSkin() {
-        if(Global.currentKeyboard == Global.KEYBOARD_QP || Global.currentKeyboard == Global.KEYBOARD_EN){
+        if(Global.currentKeyboard == Global.KEYBOARD_QK || Global.currentKeyboard == Global.KEYBOARD_EN){
             mBackColor = softKeyboard8.skinInfoManager.skinData.backcolor_candidate_qk;
             mTextColor = softKeyboard8.skinInfoManager.skinData.textcolors_candidate_qk;
         }else {
@@ -287,7 +286,7 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
 
     public  void smallTheCandidate() {
         softKeyboard8.viewSizeUpdate.UpdateCandidateSize();
-        if (Global.currentKeyboard == Global.KEYBOARD_QP || Global.currentKeyboard == Global.KEYBOARD_EN) {
+        if (Global.currentKeyboard == Global.KEYBOARD_QK || Global.currentKeyboard == Global.KEYBOARD_EN) {
             softKeyboard8.functionViewGroup.setVisibility(View.VISIBLE);
         } else {
             softKeyboard8.secondLayerLayout.setVisibility(View.VISIBLE);
@@ -355,16 +354,16 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
                             CharSequence text = ((TextView)v).getText();
                             if (!softKeyboard8.quickSymbolViewGroup.islock()) {
                                 int inputKeyboard = PreferenceManager.getDefaultSharedPreferences(context).getString("KEYBOARD_SELECTOR", "2").equals("1") ?
-                                        Global.KEYBOARD_T9 : Global.KEYBOARD_QP;
-                                softKeyboard8.keyBoardSwitcher.switchKeyboard(inputKeyboard, true);
+                                        Global.KEYBOARD_T9 : Global.KEYBOARD_QK;
+                                softKeyboard8.switchKeyboardTo(inputKeyboard, true);
                                 softKeyboard8.refreshDisplay();
                             }
                             softKeyboard8.commitText(text);
-                        } else if (mQPOrEmoji.equals(Global.SYMBOL)) {
+                        } else if (mQKOrEmoji.equals(Global.SYMBOL)) {
                             CharSequence text = ((TextView)v).getText();
                             softKeyboard8.commitText(text);
                             softKeyboard8.refreshDisplay();
-                        } else if (mQPOrEmoji.equals(Global.QUANPIN )) {
+                        } else if (mQKOrEmoji.equals(Global.QUANPIN )) {
                             commitQKCandidate(v);
                             softKeyboard8.refreshDisplay();
                         } else {

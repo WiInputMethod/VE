@@ -85,7 +85,7 @@ public class PreFixViewGroup extends ScrolledViewGroup {
 
     public void setBackgroundColorByIndex(int color, int index) {
         ViewFuncs.setBackgroundWithGradientDrawable(buttonList.get(index),color);
-        //buttonList.get(index).setBackgroundColor(color);
+//        buttonList.get(index).setBackgroundColor(color);
     }
 
     public void updateSkin() {

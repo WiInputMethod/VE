@@ -92,7 +92,7 @@ public class ScrolledViewGroup extends myViewGroup {
         backgroundColor = color;
         for (QuickButton quickButton : buttonList) {
             ViewFuncs.setBackgroundWithGradientDrawable(quickButton,color);
-            quickButton.setBackgroundColor(color);
+//            quickButton.setBackgroundColor(color);
         }
     }
 

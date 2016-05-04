@@ -1,6 +1,7 @@
 package com.hit.wi.ve.viewGroups;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -24,7 +25,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
     /**
      * 九键切换出去时的动画资源
      */
-    private int[] keyS = {
+    private final int[] keySwitchOut = {
             R.anim.key_1_switch_out,
             R.anim.key_2_switch_out,
             R.anim.key_3_switch_out,
@@ -40,7 +41,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
     /**
      * 九键切换回来时的动画资源
      */
-    private int[] keyShow = {
+    private final int[] keySwitchShow = {
             R.anim.key_1_switch_in,
             R.anim.key_2_switch_in,
             R.anim.key_3_switch_in,
@@ -55,7 +56,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
     /**
      * 九键键盘打开时的动画资源
      */
-    private int[] keyA = {
+    private final int[] keyShow = {
             R.anim.key_1_in,
             R.anim.key_2_in,
             R.anim.key_3_in,
@@ -65,17 +66,12 @@ public class T9InputViewGroup extends NonScrollViewGroup {
             R.anim.key_7_in,
             R.anim.key_8_in,
             R.anim.key_9_in,
-            R.anim.key_enter_in,
-            R.anim.key_enter_in,
-            R.anim.key_1_in,
-            R.anim.key_1_in,
-            R.anim.key_1_in,
     };
 
     /**
      * 九键隐藏时的动画资源
      */
-    private int[] keyO = {
+    private final int[] keyHide = {
             R.anim.key_1_out,
             R.anim.key_2_out,
             R.anim.key_3_out,
@@ -85,11 +81,6 @@ public class T9InputViewGroup extends NonScrollViewGroup {
             R.anim.key_7_out,
             R.anim.key_8_out,
             R.anim.key_9_out,
-            R.anim.key_enter_out,
-            R.anim.key_enter_out,
-            R.anim.key_1_out,
-            R.anim.key_1_out,
-            R.anim.key_1_out,
     };
 
     private String[] mSlideText;
@@ -193,7 +184,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
     public void startShowAnimation(){
         int i=0;
         for (QuickButton button:buttonList){
-            button.startAnimation(AnimationUtils.loadAnimation(context, keyA[i++]));
+            button.startAnimation(AnimationUtils.loadAnimation(context, keyShow[i++]));
             button.setVisibility(View.VISIBLE);
         }
         deleteButton.clearAnimation();
@@ -203,11 +194,11 @@ public class T9InputViewGroup extends NonScrollViewGroup {
     public void startHideAnimation(){
         int i=0;
         for (final QuickButton button:buttonList){
-            Animation anim = AnimationUtils.loadAnimation(context, keyO[i++]);
+            Animation anim = AnimationUtils.loadAnimation(context, keyHide[i++]);
             anim.setAnimationListener(getMyAnimationListener(button));
             if(button.isShown())button.startAnimation(anim);
         }
-        Animation anim = AnimationUtils.loadAnimation(context,keyO[2]);
+        Animation anim = AnimationUtils.loadAnimation(context, keyHide[2]);
         anim.setAnimationListener(getMyAnimationListener(deleteButton));
         if(deleteButton.isShown())deleteButton.startAnimation(anim);
     }
@@ -263,6 +254,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
         }
         lastState = Global.currentKeyboard;
     }
+
     /**
      * 功能：显示九键
      * 调用时机：切换键盘时调用
@@ -276,9 +268,10 @@ public class T9InputViewGroup extends NonScrollViewGroup {
             button.setEnabled(true);
             button.setClickable(true);
             if (showAnim) {
-                button.startAnimation(AnimationUtils.loadAnimation(context, keyShow[i]));
+                button.startAnimation(AnimationUtils.loadAnimation(context, keySwitchShow[i]));
+                Log.d("WIVE","show anim");
+                i++;
             }
-            i++;
         }
         deleteButton.clearAnimation();
         deleteButton.setVisibility(View.VISIBLE);
@@ -294,7 +287,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
         int i=0;
         for (QuickButton button:buttonList) {
             if (showAnim) {
-                button.startAnimation(AnimationUtils.loadAnimation(context, keyS[i]));
+                button.startAnimation(AnimationUtils.loadAnimation(context, keySwitchOut[i]));
             } else {
                 button.clearAnimation();
             }

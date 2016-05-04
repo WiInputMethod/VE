@@ -154,7 +154,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         expressionButton.setText(button_text[1]);
         switch (keyboard) {
             case Global.KEYBOARD_T9:
-            case Global.KEYBOARD_QP:
+            case Global.KEYBOARD_QK:
             case Global.KEYBOARD_EN:
                 removeButton(zeroButton);
                 receiveButtonToPosition(expressionButton, 1);
@@ -189,7 +189,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
             case Global.KEYBOARD_T9:
                 editor.putString("KEYBOARD_SELECTOR", "1");
                 break;
-            case Global.KEYBOARD_QP:
+            case Global.KEYBOARD_QK:
                 editor.putString("KEYBOARD_SELECTOR", "2");
                 break;
         }
@@ -256,7 +256,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
                     break;
                 case MotionEvent.ACTION_UP:
                     setText(Collections.EMPTY_LIST);
-                    int[] keyboards = {Global.currentKeyboard, Global.KEYBOARD_QP, Global.KEYBOARD_EN, Global.KEYBOARD_NUM, Global.KEYBOARD_T9};
+                    int[] keyboards = {Global.currentKeyboard, Global.KEYBOARD_QK, Global.KEYBOARD_EN, Global.KEYBOARD_NUM, Global.KEYBOARD_T9};
                     if (keyboards[position] != Global.KEYBOARD_NUM) receiveButtonToTail(expressionButton);
                     receiveButtonToTail(spaceButton);
                     if (keyboards[position] == Global.KEYBOARD_NUM) receiveButtonToTail(zeroButton);
@@ -265,7 +265,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
                     if (keyboards[position] == Global.KEYBOARD_EN) {
                         buttonList.get(position).setText(sp.getString("EN_SPACE_TEXT", "space"));
                     }
-                    if (keyboards[position] == Global.KEYBOARD_QP) {
+                    if (keyboards[position] == Global.KEYBOARD_QK) {
                         buttonList.get(position + 1).setText(sp.getString("ZH_SPACE_TEXT", "空格"));
                     }
                     setEnterText(enterButton, softKeyboard8.getCurrentInputEditorInfo(), keyboards[position]);
@@ -406,7 +406,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
                     Global.refreshState(softKeyboard8);
                 } else if (Global.currentKeyboard == Global.KEYBOARD_SYM) {
                     int inputeyboard = PreferenceManager.getDefaultSharedPreferences(context).getString("KEYBOARD_SELECTOR", "2").equals("1") ?
-                            Global.KEYBOARD_T9 : Global.KEYBOARD_QP;
+                            Global.KEYBOARD_T9 : Global.KEYBOARD_QK;
                     softKeyboard8.switchKeyboardTo(inputeyboard, true);
                 }
             }

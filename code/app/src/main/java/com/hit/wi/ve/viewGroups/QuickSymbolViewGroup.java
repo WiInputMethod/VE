@@ -150,7 +150,7 @@ public class QuickSymbolViewGroup extends ScrolledViewGroup implements QuickSymb
 
     private void setCurrentSymbolsByKeyboard(int keyboard) {
         switch (keyboard) {
-            case Global.KEYBOARD_QP:
+            case Global.KEYBOARD_QK:
             case Global.KEYBOARD_T9:
                 currentSymbols = symbols.chineseSymbols;
                 break;
@@ -281,7 +281,7 @@ public class QuickSymbolViewGroup extends ScrolledViewGroup implements QuickSymb
                     firstButton.setText(mLockSymbolState?mUnLockSymbol:mLockSymbol);
                     mLockSymbolState = !mLockSymbolState;
                 } else {
-                    softKeyboard8.keyBoardSwitcher.switchKeyboard(Global.KEYBOARD_SYM, true);
+                    softKeyboard8.switchKeyboardTo(Global.KEYBOARD_SYM, true);
                     softKeyboard8.functionsC.showDefaultSymbolSet();
                     firstButton.setText(mUnLockSymbol);
                 }

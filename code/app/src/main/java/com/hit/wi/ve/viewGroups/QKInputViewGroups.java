@@ -180,7 +180,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
     public void reloadPredictText(int keyboard) {
         predictManager.refresh(context);
         switch (keyboard) {
-            case Global.KEYBOARD_QP:
+            case Global.KEYBOARD_QK:
                 int i=0;
                 for (LinearLayout button : buttonList) {
                     ((TextView) button.findViewById(R.id.predict_text))
@@ -270,7 +270,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
     private int lastState = -1;
     public void refreshState(){
         if (lastState == Global.currentKeyboard)return;
-        if (Global.currentKeyboard == Global.KEYBOARD_QP){
+        if (Global.currentKeyboard == Global.KEYBOARD_QK){
             if(!isShown())setVisibility(View.VISIBLE);
             smileButton.clearAnimation();
             smileButton.setVisibility(View.VISIBLE);
@@ -370,7 +370,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
             shiftButton.setVisibility(View.VISIBLE);
             smileButton.setVisibility(View.GONE);
             if(show)shiftButton.startAnimation(AnimationUtils.loadAnimation(context, enShow[KEY_Z_INDEX]));
-        } else if (Global.currentKeyboard == Global.KEYBOARD_QP) {
+        } else if (Global.currentKeyboard == Global.KEYBOARD_QK) {
             smileButton.setVisibility(View.VISIBLE);
             shiftButton.setVisibility(View.GONE);
             if(show)smileButton.startAnimation(AnimationUtils.loadAnimation(context, enShow[KEY_Z_INDEX]));
@@ -390,7 +390,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         }
         if (Global.currentKeyboard == Global.KEYBOARD_EN) {
             shiftButton.startAnimation(anim);
-        } else if (Global.currentKeyboard == Global.KEYBOARD_QP) {
+        } else if (Global.currentKeyboard == Global.KEYBOARD_QK) {
             smileButton.startAnimation(anim);
         }
         deleteButton.startAnimation(anim);

@@ -1,6 +1,7 @@
 package com.hit.wi.util;
 
 import android.graphics.drawable.GradientDrawable;
+import android.util.Log;
 import android.view.View;
 
 import com.hit.wi.ve.values.Global;
@@ -30,7 +31,7 @@ public class ViewFuncs {
         }
     }
     public static boolean isQK(int keyboard){
-        return keyboard == Global.KEYBOARD_EN || keyboard==Global.KEYBOARD_QP;
+        return keyboard == Global.KEYBOARD_EN || keyboard==Global.KEYBOARD_QK;
     }
 
     /**
@@ -41,12 +42,12 @@ public class ViewFuncs {
      */
     public static void setBackgroundWithGradientDrawable(View v,int color){
         if(v!=null){
-        try {
-            GradientDrawable gd=(GradientDrawable)v.getBackground();
-            gd.setColor(color);
-        }catch (ClassCastException e){
-
-        }
+            try {
+                ((GradientDrawable)v.getBackground()).setColor(color);
+            }catch (ClassCastException e){
+                v.setDrawingCacheBackgroundColor(color);
+                Log.d("WIVE","set bcakground "+e.getMessage());
+            }
         }
     }
 }

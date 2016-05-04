@@ -121,7 +121,7 @@ public class QuickSymbolAddActivity extends Activity {
             case Global.KEYBOARD_SYM:
                 symbolsDataStruct.numberSymbols = theSymbols;
                 break;
-            case Global.KEYBOARD_QP:
+            case Global.KEYBOARD_QK:
             case Global.KEYBOARD_T9:
                 symbolsDataStruct.chineseSymbols = theSymbols;
                 break;
@@ -223,7 +223,7 @@ public class QuickSymbolAddActivity extends Activity {
             case Global.KEYBOARD_NUM:
                 flag = numberflag;
                 break;
-            case Global.KEYBOARD_QP:
+            case Global.KEYBOARD_QK:
             case Global.KEYBOARD_T9:
                 flag = chineseflag;
                 break;

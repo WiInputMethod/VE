@@ -1,6 +1,5 @@
 package com.hit.wi.ve;
 
-import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
@@ -88,7 +87,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     /**
      * 是全拼还是Emoji
      */
-    private String mQPOrEmoji = Global.QUANPIN;
+    private String mQKOrEmoji = Global.QUANPIN;
 
     /**
      * 中文键盘类型
@@ -127,7 +126,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     private final int MSG_HIDE = 0;
     public final int MSG_REPEAT = 1;
     private final int MSG_SEND_TO_KERNEL = 2;
-    private final int QP_MSG_SEND_TO_KERNEL = 3;
+    private final int QK_MSG_SEND_TO_KERNEL = 3;
     private final int MSG_CHOOSE_WORD = 4;
     private final int MSG_HEART = 5;
     private final int MSG_LAZY_LOAD_CANDIDATE = 6;
@@ -226,7 +225,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                     editPinyin((String)msg.obj,false);
                     t9InputViewGroup.updateFirstKeyText();
                     break;
-                case QP_MSG_SEND_TO_KERNEL:
+                case QK_MSG_SEND_TO_KERNEL:
                     editPinyin((String) msg.obj, false);
                     qkInputViewGroups.refreshQKKeyboardPredict();
                     break;
@@ -355,7 +354,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
      */
     public void editPinyin(String s, boolean delete) {
         if(pinyinProc.borderEditProcess(s,delete))return;// promise candidateStart<selStart<candidateEnd
-        mQPOrEmoji = Global.QUANPIN;
+        mQKOrEmoji = Global.QUANPIN;
 
         final InputConnection ic = getCurrentInputConnection();
         if (ic == null) return;
@@ -431,12 +430,12 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                 Global.addToRedo(pinyin.substring(pinyin.length()-1));
                 t9InputViewGroup.updateFirstKeyText();
                 editPinyin("", true);
-            } else if (Global.currentKeyboard == Global.KEYBOARD_QP) {
-                if (mQPOrEmoji.equals(Global.QUANPIN)) {
+            } else if (Global.currentKeyboard == Global.KEYBOARD_QK) {
+                if (mQKOrEmoji.equals(Global.QUANPIN)) {
                     String pinyin = Kernel.getWordsShowPinyin();
                     Global.addToRedo(pinyin.substring(pinyin.length()-1));
                     editPinyin("", true);
-                } else if (mQPOrEmoji.equals(Global.EMOJI)) {
+                } else if (mQKOrEmoji.equals(Global.EMOJI)) {
                     Kernel.cleanKernel();
                     refreshDisplay(true);
                 }
@@ -463,8 +462,8 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         if (Global.currentKeyboard == Global.KEYBOARD_T9 || Global.currentKeyboard == Global.KEYBOARD_SYM || Global.currentKeyboard == Global.KEYBOARD_NUM) {
             t9InputViewGroup.updateFirstKeyText();
             refreshDisplay();
-        } else if (Global.currentKeyboard == Global.KEYBOARD_QP) {
-            refreshDisplay(!mQPOrEmoji.equals(Global.QUANPIN));
+        } else if (Global.currentKeyboard == Global.KEYBOARD_QK) {
+            refreshDisplay(!mQKOrEmoji.equals(Global.QUANPIN));
         } else if (Global.currentKeyboard == Global.KEYBOARD_EN) {
             refreshDisplay();
         }
@@ -513,7 +512,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
      * @param msg pinyin
      * */
     public void sendMsgToQKKernel(String msg) {
-        mHandler.sendMessage(mHandler.obtainMessage(QP_MSG_SEND_TO_KERNEL, msg));
+        mHandler.sendMessage(mHandler.obtainMessage(QK_MSG_SEND_TO_KERNEL, msg));
     }
 
     @SuppressWarnings("deprecation")
@@ -580,7 +579,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     /**
      * 键盘切换类，实际运用基本只调用其中的SwitchKeyBoard
      */
-    public class KeyBoardSwitcherC {
+    private class KeyBoardSwitcherC {
 
         private static final int HOR_GAP_NUM = 2;
 
@@ -603,39 +602,26 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         }
 
         private void hideKeyboard(int keyboard, boolean showAnim) {
-            switch (Global.currentKeyboard) {
-                case Global.KEYBOARD_QP:
-                case Global.KEYBOARD_EN:
-                    if (keyboard != Global.KEYBOARD_QP && keyboard != Global.KEYBOARD_EN) {
-                        qkInputViewGroups.startHideAnimation(showAnim);
-                    }
-                    break;
-                default:
-                    if (keyboard == Global.KEYBOARD_NUM || keyboard == Global.KEYBOARD_SYM) {
-                        t9InputViewGroup.T9ToNum(showAnim);
-                    } else {
-                        t9InputViewGroup.hideT9(showAnim);
-                        fullWidth();
-                    }
-                    break;
+            if (ViewFuncs.isQK(Global.currentKeyboard)) {
+                qkInputViewGroups.startHideAnimation(showAnim);
+            } else {
+                if (keyboard == Global.KEYBOARD_NUM || keyboard == Global.KEYBOARD_SYM  || keyboard == Global.KEYBOARD_T9) {
+                    t9InputViewGroup.T9ToNum(showAnim);
+                } else {
+                    t9InputViewGroup.hideT9(showAnim);
+                    fullWidth();
+                }
             }
-            if (preFixViewGroup.isShown()) preFixViewGroup.setVisibility(View.GONE);
+//            if (preFixViewGroup.isShown()) preFixViewGroup.setVisibility(View.GONE);
         }
 
         private void showKeyboard(int keyboard, boolean showAnim) {
-            switch (keyboard) {
-                case Global.KEYBOARD_QP:
-                case Global.KEYBOARD_EN:
-                    if (Global.currentKeyboard != Global.KEYBOARD_QP && Global.currentKeyboard != Global.KEYBOARD_EN) {
-                        qkInputViewGroups.startShowAnimation(showAnim);
-                    }
-                    break;
-                default:
-                    t9InputViewGroup.showT9(showAnim);
-                    fullWidthBack();
-                    break;
+            if(ViewFuncs.isQK(keyboard)){
+                qkInputViewGroups.startShowAnimation(showAnim);
+            } else {
+                t9InputViewGroup.showT9(showAnim);
+                fullWidthBack();
             }
-            quickSymbolViewGroup.updateCurrentSymbolsAndSetTheContent(keyboard);
         }
 
         /**
@@ -649,13 +635,16 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             qkInputViewGroups.reloadPredictText(keyboard);
             Kernel.cleanKernel();
 
-            hideKeyboard(keyboard, showAnim);
-            showKeyboard(keyboard, showAnim);
+            if(Global.currentKeyboard != keyboard){
+                hideKeyboard(keyboard, showAnim);
+                showKeyboard(keyboard, showAnim);
+                Global.currentKeyboard = keyboard;
+                quickSymbolViewGroup.updateCurrentSymbolsAndSetTheContent(keyboard);
+            }
 
-            Global.currentKeyboard = keyboard;
             refreshDisplay();
             bottomBarViewGroup.switchToKeyboard(keyboard);
-            viewSizeUpdate.updateViewSizeAndPosition();
+//            viewSizeUpdate.updateViewSizeAndPosition();
         }
     }
 
@@ -1429,7 +1418,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
          * 获取中文键盘类型
 		 */
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        zhKeyboard = sharedPreferences.getString("KEYBOARD_SELECTOR", "2").equals("1") ? Global.KEYBOARD_T9 : Global.KEYBOARD_QP;
+        zhKeyboard = sharedPreferences.getString("KEYBOARD_SELECTOR", "2").equals("1") ? Global.KEYBOARD_T9 : Global.KEYBOARD_QK;
         if (mWindowShown) {
             int keyboard = functionsC.getKeyboardType(info);
             if (Global.currentKeyboard != keyboard && info.inputType != 0) {

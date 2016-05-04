@@ -2,8 +2,6 @@ package com.hit.wi.ve.effect;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.GradientDrawable;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
