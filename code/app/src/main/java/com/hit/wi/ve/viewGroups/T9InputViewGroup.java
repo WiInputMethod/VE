@@ -6,9 +6,9 @@ import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
-import com.hit.wi.util.ViewFuncs;
+import com.hit.wi.util.ViewsUtil;
 import com.hit.wi.jni.Kernel;
-import com.hit.wi.util.WIStringManager;
+import com.hit.wi.util.StringUtil;
 
 import com.hit.wi.ve.R;
 import com.hit.wi.ve.datastruct.InputAction;
@@ -152,13 +152,13 @@ public class T9InputViewGroup extends NonScrollViewGroup {
     public void updateSkin(){
         for(QuickButton button:buttonList){
             button.setTextColor(skinInfoManager.skinData.textcolors_t9keys);
-            ViewFuncs.setBackgroundWithGradientDrawable(button, skinInfoManager.skinData.backcolor_t9keys);
+            ViewsUtil.setBackgroundWithGradientDrawable(button, skinInfoManager.skinData.backcolor_t9keys);
             button.getBackground().setAlpha(Global.getCurrentAlpha());
             button.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
         }
 
         deleteButton.setTextColor(skinInfoManager.skinData.textcolors_delete);
-        ViewFuncs.setBackgroundWithGradientDrawable(deleteButton,skinInfoManager.skinData.backcolor_delete);
+        ViewsUtil.setBackgroundWithGradientDrawable(deleteButton,skinInfoManager.skinData.backcolor_delete);
         deleteButton.getBackground().setAlpha(Global.getCurrentAlpha());
         deleteButton.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
     }
@@ -208,12 +208,10 @@ public class T9InputViewGroup extends NonScrollViewGroup {
             params.width = ViewGroup.LayoutParams.MATCH_PARENT;
             params.height = height/LAYER_NUM - 2*horGap/3;
             params.bottomMargin = horGap;
-
         }
         linearParams[2].bottomMargin = 0;
         int margin = horGap/2;
         for(QuickButton button:buttonList){
-
             button.itsLayoutParams.width = (int) (keyboardWidth * BUTTON_WIDTH_RATE - horGap);
             button.itsLayoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT;
             ((LinearLayout.LayoutParams)button.itsLayoutParams).leftMargin = margin;
@@ -269,7 +267,6 @@ public class T9InputViewGroup extends NonScrollViewGroup {
             button.setClickable(true);
             if (showAnim) {
                 button.startAnimation(AnimationUtils.loadAnimation(context, keySwitchShow[i]));
-                Log.d("WIVE","show anim");
                 i++;
             }
         }
@@ -391,12 +388,12 @@ public class T9InputViewGroup extends NonScrollViewGroup {
                 int index = buttonList.indexOf(v);
                 if (buttonList.indexOf(v) == KEY_OTHER_INDEX) {
                     switchSymbolToFunc(mOtherSymbolTypeList, mOtherSymbolTypeSendKeyList);
-                    softKeyboard8.candidatesViewGroup.displayCandidates(Global.SYMBOL,WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.SPECIAL),100);
+                    softKeyboard8.candidatesViewGroup.displayCandidates(Global.SYMBOL, StringUtil.convertStringstoList(softKeyboard8.symbolsManager.SPECIAL),100);
                 } else if (index == 6){
-                    softKeyboard8.candidatesViewGroup.displayCandidates(Global.SYMBOL,WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.NUMBER),100);
+                    softKeyboard8.candidatesViewGroup.displayCandidates(Global.SYMBOL, StringUtil.convertStringstoList(softKeyboard8.symbolsManager.NUMBER),100);
                     softKeyboard8.refreshDisplay(true);
                 } else if (index == 7){
-                    softKeyboard8.candidatesViewGroup.displayCandidates(Global.SYMBOL, WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.MATH),100);
+                    softKeyboard8.candidatesViewGroup.displayCandidates(Global.SYMBOL, StringUtil.convertStringstoList(softKeyboard8.symbolsManager.MATH),100);
                     softKeyboard8.refreshDisplay(true);
                 } else {
                     switchBackFunc();
@@ -445,7 +442,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
                             if (commitText.equals("1")) commitText = ",";
                             softKeyboard8.commitText(commitText);
                         }
-                        softKeyboard8.preFixViewGroup.setVisibility(View.GONE);
+                        softKeyboard8.prefixViewGroup.setVisibility(View.GONE);
                     } else {
                         Global.redoText_single.clear();
                         softKeyboard8.sendMsgToKernel(commitText);

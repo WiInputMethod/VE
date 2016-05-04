@@ -8,7 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
-import com.hit.wi.util.ViewFuncs;
+import com.hit.wi.util.ViewsUtil;
 
 /**
  * Created by Administrator on 2015/4/26.
@@ -189,7 +189,7 @@ public class mybutton extends Button {
 
     public void TouchCompletePreHandle() {
         setBackgroundColor(Color.BLACK);
-        ViewFuncs.setBackgroundWithGradientDrawable(this,Color.BLACK);
+        ViewsUtil.setBackgroundWithGradientDrawable(this,Color.BLACK);
     }
 
     private void setMessagetrans(boolean value) {

@@ -3,7 +3,6 @@ package com.hit.wi.ve.viewGroups;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.view.Gravity;
 import android.view.View;
@@ -13,7 +12,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
 
-import com.hit.wi.util.ViewFuncs;
+import com.hit.wi.util.ViewsUtil;
 import com.hit.wi.ve.R;
 import com.hit.wi.ve.SoftKeyboard;
 import com.hit.wi.ve.values.Global;
@@ -91,7 +90,7 @@ public class ScrolledViewGroup extends myViewGroup {
     public void setBackgroundColor(int color) {
         backgroundColor = color;
         for (QuickButton quickButton : buttonList) {
-            ViewFuncs.setBackgroundWithGradientDrawable(quickButton,color);
+            ViewsUtil.setBackgroundWithGradientDrawable(quickButton,color);
 //            quickButton.setBackgroundColor(color);
         }
     }
@@ -148,7 +147,7 @@ public class ScrolledViewGroup extends myViewGroup {
         this.backgroundColor = backgroundcolor;
         for (QuickButton button : buttonList) {
             button.setTextColor(textcolor);
-            ViewFuncs.setBackgroundWithGradientDrawable(button,backgroundcolor);
+            ViewsUtil.setBackgroundWithGradientDrawable(button,backgroundcolor);
             button.getBackground().setAlpha(Global.getCurrentAlpha());
 
         }
@@ -293,7 +292,7 @@ public class ScrolledViewGroup extends myViewGroup {
     protected QuickButton addButton(int textColor, int backgroundColor, String text) {
         QuickButton button = addButton(text);
         button.setTextColor(textColor);
-        ViewFuncs.setBackgroundWithGradientDrawable(button,backgroundColor);
+        ViewsUtil.setBackgroundWithGradientDrawable(button,backgroundColor);
         button.getBackground().setAlpha(Global.getCurrentAlpha());
         return button;
     }

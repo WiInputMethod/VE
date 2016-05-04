@@ -10,8 +10,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.AbsoluteLayout;
 import android.widget.TextView;
 
-import com.hit.wi.util.ViewFuncs;
-import com.hit.wi.util.WIStringManager;
+import com.hit.wi.util.ViewsUtil;
+import com.hit.wi.util.StringUtil;
 
 import com.hit.wi.ve.R;
 import com.hit.wi.ve.SoftKeyboard;
@@ -180,7 +180,7 @@ public class LightViewManager {
     }
 
     public int lightViewAnimate(View v, MotionEvent event){
-        int index = ViewFuncs.computePosition(event.getX(), event.getY(), v.getHeight(), v.getWidth());
+        int index = ViewsUtil.computePosition(event.getX(), event.getY(), v.getHeight(), v.getWidth());
         if (index == Global.ERR){
             for (int i = 0;i <mLightNum ;i++){
                 if(mLightView[i].isShown())animate(mLightView[i],offAnim_noraml_hide[i],View.GONE);
@@ -222,7 +222,7 @@ public class LightViewManager {
     }
 
     public boolean HideLightView(float x, float y, float width, float height) {
-        int index = ViewFuncs.computePosition(x, y, (int) height, (int) width);
+        int index = ViewsUtil.computePosition(x, y, (int) height, (int) width);
         for (int i =0;i<mLightNum;i++){
             if (i == index )continue;
             if(mLightView[i].isShown())
@@ -257,12 +257,12 @@ public class LightViewManager {
         for (int i = 0; i < 4; ++i) {
             mLightShow |= mLightView[i].isShown();
         }
-        int index = ViewFuncs.computePosition(x, y, (int) height, (int) width);
+        int index = ViewsUtil.computePosition(x, y, (int) height, (int) width);
         int[] follow = {1,3,0,2};
         if (index!= -1 && !mLightShow) {
             animate(mLightView[index],showAnim[index],View.VISIBLE);
             String showText = " ";
-            if(WIStringManager.isAllLetter(text)){
+            if(StringUtil.isAllLetter(text)){
                 if(text.length() > follow[index])
                     showText = (String) text.subSequence(follow[index], follow[index]+1);
             } else {

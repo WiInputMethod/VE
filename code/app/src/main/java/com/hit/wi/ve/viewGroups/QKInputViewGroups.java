@@ -11,8 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.hit.wi.jni.Kernel;
 import com.hit.wi.util.InputMode;
-import com.hit.wi.util.ViewFuncs;
-import com.hit.wi.util.WIStringManager;
+import com.hit.wi.util.ViewsUtil;
+import com.hit.wi.util.StringUtil;
 import com.hit.wi.ve.R;
 import com.hit.wi.ve.datastruct.InputAction;
 import com.hit.wi.ve.functions.PredictManager;
@@ -296,7 +296,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
 
     private void tool_updateSkin(TextView v, int textcolor, int backgroundcolor) {
         v.setTextColor(textcolor);
-        ViewFuncs.setBackgroundWithGradientDrawable(v, backgroundcolor);
+        ViewsUtil.setBackgroundWithGradientDrawable(v, backgroundcolor);
 
         v.getBackground().setAlpha(Global.getCurrentAlpha());
         v.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
@@ -309,13 +309,13 @@ public class QKInputViewGroups extends NonScrollViewGroup {
 
             main_text.setTextColor(skinInfoManager.skinData.textcolors_26keys);
             main_text.setShadowLayer(Global.shadowRadius, 0, 0, skinInfoManager.skinData.shadow);
-            ViewFuncs.setBackgroundWithGradientDrawable(main_text, skinInfoManager.skinData.backcolor_26keys);
+            ViewsUtil.setBackgroundWithGradientDrawable(main_text, skinInfoManager.skinData.backcolor_26keys);
             //main_text.setBackgroundColor(skinInfoManager.skinData.backcolor_26keys);
             main_text.getBackground().setAlpha(Global.getCurrentAlpha());
             predict_text.setTextColor(skinInfoManager.skinData.textcolors_26keys);
             predict_text.setShadowLayer(Global.shadowRadius, 0, 0, skinInfoManager.skinData.shadow);
             //predict_text.setBackgroundColor(skinInfoManager.skinData.backcolor_26keys);
-            ViewFuncs.setBackgroundWithGradientDrawable(predict_text,skinInfoManager.skinData.backcolor_26keys);
+            ViewsUtil.setBackgroundWithGradientDrawable(predict_text,skinInfoManager.skinData.backcolor_26keys);
             predict_text.getBackground().setAlpha(Global.getCurrentAlpha()); //设置透明度
         }
 
@@ -461,16 +461,16 @@ public class QKInputViewGroups extends NonScrollViewGroup {
 
     private void showSmile() {
         softKeyboard8.quickSymbolViewGroup.setVisibility(View.GONE);
-        softKeyboard8.preFixViewGroup.setText(WIStringManager.convertStringstoList(mAllSmileText));
-        softKeyboard8.preFixViewGroup.setBackgroundAlpha(Global.getCurrentAlpha());
-        softKeyboard8.preFixViewGroup.updateSkin();
-        softKeyboard8.preFixViewGroup.setVisibility(View.VISIBLE);
+        softKeyboard8.prefixViewGroup.setText(StringUtil.convertStringstoList(mAllSmileText));
+        softKeyboard8.prefixViewGroup.setBackgroundAlpha(Global.getCurrentAlpha());
+        softKeyboard8.prefixViewGroup.updateSkin();
+        softKeyboard8.prefixViewGroup.setVisibility(View.VISIBLE);
     }
 
     private void hideSmile() {
-        softKeyboard8.preFixViewGroup.setBackgroundColor(skinInfoManager.skinData.backcolor_prefix);
-        softKeyboard8.preFixViewGroup.setText(WIStringManager.convertStringstoList(softKeyboard8.mFuncKeyboardText));
-        softKeyboard8.preFixViewGroup.setVisibility(View.GONE);
+        softKeyboard8.prefixViewGroup.setBackgroundColor(skinInfoManager.skinData.backcolor_prefix);
+        softKeyboard8.prefixViewGroup.setText(StringUtil.convertStringstoList(softKeyboard8.mFuncKeyboardText));
+        softKeyboard8.prefixViewGroup.setVisibility(View.GONE);
         softKeyboard8.quickSymbolViewGroup.setVisibility(View.VISIBLE);
         if (Kernel.getWordsNumber() > 0) {
             softKeyboard8.quickSymbolViewGroup.setVisibility(View.GONE);
@@ -502,7 +502,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
                         String commitText = (String)((TextView)view.findViewById(R.id.predict_text)).getText();
                         if (commitText.length() > 0) {
                             commitText = InputMode.fullToHalf(commitText);
-                            if (WIStringManager.isAllLetter(commitText)) {
+                            if (StringUtil.isAllLetter(commitText)) {
                                 commitText = commitText.toLowerCase();
                                 Global.redoText_single.clear();
                                 softKeyboard8.sendMsgToQKKernel(InputMode.fullToHalf(commitText));
@@ -598,19 +598,19 @@ public class QKInputViewGroups extends NonScrollViewGroup {
                     showSmile();
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    PreFixViewGroup preFixViewGroup = softKeyboard8.preFixViewGroup;
+                    PrefixViewGroup prefixViewGroup = softKeyboard8.prefixViewGroup;
                     float X = event.getX();
                     float Y = event.getY();
                     float perWidth = softKeyboard8.keyboardWidth / SMILE_KEYS_NUM;
                     if (Y <= 0) {
-                        preFixViewGroup.setBackgroundColor(skinInfoManager.skinData.backcolor_prefix);
+                        prefixViewGroup.setBackgroundColor(skinInfoManager.skinData.backcolor_prefix);
                         if (0 < X && X < perWidth * SMILE_FUNC_NUM) {
-                            preFixViewGroup.setBackgroundColorByIndex(skinInfoManager.skinData.backcolor_touchdown, (int) (X / perWidth));
+                            prefixViewGroup.setBackgroundColorByIndex(skinInfoManager.skinData.backcolor_touchdown, (int) (X / perWidth));
                         }
                     } else {
-                        preFixViewGroup.setBackgroundColor(skinInfoManager.skinData.backcolor_prefix);
+                        prefixViewGroup.setBackgroundColor(skinInfoManager.skinData.backcolor_prefix);
                     }
-                    preFixViewGroup.setBackgroundAlpha(Global.getCurrentAlpha());
+                    prefixViewGroup.setBackgroundAlpha(Global.getCurrentAlpha());
                     break;
                 case MotionEvent.ACTION_UP:
                     hideSmile();
@@ -619,7 +619,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
                     float perwidth = softKeyboard8.keyboardWidth / SMILE_KEYS_NUM;
                     InputConnection ic = softKeyboard8.getCurrentInputConnection();
                     if (y <= 0 && ic != null) {
-                        x = Math.max(0,Math.min(4*perwidth,x));
+                        x = Math.max(0,Math.min(SMILE_FUNC_NUM*perwidth-1,x));
                         int select = ((int) (x / perwidth));
                         ic.performContextMenuAction(performActions[select]);
                         if (select == 2){
@@ -642,10 +642,10 @@ public class QKInputViewGroups extends NonScrollViewGroup {
                 softKeyboard8.mHandler.sendEmptyMessageDelayed(softKeyboard8.MSG_REPEAT, softKeyboard8.REPEAT_START_DELAY);
             } else if (event.getAction() == MotionEvent.ACTION_MOVE && Global.slideDeleteSwitch) {
                 softKeyboard8.lightViewManager.HideLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight());
-                if (Global.LEFT == ViewFuncs.computePosition(event.getX(), event.getY(), v.getWidth(), v.getHeight()) ) {
+                if (Global.LEFT == ViewsUtil.computePosition(event.getX(), event.getY(), v.getWidth(), v.getHeight()) ) {
                     softKeyboard8.lightViewManager.ShowLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight(),"清空");
                     softKeyboard8.mHandler.removeMessages(softKeyboard8.MSG_REPEAT);
-                } else if(Global.UP == ViewFuncs.computePosition(event.getX(), event.getY(), v.getWidth(), v.getHeight()) ){
+                } else if(Global.UP == ViewsUtil.computePosition(event.getX(), event.getY(), v.getWidth(), v.getHeight()) ){
                     softKeyboard8.lightViewManager.ShowLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight(),"恢复");
                     softKeyboard8.mHandler.removeMessages(softKeyboard8.MSG_REPEAT);
                 }

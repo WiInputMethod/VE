@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import com.hit.wi.jni.Kernel;
-import com.hit.wi.util.ViewFuncs;
+import com.hit.wi.util.ViewsUtil;
 import com.hit.wi.util.WIMath;
 import com.hit.wi.ve.values.Global;
 import com.hit.wi.ve.view.QuickButton;
@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2015/8/10.
  */
-public class PreFixViewGroup extends ScrolledViewGroup {
+public class PrefixViewGroup extends ScrolledViewGroup {
     public void create(Context context) {
         super.create(super.horizontal, context);
     }
@@ -84,7 +84,7 @@ public class PreFixViewGroup extends ScrolledViewGroup {
     }
 
     public void setBackgroundColorByIndex(int color, int index) {
-        ViewFuncs.setBackgroundWithGradientDrawable(buttonList.get(index),color);
+        ViewsUtil.setBackgroundWithGradientDrawable(buttonList.get(index),color);
 //        buttonList.get(index).setBackgroundColor(color);
     }
 

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.*;
 import android.widget.LinearLayout;
 import com.hit.wi.util.InputMode;
-import com.hit.wi.util.WIStringManager;
+import com.hit.wi.util.StringUtil;
 
 import com.hit.wi.ve.Interfaces.ViewGroupInterface;
 import com.hit.wi.ve.R;
@@ -104,31 +104,31 @@ public class SpecialSymbolChooseViewGroup extends NonScrollViewGroup implements 
         if (index == 0){
             softKeyboard8.candidatesViewGroup.displayCandidates(
                     Global.SYMBOL,
-                    WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.SPECIAL),100);
+                    StringUtil.convertStringstoList(softKeyboard8.symbolsManager.SPECIAL),100);
         } else if (index == 1){
             softKeyboard8.candidatesViewGroup.displayCandidates(
                     Global.SYMBOL,
-                    WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.BU_SHOU),100);
+                    StringUtil.convertStringstoList(softKeyboard8.symbolsManager.BU_SHOU),100);
         } else if (index == 2){
             softKeyboard8.candidatesViewGroup.displayCandidates(
                     Global.SYMBOL,
-                    WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.PHONETIC),100);
+                    StringUtil.convertStringstoList(softKeyboard8.symbolsManager.PHONETIC),100);
         } else if (index == 3){
             softKeyboard8.candidatesViewGroup.displayCandidates(
                     Global.SYMBOL,
-                    WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.RUSSIAN),100);
+                    StringUtil.convertStringstoList(softKeyboard8.symbolsManager.RUSSIAN),100);
         } else if (index == 4){
             softKeyboard8.candidatesViewGroup.displayCandidates(
                     Global.SYMBOL,
-                    WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.JAPANESE),100);
+                    StringUtil.convertStringstoList(softKeyboard8.symbolsManager.JAPANESE),100);
         } else if (index == 5){
             softKeyboard8.candidatesViewGroup.displayCandidates(
                     Global.SYMBOL,
-                    WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.BOPOMOFO),100);
+                    StringUtil.convertStringstoList(softKeyboard8.symbolsManager.BOPOMOFO),100);
         } else if (index == 6){
             softKeyboard8.candidatesViewGroup.displayCandidates(
                     Global.SYMBOL,
-                    WIStringManager.convertStringstoList(softKeyboard8.symbolsManager.GREECE),50);
+                    StringUtil.convertStringstoList(softKeyboard8.symbolsManager.GREECE),50);
         }
     }
 

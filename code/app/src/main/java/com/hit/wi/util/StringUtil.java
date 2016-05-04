@@ -8,11 +8,9 @@ import java.util.List;
  * Created by daofa on 2016/4/10.
  * 字符串的处理方法
  */
-public class WIStringManager {
-
+public class StringUtil {
 
     /**
-     *
      * @param strings
      * @return 字符串生成的列表
      */

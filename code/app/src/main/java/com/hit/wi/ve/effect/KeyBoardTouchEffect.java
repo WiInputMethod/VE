@@ -6,7 +6,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 
-import com.hit.wi.util.ViewFuncs;
+import com.hit.wi.util.ViewsUtil;
 import com.hit.wi.ve.R;
 import com.hit.wi.ve.values.Global;
 
@@ -48,14 +48,14 @@ public class KeyBoardTouchEffect implements KeyboardTouchEffectInterface {
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 onPressEffect();
-                ViewFuncs.setBackgroundWithGradientDrawable(v,touchdown_color);
+                ViewsUtil.setBackgroundWithGradientDrawable(v,touchdown_color);
                 break;
             case MotionEvent.ACTION_MOVE:
                 onSlideEffect();
                 break;
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
-                ViewFuncs.setBackgroundWithGradientDrawable(v,normal_color);
+                ViewsUtil.setBackgroundWithGradientDrawable(v,normal_color);
                 break;
         }
         v.getBackground().setAlpha(Global.getCurrentAlpha());

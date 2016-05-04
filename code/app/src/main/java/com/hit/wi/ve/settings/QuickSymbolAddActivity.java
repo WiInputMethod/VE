@@ -12,7 +12,7 @@ import android.view.*;
 import android.widget.*;
 
 import com.hit.wi.util.CommonFuncs;
-import com.hit.wi.util.WIStringManager;
+import com.hit.wi.util.StringUtil;
 import com.hit.wi.ve.Interfaces.QuickSymbolInterface;
 import com.hit.wi.ve.R;
 import com.hit.wi.ve.values.Global;
@@ -109,7 +109,7 @@ public class QuickSymbolAddActivity extends Activity {
                 theSymbols = symbolsDataStruct.chineseSymbols;
                 break;
         }
-        return WIStringManager.convertStringstoList(theSymbols);
+        return StringUtil.convertStringstoList(theSymbols);
     }
 
     private void setSymbolsDataStruct(int keyboard, String[] theSymbols) {
@@ -402,7 +402,7 @@ public class QuickSymbolAddActivity extends Activity {
                 for (Item item : itemList) {
                     symbols.add((String) item.textView.getText());
                 }
-                String[] symbolsForUpdate = WIStringManager.convertListToString(symbols);
+                String[] symbolsForUpdate = StringUtil.convertListToString(symbols);
                 setSymbolsDataStruct(currentSymbolFlag, symbolsForUpdate);
                 try {
                     quickSymbolInterface.writeSymbolsToFile("default", symbolsDataStruct);

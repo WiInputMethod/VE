@@ -80,6 +80,10 @@ public final class Global {
         }
     }
 
+    public static boolean isQK(int keyboard){
+        return keyboard == Global.KEYBOARD_EN || keyboard==Global.KEYBOARD_QK;
+    }
+
     public static void refreshState(SoftKeyboard softKeyboard8){
         softKeyboard8.refreshDisplay();
     }

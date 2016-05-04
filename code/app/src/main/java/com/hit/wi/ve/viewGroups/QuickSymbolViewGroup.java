@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 
 import com.hit.wi.jni.Kernel;
-import com.hit.wi.util.WIStringManager;
+import com.hit.wi.util.StringUtil;
 import com.hit.wi.ve.Interfaces.QuickSymbolInterface;
 import com.hit.wi.ve.Interfaces.ViewGroupInterface;
 import com.hit.wi.ve.R;
@@ -122,7 +122,7 @@ public class QuickSymbolViewGroup extends ScrolledViewGroup implements QuickSymb
         currentSymbolFlag = keyboard;
         setCurrentSymbolsByKeyboard(keyboard);
         firstButton.setText(res.getString(R.string.symbol));
-        List<String> quickSymbolContent = WIStringManager.convertStringstoList(currentSymbols);
+        List<String> quickSymbolContent = StringUtil.convertStringstoList(currentSymbols);
         setText(quickSymbolContent);
     }
 
@@ -135,7 +135,7 @@ public class QuickSymbolViewGroup extends ScrolledViewGroup implements QuickSymb
     public void refreshState() {
         clearAnimation();
         if (lastState == softKeyboard8.specialSymbolChooseViewGroup.isShown() ||
-                softKeyboard8.preFixViewGroup.isShown())return;
+                softKeyboard8.prefixViewGroup.isShown())return;
         if (!lastState){
             hide();
         } else {

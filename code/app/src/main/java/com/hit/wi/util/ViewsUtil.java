@@ -9,7 +9,7 @@ import com.hit.wi.ve.values.Global;
 /**
  * Created by daofa on 2016/4/10.
  */
-public class ViewFuncs {
+public class ViewsUtil {
 
     public static final int UP = 0;
     private static final int DOWM = 1;
@@ -30,9 +30,7 @@ public class ViewFuncs {
             return ERR;
         }
     }
-    public static boolean isQK(int keyboard){
-        return keyboard == Global.KEYBOARD_EN || keyboard==Global.KEYBOARD_QK;
-    }
+
 
     /**
      * 设置View的背景颜色而不改变View的shape

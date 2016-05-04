@@ -47,7 +47,7 @@ public class FunctionViewGroup extends NonScrollViewGroup implements ViewGroupIn
         String[] keyText = res.getStringArray(R.array.FUNC_KEY_TEXT);
 
         for (String text : keyText) {
-            QuickButton button = addbuttonF(text);
+            QuickButton button = addButtonF(text);
             buttonList.add(button);
         }
         int point = 0;
@@ -79,7 +79,7 @@ public class FunctionViewGroup extends NonScrollViewGroup implements ViewGroupIn
         else show();
     }
 
-    public void starthideAnimation() {
+    public void startHideAnimation() {
         int i = 0;
         for (QuickButton quickButton : buttonList) {
             quickButton.clearAnimation();
@@ -89,11 +89,11 @@ public class FunctionViewGroup extends NonScrollViewGroup implements ViewGroupIn
         }
     }
 
-    public void startshowAnimation() {
+    public void startShowAnimation() {
         super.startAnimation(showAnima);
     }
 
-    private QuickButton addbuttonF(String text) {
+    private QuickButton addButtonF(String text) {
         QuickButton button = super.addButton(text,skinInfoManager.skinData.textcolors_functionKeys,skinInfoManager.skinData.backcolor_functionKeys);
 
         button.setBackgroundResource(R.drawable.middle_button);
@@ -104,7 +104,7 @@ public class FunctionViewGroup extends NonScrollViewGroup implements ViewGroupIn
     }
 
     /**
-     * @author winlandiano
+     * author winlandiano
      */
     public void addSetAlphaView(View view, MotionEvent event) {
         int x, y;

@@ -3,18 +3,14 @@ package com.hit.wi.ve.viewGroups;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.PorterDuff;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.ShapeDrawable;
+import android.util.Log;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 
-import com.hit.wi.util.CommonFuncs;
-import com.hit.wi.util.ViewFuncs;
+import com.hit.wi.util.ViewsUtil;
 import com.hit.wi.ve.R;
 import com.hit.wi.ve.SoftKeyboard;
 import com.hit.wi.ve.values.Global;
@@ -78,7 +74,7 @@ public class NonScrollViewGroup extends myViewGroup {
     public void setBackgroundColor(int color) {
         backgroundColor = color;
         for (QuickButton quickButton : buttonList) {
-            ViewFuncs.setBackgroundWithGradientDrawable(quickButton, color);
+            ViewsUtil.setBackgroundWithGradientDrawable(quickButton, color);
         }
     }
     @Override
@@ -87,10 +83,6 @@ public class NonScrollViewGroup extends myViewGroup {
         for (QuickButton quickButton : buttonList) {
             quickButton.getBackground().setAlpha(alpha);
         }
-//        int childnum = viewGroupWrapper.getChildCount();
-//        for (int i=0;i<childnum;i++) {
-//            viewGroupWrapper.getChildAt(i).getBackground().setAlpha(alpha);
-//        }
     }
 
     @Override
@@ -103,7 +95,7 @@ public class NonScrollViewGroup extends myViewGroup {
 
     public int getHeight() {
         if (paramsForViewGroup.height > 0) return paramsForViewGroup.height;
-        else return 0;
+        else return viewGroupWrapper.getMeasuredHeight();
     }
 
     @SuppressLint("NewApi")
@@ -280,7 +272,7 @@ public class NonScrollViewGroup extends myViewGroup {
 
         button.setBackgroundResource(R.drawable.middle_button);
         button.setTextColor(textColor);
-        ViewFuncs.setBackgroundWithGradientDrawable(button,backgroundColor);
+        ViewsUtil.setBackgroundWithGradientDrawable(button,backgroundColor);
         //button.setBackgroundColor(backgroundColor);
         button.getBackground().setAlpha(Global.getCurrentAlpha());
         return  button;
