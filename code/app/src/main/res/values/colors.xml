@@ -28,4 +28,6 @@
     <color name="zest">#E67E22</color>
     <color name="light_sea_green">#13A89E</color>
     <color name="snow">#FBFBFB</color>
+    <color name="material_button">#03a9f4</color>
+    <color name="material_button_down">#0388f4</color>
 </resources>

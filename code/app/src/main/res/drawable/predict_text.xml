@@ -6,14 +6,4 @@
         android:left="5dip"
         android:right="5dip"
         android:top="5dip"/>
-
-    <stroke android:width="10dip"
-        android:color="#333333"
-
-        />
-    <corners android:bottomRightRadius="0dip"
-        android:bottomLeftRadius="0dip"
-        android:topLeftRadius="5dip"
-        android:topRightRadius="5dip"
-        />
 </shape>
