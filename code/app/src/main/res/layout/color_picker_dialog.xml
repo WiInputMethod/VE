@@ -1,85 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:gravity="center"
+android:orientation="vertical">
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
     android:gravity="center"
-    >
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_weight="1">
+    android:orientation="vertical">
 
     <RadioGroup
+        android:id="@+id/rg_pick_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:gravity="center"
-        android:id="@+id/rg_pick_type"
-        >
+        android:orientation="horizontal">
+
         <RadioButton
+            android:id="@+id/rb_picker_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="字体颜色"
             android:layout_marginRight="20dp"
             android:gravity="center"
-            android:id="@+id/rb_picker_text"
-            />
+            android:text="字体颜色" />
+
         <RadioButton
+            android:id="@+id/rb_picker_background"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="背景颜色"
             android:layout_marginLeft="20dp"
+            android:checked="true"
             android:gravity="center"
-            android:id="@+id/rb_picker_background"
-            />
+            android:text="背景颜色" />
     </RadioGroup>
 
     <RadioButton
+        android:id="@+id/rb_pick_asqk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/rb_pick_asqk"
         android:layout_marginTop="10dp"
-        android:text="和全键的配色保持一致"
-        />
+        android:text="和全键的配色保持一致" />
 
     >
 </LinearLayout>
 
 <LinearLayout
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:orientation="vertical"
-android:layout_weight="7"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:layout_weight="7"
     android:gravity="center"
-    >
+    android:orientation="vertical">
 
     <com.larswerkman.holocolorpicker.ColorPicker
         android:id="@+id/color_picker"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
-    <com.larswerkman.holocolorpicker.SVBar
-        android:id="@+id/color_picker_svbar"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <com.larswerkman.holocolorpicker.OpacityBar
-        android:id="@+id/color_picker_opacitybar"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <!--饱和度-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="饱和度："
+            android:textSize="18sp" />
+
+        <com.larswerkman.holocolorpicker.SVBar
+            android:id="@+id/color_picker_svbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <com.larswerkman.holocolorpicker.SaturationBar
-        android:id="@+id/color_picker_saturationbar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <com.larswerkman.holocolorpicker.ValueBar
-        android:id="@+id/color_picker_valuebar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="透明度："
+            android:textSize="18sp" />
+        <!--透明度-->
+        <com.larswerkman.holocolorpicker.OpacityBar
+            android:id="@+id/color_picker_opacitybar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
 </LinearLayout>
 </LinearLayout>

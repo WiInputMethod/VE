@@ -162,7 +162,6 @@ public class T9Fragment extends android.support.v4.app.Fragment {
             textView.setGravity(Gravity.CENTER);
             textView.setLayoutParams(keyParams);
             textView.setText(funcKeyText[i]);
-            textView.setBackgroundColor(backgroundColorFunc);
             textView.setTextColor(textColorFunc);
             textView.setTypeface(mTypeface);
 
@@ -260,8 +259,6 @@ public class T9Fragment extends android.support.v4.app.Fragment {
         final ColorPicker picker = (ColorPicker)view.findViewById(R.id.color_picker);
         SVBar svBar = (SVBar)view.findViewById(R.id.color_picker_svbar);
         OpacityBar opacityBar = (OpacityBar)view.findViewById(R.id.color_picker_opacitybar);
-        SaturationBar saturationBar = (SaturationBar)view.findViewById(R.id.color_picker_saturationbar);
-        ValueBar valueBar = (ValueBar)view.findViewById(R.id.color_picker_valuebar);
 
         final RadioButton rbPickAsQk=(RadioButton)view.findViewById(R.id.rb_pick_asqk);
         final RadioButton rbIsText=(RadioButton)view.findViewById(R.id.rb_picker_text);
@@ -269,8 +266,6 @@ public class T9Fragment extends android.support.v4.app.Fragment {
 
         picker.addSVBar(svBar);
         picker.addOpacityBar(opacityBar);
-        picker.addSaturationBar(saturationBar);
-        picker.addValueBar(valueBar);
         picker.setOldCenterColor(v.getDrawingCacheBackgroundColor());
 
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {

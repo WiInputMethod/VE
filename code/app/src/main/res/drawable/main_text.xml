@@ -7,12 +7,4 @@
         android:right="5dip"
         android:top="5dip"/>
 
-    <stroke android:width="10dip"
-        android:color="#333333"
-        />
-    <corners android:bottomRightRadius="5dip"
-        android:bottomLeftRadius="5dip"
-        android:topLeftRadius="0dip"
-        android:topRightRadius="0dip"
-        />
 </shape>
