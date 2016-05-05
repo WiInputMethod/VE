@@ -1028,7 +1028,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             } else {
                 bottomBarViewGroup.setButtonWidthByRate(res.getIntArray(R.array.BOTTOMBAR_KEY_WIDTH));
             }
-            bottomBarViewGroup.setTextSize((keyboardHeight*layerHeightRate[3]) / 100);
+            bottomBarViewGroup.setTextSize(((keyboardHeight*layerHeightRate[3]) / 100) /4);
             bottomBarViewGroup.updateViewLayout();
         }
 

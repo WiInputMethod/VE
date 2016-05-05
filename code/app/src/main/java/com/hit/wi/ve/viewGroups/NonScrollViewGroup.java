@@ -233,6 +233,10 @@ public class NonScrollViewGroup extends myViewGroup {
         }
     }
 
+    public void updateTextSize() {
+        setTextSize(textSize);
+    }
+
     public void setTypeface(Typeface typeface) {
         for (QuickButton button : buttonList) {
             button.setTypeface(typeface);

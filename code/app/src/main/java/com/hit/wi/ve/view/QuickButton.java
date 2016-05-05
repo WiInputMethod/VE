@@ -22,5 +22,4 @@ public class QuickButton extends Button {
         this.setBackgroundResource(R.drawable.middle_button);
     }
 
-
 }

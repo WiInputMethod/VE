@@ -28,8 +28,6 @@ import java.util.*;
  * Created by Administrator on 2015/9/17.
  */
 public class BottomBarViewGroup extends NonScrollViewGroup {
-
-
     public QuickButton switchKeyboardButton;
     public QuickButton expressionButton;
     public QuickButton spaceButton;
@@ -72,8 +70,6 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
     }
 
     public void setText(List<String> texts) {
-
-
         int i = 0;
         for (String text : texts) {
             if (i < buttonList.size()) {
@@ -89,7 +85,10 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         while (i < buttonList.size()) {
             removeButton(buttonList.get(buttonList.size() - 1));
         }
+        updateTextSize();
     }
+
+
 
     public QuickButton addButtonB(String text) {
         QuickButton button = super.addButton(text,
@@ -123,10 +122,6 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
 
     public void receiveButtonToTail(QuickButton button) {
         receiveButtonToPosition(button, buttonList.size());
-    }
-
-    public void setTextSize(int height) {
-        setTextSize((getHeight() >0? getHeight():height) / 4);
     }
 
     public void intoReturnState () {
@@ -222,10 +217,9 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         setBackgroundAlpha(Global.getCurrentAlpha());
     }
 
-
-    private void onTouchEffect(View view, int action, int touchdowncolor, int nomalcolor) {
+    private void onTouchEffect(View view, int action, int touchdownColor, int normalColor) {
         softKeyboard8.transparencyHandle.handleAlpha(action);
-        softKeyboard8.keyboardTouchEffect.onTouchEffectWithAnim(view, action, touchdowncolor, nomalcolor, context);
+        softKeyboard8.keyboardTouchEffect.onTouchEffectWithAnim(view, action, touchdownColor, normalColor, context);
     }
 
 
