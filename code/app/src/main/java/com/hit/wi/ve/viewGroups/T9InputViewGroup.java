@@ -20,7 +20,7 @@ import com.hit.wi.ve.view.QuickButton;
  */
 public class T9InputViewGroup extends NonScrollViewGroup {
 
-    private final float BUTTON_WIDTH_RATE = (float) 0.32;
+    private final float BUTTON_WIDTH_RATE = (float) 0.328;
 
     /**
      * 九键切换出去时的动画资源
@@ -211,8 +211,9 @@ public class T9InputViewGroup extends NonScrollViewGroup {
         }
         linearParams[2].bottomMargin = 0;
         int margin = horGap/2;
+        int keyWidth = (int) (keyboardWidth * BUTTON_WIDTH_RATE - horGap);
         for(QuickButton button:buttonList){
-            button.itsLayoutParams.width = (int) (keyboardWidth * BUTTON_WIDTH_RATE - horGap);
+            button.itsLayoutParams.width = keyWidth;
             button.itsLayoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT;
             ((LinearLayout.LayoutParams)button.itsLayoutParams).leftMargin = margin;
             ((LinearLayout.LayoutParams)button.itsLayoutParams).rightMargin = margin;
