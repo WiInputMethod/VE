@@ -1,145 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/snow"
-    android:gravity="center"
-    >
+              android:orientation="vertical" android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/snow"
+              android:gravity="center"
+>
     <LinearLayout
-        android:layout_margin="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:layout_weight="4"
-        android:gravity="center"
+            android:layout_margin="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_weight="4.5"
+            android:gravity="center"
+    >
+
+        <LinearLayout
+                android:layout_margin="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+        >
+            <TextView
+                    android:layout_margin="4dp"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:text="编辑框背景"
+                    android:textSize="18sp"
+            />
+            <View
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="4dp"
+                    android:id="@+id/v_diy_editbox_back"
+                    android:background="@color/light_sea_green"
+            />
+            <TextView
+                    android:layout_margin="4dp"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:text="编辑框字体"
+                    android:textSize="18sp"
+            />
+            <View
+
+                    android:layout_margin="4dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/v_diy_editbox_text"
+                    android:background="@color/light_sea_green"
+            />
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_margin="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+        >
+            <TextView
+                    android:layout_margin="4dp"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:text="候选框背景"
+                    android:textSize="18sp"
+            />
+            <View
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="4dp"
+                    android:id="@+id/v_diy_candidate_back"
+                    android:background="@color/light_sea_green"
+            />
+            <TextView
+                    android:layout_margin="4dp"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:text="候选框字体"
+                    android:textSize="18sp"
+            />
+            <View
+
+                    android:layout_margin="4dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/v_diy_candidate_text"
+                    android:background="@color/light_sea_green"
+            />
+        </LinearLayout>
+
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
         >
 
-        <LinearLayout
-            android:layout_margin="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            >
-            <TextView
-                android:layout_margin="4dp"
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
-                android:text="编辑框背景"
-                android:textSize="20dp"
-                />
-            <View
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_margin="4dp"
-                android:id="@+id/v_diy_editbox_back"
-                android:background="@color/light_sea_green"
-                />
-            <TextView
-                android:layout_margin="4dp"
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
-                android:text="编辑框字体"
-                android:textSize="20dp"
-                />
-            <View
-
-                android:layout_margin="4dp"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:id="@+id/v_diy_editbox_text"
-                android:background="@color/light_sea_green"
-                />
         </LinearLayout>
-
         <LinearLayout
-            android:layout_margin="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            >
-            <TextView
-                android:layout_margin="4dp"
-                android:layout_width="110dp"
+                android:gravity="center"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="候选框背景"
-                android:textSize="20dp"
-                />
-            <View
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_margin="4dp"
-                android:id="@+id/v_diy_candidate_back"
-                android:background="@color/light_sea_green"
-                />
+                android:orientation="horizontal"
+                android:layout_margin="8dp"
+        >
             <TextView
-                android:layout_margin="4dp"
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
-                android:text="候选框字体"
-                android:textSize="20dp"
-                />
-            <View
-
-                android:layout_margin="4dp"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:id="@+id/v_diy_candidate_text"
-                android:background="@color/light_sea_green"
-                />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            >
-
-            </LinearLayout>
-        <LinearLayout
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="8dp"
-            >
-            <TextView
-                android:layout_margin="4dp"
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
-                android:text="按下背景色"
-                android:textSize="20dp"
+                    android:layout_margin="4dp"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:text="按下背景色"
+                    android:textSize="18sp"
             />
 
             <View
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_margin="4dp"
-                android:id="@+id/v_diy_touchdown"
-                android:background="@color/light_sea_green"
-                />
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="4dp"
+                    android:id="@+id/v_diy_touchdown"
+                    android:background="@color/light_sea_green"
+            />
             <TextView
-                android:layout_margin="4dp"
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
-                android:text="文字阴影色"
-                android:textSize="20dp"
-                />
+                    android:layout_margin="4dp"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:text="文字阴影色"
+                    android:textSize="18sp"
+            />
 
             <View
-                android:layout_margin="4dp"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:id="@+id/v_diy_shadow"
-                android:background="@color/light_sea_green"
-                />
+                    android:layout_margin="4dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/v_diy_shadow"
+                    android:background="@color/light_sea_green"
+            />
         </LinearLayout>
+        <LinearLayout
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_margin="8dp"
+        >
+            <TextView android:layout_width="wrap_content" android:layout_height="match_parent"
+                      android:text="推荐方案："
+                      android:textSize="18sp"
+                      android:layout_margin="4dp"
+            />
+            <HorizontalScrollView android:layout_width="wrap_content"
+                                  android:layout_height="match_parent">
 
+                <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent"
+                              android:orientation="horizontal"
+                              android:id="@+id/l_diy_material_color"
+                >
+                </LinearLayout>
+            </HorizontalScrollView>
+
+        </LinearLayout>
     </LinearLayout>
-        <RadioGroup
+
+
+    <View android:layout_width="match_parent" android:layout_height="2dp"
+          android:background="@color/material_button"
+          android:layout_marginLeft="12dp"
+          android:layout_marginRight="12dp"
+    />
+    <RadioGroup
             android:id="@+id/rgTab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -149,9 +178,9 @@
             android:layout_weight="0.1"
             android:padding="4dp"
             android:background="@color/snow"
-            >
+    >
 
-            <RadioButton
+        <RadioButton
                 android:id="@+id/rb_qk"
 
                 android:layout_width="match_parent"
@@ -160,72 +189,74 @@
                 android:background="@drawable/tab_selector"
                 android:layout_weight="1"
                 android:text="全键"
-                android:textSize="20dp"
+                android:textSize="18sp"
                 android:textColor="@color/light_sea_green"
                 android:button="@null"
                 android:gravity="center_horizontal"
-                />
+        />
 
-            <RadioButton
+        <RadioButton
                 android:id="@+id/rb_t9"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/tab_selector"
                 android:text="九键"
                 android:layout_margin="4dp"
-                android:textSize="20dp"
+                android:textSize="18sp"
                 android:textColor="@color/light_sea_green"
                 android:button="@null"
                 android:gravity="center_horizontal"
                 android:layout_weight="1"
-                />
-        </RadioGroup>
+        />
+    </RadioGroup>
 
 
     <android.support.v4.view.ViewPager
-        android:background="@color/snow"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:padding="4dp"
-        android:id="@+id/viewPager"
-        android:layout_width="match_parent"
-        android:layout_weight="5"
-        android:layout_height="0dp"
-        >
+            android:background="@color/snow"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:padding="4dp"
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_weight="4.5"
+            android:layout_height="0dp"
+    >
     </android.support.v4.view.ViewPager>
 
     <LinearLayout
-        android:background="@color/snow"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:padding="4dp"
+            android:background="@color/snow"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:padding="4dp"
 
-        >
+    >
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="取消"
-            android:id="@+id/bt_cancel"
-            android:layout_marginRight="4dp"
-            android:textColor="@color/snow"
-            android:background="@drawable/common_button_down"
-            />
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="取消"
+                android:id="@+id/bt_cancel"
+                android:layout_marginRight="4dp"
+                android:layout_marginLeft="8dp"
+                android:textColor="@color/snow"
+                android:background="@drawable/common_button_down"
+        />
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="保存"
-            android:textColor="@color/snow"
-            android:id="@+id/bt_save"
-            android:layout_marginRight="4dp"
-            android:background="@drawable/common_button_down"
-            />
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="保存"
+                android:textColor="@color/snow"
+                android:id="@+id/bt_save"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="4dp"
+                android:background="@drawable/common_button_down"
+        />
     </LinearLayout>
 </LinearLayout>

@@ -30,4 +30,5 @@
     <color name="snow">#FBFBFB</color>
     <color name="material_button">#03a9f4</color>
     <color name="material_button_down">#0388f4</color>
+    <color name="material_back">#dcedc8</color>
 </resources>

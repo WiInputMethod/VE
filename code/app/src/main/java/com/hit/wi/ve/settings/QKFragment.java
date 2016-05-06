@@ -464,12 +464,32 @@ public class QKFragment extends android.support.v4.app.Fragment {
 
     public int[] getCurrentColors() {
 
-
         int[] colors = {backgroundColorFunc, textColorFunc,
                 backgroundColorSymbol, textColorSymbol,
                 backgroundColorQk, textColorQk,
                 backgroundColorBottom, textColorBottom
         };
         return colors;
+    }
+
+    public void refreshQkSkin(int backgroundColor, int textColor) {
+        backgroundColorFunc = backgroundColor;
+        backgroundColorSymbol = backgroundColor;
+        backgroundColorQk = backgroundColor;
+        backgroundColorBottom = backgroundColor;
+        textColorFunc = textColor;
+        textColorSymbol = textColor;
+        textColorQk = textColor;
+        textColorBottom = textColor;
+        refreshFuncBackground();
+        refreshSymbolBackground();
+        refreshQkBackground();
+        refreshBottomBackground();
+
+        refreshFuncText();
+        refreshSymbolText();
+        refreshQkText();
+        refreshBottomText();
+        ((SkinDiyActivity) getActivity()).setSelectedColorsQK(getCurrentColors());
     }
 }

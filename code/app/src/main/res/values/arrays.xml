@@ -28,6 +28,44 @@
         <item name="8">35</item>
         <item name="9">68</item>
     </integer-array>
+    <integer-array name="MATERIAL_COLORS_BACKGROUND">
+        <item>0xffe51c23</item>
+        <item>0xffe91e63</item>
+        <item>0xff9c27b0</item>
+        <item>0xff673ab7</item>
+        <item>0xff3f51b5</item>
+        <item>0xff5677fc</item>
+        <item>0xff03a9f4</item>
+        <item>0xff009688</item>
+        <item>0xff259b24</item>
+        <item>0xff8bc34a</item>
+        <item>0xffcddc39</item>
+        <item>0xffffc107</item>
+        <item>0xffff9800</item>
+        <item>0xffff5722</item>
+        <item>0xff795548</item>
+        <item>0xff9e9e9e</item>
+        <item>0xff607d8b</item>
+    </integer-array>
+    <integer-array name="MATERIAL_COLORS_TEXT">
+        <item>0xfff1f8e9</item>
+        <item>0xfff1f8e9</item>
+        <item>0xfff1f8e9</item>
+        <item>0xfff1f8e9</item>
+        <item>0xfff1f8e9</item>
+        <item>0xfff1f8e9</item>
+        <item>0xfff1f8e9</item>
+        <item>0xfff1f8e9</item>
+        <item>0xfff1f8e9</item>
+        <item>0xfff1f8e9</item>
+        <item>0xfff1f8e9</item>
+        <item>0xfff1f8e9</item>
+        <item>0xfff1f8e9</item>
+        <item>0xfff1f8e9</item>
+        <item>0xfff1f8e9</item>
+        <item>0xfff1f8e9</item>
+        <item>0xfff1f8e9</item>
+    </integer-array>
     <integer-array name="KEY_POS_Y">
         <item>0</item>
         <item>0</item>

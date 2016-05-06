@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -11,13 +12,15 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.view.ViewGroup;
+import android.widget.*;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import com.hit.wi.ve.R;
 import com.larswerkman.holocolorpicker.ColorPicker;
 import com.larswerkman.holocolorpicker.OpacityBar;
@@ -32,16 +35,17 @@ public class SkinDiyActivity extends FragmentActivity {
     private FragmentPagerAdapter fmAdapter;
     private Fragment fm1;
     private Fragment fm2;
-    private List<Fragment> fragmentList=new ArrayList<Fragment>();
+    private List<Fragment> fragmentList = new ArrayList<Fragment>();
+    private LinearLayout materialColorLayout;
 
-    private int currentPageIndex=0;
+    private int currentPageIndex = 0;
 
     private int colorTouchDown;
     private int backColorEditBox;
     private int textColorEditBox;
     private int backColorCandidateBox;
     private int textColorCandidateBox;
-    private int shadowColor=0;
+    private int shadowColor = 0;
 
     private View vColorTouchDown;
     private View vColorEditBoxBack;
@@ -53,11 +57,16 @@ public class SkinDiyActivity extends FragmentActivity {
     private Button bt_cancel;
 
 
-    private  int[] selectedColorsQk;
-    private  int[] selectedColorsT9;
+    private int[] selectedColorsQk;
+    private int[] selectedColorsT9;
 
     private int[] oldQkColors;
     private int[] oldT9Colors;
+
+    private int[] materialBackColor = {0xff009688, 0xff673ab7, 0xff259b24, 0xffcddc39, 0xffff5722};
+    private int[] materialTextColor = {0xffe0f2f1, 0xffe0f2f1, 0xffe0f2f1, 0xffe0f2f1, 0xffe0f2f1};
+
+
     private SharedPreferences sp;
 
     @Override
@@ -68,13 +77,14 @@ public class SkinDiyActivity extends FragmentActivity {
         initView();
     }
 
-    public void initView(){
-        viewPager=(ViewPager)this.findViewById(R.id.viewPager);
+    public void initView() {
+        materialColorLayout = (LinearLayout) findViewById(R.id.l_diy_material_color);
+        viewPager = (ViewPager) this.findViewById(R.id.viewPager);
         viewPager.setOnPageChangeListener(new MyOnPageChangedListener());
-        rgTab=(RadioGroup)super.findViewById(R.id.rgTab);
+        rgTab = (RadioGroup) super.findViewById(R.id.rgTab);
         initViewPager();
         rgTab.check(0);
-        RadioButton rb=(RadioButton)rgTab.getChildAt(0);
+        RadioButton rb = (RadioButton) rgTab.getChildAt(0);
         rb.setChecked(true);
         rgTab.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -90,13 +100,12 @@ public class SkinDiyActivity extends FragmentActivity {
             }
         });
 
-        vColorEditBoxBack=(View)findViewById(R.id.v_diy_editbox_back);
-        vColorEditBoxText=(View)findViewById(R.id.v_diy_editbox_text);
-        vColorCandidateBoxBack=(View)findViewById(R.id.v_diy_candidate_back);
-        vColorCandidateBoxText=(View)findViewById(R.id.v_diy_candidate_text);
-        vColorTouchDown=(View)findViewById(R.id.v_diy_touchdown);
-        vShadow=(View)findViewById(R.id.v_diy_shadow);
-
+        vColorEditBoxBack = (View) findViewById(R.id.v_diy_editbox_back);
+        vColorEditBoxText = (View) findViewById(R.id.v_diy_editbox_text);
+        vColorCandidateBoxBack = (View) findViewById(R.id.v_diy_candidate_back);
+        vColorCandidateBoxText = (View) findViewById(R.id.v_diy_candidate_text);
+        vColorTouchDown = (View) findViewById(R.id.v_diy_touchdown);
+        vShadow = (View) findViewById(R.id.v_diy_shadow);
         vColorEditBoxBack.setOnClickListener(listener);
         vColorEditBoxBack.setBackgroundColor(backColorEditBox);
         vColorEditBoxText.setOnClickListener(listener);
@@ -110,9 +119,9 @@ public class SkinDiyActivity extends FragmentActivity {
         vShadow.setOnClickListener(listener);
         vShadow.setBackgroundColor(shadowColor);
 
-        bt_save=(Button)findViewById(R.id.bt_save);
-        bt_cancel=(Button)findViewById(R.id.bt_cancel);
-        bt_save.setOnClickListener( new View.OnClickListener() {
+        bt_save = (Button) findViewById(R.id.bt_save);
+        bt_cancel = (Button) findViewById(R.id.bt_cancel);
+        bt_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveColors();
@@ -125,15 +134,18 @@ public class SkinDiyActivity extends FragmentActivity {
             }
         });
 
+        materialBackColor = getResources().getIntArray(R.array.MATERIAL_COLORS_BACKGROUND);
+        materialTextColor = getResources().getIntArray(R.array.MATERIAL_COLORS_TEXT);
+        addMaterialColors();
     }
 
 
-    public  void initViewPager(){
-        fm1=new QKFragment();
-        fm2=new T9Fragment();
+    public void initViewPager() {
+        fm1 = new QKFragment();
+        fm2 = new T9Fragment();
         fragmentList.add(fm1);
         fragmentList.add(fm2);
-        fmAdapter=new FragmentPagerAdapter(getSupportFragmentManager()) {
+        fmAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
                 return fragmentList.get(position);
@@ -147,44 +159,49 @@ public class SkinDiyActivity extends FragmentActivity {
         viewPager.setAdapter(fmAdapter);
 
     }
-    public int[] getSelectedColorsQk(){
+
+    public int[] getSelectedColorsQk() {
         return selectedColorsQk;
     }
-    public void setSelectedColorsQK(int[] colors){
-        selectedColorsQk=colors;
-    }
-    public void setSelectedColorsT9(int[] colors){
-        selectedColorsT9=colors;
+
+    public void setSelectedColorsQK(int[] colors) {
+        selectedColorsQk = colors;
     }
 
-    public int[] getOldQkColors(){
+    public void setSelectedColorsT9(int[] colors) {
+        selectedColorsT9 = colors;
+    }
+
+    public int[] getOldQkColors() {
         return oldQkColors;
     }
-    public int[] getOldT9Colors(){
+
+    public int[] getOldT9Colors() {
         return oldT9Colors;
     }
-    public View.OnClickListener listener=new View.OnClickListener() {
+
+    public View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             chooseColor(v);
         }
     };
 
-    public void chooseColor(final View v){
+    public void chooseColor(final View v) {
 
-        AlertDialog.Builder builder =new AlertDialog.Builder(SkinDiyActivity.this);
-        LayoutInflater inflater=this.getLayoutInflater();
-        View view =inflater.inflate(R.layout.color_picker_dialog,null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(SkinDiyActivity.this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View view = inflater.inflate(R.layout.color_picker_dialog, null);
         builder.setView(view);
         builder.setTitle("自定义皮肤");
 
-        final ColorPicker picker = (ColorPicker)view.findViewById(R.id.color_picker);
-        SVBar svBar = (SVBar)view.findViewById(R.id.color_picker_svbar);
-        OpacityBar opacityBar = (OpacityBar)view.findViewById(R.id.color_picker_opacitybar);
+        final ColorPicker picker = (ColorPicker) view.findViewById(R.id.color_picker);
+        SVBar svBar = (SVBar) view.findViewById(R.id.color_picker_svbar);
+        OpacityBar opacityBar = (OpacityBar) view.findViewById(R.id.color_picker_opacitybar);
         //使用GONE不会占用空间
-        RadioGroup rgPickType=(RadioGroup)view.findViewById(R.id.rg_pick_type);
+        RadioGroup rgPickType = (RadioGroup) view.findViewById(R.id.rg_pick_type);
         rgPickType.setVisibility(View.GONE);
-        RadioButton rbPickAsQk=(RadioButton)view.findViewById(R.id.rb_pick_asqk);
+        RadioButton rbPickAsQk = (RadioButton) view.findViewById(R.id.rb_pick_asqk);
         rbPickAsQk.setVisibility(View.GONE);
         picker.addSVBar(svBar);
         picker.addOpacityBar(opacityBar);
@@ -197,25 +214,25 @@ public class SkinDiyActivity extends FragmentActivity {
                 v.setBackgroundColor(picker.getColor());
                 switch (v.getId()) {
                     case R.id.v_diy_touchdown:
-                        colorTouchDown=picker.getColor();
+                        colorTouchDown = picker.getColor();
                         break;
                     case R.id.v_diy_candidate_back:
-                        backColorCandidateBox=picker.getColor();
+                        backColorCandidateBox = picker.getColor();
                         break;
                     case R.id.v_diy_candidate_text:
-                        textColorCandidateBox=picker.getColor();
+                        textColorCandidateBox = picker.getColor();
                         break;
                     case R.id.v_diy_editbox_back:
-                        backColorEditBox=picker.getColor();
+                        backColorEditBox = picker.getColor();
                         break;
                     case R.id.v_diy_editbox_text:
-                        textColorEditBox=picker.getColor();
+                        textColorEditBox = picker.getColor();
                         break;
                     case R.id.v_diy_shadow:
-                        shadowColor=picker.getColor();
+                        shadowColor = picker.getColor();
                         break;
                 }
-                }
+            }
         });
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
@@ -226,11 +243,12 @@ public class SkinDiyActivity extends FragmentActivity {
         builder.show();
     }
 
-    class MyOnPageChangedListener implements ViewPager.OnPageChangeListener{
+    class MyOnPageChangedListener implements ViewPager.OnPageChangeListener {
         @Override
         public void onPageScrollStateChanged(int state) {
 
         }
+
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -239,83 +257,129 @@ public class SkinDiyActivity extends FragmentActivity {
         @Override
         public void onPageSelected(int position) {
 
-            currentPageIndex=position;
-            RadioButton rb=(RadioButton)rgTab.getChildAt(position);
+            currentPageIndex = position;
+            RadioButton rb = (RadioButton) rgTab.getChildAt(position);
             rb.setChecked(true);
         }
     }
 
-    public void loadColors(){
+    public void loadColors() {
         sp = PreferenceManager.getDefaultSharedPreferences(this);
-        oldQkColors=new int[8];
-        oldT9Colors=new int[2];
-        oldQkColors[0]=sp.getInt("diy_backcolor_functionKeys", 0xFF673ab7);
-        oldQkColors[1]=sp.getInt("diy_textcolors_functionKeys", 0xFFe8eaf6);
-        oldQkColors[2]=sp.getInt("diy_backcolor_quickSymbol", 0xFF673ab7);
-        oldQkColors[3]=sp.getInt("diy_textcolors_quickSymbol",0xFFe8eaf6);
-        oldQkColors[4]=sp.getInt("diy_backcolor_26keys",0xFF673ab7);
-        oldQkColors[5]=sp.getInt("diy_textcolors_26keys",0xFFe8eaf6);
-        oldQkColors[6]=sp.getInt("diy_backcolor_bottom",0xFF673ab7);
-        oldQkColors[7]=sp.getInt("diy_textcolors_bottom",0xFFe8eaf6);
+        oldQkColors = new int[8];
+        oldT9Colors = new int[2];
+        oldQkColors[0] = sp.getInt("diy_backcolor_functionKeys", 0xFF673ab7);
+        oldQkColors[1] = sp.getInt("diy_textcolors_functionKeys", 0xFFe8eaf6);
+        oldQkColors[2] = sp.getInt("diy_backcolor_quickSymbol", 0xFF673ab7);
+        oldQkColors[3] = sp.getInt("diy_textcolors_quickSymbol", 0xFFe8eaf6);
+        oldQkColors[4] = sp.getInt("diy_backcolor_26keys", 0xFF673ab7);
+        oldQkColors[5] = sp.getInt("diy_textcolors_26keys", 0xFFe8eaf6);
+        oldQkColors[6] = sp.getInt("diy_backcolor_bottom", 0xFF673ab7);
+        oldQkColors[7] = sp.getInt("diy_textcolors_bottom", 0xFFe8eaf6);
 
 
-        oldT9Colors[0]=sp.getInt("diy_backcolor_t9keys",0xFF673ab7);
-        oldT9Colors[1]=sp.getInt("diy_textcolors_t9keys",0xFFe8eaf6);
+        oldT9Colors[0] = sp.getInt("diy_backcolor_t9keys", 0xFF673ab7);
+        oldT9Colors[1] = sp.getInt("diy_textcolors_t9keys", 0xFFe8eaf6);
 
-        backColorCandidateBox=sp.getInt("diy_backcolor_candidate",0xFF673ab7);
-        textColorCandidateBox=sp.getInt("diy_textcolors_candidate",0xFFe8eaf6);
+        backColorCandidateBox = sp.getInt("diy_backcolor_candidate", 0xFF673ab7);
+        textColorCandidateBox = sp.getInt("diy_textcolors_candidate", 0xFFe8eaf6);
 
-        backColorEditBox=sp.getInt("diy_backcolor_preEdit",0xFF673ab7);
-        textColorEditBox=sp.getInt("diy_textcolors_preEdit",0xFFe8eaf6);
+        backColorEditBox = sp.getInt("diy_backcolor_preEdit", 0xFF673ab7);
+        textColorEditBox = sp.getInt("diy_textcolors_preEdit", 0xFFe8eaf6);
 
-        selectedColorsQk=oldQkColors;
-        selectedColorsT9=oldT9Colors;
+        selectedColorsQk = oldQkColors;
+        selectedColorsT9 = oldT9Colors;
 
-        colorTouchDown=sp.getInt("diy_backcolor_touchdown",0xFF5677fc);
-        shadowColor=sp.getInt("diy_shadow",0xFF00bcd4);
+        colorTouchDown = sp.getInt("diy_backcolor_touchdown", 0xFF5677fc);
+        shadowColor = sp.getInt("diy_shadow", 0xFF00bcd4);
     }
 
-    public void cancelSet(){
+    public void cancelSet() {
         finish();
     }
-    public void saveColors(){
-        Log.i("Test","saveColors");
-        oldT9Colors=selectedColorsT9;
-        oldQkColors=selectedColorsQk;
+
+    public void saveColors() {
+        Log.i("Test", "saveColors");
+        oldT9Colors = selectedColorsT9;
+        oldQkColors = selectedColorsQk;
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sp.edit();
-        editor.putInt("diy_backcolor_functionKeys",oldQkColors[0]);
-        editor.putInt("diy_textcolors_functionKeys",oldQkColors[1]);
-        editor.putInt("diy_backcolor_quickSymbol",oldQkColors[2]);
-        editor.putInt("diy_textcolors_quickSymbol",oldQkColors[3]);
+        editor.putInt("diy_backcolor_functionKeys", oldQkColors[0]);
+        editor.putInt("diy_textcolors_functionKeys", oldQkColors[1]);
+        editor.putInt("diy_backcolor_quickSymbol", oldQkColors[2]);
+        editor.putInt("diy_textcolors_quickSymbol", oldQkColors[3]);
 
-        editor.putInt("diy_backcolor_26keys",oldQkColors[4]);
-        editor.putInt("diy_textcolors_26keys",oldQkColors[5]);
-        editor.putInt("diy_backcolor_bottom",oldQkColors[6]);
-        editor.putInt("diy_textcolors_bottom",oldQkColors[7]);
+        editor.putInt("diy_backcolor_26keys", oldQkColors[4]);
+        editor.putInt("diy_textcolors_26keys", oldQkColors[5]);
+        editor.putInt("diy_backcolor_bottom", oldQkColors[6]);
+        editor.putInt("diy_textcolors_bottom", oldQkColors[7]);
 
-        editor.putInt("diy_backcolor_t9keys",oldT9Colors[0]);
-        editor.putInt("diy_textcolors_t9keys",oldT9Colors[1]);
+        editor.putInt("diy_backcolor_t9keys", oldT9Colors[0]);
+        editor.putInt("diy_textcolors_t9keys", oldT9Colors[1]);
 
 
-        editor.putInt("diy_backcolor_candidate",backColorCandidateBox);
-        editor.putInt("diy_textcolors_candidate",textColorCandidateBox);
+        editor.putInt("diy_backcolor_candidate", backColorCandidateBox);
+        editor.putInt("diy_textcolors_candidate", textColorCandidateBox);
 
-        editor.putInt("diy_backcolor_preEdit",backColorEditBox);
-        editor.putInt("diy_textcolors_preEdit",textColorEditBox);
+        editor.putInt("diy_backcolor_preEdit", backColorEditBox);
+        editor.putInt("diy_textcolors_preEdit", textColorEditBox);
 
-        editor.putInt("diy_backcolor_touchdown",colorTouchDown);
+        editor.putInt("diy_backcolor_touchdown", colorTouchDown);
 
         editor.putInt("diy_shadow", shadowColor);
 
-        Intent intent=this.getIntent();
-        int position=intent.getIntExtra("position",0);
+        Intent intent = this.getIntent();
+        int position = intent.getIntExtra("position", 0);
 
-        editor.putInt("THEME_TYPE",position);
-        editor.putBoolean("IS_DIY",true);
+        editor.putInt("THEME_TYPE", position);
+        editor.putBoolean("IS_DIY", true);
         editor.putBoolean("THEME_CHANGED", true);
         editor.putBoolean("THEME_DEF_ON", false);
         editor.commit();
         finish();
     }
+
+    public void addMaterialColors() {
+        int vWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, getResources().getDisplayMetrics());
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(vWidth, vWidth);
+        params.setMargins(10, 0, 10, 0);
+        for (int i = 0; i < materialBackColor.length; i++) {
+            View v = new View(this);
+            v.setBackgroundColor(materialBackColor[i]);
+            v.setLayoutParams(params);
+            v.setPadding(10, 10, 10, 10);
+            v.setId(i);
+            v.setOnClickListener(materialColorListener);
+            materialColorLayout.addView(v);
+        }
+    }
+
+    View.OnClickListener materialColorListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(SkinDiyActivity.this, "Click" + v.getId(), Toast.LENGTH_SHORT).show();
+            QKFragment qk = (QKFragment) fragmentList.get(0);
+            T9Fragment t9 = (T9Fragment) fragmentList.get(1);
+            int backcolor = materialBackColor[v.getId()];
+            int textcolor = materialTextColor[v.getId()];
+            qk.refreshQkSkin(backcolor, textcolor);
+            t9.refreshT9Skin(backcolor, textcolor);
+
+            backColorCandidateBox = backcolor;
+            backColorEditBox = backcolor;
+            colorTouchDown = backcolor;
+
+            textColorEditBox = backcolor;
+            textColorCandidateBox = textcolor;
+            shadowColor = textcolor;
+
+            vColorCandidateBoxBack.setBackgroundColor(backColorCandidateBox);
+            vColorEditBoxBack.setBackgroundColor(backColorEditBox);
+            vColorTouchDown.setBackgroundColor(colorTouchDown);
+
+            vColorCandidateBoxText.setBackgroundColor(textColorCandidateBox);
+            vColorEditBoxText.setBackgroundColor(textColorEditBox);
+            vShadow.setBackgroundColor(shadowColor);
+
+        }
+    };
 }
