@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2015/8/10.
  */
-public class PrefixViewGroup extends ScrolledViewGroup {
+public class PreFixViewGroup extends ScrolledViewGroup {
     public void create(Context context) {
         super.create(super.horizontal, context);
     }

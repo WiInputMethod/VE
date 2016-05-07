@@ -1,4 +1,5 @@
 package com.hit.wi.ve.settings;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Resources;
@@ -47,21 +48,21 @@ public class T9Fragment extends android.support.v4.app.Fragment {
     private Typeface mTypeface;
     //functions
     private LinearLayout t9_func_layout;
-    private List<TextView> t9FuncKeyList=new ArrayList<TextView>();
+    private List<TextView> t9FuncKeyList = new ArrayList<TextView>();
     private String[] funcKeyText;
-    private String[] symbolKeyText={"符",",","。","!","?"};
+    private String[] symbolKeyText = {"符", ",", "。", "!", "?"};
     private String[] keysText;
     private String[] bottomKeyText;
     //symbols
     private LinearLayout t9_symbol_layout;
-    private List<TextView> t9SymbolKeyList=new ArrayList<TextView>();
+    private List<TextView> t9SymbolKeyList = new ArrayList<TextView>();
     //keys
-    private LinearLayout[] t9Linears=new LinearLayout[3];
+    private LinearLayout[] t9Linears = new LinearLayout[3];
     private LinearLayout t9_keys_layout;
-    private List<TextView> t9KeysList=new ArrayList<TextView>();
+    private List<TextView> t9KeysList = new ArrayList<TextView>();
     //bottom
     private LinearLayout t9_bottom_layout;
-    private List<TextView> t9BottomKeyList=new ArrayList<TextView>();
+    private List<TextView> t9BottomKeyList = new ArrayList<TextView>();
 
     private int textColorFunc;
     private int backgroundColorFunc;
@@ -76,12 +77,12 @@ public class T9Fragment extends android.support.v4.app.Fragment {
     private int backgroundColorBottom;
 
 
-    private int[] selectedQkColors={0,0,0,0,0,0,0,0};
-    private int[] oldT9Colors=new int[2];
+    private int[] selectedQkColors = {0, 0, 0, 0, 0, 0, 0, 0};
+    private int[] oldT9Colors = new int[2];
 
-    public enum viewType{FUNC,SYMBOL,T9,BOTTOM}
+    public enum viewType {FUNC, SYMBOL, T9, BOTTOM}
 
-    private viewType myViewType=viewType.FUNC;
+    private viewType myViewType = viewType.FUNC;
 
     public T9Fragment() {
         // Required empty public constructor
@@ -101,64 +102,65 @@ public class T9Fragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v=inflater.inflate(R.layout.fragment_t9, container, false);
-        display=getActivity().getWindowManager().getDefaultDisplay();
-        fragmentWidth=display.getWidth();
-        fragmentHeight=display.getHeight()/2;
-        res=getResources();
+        View v = inflater.inflate(R.layout.fragment_t9, container, false);
+        display = getActivity().getWindowManager().getDefaultDisplay();
+        fragmentWidth = display.getWidth();
+        fragmentHeight = display.getHeight() / 2;
+        res = getResources();
         mTypeface = Typeface.createFromAsset(getActivity().getAssets(), res.getString(R.string.font_file_path));// 加载自定义字体
 
-        t9_func_layout=(LinearLayout)v.findViewById(R.id.t9_function_layout);
-        t9_symbol_layout=(LinearLayout)v.findViewById(R.id.t9_symbol_layout);
-        t9_keys_layout=(LinearLayout)v.findViewById(R.id.t9_keys_layout);
-        t9_bottom_layout=(LinearLayout)v.findViewById(R.id.t9_bottom_layout);
+        t9_func_layout = (LinearLayout) v.findViewById(R.id.t9_function_layout);
+        t9_symbol_layout = (LinearLayout) v.findViewById(R.id.t9_symbol_layout);
+        t9_keys_layout = (LinearLayout) v.findViewById(R.id.t9_keys_layout);
+        t9_bottom_layout = (LinearLayout) v.findViewById(R.id.t9_bottom_layout);
 
-        layoutParamsFunc=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0,2);
-        layoutParamsSymbol=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0,2);
-        layoutParamsKeys=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0,6);
-        layoutParamsBottom=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0,2);
-        keyParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT,1.0f);
+        layoutParamsFunc = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 2);
+        layoutParamsSymbol = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 2);
+        layoutParamsKeys = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 6);
+        layoutParamsBottom = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 2);
+        keyParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1.0f);
 
-        int rightMargin=fragmentWidth*2/100;
-        layoutParamsFunc.rightMargin=rightMargin;
-        layoutParamsSymbol.rightMargin=rightMargin;
-        layoutParamsKeys.rightMargin=rightMargin;
-        layoutParamsBottom.rightMargin=rightMargin;
+        int rightMargin = fragmentWidth * 2 / 100;
+        layoutParamsFunc.rightMargin = rightMargin;
+        layoutParamsSymbol.rightMargin = rightMargin;
+        layoutParamsKeys.rightMargin = rightMargin;
+        layoutParamsBottom.rightMargin = rightMargin;
 
-        keyParams.leftMargin=fragmentWidth*2/100;
-        keyParams.topMargin=fragmentHeight/64;
-        keyParams.bottomMargin=fragmentHeight/64;
+        keyParams.leftMargin = fragmentWidth * 2 / 100;
+        keyParams.topMargin = fragmentHeight / 64;
+        keyParams.bottomMargin = fragmentHeight / 64;
 
 
         initView(v);
         return v;
     }
 
-    public void initView(View v){
+    public void initView(View v) {
 
-        selectedQkColors=((SkinDiyActivity)getActivity()).getSelectedColorsQk();
-        backgroundColorFunc=selectedQkColors[0];
-        textColorFunc=selectedQkColors[1];
-        backgroundColorSymbol=selectedQkColors[2];
-        textColorSymbol=selectedQkColors[3];
-        textColorBottom=selectedQkColors[7];
-        backgroundColorBottom=selectedQkColors[6];
+        selectedQkColors = ((SkinDiyActivity) getActivity()).getSelectedColorsQk();
+        backgroundColorFunc = selectedQkColors[0];
+        textColorFunc = selectedQkColors[1];
+        backgroundColorSymbol = selectedQkColors[2];
+        textColorSymbol = selectedQkColors[3];
+        textColorBottom = selectedQkColors[7];
+        backgroundColorBottom = selectedQkColors[6];
 
-        oldT9Colors=((SkinDiyActivity)getActivity()).getOldT9Colors();
+        oldT9Colors = ((SkinDiyActivity) getActivity()).getOldT9Colors();
 
-        backgroundColorT9=oldT9Colors[0];
-        textColorT9=oldT9Colors[1];
+        backgroundColorT9 = oldT9Colors[0];
+        textColorT9 = oldT9Colors[1];
         initFuncView(v);
         initSymbolView(v);
         initKeysView(v);
         initBottomView(v);
     }
-    private void initFuncView(View v){
 
-        funcKeyText=res.getStringArray(R.array.FUNC_KEY_TEXT);
+    private void initFuncView(View v) {
+
+        funcKeyText = res.getStringArray(R.array.FUNC_KEY_TEXT);
         t9_func_layout.setLayoutParams(layoutParamsFunc);
-        for(int i=0;i<5;i++){
-            TextView textView=new TextView(v.getContext());
+        for (int i = 0; i < 5; i++) {
+            TextView textView = new TextView(v.getContext());
             textView.setGravity(Gravity.CENTER);
             textView.setLayoutParams(keyParams);
             textView.setText(funcKeyText[i]);
@@ -171,10 +173,10 @@ public class T9Fragment extends android.support.v4.app.Fragment {
         }
     }
 
-    private void initSymbolView(View v){
+    private void initSymbolView(View v) {
         t9_symbol_layout.setLayoutParams(layoutParamsSymbol);
-        for(int i=0;i<5;i++){
-            TextView textView=new TextView(v.getContext());
+        for (int i = 0; i < 5; i++) {
+            TextView textView = new TextView(v.getContext());
             textView.setText(symbolKeyText[i]);
             textView.setTypeface(mTypeface);
             textView.setBackgroundColor(backgroundColorSymbol);
@@ -214,13 +216,13 @@ public class T9Fragment extends android.support.v4.app.Fragment {
 
     }
 
-    private void initBottomView(View v){
+    private void initBottomView(View v) {
 
-        bottomKeyText=res.getStringArray(R.array.BOTTOMBAR_TEXT);
+        bottomKeyText = res.getStringArray(R.array.BOTTOMBAR_TEXT);
         t9_bottom_layout.setLayoutParams(layoutParamsBottom);
 
-        for(int i=0;i<4;i++){
-            TextView textView=new TextView(v.getContext());
+        for (int i = 0; i < 4; i++) {
+            TextView textView = new TextView(v.getContext());
             textView.setText(bottomKeyText[i]);
             textView.setBackgroundColor(backgroundColorBottom);
             textView.setTextColor(textColorBottom);
@@ -233,36 +235,37 @@ public class T9Fragment extends android.support.v4.app.Fragment {
         }
     }
 
-    private View.OnClickListener t9Listener=new View.OnClickListener() {
+    private View.OnClickListener t9Listener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             chooseColor(v);
         }
     };
-    private View.OnClickListener listener=new View.OnClickListener() {
+    private View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             refreshView();
         }
     };
-    public void chooseColor(final View v){
 
-        selectedQkColors=getSelectedColorsQk();
-        myViewType=getCurrentViewType((TextView)v);
-        AlertDialog.Builder builder =new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater=getActivity().getLayoutInflater();
-        View view =inflater.inflate(R.layout.color_picker_dialog,null);
+    public void chooseColor(final View v) {
+
+        selectedQkColors = getSelectedColorsQk();
+        myViewType = getCurrentViewType((TextView) v);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.color_picker_dialog, null);
         builder.setView(view);
         builder.setTitle("自定义皮肤");
 
 
-        final ColorPicker picker = (ColorPicker)view.findViewById(R.id.color_picker);
-        SVBar svBar = (SVBar)view.findViewById(R.id.color_picker_svbar);
-        OpacityBar opacityBar = (OpacityBar)view.findViewById(R.id.color_picker_opacitybar);
+        final ColorPicker picker = (ColorPicker) view.findViewById(R.id.color_picker);
+        SVBar svBar = (SVBar) view.findViewById(R.id.color_picker_svbar);
+        OpacityBar opacityBar = (OpacityBar) view.findViewById(R.id.color_picker_opacitybar);
 
-        final RadioButton rbPickAsQk=(RadioButton)view.findViewById(R.id.rb_pick_asqk);
-        final RadioButton rbIsText=(RadioButton)view.findViewById(R.id.rb_picker_text);
-        final RadioButton rbIsBackground=(RadioButton)view.findViewById(R.id.rb_picker_background);
+        final RadioButton rbPickAsQk = (RadioButton) view.findViewById(R.id.rb_pick_asqk);
+        final RadioButton rbIsText = (RadioButton) view.findViewById(R.id.rb_picker_text);
+        final RadioButton rbIsBackground = (RadioButton) view.findViewById(R.id.rb_picker_background);
 
         picker.addSVBar(svBar);
         picker.addOpacityBar(opacityBar);
@@ -277,15 +280,15 @@ public class T9Fragment extends android.support.v4.app.Fragment {
 
                         if (rbIsBackground.isChecked()) {
                             if (rbPickAsQk.isChecked())
-                                backgroundColorFunc=selectedQkColors[0];
+                                backgroundColorFunc = selectedQkColors[0];
                             else
                                 backgroundColorFunc = picker.getColor();
 
                             refreshFuncBackground();
                         }
                         if (rbIsText.isChecked()) {
-                            if(rbPickAsQk.isChecked())
-                                textColorFunc=selectedQkColors[1];
+                            if (rbPickAsQk.isChecked())
+                                textColorFunc = selectedQkColors[1];
                             else
                                 textColorFunc = picker.getColor();
                             refreshFuncText();
@@ -294,16 +297,16 @@ public class T9Fragment extends android.support.v4.app.Fragment {
                         break;
                     case SYMBOL:
                         if (rbIsBackground.isChecked()) {
-                            if(rbPickAsQk.isChecked())
-                                backgroundColorSymbol=selectedQkColors[2];
+                            if (rbPickAsQk.isChecked())
+                                backgroundColorSymbol = selectedQkColors[2];
                             else
                                 backgroundColorSymbol = picker.getColor();
                             refreshSymbolBackground();
                         }
                         if (rbIsText.isChecked()) {
 
-                            if(rbPickAsQk.isChecked())
-                                textColorSymbol=selectedQkColors[3];
+                            if (rbPickAsQk.isChecked())
+                                textColorSymbol = selectedQkColors[3];
                             else
                                 textColorSymbol = picker.getColor();
                             refreshSymbolText();
@@ -311,15 +314,15 @@ public class T9Fragment extends android.support.v4.app.Fragment {
                         break;
                     case T9:
                         if (rbIsBackground.isChecked()) {
-                            if(rbPickAsQk.isChecked())
-                                backgroundColorT9=selectedQkColors[4];
+                            if (rbPickAsQk.isChecked())
+                                backgroundColorT9 = selectedQkColors[4];
                             else
                                 backgroundColorT9 = picker.getColor();
                             refreshT9Background();
                         }
                         if (rbIsText.isChecked()) {
-                            if(rbPickAsQk.isChecked())
-                                textColorT9=selectedQkColors[5];
+                            if (rbPickAsQk.isChecked())
+                                textColorT9 = selectedQkColors[5];
                             else
                                 textColorT9 = picker.getColor();
                             refreshT9Text();
@@ -327,15 +330,15 @@ public class T9Fragment extends android.support.v4.app.Fragment {
                         break;
                     case BOTTOM:
                         if (rbIsBackground.isChecked()) {
-                            if(rbPickAsQk.isChecked())
-                                backgroundColorBottom=selectedQkColors[6];
+                            if (rbPickAsQk.isChecked())
+                                backgroundColorBottom = selectedQkColors[6];
                             else
                                 backgroundColorBottom = picker.getColor();
                             refreshBottomBackground();
                         }
                         if (rbIsText.isChecked()) {
-                            if(rbPickAsQk.isChecked())
-                                textColorBottom=selectedQkColors[7];
+                            if (rbPickAsQk.isChecked())
+                                textColorBottom = selectedQkColors[7];
                             else
                                 textColorBottom = picker.getColor();
                             refreshBottomText();
@@ -343,7 +346,7 @@ public class T9Fragment extends android.support.v4.app.Fragment {
                         break;
                 }
 
-                ((SkinDiyActivity)getActivity()).setSelectedColorsT9(getCurrentColors());
+                ((SkinDiyActivity) getActivity()).setSelectedColorsT9(getCurrentColors());
             }
 
         });
@@ -359,71 +362,78 @@ public class T9Fragment extends android.support.v4.app.Fragment {
 
     public void refreshFuncBackground() {
 
-        for(TextView textView:t9FuncKeyList){
+        for (TextView textView : t9FuncKeyList) {
             textView.setBackgroundColor(backgroundColorFunc);
         }
     }
+
     public void refreshSymbolBackground() {
 
-        for(TextView textView:t9SymbolKeyList){
+        for (TextView textView : t9SymbolKeyList) {
             textView.setBackgroundColor(backgroundColorSymbol);
         }
     }
+
     public void refreshT9Background() {
 
-        for(TextView textView:t9KeysList){
+        for (TextView textView : t9KeysList) {
             textView.setBackgroundColor(backgroundColorT9);
         }
     }
+
     public void refreshBottomBackground() {
 
-        for(TextView textView:t9BottomKeyList){
+        for (TextView textView : t9BottomKeyList) {
             textView.setBackgroundColor(backgroundColorBottom);
         }
     }
-    public void refreshFuncText(){
-        for(TextView textView:t9FuncKeyList){
+
+    public void refreshFuncText() {
+        for (TextView textView : t9FuncKeyList) {
             textView.setTextColor(textColorFunc);
         }
     }
-    public void refreshSymbolText(){
-        for(TextView textView:t9SymbolKeyList){
+
+    public void refreshSymbolText() {
+        for (TextView textView : t9SymbolKeyList) {
             textView.setTextColor(textColorSymbol);
         }
     }
-    public void refreshT9Text(){
-        for(TextView textView:t9KeysList){
+
+    public void refreshT9Text() {
+        for (TextView textView : t9KeysList) {
             textView.setTextColor(textColorT9);
         }
     }
-    public void refreshBottomText(){
-        for(TextView textView:t9BottomKeyList){
+
+    public void refreshBottomText() {
+        for (TextView textView : t9BottomKeyList) {
             textView.setTextColor(textColorBottom);
         }
     }
 
-    public viewType getCurrentViewType(TextView v){
+    public viewType getCurrentViewType(TextView v) {
 
-        for(TextView textView:t9FuncKeyList){
-            if(textView.equals(v)){
+        for (TextView textView : t9FuncKeyList) {
+            if (textView.equals(v)) {
                 return viewType.FUNC;
             }
         }
 
-        for(TextView textView:t9SymbolKeyList){
-            if(textView.equals(v)){
+        for (TextView textView : t9SymbolKeyList) {
+            if (textView.equals(v)) {
                 return viewType.SYMBOL;
             }
         }
 
-        for(TextView textView:t9KeysList){
-            if(textView.equals(v)){
+        for (TextView textView : t9KeysList) {
+            if (textView.equals(v)) {
                 return viewType.T9;
             }
         }
 
-        for(TextView textView:t9BottomKeyList){
-            if(textView.equals(v)){
+        for (TextView textView : t9BottomKeyList) {
+            if (textView.equals(v)) {
                 return viewType.BOTTOM;
             }
         }
@@ -431,23 +441,25 @@ public class T9Fragment extends android.support.v4.app.Fragment {
         return viewType.FUNC;
     }
 
-    public int[] getSelectedColorsQk(){
-        return ((SkinDiyActivity)getActivity()).getSelectedColorsQk();
+    public int[] getSelectedColorsQk() {
+        return ((SkinDiyActivity) getActivity()).getSelectedColorsQk();
     }
-    public int[] getCurrentColors(){
-        int [] colors={backgroundColorT9,textColorT9};
+
+    public int[] getCurrentColors() {
+        int[] colors = {backgroundColorT9, textColorT9};
         return colors;
     }
-    public void refreshView(){
+
+    public void refreshView() {
 
 
-        selectedQkColors=((SkinDiyActivity)getActivity()).getSelectedColorsQk();
-        backgroundColorFunc=selectedQkColors[0];
-        textColorFunc=selectedQkColors[1];
-        backgroundColorSymbol=selectedQkColors[2];
-        textColorSymbol=selectedQkColors[3];
-        textColorBottom=selectedQkColors[7];
-        backgroundColorBottom=selectedQkColors[6];
+        selectedQkColors = ((SkinDiyActivity) getActivity()).getSelectedColorsQk();
+        backgroundColorFunc = selectedQkColors[0];
+        textColorFunc = selectedQkColors[1];
+        backgroundColorSymbol = selectedQkColors[2];
+        textColorSymbol = selectedQkColors[3];
+        textColorBottom = selectedQkColors[7];
+        backgroundColorBottom = selectedQkColors[6];
 
         refreshFuncBackground();
         refreshFuncText();
@@ -455,5 +467,27 @@ public class T9Fragment extends android.support.v4.app.Fragment {
         refreshSymbolText();
         refreshBottomBackground();
         refreshBottomText();
+    }
+
+    public void refreshT9Skin(int backgroundColor, int textColor) {
+        backgroundColorFunc = backgroundColor;
+        backgroundColorSymbol = backgroundColor;
+        backgroundColorT9 = backgroundColor;
+        backgroundColorBottom = backgroundColor;
+
+        textColorFunc = textColor;
+        textColorSymbol = textColor;
+        textColorT9 = textColor;
+        textColorBottom = textColor;
+
+        refreshFuncBackground();
+        refreshFuncText();
+        refreshSymbolBackground();
+        refreshSymbolText();
+        refreshBottomBackground();
+        refreshBottomText();
+        refreshT9Background();
+        refreshT9Text();
+        ((SkinDiyActivity) getActivity()).setSelectedColorsT9(getCurrentColors());
     }
 }

@@ -187,7 +187,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     public SpecialSymbolChooseViewGroup specialSymbolChooseViewGroup;
     public FunctionViewGroup functionViewGroup;
     public QuickSymbolViewGroup quickSymbolViewGroup;
-    public PrefixViewGroup prefixViewGroup;
+    public PreFixViewGroup prefixViewGroup;
     public BottomBarViewGroup bottomBarViewGroup;
     public CandidatesViewGroup candidatesViewGroup;
     public T9InputViewGroup t9InputViewGroup;
@@ -285,7 +285,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         specialSymbolChooseViewGroup = new SpecialSymbolChooseViewGroup();
         functionViewGroup = new FunctionViewGroup();
         quickSymbolViewGroup = new QuickSymbolViewGroup();
-        prefixViewGroup = new PrefixViewGroup();
+        prefixViewGroup = new PreFixViewGroup();
         bottomBarViewGroup = new BottomBarViewGroup();
         candidatesViewGroup = new CandidatesViewGroup();
         qkInputViewGroups = new QKInputViewGroups();

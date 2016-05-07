@@ -598,7 +598,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
                     showSmile();
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    PrefixViewGroup prefixViewGroup = softKeyboard.prefixViewGroup;
+                    PreFixViewGroup prefixViewGroup = softKeyboard.prefixViewGroup;
                     float X = event.getX();
                     float Y = event.getY();
                     float perWidth = softKeyboard.keyboardWidth / SMILE_KEYS_NUM;
