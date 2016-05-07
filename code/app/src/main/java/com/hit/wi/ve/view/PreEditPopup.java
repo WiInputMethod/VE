@@ -10,6 +10,7 @@ import android.view.inputmethod.InputConnection;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 import com.hit.wi.jni.Kernel;
+import com.hit.wi.util.DisplayUtil;
 import com.hit.wi.util.ViewsUtil;
 import com.hit.wi.ve.R;
 import com.hit.wi.ve.SoftKeyboard;
@@ -88,7 +89,9 @@ public class PreEditPopup {
     public void show(CharSequence text){
         editText.setText(text);
         float length = toolPaint.measureText((String) text);
-        editText.setTextSize(Math.min((float) (container.getHeight()*TEXTSIZE_RATE_BY_HEIGHT),TEXTSIZE_RATE_BY_WIDTH * container.getWidth()/length));
+        editText.setTextSize(DisplayUtil.px2sp(softKeyboard,
+                Math.min((float) (container.getHeight()*TEXTSIZE_RATE_BY_HEIGHT),TEXTSIZE_RATE_BY_WIDTH * container.getWidth()/length)
+        ));
         if (!isShown()){
             container.showAsDropDown(softKeyboard.keyboardLayout,leftMargin,-container.getHeight()-softKeyboard.keyboardParams.height);
         }

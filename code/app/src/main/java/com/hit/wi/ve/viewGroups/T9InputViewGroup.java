@@ -5,6 +5,7 @@ import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
+import com.hit.wi.util.DisplayUtil;
 import com.hit.wi.util.ViewsUtil;
 import com.hit.wi.jni.Kernel;
 import com.hit.wi.util.StringUtil;
@@ -216,7 +217,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
             button.itsLayoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT;
             ((LinearLayout.LayoutParams)button.itsLayoutParams).leftMargin = margin;
             ((LinearLayout.LayoutParams)button.itsLayoutParams).rightMargin = margin;
-            button.getPaint().setTextSize(30 * Math.min(keyboardWidth / 3 - horGap,height/LAYER_NUM - 2*horGap/3) / 100);
+            button.getPaint().setTextSize(DisplayUtil.px2sp(context,30 * Math.min(keyboardWidth / 3 - horGap,height/LAYER_NUM - 2*horGap/3) / 100));
         }
 
         ((LinearLayout.LayoutParams)deleteButton.itsLayoutParams).leftMargin = horGap;

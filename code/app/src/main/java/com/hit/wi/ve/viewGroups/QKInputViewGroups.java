@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.hit.wi.jni.Kernel;
+import com.hit.wi.util.DisplayUtil;
 import com.hit.wi.util.InputMode;
 import com.hit.wi.util.ViewsUtil;
 import com.hit.wi.util.StringUtil;
@@ -230,8 +231,10 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         for (LinearLayout button:buttonList){
             button.getLayoutParams().width = keyWidth;
             button.setPadding(padding,padding,padding,padding);
-            ((TextView)button.findViewById(R.id.main_text)).getPaint().setTextSize(80 * Math.min(keyWidth, keyHeight * 7/9)/100);
-            ((TextView)button.findViewById(R.id.predict_text)).getPaint().setTextSize(80 * Math.min(keyWidth, keyHeight * 7/9)/300);
+            ((TextView)button.findViewById(R.id.main_text)).getPaint()
+                    .setTextSize(DisplayUtil.px2sp(context,80 * Math.min(keyWidth, keyHeight * 7/9)/100));
+            ((TextView)button.findViewById(R.id.predict_text)).getPaint()
+                    .setTextSize(DisplayUtil.px2sp(context,80 * Math.min(keyWidth, keyHeight * 7/9)/300));
             ((LinearLayout)button.getParent()).updateViewLayout(button,button.getLayoutParams());
         }
         int widthKeyWidth = keyWidth * 3 / 2 - padding;
@@ -246,7 +249,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
 
         deleteButton.itsLayoutParams.width = widthKeyWidth;
         ((LinearLayout.LayoutParams)deleteButton.itsLayoutParams).setMargins(padding,padding,padding,padding);
-        deleteButton.getPaint().setTextSize(3 * Math.min(keyWidth *3/2,keyHeight)/5);
+        deleteButton.getPaint().setTextSize(DisplayUtil.px2sp(context,3 * Math.min(keyWidth *3/2,keyHeight)/5));
         linears[2].updateViewLayout(deleteButton,deleteButton.itsLayoutParams);
     }
 

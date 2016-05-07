@@ -15,6 +15,8 @@ import android.widget.ScrollView;
 
 import android.widget.TextView;
 import com.hit.wi.jni.Kernel;
+import com.hit.wi.util.DisplayUtil;
+import com.hit.wi.ve.SoftKeyboard;
 import com.hit.wi.ve.functions.QKEmojiManager;
 import com.hit.wi.ve.values.Global;
 import com.hit.wi.ve.view.QuickButton;
@@ -197,7 +199,7 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
         button.itsLayoutParams = params;
         button.setLayoutParams(params);
 
-        button.setTextSize(2*Global.textsizeFactor*standardButtonHeight/8);
+        button.setTextSize(DisplayUtil.px2sp(context,2*Global.textsizeFactor*standardButtonHeight/8));
         return button;
     }
 
@@ -223,7 +225,7 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
         button.setEllipsize(standardButtonWidth * CAND_DIV_NUM <= measureTextLength(text)?TextUtils.TruncateAt.END:null);
         button.getBackground().setAlpha(Global.getCurrentAlpha());
         button.setPressed(false);
-        button.setTextSize(2*Global.textsizeFactor*standardButtonHeight/8);
+        button.setTextSize(DisplayUtil.px2sp(context,2*Global.textsizeFactor*standardButtonHeight/8));
         return button;
     }
 

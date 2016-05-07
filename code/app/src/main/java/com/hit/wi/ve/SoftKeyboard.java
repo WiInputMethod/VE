@@ -29,6 +29,7 @@ import android.widget.*;
 import com.hit.wi.jni.NKInitDictFile;
 import com.hit.wi.jni.InitInputParam;
 import com.hit.wi.util.CommonFuncs;
+import com.hit.wi.util.DisplayUtil;
 import com.hit.wi.util.InputMode;
 import com.hit.wi.jni.*;
 import com.hit.wi.ve.Interfaces.SoftKeyboardInterface;
@@ -971,7 +972,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             quickSymbolViewGroup.setPosition(0, 0);
             quickSymbolViewGroup.setButtonPadding(standardHorizontalGapDistance);
             quickSymbolViewGroup.setButtonWidth(buttonWidth);
-            float textSize = (float) (Math.min(buttonWidth, height) * TEXTSIZE_RATE);
+            float textSize = DisplayUtil.px2sp(SoftKeyboard.this,(float) (Math.min(buttonWidth, height) * TEXTSIZE_RATE));
             quickSymbolViewGroup.setTextSize(textSize);
             if (t9InputViewGroup.deleteButton.isShown() && largeCandidateButton.isShown()) {
                 quickSymbolViewGroup.setSize(keyboardWidth * PREFIX_WIDTH_RATE / 100, height);
@@ -987,13 +988,14 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             int height = keyboardHeight * layerHeightRate[1] / 100;
             specialSymbolChooseViewGroup.updateSize(keyboardWidth * res.getInteger(R.integer.PREEDIT_WIDTH) / 100, height);
             specialSymbolChooseViewGroup.setPosition(0, 0);
-            specialSymbolChooseViewGroup.setTextSize((float) (TEXTSIZE_RATE * height));
+            specialSymbolChooseViewGroup.setTextSize(DisplayUtil.px2sp(SoftKeyboard.this,(float) (TEXTSIZE_RATE * height)));
         }
 
         private void UpdateT9Size() {
             t9InputViewGroup.setSize(keyboardWidth, mGGParams.height, standardHorizontalGapDistance);
-            t9InputViewGroup.deleteButton.getPaint()
-                    .setTextSize(3 * Math.min(t9InputViewGroup.deleteButton.itsLayoutParams.width, layerHeightRate[1] * keyboardHeight / 100) / 5);
+            t9InputViewGroup.deleteButton.getPaint().setTextSize(DisplayUtil.px2sp(SoftKeyboard.this,
+                    3 * Math.min(t9InputViewGroup.deleteButton.itsLayoutParams.width, layerHeightRate[1] * keyboardHeight / 100) / 5
+            ));
             keyboardLayout.updateViewLayout(mInputViewGG, mGGParams);
         }
 
@@ -1010,7 +1012,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             functionViewGroup.updatesize(keyboardWidth, height);
             functionViewGroup.setButtonPadding(standardHorizontalGapDistance);
             functionViewGroup.setButtonWidth(buttonwidth);
-            functionViewGroup.setTextSize(50 * Math.min(buttonwidth, height) / 100);
+            functionViewGroup.setTextSize(DisplayUtil.px2sp(SoftKeyboard.this,50 * Math.min(buttonwidth, height) / 100));
         }
 
         public void UpdateCandidateSize() {
@@ -1028,7 +1030,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             } else {
                 bottomBarViewGroup.setButtonWidthByRate(res.getIntArray(R.array.BOTTOMBAR_KEY_WIDTH));
             }
-            bottomBarViewGroup.setTextSize(((keyboardHeight*layerHeightRate[3]) / 100) /4);
+            bottomBarViewGroup.setTextSize(DisplayUtil.px2sp(SoftKeyboard.this,((keyboardHeight*layerHeightRate[3]) / 100) /4));
             bottomBarViewGroup.updateViewLayout();
         }
 
@@ -1037,9 +1039,9 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             largeCandidateButton.itsLayoutParams.width = keyboardWidth - 3 * standardHorizontalGapDistance - res.getInteger(R.integer.PREEDIT_WIDTH) * keyboardWidth / 100;
             ((LinearLayout.LayoutParams) largeCandidateButton.itsLayoutParams).leftMargin = standardHorizontalGapDistance;
 
-            largeCandidateButton.getPaint().setTextSize(
+            largeCandidateButton.getPaint().setTextSize(DisplayUtil.px2sp(SoftKeyboard.this,
                     Math.min(3 * Math.min(secondParams.height, (100 - res.getInteger(R.integer.PREEDIT_WIDTH)) * keyboardWidth / 100) / 5, 30)
-            );
+            ));
         }
 
         void updateViewSizeAndPosition() {
