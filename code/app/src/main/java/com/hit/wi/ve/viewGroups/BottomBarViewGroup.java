@@ -4,12 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import com.hit.wi.jni.Kernel;
 
@@ -43,12 +41,12 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
     public QuickButton keyboardButtonT9;
     public QuickButton keyboardButtonNum;
 
-    private QuickButton[] keyboardButtons = {keyboardButtonQK,keyboardButtonEn,keyboardButtonNum,keyboardButtonT9,};
-
     String[] button_text;
 
     private String spaceText;
     private Context mContext;
+    List<QuickButton> keyboardButtons = new ArrayList<>();//不能用数组，数组会复制每个对象，而不是引用
+
 
     private final String text_return = "返回";
     private final String text_qk = "全键";
@@ -84,10 +82,10 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         zeroButton.setOnTouchListener(zeroOnTouchListener);
         returnButton.setOnTouchListener(returnOnTouchListener);
 
-        keyboardButtonQK.setOnTouchListener(keyboardSwitchKeyOnTouchListener);
-        keyboardButtonEn.setOnTouchListener(keyboardSwitchKeyOnTouchListener);
-        keyboardButtonNum.setOnTouchListener(keyboardSwitchKeyOnTouchListener);
-        keyboardButtonT9.setOnTouchListener(keyboardSwitchKeyOnTouchListener);
+        keyboardButtonQK.setOnTouchListener(keyboardSwitchKeyOnTouchListenerFactory(Global.KEYBOARD_QK));
+        keyboardButtonEn.setOnTouchListener(keyboardSwitchKeyOnTouchListenerFactory(Global.KEYBOARD_EN));
+        keyboardButtonNum.setOnTouchListener(keyboardSwitchKeyOnTouchListenerFactory(Global.KEYBOARD_NUM));
+        keyboardButtonT9.setOnTouchListener(keyboardSwitchKeyOnTouchListenerFactory(Global.KEYBOARD_T9));
 
         buttonList.add(switchKeyboardButton);
         buttonList.add(expressionButton);
@@ -100,6 +98,11 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         buttonList.add(keyboardButtonEn);
         buttonList.add(keyboardButtonNum);
         buttonList.add(keyboardButtonT9);
+
+        keyboardButtons.add(keyboardButtonQK);
+        keyboardButtons.add(keyboardButtonEn);
+        keyboardButtons.add(keyboardButtonNum);
+        keyboardButtons.add(keyboardButtonT9);
 
         returnButton.setVisibility(View.GONE);
         zeroButton.setVisibility(View.GONE);
@@ -199,7 +202,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
                     setButtonWidthByRate(res.getIntArray(R.array.BOTTOMBAR_KEY_WIDTH));
                     break;
                 case Global.KEYBOARD_NUM:
-                    ((LinearLayout.LayoutParams) zeroButton.itsLayoutParams).leftMargin = padding;//special, i dont know why, but dont delete it
+//                    ((LinearLayout.LayoutParams) zeroButton.itsLayoutParams).leftMargin = padding;//special, i dont know why, but dont delete it
                     setShownButton(switchKeyboardButton,zeroButton,spaceButton);
                     setButtonWidthByRate(res.getIntArray(R.array.BOTTOMBAR_NUM_KEY_WIDTH));
                     break;
@@ -277,6 +280,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         }
     }
 
+    private boolean isSwitchState = false;
     private View.OnTouchListener switchKeyOnTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
@@ -284,13 +288,14 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
             if (!Global.inLarge){
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
+                        isSwitchState = keyboardButtonQK.isShown();
                         setShownButton(switchKeyboardButton,keyboardButtonQK,keyboardButtonEn,keyboardButtonNum,keyboardButtonT9);
                         setButtonWidth(paramsForViewGroup.width / (KEYBOARD_BUTTON_NUM+1) - padding);
                         break;
                     case MotionEvent.ACTION_MOVE:
                         setBackgroundColor(skinInfoManager.skinData.backcolor_26keys);
                         if (position>0)
-                            ViewsUtil.setBackgroundWithGradientDrawable(keyboardButtons[position-1],skinInfoManager.skinData.backcolor_touchdown);
+                            ViewsUtil.setBackgroundWithGradientDrawable(keyboardButtons.get(position-1),skinInfoManager.skinData.backcolor_touchdown);
                         break;
                     case MotionEvent.ACTION_UP:
                         if (position != 0){
@@ -299,6 +304,8 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
                             setEnterText(softKeyboard.getCurrentInputEditorInfo(), keyboards[position]);
                             setSpaceText();
                             updateSkin();
+                        } else if (isSwitchState) {
+                            refreshState();
                         }
                         break;
                 }
@@ -446,25 +453,21 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         }
     };
 
-    private View.OnTouchListener keyboardSwitchKeyOnTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {//简直靠巧合编程的经典示范
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-                int[] keyboards = {Global.currentKeyboard, Global.KEYBOARD_QK, Global.KEYBOARD_EN, Global.KEYBOARD_NUM, Global.KEYBOARD_T9};
-//                for (int i=0;i<keyboardButtons.length;i++){
-                    Log.d("WIVE","fuck"+(buttonList.indexOf(v)+" "+buttonList.size()));
-//                    if (v.equals(keyboardButtons[i])){
-                        softKeyboard.switchKeyboardTo(keyboards[buttonList.indexOf(v)],true);
-//                    }
-//                }
+
+    private View.OnTouchListener keyboardSwitchKeyOnTouchListenerFactory(final int keyboard){
+        return new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP)
+                            softKeyboard.switchKeyboardTo(keyboard ,true);
+                onTouchEffect(v, event.getAction(),
+                        skinInfoManager.skinData.backcolor_touchdown,
+                        skinInfoManager.skinData.backcolor_26keys
+                );
+                return false;
             }
-            onTouchEffect(v, event.getAction(),
-                    skinInfoManager.skinData.backcolor_touchdown,
-                    skinInfoManager.skinData.backcolor_26keys
-            );
-            return false;
-        }
-    };
+        };
+    }
 
 
     public void setEnterText(EditorInfo info, int mCurrentKeyboard) {
