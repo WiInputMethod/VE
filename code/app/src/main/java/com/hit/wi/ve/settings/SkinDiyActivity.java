@@ -63,8 +63,12 @@ public class SkinDiyActivity extends FragmentActivity {
     private int[] oldQkColors;
     private int[] oldT9Colors;
 
-    private int[] materialBackColor = {0xff009688, 0xff673ab7, 0xff259b24, 0xffcddc39, 0xffff5722};
-    private int[] materialTextColor = {0xffe0f2f1, 0xffe0f2f1, 0xffe0f2f1, 0xffe0f2f1, 0xffe0f2f1};
+    private int[] materialBackColorFunc;
+    private int[] materialBackColorSymbol;
+    private int[] materialBackColorQK;
+    private int[] materialBackColorBottom;
+
+    private int[] materialTextColor;
 
 
     private SharedPreferences sp;
@@ -134,7 +138,10 @@ public class SkinDiyActivity extends FragmentActivity {
             }
         });
 
-        materialBackColor = getResources().getIntArray(R.array.MATERIAL_COLORS_BACKGROUND);
+        materialBackColorFunc = getResources().getIntArray(R.array.MATERIAL_COLORS_BACKGROUND_FUNC_QK);
+        materialBackColorSymbol=getResources().getIntArray(R.array.MATERIAL_COLORS_BACKGROUND_SYMBOL_BOTTOM);
+        materialBackColorQK=getResources().getIntArray(R.array.MATERIAL_COLORS_BACKGROUND_FUNC_QK);
+        materialBackColorBottom=getResources().getIntArray(R.array.MATERIAL_COLORS_BACKGROUND_SYMBOL_BOTTOM);
         materialTextColor = getResources().getIntArray(R.array.MATERIAL_COLORS_TEXT);
         addMaterialColors();
     }
@@ -342,9 +349,9 @@ public class SkinDiyActivity extends FragmentActivity {
         int vWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, getResources().getDisplayMetrics());
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(vWidth, vWidth);
         params.setMargins(10, 0, 10, 0);
-        for (int i = 0; i < materialBackColor.length; i++) {
+        for (int i = 0; i < materialBackColorFunc.length; i++) {
             View v = new View(this);
-            v.setBackgroundColor(materialBackColor[i]);
+            v.setBackgroundColor(materialBackColorFunc[i]);
             v.setLayoutParams(params);
             v.setPadding(10, 10, 10, 10);
             v.setId(i);
@@ -356,21 +363,43 @@ public class SkinDiyActivity extends FragmentActivity {
     View.OnClickListener materialColorListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Toast.makeText(SkinDiyActivity.this, "Click" + v.getId(), Toast.LENGTH_SHORT).show();
+
+            int index=v.getId();
             QKFragment qk = (QKFragment) fragmentList.get(0);
             T9Fragment t9 = (T9Fragment) fragmentList.get(1);
-            int backcolor = materialBackColor[v.getId()];
-            int textcolor = materialTextColor[v.getId()];
-            qk.refreshQkSkin(backcolor, textcolor);
-            t9.refreshT9Skin(backcolor, textcolor);
 
-            backColorCandidateBox = backcolor;
-            backColorEditBox = backcolor;
-            colorTouchDown = backcolor;
+            qk.refreshFuncBackground(materialBackColorFunc[index]);
+            qk.refreshSymbolBackground(materialBackColorSymbol[index]);
+            qk.refreshQkBackground(materialBackColorQK[index]);
+            qk.refreshBottomBackground(materialBackColorBottom[index]);
 
-            textColorEditBox = backcolor;
-            textColorCandidateBox = textcolor;
-            shadowColor = textcolor;
+            qk.refreshFuncText(materialTextColor[index]);
+            qk.refreshSymbolText(materialTextColor[index]);
+            qk.refreshQkText(materialTextColor[index]);
+            qk.refreshBottomText(materialTextColor[index]);
+
+            qk.setSelectedColors();
+
+            t9.refreshFuncBackground(materialBackColorFunc[index]);
+            t9.refreshSymbolBackground(materialBackColorSymbol[index]);
+            t9.refreshT9Background(materialBackColorQK[index]);
+            t9.refreshBottomBackground(materialBackColorBottom[index]);
+
+            t9.refreshFuncText(materialTextColor[index]);
+            t9.refreshSymbolText(materialTextColor[index]);
+            t9.refreshT9Text(materialTextColor[index]);
+            t9.refreshBottomText(materialTextColor[index]);
+
+            t9.setSelectedT9Colors();
+
+
+            backColorCandidateBox = materialBackColorFunc[index];
+            backColorEditBox = materialBackColorFunc[index];
+            colorTouchDown = materialBackColorQK[index];
+
+            textColorEditBox = materialBackColorFunc[index];
+            textColorCandidateBox = materialTextColor[index];
+            shadowColor = materialTextColor[index];
 
             vColorCandidateBoxBack.setBackgroundColor(backColorCandidateBox);
             vColorEditBoxBack.setBackgroundColor(backColorEditBox);

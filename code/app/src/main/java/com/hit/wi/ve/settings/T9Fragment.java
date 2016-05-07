@@ -367,8 +367,21 @@ public class T9Fragment extends android.support.v4.app.Fragment {
         }
     }
 
+    public void refreshFuncBackground(int backgroundColor) {
+        backgroundColorFunc=backgroundColor;
+        for (TextView textView : t9FuncKeyList) {
+            textView.setBackgroundColor(backgroundColorFunc);
+        }
+    }
+
     public void refreshSymbolBackground() {
 
+        for (TextView textView : t9SymbolKeyList) {
+            textView.setBackgroundColor(backgroundColorSymbol);
+        }
+    }
+    public void refreshSymbolBackground(int backgroundColor) {
+        backgroundColorSymbol=backgroundColor;
         for (TextView textView : t9SymbolKeyList) {
             textView.setBackgroundColor(backgroundColorSymbol);
         }
@@ -381,8 +394,22 @@ public class T9Fragment extends android.support.v4.app.Fragment {
         }
     }
 
+    public void refreshT9Background(int backgroundColor) {
+        backgroundColorT9=backgroundColor;
+        for (TextView textView : t9KeysList) {
+            textView.setBackgroundColor(backgroundColorT9);
+        }
+    }
+
     public void refreshBottomBackground() {
 
+        for (TextView textView : t9BottomKeyList) {
+            textView.setBackgroundColor(backgroundColorBottom);
+        }
+    }
+
+    public void refreshBottomBackground(int backgroundColor) {
+        backgroundColorBottom=backgroundColor;
         for (TextView textView : t9BottomKeyList) {
             textView.setBackgroundColor(backgroundColorBottom);
         }
@@ -393,8 +420,20 @@ public class T9Fragment extends android.support.v4.app.Fragment {
             textView.setTextColor(textColorFunc);
         }
     }
+    public void refreshFuncText(int textColor) {
+        textColorFunc=textColor;
+        for (TextView textView : t9FuncKeyList) {
+            textView.setTextColor(textColorFunc);
+        }
+    }
 
     public void refreshSymbolText() {
+        for (TextView textView : t9SymbolKeyList) {
+            textView.setTextColor(textColorSymbol);
+        }
+    }
+    public void refreshSymbolText(int textColor) {
+        textColorSymbol=textColor;
         for (TextView textView : t9SymbolKeyList) {
             textView.setTextColor(textColorSymbol);
         }
@@ -405,13 +444,24 @@ public class T9Fragment extends android.support.v4.app.Fragment {
             textView.setTextColor(textColorT9);
         }
     }
+    public void refreshT9Text(int textColor) {
+        textColorT9=textColor;
+        for (TextView textView : t9KeysList) {
+            textView.setTextColor(textColorT9);
+        }
+    }
 
     public void refreshBottomText() {
         for (TextView textView : t9BottomKeyList) {
             textView.setTextColor(textColorBottom);
         }
     }
-
+    public void refreshBottomText(int textColor) {
+        textColorBottom=textColor;
+        for (TextView textView : t9BottomKeyList) {
+            textView.setTextColor(textColorBottom);
+        }
+    }
     public viewType getCurrentViewType(TextView v) {
 
         for (TextView textView : t9FuncKeyList) {
@@ -488,6 +538,10 @@ public class T9Fragment extends android.support.v4.app.Fragment {
         refreshBottomText();
         refreshT9Background();
         refreshT9Text();
+        ((SkinDiyActivity) getActivity()).setSelectedColorsT9(getCurrentColors());
+    }
+
+    public void setSelectedT9Colors(){
         ((SkinDiyActivity) getActivity()).setSelectedColorsT9(getCurrentColors());
     }
 }
