@@ -389,8 +389,21 @@ public class QKFragment extends android.support.v4.app.Fragment {
         }
     }
 
-    public void refreshSymbolBackground() {
+    public void refreshFuncBackground(int backgroundColor) {
+        backgroundColorFunc=backgroundColor;
+        for (TextView textView : functionKeyList) {
+            textView.setBackgroundColor(backgroundColorFunc);
+        }
+    }
 
+    public void refreshSymbolBackground() {
+        for (TextView textView : symbolKeyList) {
+            textView.setBackgroundColor(backgroundColorSymbol);
+        }
+    }
+
+    public void refreshSymbolBackground(int backgroundColor) {
+        backgroundColorSymbol=backgroundColor;
         for (TextView textView : symbolKeyList) {
             textView.setBackgroundColor(backgroundColorSymbol);
         }
@@ -403,8 +416,21 @@ public class QKFragment extends android.support.v4.app.Fragment {
         }
     }
 
+    public void refreshQkBackground(int backgroundColor) {
+        backgroundColorQk=backgroundColor;
+        for (TextView textView : qkKeyList) {
+            textView.setBackgroundColor(backgroundColorQk);
+        }
+    }
+
     public void refreshBottomBackground() {
 
+        for (TextView textView : qkBottomKeyList) {
+            textView.setBackgroundColor(backgroundColorBottom);
+        }
+    }
+    public void refreshBottomBackground(int backgroundColor) {
+        backgroundColorBottom=backgroundColor;
         for (TextView textView : qkBottomKeyList) {
             textView.setBackgroundColor(backgroundColorBottom);
         }
@@ -416,11 +442,25 @@ public class QKFragment extends android.support.v4.app.Fragment {
         }
     }
 
+    public void refreshFuncText(int textColor) {
+        textColorFunc=textColor;
+        for (TextView textView : functionKeyList) {
+            textView.setTextColor(textColorFunc);
+        }
+    }
+
     public void refreshSymbolText() {
         for (TextView textView : symbolKeyList) {
             textView.setTextColor(textColorSymbol);
         }
     }
+    public void refreshSymbolText(int textColor) {
+        textColorSymbol=textColor;
+        for (TextView textView : symbolKeyList) {
+            textView.setTextColor(textColorSymbol);
+        }
+    }
+
 
     public void refreshQkText() {
         for (TextView textView : qkKeyList) {
@@ -428,7 +468,21 @@ public class QKFragment extends android.support.v4.app.Fragment {
         }
     }
 
+    public void refreshQkText(int textColor) {
+        textColorQk=textColor;
+        for (TextView textView : qkKeyList) {
+            textView.setTextColor(textColorQk);
+        }
+    }
+
     public void refreshBottomText() {
+        for (TextView textView : qkBottomKeyList) {
+            textView.setTextColor(textColorBottom);
+        }
+    }
+
+    public void refreshBottomText(int textColor) {
+        textColorBottom=textColor;
         for (TextView textView : qkBottomKeyList) {
             textView.setTextColor(textColorBottom);
         }
@@ -490,6 +544,10 @@ public class QKFragment extends android.support.v4.app.Fragment {
         refreshSymbolText();
         refreshQkText();
         refreshBottomText();
+        ((SkinDiyActivity) getActivity()).setSelectedColorsQK(getCurrentColors());
+    }
+
+    public void setSelectedColors(){
         ((SkinDiyActivity) getActivity()).setSelectedColorsQK(getCurrentColors());
     }
 }
