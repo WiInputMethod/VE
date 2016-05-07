@@ -200,7 +200,7 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
         button.itsLayoutParams = params;
         button.setLayoutParams(params);
 
-        button.setTextSize(DisplayUtil.px2sp(context,2*Global.textsizeFactor*standardButtonHeight/8));
+        button.setTextSize(DisplayUtil.px2sp(context, Global.textsizeFactor*standardButtonHeight * TEXTSIZE_RATE));
         return button;
     }
 
@@ -214,9 +214,7 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
         button.itsLayoutParams.width = measureTextLength(text);
         if(button.itsLayoutParams.width > remainLength){
             if(remainLength > 20){
-                QuickButton fillButton = initNewButton("");
-                fillButton.setWidth(remainLength);
-                layer.addView(fillButton);
+                ((QuickButton)layer.getChildAt(layer.getChildCount()-1)).itsLayoutParams.width += remainLength;
             }
             layerPointer++;
             layer = getWorkingLayer(layerPointer);
