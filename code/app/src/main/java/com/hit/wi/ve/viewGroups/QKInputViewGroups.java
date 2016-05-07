@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.hit.wi.jni.Kernel;
+import com.hit.wi.util.DisplayUtil;
 import com.hit.wi.util.InputMode;
 import com.hit.wi.util.ViewsUtil;
 import com.hit.wi.util.StringUtil;
@@ -28,6 +29,9 @@ import java.util.List;
 public class QKInputViewGroups extends NonScrollViewGroup {
 
 
+    private final float TEXTSIZE_RATE_DELETE = (float) 0.8;
+    private final float TEXTSIZE_RATE_MAIN = (float) 1.2;
+    private final float TEXTSIZE_RATE_PRE = (float) 0.4;
     private final int KEY_A_INDEX = 10;
     private final int KEY_E_INDEX = 2;
     private final int KEY_I_INDEX = 7;
@@ -151,7 +155,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
 
     private void addShiftButton(){
         shiftButton = super.addButton(shiftText[0],
-                skinInfoManager.skinData.textcolors_shift,
+                skinInfoManager.skinData.textcolor_shift,
                 skinInfoManager.skinData.backcolor_shift);
         shiftButton.setOnTouchListener(mShiftKeyOnTouchListener);
         shiftButton.itsLayoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -160,7 +164,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
 
     private void addSmileButton(){
         smileButton = super.addButton(smileText,
-                skinInfoManager.skinData.textcolors_shift,
+                skinInfoManager.skinData.textcolor_shift,
                 skinInfoManager.skinData.backcolor_shift);
         smileButton.setOnTouchListener(mSmileKeyOnTouchListener);
         smileButton.itsLayoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -169,7 +173,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
 
     private void addDeleteButton(){
         deleteButton = super.addButton(res.getString(R.string.delete_text),
-                skinInfoManager.skinData.textcolors_delete,
+                skinInfoManager.skinData.textcolor_delete,
                 skinInfoManager.skinData.backcolor_delete
         );
         deleteButton.setOnTouchListener(mDeleteOnTouchListener);
@@ -230,8 +234,10 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         for (LinearLayout button:buttonList){
             button.getLayoutParams().width = keyWidth;
             button.setPadding(padding,padding,padding,padding);
-            ((TextView)button.findViewById(R.id.main_text)).getPaint().setTextSize(80 * Math.min(keyWidth, keyHeight * 7/9)/100);
-            ((TextView)button.findViewById(R.id.predict_text)).getPaint().setTextSize(80 * Math.min(keyWidth, keyHeight * 7/9)/300);
+            ((TextView)button.findViewById(R.id.main_text)).getPaint()
+                    .setTextSize(DisplayUtil.px2sp(context,Math.min(keyWidth, keyHeight * 7/9) * TEXTSIZE_RATE_MAIN));
+            ((TextView)button.findViewById(R.id.predict_text)).getPaint()
+                    .setTextSize(DisplayUtil.px2sp(context,Math.min(keyWidth, keyHeight * 7/9) * TEXTSIZE_RATE_PRE));
             ((LinearLayout)button.getParent()).updateViewLayout(button,button.getLayoutParams());
         }
         int widthKeyWidth = keyWidth * 3 / 2 - padding;
@@ -246,7 +252,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
 
         deleteButton.itsLayoutParams.width = widthKeyWidth;
         ((LinearLayout.LayoutParams)deleteButton.itsLayoutParams).setMargins(padding,padding,padding,padding);
-        deleteButton.getPaint().setTextSize(3 * Math.min(keyWidth *3/2,keyHeight)/5);
+        deleteButton.getPaint().setTextSize(DisplayUtil.px2sp(context,Math.min(keyWidth *3/2,keyHeight) * TEXTSIZE_RATE_DELETE));
         linears[2].updateViewLayout(deleteButton,deleteButton.itsLayoutParams);
     }
 
@@ -307,12 +313,12 @@ public class QKInputViewGroups extends NonScrollViewGroup {
             TextView main_text = ((TextView) button.findViewById(R.id.main_text));
             TextView predict_text = ((TextView) button.findViewById(R.id.predict_text));
 
-            main_text.setTextColor(skinInfoManager.skinData.textcolors_26keys);
+            main_text.setTextColor(skinInfoManager.skinData.textcolor_26keys);
             main_text.setShadowLayer(Global.shadowRadius, 0, 0, skinInfoManager.skinData.shadow);
             ViewsUtil.setBackgroundWithGradientDrawable(main_text, skinInfoManager.skinData.backcolor_26keys);
             //main_text.setBackgroundColor(skinInfoManager.skinData.backcolor_26keys);
             main_text.getBackground().setAlpha(Global.getCurrentAlpha());
-            predict_text.setTextColor(skinInfoManager.skinData.textcolors_26keys);
+            predict_text.setTextColor(skinInfoManager.skinData.textcolor_26keys);
             predict_text.setShadowLayer(Global.shadowRadius, 0, 0, skinInfoManager.skinData.shadow);
             //predict_text.setBackgroundColor(skinInfoManager.skinData.backcolor_26keys);
             ViewsUtil.setBackgroundWithGradientDrawable(predict_text,skinInfoManager.skinData.backcolor_26keys);
@@ -320,15 +326,15 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         }
 
         tool_updateSkin(shiftButton,
-                skinInfoManager.skinData.textcolors_shift,
+                skinInfoManager.skinData.textcolor_shift,
                 skinInfoManager.skinData.backcolor_shift
         );
         tool_updateSkin(smileButton,
-                skinInfoManager.skinData.textcolors_shift,
+                skinInfoManager.skinData.textcolor_shift,
                 skinInfoManager.skinData.backcolor_shift
         );
         tool_updateSkin(deleteButton,
-                skinInfoManager.skinData.textcolors_26keys,
+                skinInfoManager.skinData.textcolor_26keys,
                 skinInfoManager.skinData.backcolor_delete
         );
     }
@@ -407,14 +413,14 @@ public class QKInputViewGroups extends NonScrollViewGroup {
     }
 
     private View getEnKeyInflaterView(String text,String predict){
-        LayoutInflater enKeyInflater = LayoutInflater.from(softKeyboard8);
+        LayoutInflater enKeyInflater = LayoutInflater.from(softKeyboard);
         View button = enKeyInflater.inflate(R.layout.en_key, null);
         TextView main_text = (TextView) button.findViewById(R.id.main_text);
         TextView predict_text = (TextView) button.findViewById(R.id.predict_text);
         main_text.setText(InputMode.halfToFull(text));
-        main_text.setTextColor(skinInfoManager.skinData.textcolors_26keys);
+        main_text.setTextColor(skinInfoManager.skinData.textcolor_26keys);
         predict_text.setText(InputMode.halfToFull(predict));
-        predict_text.setTextColor(skinInfoManager.skinData.textcolors_26keys);
+        predict_text.setTextColor(skinInfoManager.skinData.textcolor_26keys);
         if (Global.shadowSwitch) {
             main_text.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
             predict_text.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
@@ -441,8 +447,8 @@ public class QKInputViewGroups extends NonScrollViewGroup {
     }
 
     private void onTouchEffect(View view, int action,int backgroundColor){
-        softKeyboard8.transparencyHandle.handleAlpha(action);
-        softKeyboard8.keyboardTouchEffect.onTouchEffectWithAnim(
+        softKeyboard.transparencyHandle.handleAlpha(action);
+        softKeyboard.keyboardTouchEffect.onTouchEffectWithAnim(
                 view,action,
                 skinInfoManager.skinData.backcolor_touchdown,
                 backgroundColor,
@@ -451,8 +457,8 @@ public class QKInputViewGroups extends NonScrollViewGroup {
     }
 
     private void onTouchEffectSpecial(View view,int action,int backgroundColor){
-        softKeyboard8.transparencyHandle.handleAlpha(action);
-        softKeyboard8.keyboardTouchEffect.onTouchEffectWithAnimForQK(view,action,
+        softKeyboard.transparencyHandle.handleAlpha(action);
+        softKeyboard.keyboardTouchEffect.onTouchEffectWithAnimForQK(view,action,
                 skinInfoManager.skinData.backcolor_touchdown,
                 backgroundColor,
                 context
@@ -460,22 +466,22 @@ public class QKInputViewGroups extends NonScrollViewGroup {
     }
 
     private void showSmile() {
-        softKeyboard8.quickSymbolViewGroup.setVisibility(View.GONE);
-        softKeyboard8.prefixViewGroup.setText(StringUtil.convertStringstoList(mAllSmileText));
-        softKeyboard8.prefixViewGroup.setBackgroundAlpha(Global.getCurrentAlpha());
-        softKeyboard8.prefixViewGroup.updateSkin();
-        softKeyboard8.prefixViewGroup.setVisibility(View.VISIBLE);
+        softKeyboard.quickSymbolViewGroup.setVisibility(View.GONE);
+        softKeyboard.prefixViewGroup.setText(StringUtil.convertStringstoList(mAllSmileText));
+        softKeyboard.prefixViewGroup.setBackgroundAlpha(Global.getCurrentAlpha());
+        softKeyboard.prefixViewGroup.updateSkin();
+        softKeyboard.prefixViewGroup.setVisibility(View.VISIBLE);
     }
 
     private void hideSmile() {
-        softKeyboard8.prefixViewGroup.setBackgroundColor(skinInfoManager.skinData.backcolor_prefix);
-        softKeyboard8.prefixViewGroup.setText(StringUtil.convertStringstoList(softKeyboard8.mFuncKeyboardText));
-        softKeyboard8.prefixViewGroup.setVisibility(View.GONE);
-        softKeyboard8.quickSymbolViewGroup.setVisibility(View.VISIBLE);
+        softKeyboard.prefixViewGroup.setBackgroundColor(skinInfoManager.skinData.backcolor_prefix);
+        softKeyboard.prefixViewGroup.setText(StringUtil.convertStringstoList(softKeyboard.mFuncKeyboardText));
+        softKeyboard.prefixViewGroup.setVisibility(View.GONE);
+        softKeyboard.quickSymbolViewGroup.setVisibility(View.VISIBLE);
         if (Kernel.getWordsNumber() > 0) {
-            softKeyboard8.quickSymbolViewGroup.setVisibility(View.GONE);
-            softKeyboard8.secondLayerLayout.setVisibility(View.GONE);
-            softKeyboard8.candidatesViewGroup.setVisibility(View.VISIBLE);
+            softKeyboard.quickSymbolViewGroup.setVisibility(View.GONE);
+            softKeyboard.secondLayerLayout.setVisibility(View.GONE);
+            softKeyboard.candidatesViewGroup.setVisibility(View.VISIBLE);
         }
     }
 
@@ -492,7 +498,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
             switch (motionEvent.getAction()) {
                 case MotionEvent.ACTION_CANCEL:
                 case MotionEvent.ACTION_UP:
-                    upLightView = softKeyboard8.lightViewManager.mLightView[0];
+                    upLightView = softKeyboard.lightViewManager.mLightView[0];
                     if (upLightView.isShown()) {
                         upLightView.setVisibility(View.GONE);
                         upLightView.clearAnimation();
@@ -505,27 +511,27 @@ public class QKInputViewGroups extends NonScrollViewGroup {
                             if (StringUtil.isAllLetter(commitText)) {
                                 commitText = commitText.toLowerCase();
                                 Global.redoText_single.clear();
-                                softKeyboard8.sendMsgToQKKernel(InputMode.fullToHalf(commitText));
+                                softKeyboard.sendMsgToQKKernel(InputMode.fullToHalf(commitText));
                             } else {
-                                softKeyboard8.chooseWord(0);
-                                softKeyboard8.commitText(commitText);
+                                softKeyboard.chooseWord(0);
+                                softKeyboard.commitText(commitText);
                             }
                         }
                     } else {
                         int index = buttonList.indexOf(view);
                         Global.redoText_single.clear();
-                        softKeyboard8.sendMsgToQKKernel(alphabet.substring(index,index+1));
+                        softKeyboard.sendMsgToQKKernel(alphabet.substring(index,index+1));
                     }
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    upLightView = softKeyboard8.lightViewManager.mLightView[0];
+                    upLightView = softKeyboard.lightViewManager.mLightView[0];
                     if (motionEvent.getY() >= view.getY() && upLightView.isShown()) {
                         upLightView.setVisibility(View.GONE);
                         upLightView.clearAnimation();
                         upLightView.startAnimation(AnimationUtils.loadAnimation(context,R.anim.light_top_off));
                     }
                     boolean mLightShow = false;
-                    for (View lightview :softKeyboard8.lightViewManager.mLightView){
+                    for (View lightview : softKeyboard.lightViewManager.mLightView){
                         mLightShow |= lightview.isShown();
                     }
                     if (motionEvent.getY() < view.getY() && !mLightShow) {
@@ -553,7 +559,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
                     int index = buttonList.indexOf(view);
                     String commitText = mShiftOn ? alphabetUpCase.substring(index,index+1): alphabet.substring(index,index+1);
                     if (Global.isInView(view,motionEvent)) {
-                        softKeyboard8.commitText(commitText);
+                        softKeyboard.commitText(commitText);
                     }
                     break;
             }
@@ -568,7 +574,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
      */
     private View.OnTouchListener mShiftKeyOnTouchListener = new View.OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
-            softKeyboard8.transparencyHandle.handleAlpha(event.getAction());
+            softKeyboard.transparencyHandle.handleAlpha(event.getAction());
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 mShiftOn = !mShiftOn;
                 ((Button) v).setText(mShiftOn ? shiftText[1] : shiftText[0]);
@@ -592,16 +598,16 @@ public class QKInputViewGroups extends NonScrollViewGroup {
 
     private View.OnTouchListener mSmileKeyOnTouchListener = new View.OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
-            softKeyboard8.transparencyHandle.handleAlpha(event.getAction());
+            softKeyboard.transparencyHandle.handleAlpha(event.getAction());
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     showSmile();
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    PreFixViewGroup prefixViewGroup = softKeyboard8.prefixViewGroup;
+                    PreFixViewGroup prefixViewGroup = softKeyboard.prefixViewGroup;
                     float X = event.getX();
                     float Y = event.getY();
-                    float perWidth = softKeyboard8.keyboardWidth / SMILE_KEYS_NUM;
+                    float perWidth = softKeyboard.keyboardWidth / SMILE_KEYS_NUM;
                     if (Y <= 0) {
                         prefixViewGroup.setBackgroundColor(skinInfoManager.skinData.backcolor_prefix);
                         if (0 < X && X < perWidth * SMILE_FUNC_NUM) {
@@ -616,14 +622,14 @@ public class QKInputViewGroups extends NonScrollViewGroup {
                     hideSmile();
                     float x = event.getX();
                     float y = event.getY();
-                    float perwidth = softKeyboard8.keyboardWidth / SMILE_KEYS_NUM;
-                    InputConnection ic = softKeyboard8.getCurrentInputConnection();
+                    float perwidth = softKeyboard.keyboardWidth / SMILE_KEYS_NUM;
+                    InputConnection ic = softKeyboard.getCurrentInputConnection();
                     if (y <= 0 && ic != null) {
                         x = Math.max(0,Math.min(SMILE_FUNC_NUM*perwidth-1,x));
                         int select = ((int) (x / perwidth));
                         ic.performContextMenuAction(performActions[select]);
                         if (select == 2){
-                            softKeyboard8.editPinyin("",false);
+                            softKeyboard.editPinyin("",false);
                         }
                     }
                     break;
@@ -637,43 +643,43 @@ public class QKInputViewGroups extends NonScrollViewGroup {
     private View.OnTouchListener mDeleteOnTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            softKeyboard8.transparencyHandle.handleAlpha(event.getAction());
+            softKeyboard.transparencyHandle.handleAlpha(event.getAction());
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                softKeyboard8.mHandler.sendEmptyMessageDelayed(softKeyboard8.MSG_REPEAT, softKeyboard8.REPEAT_START_DELAY);
+                softKeyboard.mHandler.sendEmptyMessageDelayed(softKeyboard.MSG_REPEAT, softKeyboard.REPEAT_START_DELAY);
             } else if (event.getAction() == MotionEvent.ACTION_MOVE && Global.slideDeleteSwitch) {
-                softKeyboard8.lightViewManager.HideLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight());
-                if (Global.LEFT == ViewsUtil.computePosition(event.getX(), event.getY(), v.getWidth(), v.getHeight()) ) {
-                    softKeyboard8.lightViewManager.ShowLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight(),"清空");
-                    softKeyboard8.mHandler.removeMessages(softKeyboard8.MSG_REPEAT);
-                } else if(Global.UP == ViewsUtil.computePosition(event.getX(), event.getY(), v.getWidth(), v.getHeight()) ){
-                    softKeyboard8.lightViewManager.ShowLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight(),"恢复");
-                    softKeyboard8.mHandler.removeMessages(softKeyboard8.MSG_REPEAT);
+                softKeyboard.lightViewManager.HideLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight());
+                if (Global.LEFT == ViewsUtil.computeDirection(event.getX(), event.getY(), v.getWidth(), v.getHeight()) ) {
+                    softKeyboard.lightViewManager.ShowLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight(),"清空");
+                    softKeyboard.mHandler.removeMessages(softKeyboard.MSG_REPEAT);
+                } else if(Global.UP == ViewsUtil.computeDirection(event.getX(), event.getY(), v.getWidth(), v.getHeight()) ){
+                    softKeyboard.lightViewManager.ShowLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight(),"恢复");
+                    softKeyboard.mHandler.removeMessages(softKeyboard.MSG_REPEAT);
                 }
             } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                softKeyboard8.mHandler.removeMessages(softKeyboard8.MSG_REPEAT);
-                softKeyboard8.lightViewManager.lightViewAnimate(v,event);
+                softKeyboard.mHandler.removeMessages(softKeyboard.MSG_REPEAT);
+                softKeyboard.lightViewManager.lightViewAnimate(v,event);
                 if (event.getX() < 0 && Global.slideDeleteSwitch) {
-                    softKeyboard8.deleteAll();
+                    softKeyboard.deleteAll();
                 } else if (event.getY() < 0) {
                     if(Global.redoTextForDeleteAll != ""){
-                        softKeyboard8.commitText(Global.redoTextForDeleteAll);
+                        softKeyboard.commitText(Global.redoTextForDeleteAll);
                         Global.redoTextForDeleteAll = "";
                     }
                     if(!Global.redoTextForDeleteAll_preedit.equals("")){
-                        softKeyboard8.sendMsgToQKKernel(Global.redoTextForDeleteAll_preedit);
+                        softKeyboard.sendMsgToQKKernel(Global.redoTextForDeleteAll_preedit);
                         Global.redoTextForDeleteAll_preedit = "";
                     } else {
                         if (Global.redoText_single.size()>0){
                             InputAction ia = Global.redoText_single.pop();
                             if (ia.Type == InputAction.TEXT_TO_KERNEL){
-                                softKeyboard8.sendMsgToQKKernel(ia.text.toString());
+                                softKeyboard.sendMsgToQKKernel(ia.text.toString());
                             } else {
-                                softKeyboard8.commitText(ia.text.toString());
+                                softKeyboard.commitText(ia.text.toString());
                             }
                         }
                     }
                 } else {
-                    softKeyboard8.deleteLast();
+                    softKeyboard.deleteLast();
                 }
             }
             onTouchEffect(v, event.getAction(), skinInfoManager.skinData.backcolor_delete);

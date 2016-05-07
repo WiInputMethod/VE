@@ -10,15 +10,17 @@ import android.view.inputmethod.InputConnection;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 import com.hit.wi.jni.Kernel;
+import com.hit.wi.util.DisplayUtil;
 import com.hit.wi.util.ViewsUtil;
 import com.hit.wi.ve.R;
 import com.hit.wi.ve.SoftKeyboard;
 import com.hit.wi.ve.values.Global;
 
 /**
- * Created by purebleusong on 2016/4/7.
+ * Created by purebluesong on 2016/4/7.
  */
 public class PreEditPopup {
+    private final float TEXTSIZE_RATE = (float) 2.3;
     private final int TEXTSIZE_RATE_BY_WIDTH = 6;
     private final float TEXTSIZE_RATE_BY_HEIGHT = (float) 0.33;
 
@@ -66,7 +68,7 @@ public class PreEditPopup {
         editText.setBackgroundResource(R.drawable.blank);
         ViewsUtil.setBackgroundWithGradientDrawable(editText, softKeyboard.skinInfoManager.skinData.backcolor_preEdit);
         //editText.setBackgroundColor(softKeyboard.skinInfoManager.skinData.backcolor_preEdit);
-        editText.setTextColor(softKeyboard.skinInfoManager.skinData.textcolors_preEdit);
+        editText.setTextColor(softKeyboard.skinInfoManager.skinData.textcolor_preEdit);
         editText.getBackground().setAlpha(Global.getCurrentAlpha());
         editText.setShadowLayer(Global.shadowRadius,0,0,softKeyboard.skinInfoManager.skinData.shadow);
     }
@@ -74,7 +76,7 @@ public class PreEditPopup {
         return container.isShowing() | editText.isShown();
     }
 
-    public void refresh(){
+    public void refreshState(){
         if(editText==null) return;
         String pinyin = Kernel.getWordsShowPinyin();
         if(pinyin.length()>0){
@@ -88,7 +90,9 @@ public class PreEditPopup {
     public void show(CharSequence text){
         editText.setText(text);
         float length = toolPaint.measureText((String) text);
-        editText.setTextSize(Math.min((float) (container.getHeight()*TEXTSIZE_RATE_BY_HEIGHT),TEXTSIZE_RATE_BY_WIDTH * container.getWidth()/length));
+        editText.setTextSize(DisplayUtil.px2sp(softKeyboard,
+                Math.min((float) (container.getHeight()*TEXTSIZE_RATE_BY_HEIGHT),TEXTSIZE_RATE_BY_WIDTH * container.getWidth()/length) * TEXTSIZE_RATE
+        ));
         if (!isShown()){
             container.showAsDropDown(softKeyboard.keyboardLayout,leftMargin,-container.getHeight()-softKeyboard.keyboardParams.height);
         }

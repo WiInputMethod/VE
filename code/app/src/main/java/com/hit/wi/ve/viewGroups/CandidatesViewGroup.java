@@ -15,6 +15,8 @@ import android.widget.ScrollView;
 
 import android.widget.TextView;
 import com.hit.wi.jni.Kernel;
+import com.hit.wi.util.DisplayUtil;
+import com.hit.wi.ve.SoftKeyboard;
 import com.hit.wi.ve.functions.QKEmojiManager;
 import com.hit.wi.ve.values.Global;
 import com.hit.wi.ve.view.QuickButton;
@@ -30,6 +32,7 @@ import java.util.List;
  */
 public class CandidatesViewGroup extends ScrolledViewGroup {
 
+    private final float TEXTSIZE_RATE = (float) 0.2;
     private final int TEXT_LENGTH_FACTOR = 4;
     private final int WORD_MAX_NUM = 300;
     private final int WORD_NUM_LAZY_LOAD = 6;
@@ -73,7 +76,7 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
 
     public void create(Context context){
         super.create(vertical,context);
-        mTextColor = softKeyboard8.skinInfoManager.skinData.textcolors_candidate_t9;
+        mTextColor = softKeyboard8.skinInfoManager.skinData.textcolor_candidate_t9;
         mBackColor = softKeyboard8.skinInfoManager.skinData.backcolor_candidate_t9;
         mQKEmojiManager = new QKEmojiManager(softKeyboard8);
         standardButtonHeight = 0;
@@ -197,7 +200,7 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
         button.itsLayoutParams = params;
         button.setLayoutParams(params);
 
-        button.setTextSize(2*Global.textsizeFactor*standardButtonHeight/8);
+        button.setTextSize(DisplayUtil.px2sp(context, Global.textsizeFactor*standardButtonHeight * TEXTSIZE_RATE));
         return button;
     }
 
@@ -211,9 +214,7 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
         button.itsLayoutParams.width = measureTextLength(text);
         if(button.itsLayoutParams.width > remainLength){
             if(remainLength > 20){
-                QuickButton fillButton = initNewButton("");
-                fillButton.setWidth(remainLength);
-                layer.addView(fillButton);
+                ((QuickButton)layer.getChildAt(layer.getChildCount()-1)).itsLayoutParams.width += remainLength;
             }
             layerPointer++;
             layer = getWorkingLayer(layerPointer);
@@ -223,7 +224,7 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
         button.setEllipsize(standardButtonWidth * CAND_DIV_NUM <= measureTextLength(text)?TextUtils.TruncateAt.END:null);
         button.getBackground().setAlpha(Global.getCurrentAlpha());
         button.setPressed(false);
-        button.setTextSize(2*Global.textsizeFactor*standardButtonHeight/8);
+        button.setTextSize(DisplayUtil.px2sp(context,2*Global.textsizeFactor*standardButtonHeight * TEXTSIZE_RATE));
         return button;
     }
 
@@ -267,10 +268,10 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
     public void updateSkin() {
         if(Global.currentKeyboard == Global.KEYBOARD_QK || Global.currentKeyboard == Global.KEYBOARD_EN){
             mBackColor = softKeyboard8.skinInfoManager.skinData.backcolor_candidate_qk;
-            mTextColor = softKeyboard8.skinInfoManager.skinData.textcolors_candidate_qk;
+            mTextColor = softKeyboard8.skinInfoManager.skinData.textcolor_candidate_qk;
         }else {
             mBackColor = softKeyboard8.skinInfoManager.skinData.backcolor_candidate_t9;
-            mTextColor = softKeyboard8.skinInfoManager.skinData.textcolors_candidate_t9;
+            mTextColor = softKeyboard8.skinInfoManager.skinData.textcolor_candidate_t9;
         }
         super.updateSkin(mTextColor,mBackColor);
     }

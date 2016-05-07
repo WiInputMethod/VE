@@ -89,21 +89,21 @@ public class SkinInfoManager {
 
         Log.i("颜色值", "" + sp.getInt("THEME_TYPE", 0));
         skinData.skinId = sp.getInt("THEME_TYPE", 0);
-        skinData.textcolors_functionKeys = sp.getInt("diy_textcolors_functionKeys", 0);
-        skinData.textcolors_quickSymbol = sp.getInt("diy_textcolors_quickSymbol", 0);
+        skinData.textcolor_functionKeys = sp.getInt("diy_textcolors_functionKeys", 0);
+        skinData.textcolor_quickSymbol = sp.getInt("diy_textcolors_quickSymbol", 0);
 
-        skinData.textcolors_delete = sp.getInt("diy_textcolors_26keys", 0);
-        skinData.textcolors_t9keys = sp.getInt("diy_textcolors_t9keys", 0);
-        skinData.textcolors_26keys = sp.getInt("diy_textcolors_26keys", 0);
-        skinData.textcolors_candidate_qk = sp.getInt("diy_textcolors_candidate", 0);
+        skinData.textcolor_delete = sp.getInt("diy_textcolors_26keys", 0);
+        skinData.textcolor_t9keys = sp.getInt("diy_textcolors_t9keys", 0);
+        skinData.textcolor_26keys = sp.getInt("diy_textcolors_26keys", 0);
+        skinData.textcolor_candidate_qk = sp.getInt("diy_textcolors_candidate", 0);
 
-        skinData.textcolors_zero = sp.getInt("diy_textcolors_bottom", 0);
-        skinData.textcolors_space = sp.getInt("diy_textcolors_bottom", 0);
-        skinData.textcolors_enter = sp.getInt("diy_textcolors_bottom", 0);
+        skinData.textcolor_zero = sp.getInt("diy_textcolors_bottom", 0);
+        skinData.textcolor_space = sp.getInt("diy_textcolors_bottom", 0);
+        skinData.textcolor_enter = sp.getInt("diy_textcolors_bottom", 0);
 
-        skinData.textcolors_candidate_t9 = sp.getInt("diy_textcolors_candidate", 0);//中文九键第二栏候选词中文字体颜色
-        skinData.textcolors_preEdit = sp.getInt("diy_textcolors_preEdit", 0);//中文输入最上方的拼音栏
-        skinData.textcolors_shift = sp.getInt("diy_textcolors_26keys", 0);
+        skinData.textcolor_candidate_t9 = sp.getInt("diy_textcolors_candidate", 0);//中文九键第二栏候选词中文字体颜色
+        skinData.textcolor_preEdit = sp.getInt("diy_textcolors_preEdit", 0);//中文输入最上方的拼音栏
+        skinData.textcolor_shift = sp.getInt("diy_textcolors_26keys", 0);
 
 
         skinData.backcolor_functionKeys = sp.getInt("diy_backcolor_functionKeys", 0);
@@ -150,21 +150,21 @@ public class SkinInfoManager {
         }
         skinData.skinId = skinId;
         int i = 0;
-        skinData.textcolors_functionKeys = textColors[i++];
-        skinData.textcolors_candidate_qk = textColors[i++];
-        skinData.textcolors_quickSymbol = textColors[i++];
+        skinData.textcolor_functionKeys = textColors[i++];
+        skinData.textcolor_candidate_qk = textColors[i++];
+        skinData.textcolor_quickSymbol = textColors[i++];
 
-        skinData.textcolors_delete = textColors[i++];
-        skinData.textcolors_t9keys = textColors[i++];
-        skinData.textcolors_26keys = textColors[i++];
+        skinData.textcolor_delete = textColors[i++];
+        skinData.textcolor_t9keys = textColors[i++];
+        skinData.textcolor_26keys = textColors[i++];
 
-        skinData.textcolors_zero = textColors[i++];
-        skinData.textcolors_space = textColors[i++];
-        skinData.textcolors_enter = textColors[i++];
+        skinData.textcolor_zero = textColors[i++];
+        skinData.textcolor_space = textColors[i++];
+        skinData.textcolor_enter = textColors[i++];
 
-        skinData.textcolors_candidate_t9 = textColors[i++];
-        skinData.textcolors_preEdit = textColors[i++];
-        skinData.textcolors_shift = textColors[i++];
+        skinData.textcolor_candidate_t9 = textColors[i++];
+        skinData.textcolor_preEdit = textColors[i++];
+        skinData.textcolor_shift = textColors[i++];
 
         i = 0;
         skinData.backcolor_functionKeys = backgroundColors[i++];
@@ -215,18 +215,18 @@ public class SkinInfoManager {
             skinData.backcolor_touchdown = dataList.get(i++);
             skinData.backcolor_zero = dataList.get(i++);
 
-            skinData.textcolors_26keys = dataList.get(i++);
-            skinData.textcolors_candidate_qk = dataList.get(i++);
-            skinData.textcolors_candidate_t9 = dataList.get(i++);
-            skinData.textcolors_delete = dataList.get(i++);
-            skinData.textcolors_enter = dataList.get(i++);
-            skinData.textcolors_functionKeys = dataList.get(i++);
-            skinData.textcolors_preEdit = dataList.get(i++);
-            skinData.textcolors_quickSymbol = dataList.get(i++);
-            skinData.textcolors_shift = dataList.get(i++);
-            skinData.textcolors_space = dataList.get(i++);
-            skinData.textcolors_t9keys = dataList.get(i++);
-            skinData.textcolors_zero = dataList.get(i++);
+            skinData.textcolor_26keys = dataList.get(i++);
+            skinData.textcolor_candidate_qk = dataList.get(i++);
+            skinData.textcolor_candidate_t9 = dataList.get(i++);
+            skinData.textcolor_delete = dataList.get(i++);
+            skinData.textcolor_enter = dataList.get(i++);
+            skinData.textcolor_functionKeys = dataList.get(i++);
+            skinData.textcolor_preEdit = dataList.get(i++);
+            skinData.textcolor_quickSymbol = dataList.get(i++);
+            skinData.textcolor_shift = dataList.get(i++);
+            skinData.textcolor_space = dataList.get(i++);
+            skinData.textcolor_t9keys = dataList.get(i++);
+            skinData.textcolor_zero = dataList.get(i++);
 
             skinData.shadow = dataList.get(i++);
 
@@ -253,18 +253,18 @@ public class SkinInfoManager {
         dataList.add(skinData.backcolor_touchdown);
         dataList.add(skinData.backcolor_zero);
 
-        dataList.add(skinData.textcolors_26keys);
-        dataList.add(skinData.textcolors_candidate_qk);
-        dataList.add(skinData.textcolors_candidate_t9);
-        dataList.add(skinData.textcolors_delete);
-        dataList.add(skinData.textcolors_enter);
-        dataList.add(skinData.textcolors_functionKeys);
-        dataList.add(skinData.textcolors_preEdit);
-        dataList.add(skinData.textcolors_quickSymbol);
-        dataList.add(skinData.textcolors_shift);
-        dataList.add(skinData.textcolors_space);
-        dataList.add(skinData.textcolors_t9keys);
-        dataList.add(skinData.textcolors_zero);
+        dataList.add(skinData.textcolor_26keys);
+        dataList.add(skinData.textcolor_candidate_qk);
+        dataList.add(skinData.textcolor_candidate_t9);
+        dataList.add(skinData.textcolor_delete);
+        dataList.add(skinData.textcolor_enter);
+        dataList.add(skinData.textcolor_functionKeys);
+        dataList.add(skinData.textcolor_preEdit);
+        dataList.add(skinData.textcolor_quickSymbol);
+        dataList.add(skinData.textcolor_shift);
+        dataList.add(skinData.textcolor_space);
+        dataList.add(skinData.textcolor_t9keys);
+        dataList.add(skinData.textcolor_zero);
 
         dataList.add(skinData.shadow);
         return dataList;

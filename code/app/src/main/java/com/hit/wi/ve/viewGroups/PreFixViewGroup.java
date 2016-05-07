@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import com.hit.wi.jni.Kernel;
+import com.hit.wi.util.DisplayUtil;
 import com.hit.wi.util.ViewsUtil;
 import com.hit.wi.util.WIMath;
 import com.hit.wi.ve.values.Global;
@@ -18,13 +19,15 @@ import java.util.List;
  * Created by Administrator on 2015/8/10.
  */
 public class PreFixViewGroup extends ScrolledViewGroup {
+    private final float TEXTSIZE_RATE = (float) 0.6;
+
     public void create(Context context) {
         super.create(super.horizontal, context);
     }
 
     public QuickButton addButtonP(String text) {
         QuickButton button = super.addButton(
-                skinInfoManager.skinData.textcolors_quickSymbol,
+                skinInfoManager.skinData.textcolor_quickSymbol,
                 skinInfoManager.skinData.backcolor_prefix,
                 text);
 
@@ -38,7 +41,7 @@ public class PreFixViewGroup extends ScrolledViewGroup {
     }
 
     private int lastState = -1;
-    public void refresh() {
+    public void refreshState() {
         int prefixnum = Kernel.getPrefixNumber();
         if(lastState == prefixnum)return;
         if (prefixnum > 1 && Global.currentKeyboard == Global.KEYBOARD_T9 && !Global.inLarge) {
@@ -71,7 +74,7 @@ public class PreFixViewGroup extends ScrolledViewGroup {
                 buttonList.add(button);
                 i++;
             }
-            button.setTextSize(2 * WIMath.min(buttonWidth, height) / 9);
+            button.setTextSize(DisplayUtil.px2sp(context,WIMath.min(buttonWidth, height) * TEXTSIZE_RATE));
             button.setText(text);
             button.setVisibility(View.VISIBLE);
         }
@@ -90,7 +93,7 @@ public class PreFixViewGroup extends ScrolledViewGroup {
 
     public void updateSkin() {
         super.updateSkin(
-                skinInfoManager.skinData.textcolors_quickSymbol,
+                skinInfoManager.skinData.textcolor_quickSymbol,
                 skinInfoManager.skinData.backcolor_prefix
         );
     }

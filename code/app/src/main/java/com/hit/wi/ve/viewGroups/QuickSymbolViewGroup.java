@@ -114,7 +114,7 @@ public class QuickSymbolViewGroup extends ScrolledViewGroup implements QuickSymb
     }
 
     public void updateSkin() {
-        super.updateSkin(skinInfoManager.skinData.textcolors_quickSymbol,
+        super.updateSkin(skinInfoManager.skinData.textcolor_quickSymbol,
                 skinInfoManager.skinData.backcolor_quickSymbol);
     }
 
@@ -169,7 +169,7 @@ public class QuickSymbolViewGroup extends ScrolledViewGroup implements QuickSymb
     }
 
     private QuickButton addButton(String text, int position) {
-        QuickButton button = super.addButton(skinInfoManager.skinData.textcolors_quickSymbol,
+        QuickButton button = super.addButton(skinInfoManager.skinData.textcolor_quickSymbol,
                 skinInfoManager.skinData.backcolor_quickSymbol,
                 text);
 

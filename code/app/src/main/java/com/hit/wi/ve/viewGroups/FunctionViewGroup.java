@@ -94,7 +94,7 @@ public class FunctionViewGroup extends NonScrollViewGroup implements ViewGroupIn
     }
 
     private QuickButton addButtonF(String text) {
-        QuickButton button = super.addButton(text,skinInfoManager.skinData.textcolors_functionKeys,skinInfoManager.skinData.backcolor_functionKeys);
+        QuickButton button = super.addButton(text,skinInfoManager.skinData.textcolor_functionKeys,skinInfoManager.skinData.backcolor_functionKeys);
 
         button.setBackgroundResource(R.drawable.middle_button);
         button.setId(Global.generateViewId());
@@ -172,8 +172,8 @@ public class FunctionViewGroup extends NonScrollViewGroup implements ViewGroupIn
     }
 
     private void onTouchEffect(View view, int action) {
-        softKeyboard8.transparencyHandle.handleAlpha(action);
-        softKeyboard8.keyboardTouchEffect.onTouchEffectWithAnim(view, action,
+        softKeyboard.transparencyHandle.handleAlpha(action);
+        softKeyboard.keyboardTouchEffect.onTouchEffectWithAnim(view, action,
                 skinInfoManager.skinData.backcolor_touchdown,
                 skinInfoManager.skinData.backcolor_functionKeys,
                 context
@@ -188,28 +188,28 @@ public class FunctionViewGroup extends NonScrollViewGroup implements ViewGroupIn
                 case MotionEvent.ACTION_DOWN:
                     lastTouchPoint.x = (int) motionEvent.getRawX();
                     lastTouchPoint.y = (int) motionEvent.getRawY();
-                    softKeyboard8.viewManagerC.addSetKeyboardSizeView(SetKeyboardSizeView.SettingType.QuickSetMode);
+                    softKeyboard.viewManagerC.addSetKeyboardSizeView(SetKeyboardSizeView.SettingType.QuickSetMode);
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    softKeyboard8.mSetKeyboardSizeView.UpdateSize(
+                    softKeyboard.mSetKeyboardSizeView.UpdateSize(
                             motionEvent.getRawX() - lastTouchPoint.x,
                             motionEvent.getRawY() - lastTouchPoint.y
                     );
-//                    softKeyboard8.mSetKeyboardSizeView.requestUpdateSize();
+//                    softKeyboard.mSetKeyboardSizeView.requestUpdateSize();
 //                    lastTouchPoint.x = (int) motionEvent.getRawX();
 //                    lastTouchPoint.y = (int) motionEvent.getRawY();
                     break;
                 case MotionEvent.ACTION_UP:
                     if (Global.isInView(view,motionEvent)) {
-                        softKeyboard8.mSetKeyboardSizeParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+                        softKeyboard.mSetKeyboardSizeParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
                         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-                        wm.updateViewLayout(softKeyboard8.mSetKeyboardSizeView, softKeyboard8.mSetKeyboardSizeParams);
-                        softKeyboard8.mSetKeyboardSizeView.SetSettingType(SetKeyboardSizeView.SettingType.FullSetMode);
-                        softKeyboard8.mSetKeyboardSizeView.invalidate();
+                        wm.updateViewLayout(softKeyboard.mSetKeyboardSizeView, softKeyboard.mSetKeyboardSizeParams);
+                        softKeyboard.mSetKeyboardSizeView.SetSettingType(SetKeyboardSizeView.SettingType.FullSetMode);
+                        softKeyboard.mSetKeyboardSizeView.invalidate();
                     } else {
-                        softKeyboard8.mSetKeyboardSizeView.requestUpdateSize();
-                        softKeyboard8.mOnSizeChangeListener.onFinishSetting();
-                        softKeyboard8.updateWindowManager();
+                        softKeyboard.mSetKeyboardSizeView.requestUpdateSize();
+                        softKeyboard.mOnSizeChangeListener.onFinishSetting();
+                        softKeyboard.updateWindowManager();
                     }
                     break;
             }
@@ -225,17 +225,17 @@ public class FunctionViewGroup extends NonScrollViewGroup implements ViewGroupIn
                 case MotionEvent.ACTION_DOWN:
                     lastTouchPoint.x = (int) motionEvent.getRawX();
                     lastTouchPoint.y = (int) motionEvent.getRawY();
-                    softKeyboard8.updateSetKeyboardSizeViewPos();
+                    softKeyboard.updateSetKeyboardSizeViewPos();
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    softKeyboard8.mSetKeyboardSizeView.UpdatePos(
+                    softKeyboard.mSetKeyboardSizeView.UpdatePos(
                             motionEvent.getRawX() - lastTouchPoint.x,
                             motionEvent.getRawY() - lastTouchPoint.y
                     );
-                    softKeyboard8.mSetKeyboardSizeView.requestUpdatePos();
+                    softKeyboard.mSetKeyboardSizeView.requestUpdatePos();
                     break;
                 case MotionEvent.ACTION_UP:
-                    softKeyboard8.screenInfoC.WriteKeyboardSizeInfoToSharedPreference();
+                    softKeyboard.screenInfoC.WriteKeyboardSizeInfoToSharedPreference();
                     break;
             }
 
@@ -257,17 +257,17 @@ public class FunctionViewGroup extends NonScrollViewGroup implements ViewGroupIn
                 context.startActivity(intent);
             } else if (motionEvent.getAction() == MotionEvent.ACTION_MOVE && !Global.isInView(view, motionEvent)) {
                 if (motionEvent.getY()<0 || motionEvent.getY()> view.getHeight()){
-                    float textsizeFactorDelta = (lastTouchY - motionEvent.getY() ) / (2 * softKeyboard8.keyboardParams.height);
+                    float textsizeFactorDelta = (lastTouchY - motionEvent.getY() ) / (2 * softKeyboard.keyboardParams.height);
                     lastTouchY = motionEvent.getY();
                     Global.textsizeFactor +=  textsizeFactorDelta;
                     Global.textsizeFactor = Math.max(0f, Math.min(Global.textsizeFactor, 2f));
                 } else{
-                    float inputViewBackgroundAlphaDelta = (motionEvent.getX() - lastTouchX) / softKeyboard8.keyboardParams.width;
+                    float inputViewBackgroundAlphaDelta = (motionEvent.getX() - lastTouchX) / softKeyboard.keyboardParams.width;
                     lastTouchX = motionEvent.getX();
                     inputViewBackgroundAlpha += inputViewBackgroundAlphaDelta;
                     Global.keyboardViewBackgroundAlpha = Math.max(0f, Math.min(inputViewBackgroundAlpha, 1f));
-                    if (softKeyboard8.keyboardLayout.getBackground()!=null)
-                        softKeyboard8.keyboardLayout.getBackground().setAlpha((int) (Global.keyboardViewBackgroundAlpha *255));
+                    if (softKeyboard.keyboardLayout.getBackground()!=null)
+                        softKeyboard.keyboardLayout.getBackground().setAlpha((int) (Global.keyboardViewBackgroundAlpha *255));
                 }
             } else if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                 lastTouchX = 0;
@@ -298,7 +298,7 @@ public class FunctionViewGroup extends NonScrollViewGroup implements ViewGroupIn
                         mVerticalSeekBar.setProgress(tmp);
                         Global.mCurrentAlpha = ((float) tmp - (float) mVerticalSeekBar.getMax() / 2) / ((float) mVerticalSeekBar.getMax()) + mLastAlpha;
                         Global.mCurrentAlpha = Math.max(0f, Math.min(1f, Global.mCurrentAlpha));
-                        softKeyboard8.transparencyHandle.setKeyBoardAlpha(Global.getCurrentAlpha());
+                        softKeyboard.transparencyHandle.setKeyBoardAlpha(Global.getCurrentAlpha());
                     }
                     break;
                 case MotionEvent.ACTION_UP:
@@ -319,7 +319,7 @@ public class FunctionViewGroup extends NonScrollViewGroup implements ViewGroupIn
         public boolean onTouch(View view, MotionEvent motionEvent) {
             onTouchEffect(view, motionEvent.getAction());
             if (motionEvent.getAction() == MotionEvent.ACTION_UP && Global.isInView(view, motionEvent)) {
-                softKeyboard8.requestHideSelf(0);
+                softKeyboard.requestHideSelf(0);
             }
             return false;
         }
@@ -327,7 +327,7 @@ public class FunctionViewGroup extends NonScrollViewGroup implements ViewGroupIn
 
     @Override
     public void updateSkin() {
-        setTextColor(skinInfoManager.skinData.textcolors_functionKeys);
+        setTextColor(skinInfoManager.skinData.textcolor_functionKeys);
         setBackgroundColor(skinInfoManager.skinData.backcolor_functionKeys);
         setBackgroundAlpha(Global.getCurrentAlpha());
     }
