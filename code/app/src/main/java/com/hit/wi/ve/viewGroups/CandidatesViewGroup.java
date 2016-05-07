@@ -16,7 +16,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import com.hit.wi.jni.Kernel;
 import com.hit.wi.util.DisplayUtil;
-import com.hit.wi.ve.SoftKeyboard;
 import com.hit.wi.ve.functions.QKEmojiManager;
 import com.hit.wi.ve.values.Global;
 import com.hit.wi.ve.view.QuickButton;

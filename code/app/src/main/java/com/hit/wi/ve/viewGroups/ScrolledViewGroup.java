@@ -272,7 +272,7 @@ public class ScrolledViewGroup extends myViewGroup {
             }
     }
 
-    protected QuickButton addButton(String text) {
+    protected QuickButton createButton(String text) {
         QuickButton button = new QuickButton(context);
 
         button.setSingleLine();
@@ -290,7 +290,7 @@ public class ScrolledViewGroup extends myViewGroup {
 
 
     protected QuickButton addButton(int textColor, int backgroundColor, String text) {
-        QuickButton button = addButton(text);
+        QuickButton button = createButton(text);
         button.setTextColor(textColor);
         ViewsUtil.setBackgroundWithGradientDrawable(button,backgroundColor);
         button.getBackground().setAlpha(Global.getCurrentAlpha());

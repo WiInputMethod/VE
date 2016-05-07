@@ -25,28 +25,28 @@ public class PreFixViewGroup extends ScrolledViewGroup {
         super.create(super.horizontal, context);
     }
 
-    public QuickButton addButtonP(String text) {
+    public QuickButton addButton(String text) {
         QuickButton button = super.addButton(
                 skinInfoManager.skinData.textcolor_quickSymbol,
                 skinInfoManager.skinData.backcolor_prefix,
                 text);
 
-        LinearLayout.LayoutParams buttonparams = new LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        buttonparams.leftMargin = buttonpadding;
-        button.itsLayoutParams = buttonparams;
+        params.leftMargin = buttonpadding;
+        button.itsLayoutParams = params;
 
-        layoutforWrapButtons.addView(button, buttonparams);
+        layoutforWrapButtons.addView(button, params);
         return button;
     }
 
     private int lastState = -1;
     public void refreshState() {
-        int prefixnum = Kernel.getPrefixNumber();
-        if(lastState == prefixnum)return;
-        if (prefixnum > 1 && Global.currentKeyboard == Global.KEYBOARD_T9 && !Global.inLarge) {
+        int prefixNumber = Kernel.getPrefixNumber();
+        if(lastState == prefixNumber)return;
+        if (prefixNumber > 1 && Global.currentKeyboard == Global.KEYBOARD_T9 && !Global.inLarge) {
             List<String> texts = new ArrayList<>();
-            for (int i = prefixnum - 1; i > 0; i--) {
+            for (int i = prefixNumber - 1; i > 0; i--) {
                 texts.add(Kernel.getPrefix(i));
             }
             setText(texts);
@@ -57,7 +57,7 @@ public class PreFixViewGroup extends ScrolledViewGroup {
             softKeyboard8.quickSymbolViewGroup.setVisibility(View.VISIBLE);
             setVisibility(View.GONE);
         }
-        lastState = prefixnum;
+        lastState = prefixNumber;
     }
 
 
@@ -69,12 +69,15 @@ public class PreFixViewGroup extends ScrolledViewGroup {
             if (i < buttonList.size()) {
                 button = buttonList.get(i++);
             } else {
-                button = addButtonP(text);
+                button = addButton(text);
                 button.setOnTouchListener(prefixOnTouchListener);
                 buttonList.add(button);
                 i++;
             }
-            button.setTextSize(DisplayUtil.px2sp(context,WIMath.min(buttonWidth, height) * TEXTSIZE_RATE));
+            int textsizeJudge;
+            if (WIMath.min(buttonWidth, height) <= 0)textsizeJudge = buttonWidth==0?height:buttonWidth;
+            else textsizeJudge = WIMath.min(buttonWidth, height);
+            button.setTextSize(DisplayUtil.px2sp(context,textsizeJudge * TEXTSIZE_RATE));
             button.setText(text);
             button.setVisibility(View.VISIBLE);
         }
@@ -96,10 +99,6 @@ public class PreFixViewGroup extends ScrolledViewGroup {
                 skinInfoManager.skinData.textcolor_quickSymbol,
                 skinInfoManager.skinData.backcolor_prefix
         );
-    }
-
-    public int getChildnum() {
-        return buttonList.size();
     }
 
     private View.OnTouchListener prefixOnTouchListener = new View.OnTouchListener() {

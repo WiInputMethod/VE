@@ -305,6 +305,8 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
                             updateSkin();
                         } else if (isSwitchState) {
                             refreshState();
+                        } else {
+                            setBackgroundAlpha(Global.getCurrentAlpha());
                         }
                         break;
                 }
