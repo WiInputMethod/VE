@@ -45,7 +45,9 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
 
     private String spaceText;
     private Context mContext;
+
     List<QuickButton> keyboardButtons = new ArrayList<>();//不能用数组，数组会复制每个对象，而不是引用
+    List<QuickButton> allButtons ;
 
 
     private final String text_return = "返回";
@@ -99,6 +101,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         buttonList.add(keyboardButtonNum);
         buttonList.add(keyboardButtonT9);
 
+        allButtons = new ArrayList<>(buttonList);
         keyboardButtons.add(keyboardButtonQK);
         keyboardButtons.add(keyboardButtonEn);
         keyboardButtons.add(keyboardButtonNum);
@@ -139,36 +142,33 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         receiveButtonToPosition(button, buttonList.size());
     }
 
-    private int getShowNum() {
-        int num = 0;
-        for (QuickButton button:buttonList) {
-            num += button.isShown()?1:0;
-        }
-        return num;
+    private void moveButtonToPosition(QuickButton button,int position) {
+        viewGroupWrapper.removeView(button);
+        viewGroupWrapper.addView(button,position,button.itsLayoutParams);
+        buttonList.remove(button);
+        buttonList.add(position,button);
     }
 
     public void intoReturnState () {
-        removeButton(switchKeyboardButton);
-        if (buttonList.size()>3)
-            removeButton(buttonList.get(3));
-        receiveButtonToTail(returnButton);
-        ((LinearLayout.LayoutParams)returnButton.itsLayoutParams).leftMargin = padding;
-        setButtonWidthByRate(res.getIntArray(R.array.BOTTOMBAR_RETURN_WIDTH));
-        returnButton.getBackground().setAlpha(Global.getCurrentAlpha());
+        setShownButton(expressionButton,spaceButton,enterButton,returnButton);
     }
 
     public void backReturnState () {
-        removeButton(returnButton);
-        receiveButtonToPosition(switchKeyboardButton,0);
-        setButtonWidthByRate(res.getIntArray(R.array.BOTTOMBAR_KEY_WIDTH));
+        refreshState();
     }
 
     public void setShownButton(QuickButton... buttons) {
-        setVisibility(View.GONE);
-        viewGroupWrapper.setVisibility(View.VISIBLE);
-        for (QuickButton button :buttons) {
-            button.setVisibility(View.VISIBLE);
+        for (QuickButton button:allButtons){
+            button.setVisibility(View.GONE);
         }
+        buttonList.clear();
+        for (int i=0;i<buttons.length;i++) {
+            buttonList.add(buttons[i]);
+            if (viewGroupWrapper.getChildAt(i) != buttons[i]){
+                moveButtonToPosition(buttons[i],i);
+            }
+        }
+        setVisibility(View.VISIBLE);
     }
 
     private void writeKeyboardToSharedPreference(int keyboard) {
@@ -202,7 +202,6 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
                     setButtonWidthByRate(res.getIntArray(R.array.BOTTOMBAR_KEY_WIDTH));
                     break;
                 case Global.KEYBOARD_NUM:
-//                    ((LinearLayout.LayoutParams) zeroButton.itsLayoutParams).leftMargin = padding;//special, i dont know why, but dont delete it
                     setShownButton(switchKeyboardButton,zeroButton,spaceButton);
                     setButtonWidthByRate(res.getIntArray(R.array.BOTTOMBAR_NUM_KEY_WIDTH));
                     break;
