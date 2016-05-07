@@ -32,6 +32,7 @@ import java.util.List;
  */
 public class CandidatesViewGroup extends ScrolledViewGroup {
 
+    private final float TEXTSIZE_RATE = (float) 0.2;
     private final int TEXT_LENGTH_FACTOR = 4;
     private final int WORD_MAX_NUM = 300;
     private final int WORD_NUM_LAZY_LOAD = 6;
@@ -225,7 +226,7 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
         button.setEllipsize(standardButtonWidth * CAND_DIV_NUM <= measureTextLength(text)?TextUtils.TruncateAt.END:null);
         button.getBackground().setAlpha(Global.getCurrentAlpha());
         button.setPressed(false);
-        button.setTextSize(DisplayUtil.px2sp(context,2*Global.textsizeFactor*standardButtonHeight/8));
+        button.setTextSize(DisplayUtil.px2sp(context,2*Global.textsizeFactor*standardButtonHeight * TEXTSIZE_RATE));
         return button;
     }
 

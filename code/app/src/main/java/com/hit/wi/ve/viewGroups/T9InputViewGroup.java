@@ -20,6 +20,7 @@ import com.hit.wi.ve.view.QuickButton;
  */
 public class T9InputViewGroup extends NonScrollViewGroup {
 
+    private final float TEXTSIZE_RATE = (float) 0.7;
     private final float BUTTON_WIDTH_RATE = (float) 0.328;
 
     /**
@@ -217,7 +218,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
             button.itsLayoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT;
             ((LinearLayout.LayoutParams)button.itsLayoutParams).leftMargin = margin;
             ((LinearLayout.LayoutParams)button.itsLayoutParams).rightMargin = margin;
-            button.getPaint().setTextSize(DisplayUtil.px2sp(context,30 * Math.min(keyboardWidth / 3 - horGap,height/LAYER_NUM - 2*horGap/3) / 100));
+            button.getPaint().setTextSize(DisplayUtil.px2sp(context, Math.min(keyboardWidth / 3 - horGap,height/LAYER_NUM - 2*horGap/3) * TEXTSIZE_RATE));
         }
 
         ((LinearLayout.LayoutParams)deleteButton.itsLayoutParams).leftMargin = horGap;

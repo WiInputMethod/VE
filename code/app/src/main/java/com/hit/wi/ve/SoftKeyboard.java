@@ -934,9 +934,13 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
      * 整合所有view大小和位置更新方法到一个内部类中
      */
     public class ViewSizeUpdateC {
+        private final float TEXTSIZE_RATE_CANDIDATE = (float) 0.4;
+        private final float TEXTSIZE_RATE_BOTTOM = (float) 0.8;
+        private final float TEXTSIZE_RATE_FUNCTION = (float) 0.8;
+        private final float TEXTSIZE_RATE_T9 = (float) 0.8;
+        private final float TEXTSIZE_RATE_QUICKSYMBOL = (float) 0.8;
         private final int PREFIX_WIDTH_RATE = 44;
         private final double PREEDIT_HEIGHT_RATE = 0.5;
-        private final double TEXTSIZE_RATE = 0.4;
         private final int HOR_GAP_NUM = 2;
         private final int BUTTON_SHOW_NUM = 6;
 
@@ -959,7 +963,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                     standardHorizontalGapDistance);
         }
 
-        private void UpdateEnglishKeyboardSize() {
+        private void UpdateQKSize() {
             qkInputViewGroups.setPosition(0, 0);
             qkInputViewGroups.setSize(keyboardWidth, keyboardHeight * layerHeightRate[2] / 100,standardHorizontalGapDistance);
             qkInputViewGroups.updateViewLayout();
@@ -972,7 +976,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             quickSymbolViewGroup.setPosition(0, 0);
             quickSymbolViewGroup.setButtonPadding(standardHorizontalGapDistance);
             quickSymbolViewGroup.setButtonWidth(buttonWidth);
-            float textSize = DisplayUtil.px2sp(SoftKeyboard.this,(float) (Math.min(buttonWidth, height) * TEXTSIZE_RATE));
+            float textSize = DisplayUtil.px2sp(SoftKeyboard.this,(float) (Math.min(buttonWidth, height) * TEXTSIZE_RATE_QUICKSYMBOL));
             quickSymbolViewGroup.setTextSize(textSize);
             if (t9InputViewGroup.deleteButton.isShown() && largeCandidateButton.isShown()) {
                 quickSymbolViewGroup.setSize(keyboardWidth * PREFIX_WIDTH_RATE / 100, height);
@@ -988,13 +992,13 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             int height = keyboardHeight * layerHeightRate[1] / 100;
             specialSymbolChooseViewGroup.updateSize(keyboardWidth * res.getInteger(R.integer.PREEDIT_WIDTH) / 100, height);
             specialSymbolChooseViewGroup.setPosition(0, 0);
-            specialSymbolChooseViewGroup.setTextSize(DisplayUtil.px2sp(SoftKeyboard.this,(float) (TEXTSIZE_RATE * height)));
+            specialSymbolChooseViewGroup.setTextSize(DisplayUtil.px2sp(SoftKeyboard.this,(float) (TEXTSIZE_RATE_QUICKSYMBOL * height)));
         }
 
         private void UpdateT9Size() {
             t9InputViewGroup.setSize(keyboardWidth, mGGParams.height, standardHorizontalGapDistance);
             t9InputViewGroup.deleteButton.getPaint().setTextSize(DisplayUtil.px2sp(SoftKeyboard.this,
-                    3 * Math.min(t9InputViewGroup.deleteButton.itsLayoutParams.width, layerHeightRate[1] * keyboardHeight / 100) / 5
+                     Math.min(t9InputViewGroup.deleteButton.itsLayoutParams.width, layerHeightRate[1] * keyboardHeight / 100) * TEXTSIZE_RATE_T9
             ));
             keyboardLayout.updateViewLayout(mInputViewGG, mGGParams);
         }
@@ -1012,7 +1016,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             functionViewGroup.updatesize(keyboardWidth, height);
             functionViewGroup.setButtonPadding(standardHorizontalGapDistance);
             functionViewGroup.setButtonWidth(buttonwidth);
-            functionViewGroup.setTextSize(DisplayUtil.px2sp(SoftKeyboard.this,50 * Math.min(buttonwidth, height) / 100));
+            functionViewGroup.setTextSize(DisplayUtil.px2sp(SoftKeyboard.this,Math.min(buttonwidth, height) * TEXTSIZE_RATE_FUNCTION));
         }
 
         public void UpdateCandidateSize() {
@@ -1030,7 +1034,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             } else {
                 bottomBarViewGroup.setButtonWidthByRate(res.getIntArray(R.array.BOTTOMBAR_KEY_WIDTH));
             }
-            bottomBarViewGroup.setTextSize(DisplayUtil.px2sp(SoftKeyboard.this,((keyboardHeight*layerHeightRate[3]) / 100) /4));
+            bottomBarViewGroup.setTextSize(DisplayUtil.px2sp(SoftKeyboard.this,((keyboardHeight*layerHeightRate[3]) / 100) * TEXTSIZE_RATE_BOTTOM));
             bottomBarViewGroup.updateViewLayout();
         }
 
@@ -1040,7 +1044,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             ((LinearLayout.LayoutParams) largeCandidateButton.itsLayoutParams).leftMargin = standardHorizontalGapDistance;
 
             largeCandidateButton.getPaint().setTextSize(DisplayUtil.px2sp(SoftKeyboard.this,
-                    Math.min(3 * Math.min(secondParams.height, (100 - res.getInteger(R.integer.PREEDIT_WIDTH)) * keyboardWidth / 100) / 5, 30)
+                    Math.min(3 * Math.min(secondParams.height, (100 - res.getInteger(R.integer.PREEDIT_WIDTH)) * keyboardWidth / 100) * TEXTSIZE_RATE_CANDIDATE, 30)
             ));
         }
 
@@ -1058,7 +1062,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             UpdateT9Size();
             UpdateCandidateSize();
             UpdatePreEditSize();
-            UpdateEnglishKeyboardSize();
+            UpdateQKSize();
             UpdatePrefixSize();
             UpdateFunctionsSize();
             UpdateLargeCandidateSize();

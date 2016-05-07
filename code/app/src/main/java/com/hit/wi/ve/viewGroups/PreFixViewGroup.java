@@ -19,6 +19,8 @@ import java.util.List;
  * Created by Administrator on 2015/8/10.
  */
 public class PreFixViewGroup extends ScrolledViewGroup {
+    private final float TEXTSIZE_RATE = (float) 0.6;
+
     public void create(Context context) {
         super.create(super.horizontal, context);
     }
@@ -72,7 +74,7 @@ public class PreFixViewGroup extends ScrolledViewGroup {
                 buttonList.add(button);
                 i++;
             }
-            button.setTextSize(DisplayUtil.px2sp(context,2 * WIMath.min(buttonWidth, height) / 9));
+            button.setTextSize(DisplayUtil.px2sp(context,WIMath.min(buttonWidth, height) * TEXTSIZE_RATE));
             button.setText(text);
             button.setVisibility(View.VISIBLE);
         }

@@ -17,9 +17,10 @@ import com.hit.wi.ve.SoftKeyboard;
 import com.hit.wi.ve.values.Global;
 
 /**
- * Created by purebleusong on 2016/4/7.
+ * Created by purebluesong on 2016/4/7.
  */
 public class PreEditPopup {
+    private final float TEXTSIZE_RATE = (float) 2.3;
     private final int TEXTSIZE_RATE_BY_WIDTH = 6;
     private final float TEXTSIZE_RATE_BY_HEIGHT = (float) 0.33;
 
@@ -90,7 +91,7 @@ public class PreEditPopup {
         editText.setText(text);
         float length = toolPaint.measureText((String) text);
         editText.setTextSize(DisplayUtil.px2sp(softKeyboard,
-                Math.min((float) (container.getHeight()*TEXTSIZE_RATE_BY_HEIGHT),TEXTSIZE_RATE_BY_WIDTH * container.getWidth()/length)
+                Math.min((float) (container.getHeight()*TEXTSIZE_RATE_BY_HEIGHT),TEXTSIZE_RATE_BY_WIDTH * container.getWidth()/length) * TEXTSIZE_RATE
         ));
         if (!isShown()){
             container.showAsDropDown(softKeyboard.keyboardLayout,leftMargin,-container.getHeight()-softKeyboard.keyboardParams.height);
