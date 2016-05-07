@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -27,7 +26,7 @@ public class NonScrollViewGroup extends myViewGroup {
     protected Resources res;
     public LinearLayout viewGroupWrapper;
     public LinearLayout.LayoutParams paramsForViewGroup;
-    protected SoftKeyboard softKeyboard8;
+    protected SoftKeyboard softKeyboard;
 
     int padding = 0;
 
@@ -245,11 +244,11 @@ public class NonScrollViewGroup extends myViewGroup {
 
 
     public void setSoftKeyboard(SoftKeyboard softKeyboard) {
-        softKeyboard8 = softKeyboard;
+        this.softKeyboard = softKeyboard;
     }
 
 
-    public QuickButton addButton(String text) {
+    public QuickButton addNewButton(String text) {
         QuickButton button = new QuickButton(context);
 
         button.setBackgroundResource(R.drawable.button_back_x);
@@ -272,7 +271,7 @@ public class NonScrollViewGroup extends myViewGroup {
     }
 
     public QuickButton addButton(String text,int textColor,int backgroundColor) {
-        QuickButton button = this.addButton(text);
+        QuickButton button = this.addNewButton(text);
 
         button.setBackgroundResource(R.drawable.middle_button);
         button.setTextColor(textColor);

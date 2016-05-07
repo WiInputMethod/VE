@@ -1,7 +1,6 @@
 package com.hit.wi.ve.viewGroups;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -131,18 +130,18 @@ public class T9InputViewGroup extends NonScrollViewGroup {
 
     private void addDeleteButton(){
         deleteButton = super.addButton(res.getString(R.string.delete_text),
-                skinInfoManager.skinData.textcolors_delete,
+                skinInfoManager.skinData.textcolor_delete,
                 skinInfoManager.skinData.backcolor_delete);
-        deleteButton.setTypeface(softKeyboard8.mTypeface);
+        deleteButton.setTypeface(softKeyboard.mTypeface);
         LinearLayout.LayoutParams deleteParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         deleteButton.itsLayoutParams = deleteParams;
-        softKeyboard8.secondLayerLayout.addView(deleteButton, deleteParams);
+        softKeyboard.secondLayerLayout.addView(deleteButton, deleteParams);
         deleteButton.setOnTouchListener(mDeleteOnTouchListener);
     }
 
     private QuickButton addButtonT(String text){
         QuickButton button = super.addButton(text,
-                skinInfoManager.skinData.textcolors_delete,
+                skinInfoManager.skinData.textcolor_delete,
                 skinInfoManager.skinData.backcolor_delete);
         button.setOnTouchListener(mInputViewOnTouchListener);
         button.itsLayoutParams = new LinearLayout.LayoutParams(0,0);
@@ -151,13 +150,13 @@ public class T9InputViewGroup extends NonScrollViewGroup {
 
     public void updateSkin(){
         for(QuickButton button:buttonList){
-            button.setTextColor(skinInfoManager.skinData.textcolors_t9keys);
+            button.setTextColor(skinInfoManager.skinData.textcolor_t9keys);
             ViewsUtil.setBackgroundWithGradientDrawable(button, skinInfoManager.skinData.backcolor_t9keys);
             button.getBackground().setAlpha(Global.getCurrentAlpha());
             button.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
         }
 
-        deleteButton.setTextColor(skinInfoManager.skinData.textcolors_delete);
+        deleteButton.setTextColor(skinInfoManager.skinData.textcolor_delete);
         ViewsUtil.setBackgroundWithGradientDrawable(deleteButton,skinInfoManager.skinData.backcolor_delete);
         deleteButton.getBackground().setAlpha(Global.getCurrentAlpha());
         deleteButton.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
@@ -339,9 +338,9 @@ public class T9InputViewGroup extends NonScrollViewGroup {
      * @param sendKeyList 要向内核传递的字符
      */
     private void switchSymbolToFunc(String[] text, String[] sendKeyList) {
-        softKeyboard8.quickSymbolViewGroup.hide();
-        softKeyboard8.specialSymbolChooseViewGroup.show();
-        softKeyboard8.specialSymbolChooseViewGroup.setFlagTextandKeys(text, sendKeyList);
+        softKeyboard.quickSymbolViewGroup.hide();
+        softKeyboard.specialSymbolChooseViewGroup.show();
+        softKeyboard.specialSymbolChooseViewGroup.setFlagTextandKeys(text, sendKeyList);
     }
 
     /**
@@ -349,12 +348,12 @@ public class T9InputViewGroup extends NonScrollViewGroup {
      * 调用时机：切换键盘或者按下除“其他”或者“emoji时”调用
      */
     private void switchBackFunc() {
-        softKeyboard8.quickSymbolViewGroup.setVisibility(View.VISIBLE);
-        softKeyboard8.specialSymbolChooseViewGroup.hide();
+        softKeyboard.quickSymbolViewGroup.setVisibility(View.VISIBLE);
+        softKeyboard.specialSymbolChooseViewGroup.hide();
     }
 
     private void onTouchEffectWithAnim(View v,int action,int backcolor){
-        softKeyboard8.keyboardTouchEffect.onTouchEffectWithAnim(v,action,
+        softKeyboard.keyboardTouchEffect.onTouchEffectWithAnim(v,action,
                 skinInfoManager.skinData.backcolor_touchdown,
                 backcolor,
                 context);
@@ -366,9 +365,9 @@ public class T9InputViewGroup extends NonScrollViewGroup {
      */
     private View.OnTouchListener mNumKeyboardOnTouchListener = new View.OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
-            softKeyboard8.transparencyHandle.handleAlpha(event.getAction());
+            softKeyboard.transparencyHandle.handleAlpha(event.getAction());
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                softKeyboard8.commitText(((QuickButton)v).getText());
+                softKeyboard.commitText(((QuickButton)v).getText());
             }
             onTouchEffectWithAnim(v, event.getAction(),skinInfoManager.skinData.backcolor_t9keys);
             return true;
@@ -383,22 +382,22 @@ public class T9InputViewGroup extends NonScrollViewGroup {
     private View.OnTouchListener mSymbolKeyOnTouchListener = new View.OnTouchListener() {
 
         public boolean onTouch(View v, MotionEvent event) {
-            softKeyboard8.transparencyHandle.handleAlpha(event.getAction());
+            softKeyboard.transparencyHandle.handleAlpha(event.getAction());
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 Kernel.cleanKernel();
                 int index = buttonList.indexOf(v);
                 if (buttonList.indexOf(v) == KEY_OTHER_INDEX) {
                     switchSymbolToFunc(mOtherSymbolTypeList, mOtherSymbolTypeSendKeyList);
-                    softKeyboard8.candidatesViewGroup.displayCandidates(Global.SYMBOL, StringUtil.convertStringstoList(softKeyboard8.symbolsManager.SPECIAL),100);
+                    softKeyboard.candidatesViewGroup.displayCandidates(Global.SYMBOL, StringUtil.convertStringstoList(softKeyboard.symbolsManager.SPECIAL),100);
                 } else if (index == 6){
-                    softKeyboard8.candidatesViewGroup.displayCandidates(Global.SYMBOL, StringUtil.convertStringstoList(softKeyboard8.symbolsManager.NUMBER),100);
-                    softKeyboard8.refreshDisplay(true);
+                    softKeyboard.candidatesViewGroup.displayCandidates(Global.SYMBOL, StringUtil.convertStringstoList(softKeyboard.symbolsManager.NUMBER),100);
+                    softKeyboard.refreshDisplay(true);
                 } else if (index == 7){
-                    softKeyboard8.candidatesViewGroup.displayCandidates(Global.SYMBOL, StringUtil.convertStringstoList(softKeyboard8.symbolsManager.MATH),100);
-                    softKeyboard8.refreshDisplay(true);
+                    softKeyboard.candidatesViewGroup.displayCandidates(Global.SYMBOL, StringUtil.convertStringstoList(softKeyboard.symbolsManager.MATH),100);
+                    softKeyboard.refreshDisplay(true);
                 } else {
                     switchBackFunc();
-                    softKeyboard8.sendMsgToKernel("'"+mSymbolKeySendText[index]);
+                    softKeyboard.sendMsgToKernel("'"+mSymbolKeySendText[index]);
                 }
             }
             onTouchEffectWithAnim(v, event.getAction(),skinInfoManager.skinData.backcolor_t9keys);
@@ -412,7 +411,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
      */
     private View.OnTouchListener mInputViewOnTouchListener = new View.OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
-            softKeyboard8.transparencyHandle.handleAlpha(event.getAction());
+            softKeyboard.transparencyHandle.handleAlpha(event.getAction());
             String text = "";
             int buttonIndex = buttonList.indexOf(v);
             if (buttonList.size() <= mSlideText.length) {
@@ -420,37 +419,37 @@ public class T9InputViewGroup extends NonScrollViewGroup {
             }
             switch (event.getAction()) {
                 case MotionEvent.ACTION_MOVE:
-                    softKeyboard8.lightViewManager.HideLightView(event.getX(), event.getY(), v.getWidth(), v.getHeight());
-                    softKeyboard8.lightViewManager.ShowLightView(event.getX(), event.getY(), v.getWidth(), v.getHeight(), text);
+                    softKeyboard.lightViewManager.HideLightView(event.getX(), event.getY(), v.getWidth(), v.getHeight());
+                    softKeyboard.lightViewManager.ShowLightView(event.getX(), event.getY(), v.getWidth(), v.getHeight(), text);
                     break;
                 case MotionEvent.ACTION_UP:
                     Global.inLarge = false;
                     char ch = (char) ('1' + buttonIndex);
                     String commitText = ch + "";
-                    int index = softKeyboard8.lightViewManager.lightViewAnimate(v,event);
+                    int index = softKeyboard.lightViewManager.lightViewAnimate(v,event);
                     int[] follow = {1,3,0,2};//对应于左上下右，因为三个字符串分别要这么对应，所以需要表驱动
                     if (index > 0 && text.length() > follow[index])
                         commitText = text.substring(follow[index], follow[index]+1);
                     if (buttonIndex == 0) {
                         if (Kernel.getWordsNumber() > 0) {
                             if (Global.isInView(v,event)) {
-                                softKeyboard8.sendMsgToKernel("'");
+                                softKeyboard.sendMsgToKernel("'");
                             } else {
-                                softKeyboard8.chooseWord(0);
-                                softKeyboard8.commitText(commitText);
+                                softKeyboard.chooseWord(0);
+                                softKeyboard.commitText(commitText);
                             }
                         } else {
                             if (commitText.equals("1")) commitText = ",";
-                            softKeyboard8.commitText(commitText);
+                            softKeyboard.commitText(commitText);
                         }
-                        softKeyboard8.prefixViewGroup.setVisibility(View.GONE);
+                        softKeyboard.prefixViewGroup.setVisibility(View.GONE);
                     } else {
                         Global.redoText_single.clear();
-                        softKeyboard8.sendMsgToKernel(commitText);
+                        softKeyboard.sendMsgToKernel(commitText);
                     }
                     Global.keyboardRestTimeCount = 0;
-//                    softKeyboard8.mHandler.removeMessages(softKeyboard8.MSG_DOUBLE_CLICK_REFRESH);
-//                    softKeyboard8.mHandler.sendEmptyMessageDelayed(softKeyboard8.MSG_DOUBLE_CLICK_REFRESH,Global.metaRefreshTime);
+//                    softKeyboard.mHandler.removeMessages(softKeyboard.MSG_DOUBLE_CLICK_REFRESH);
+//                    softKeyboard.mHandler.sendEmptyMessageDelayed(softKeyboard.MSG_DOUBLE_CLICK_REFRESH,Global.metaRefreshTime);
                     break;
             }
             onTouchEffectWithAnim(v, event.getAction(), skinInfoManager.skinData.backcolor_t9keys);
@@ -461,44 +460,44 @@ public class T9InputViewGroup extends NonScrollViewGroup {
     private View.OnTouchListener mDeleteOnTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            softKeyboard8.transparencyHandle.handleAlpha(event.getAction());
+            softKeyboard.transparencyHandle.handleAlpha(event.getAction());
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                softKeyboard8.mHandler.sendEmptyMessageDelayed(softKeyboard8.MSG_REPEAT, softKeyboard8.REPEAT_START_DELAY);
+                softKeyboard.mHandler.sendEmptyMessageDelayed(softKeyboard.MSG_REPEAT, softKeyboard.REPEAT_START_DELAY);
             } else if (event.getAction() == MotionEvent.ACTION_MOVE && Global.slideDeleteSwitch) {
-                softKeyboard8.lightViewManager.HideLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight());
+                softKeyboard.lightViewManager.HideLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight());
                 if(event.getX()<0){
-                    softKeyboard8.lightViewManager.ShowLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight(),"清空");
-                    softKeyboard8.mHandler.removeMessages(softKeyboard8.MSG_REPEAT);
+                    softKeyboard.lightViewManager.ShowLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight(),"清空");
+                    softKeyboard.mHandler.removeMessages(softKeyboard.MSG_REPEAT);
                 }
                 if(event.getY() <0){
-                    softKeyboard8.lightViewManager.ShowLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight(),"恢复");
-                    softKeyboard8.mHandler.removeMessages(softKeyboard8.MSG_REPEAT);
+                    softKeyboard.lightViewManager.ShowLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight(),"恢复");
+                    softKeyboard.mHandler.removeMessages(softKeyboard.MSG_REPEAT);
                 }
             } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                softKeyboard8.mHandler.removeMessages(softKeyboard8.MSG_REPEAT);
-                softKeyboard8.lightViewManager.lightViewAnimate(v,event);
+                softKeyboard.mHandler.removeMessages(softKeyboard.MSG_REPEAT);
+                softKeyboard.lightViewManager.lightViewAnimate(v,event);
                 if (event.getX() < 0 && Global.slideDeleteSwitch) {
-                    softKeyboard8.deleteAll();
+                    softKeyboard.deleteAll();
                 } else if (event.getY() < 0) {
                     if(Global.redoTextForDeleteAll != ""){
-                        softKeyboard8.commitText(Global.redoTextForDeleteAll);
+                        softKeyboard.commitText(Global.redoTextForDeleteAll);
                         Global.redoTextForDeleteAll = "";
                     }
                     if(!Global.redoTextForDeleteAll_preedit.equals("")){
-                        softKeyboard8.sendMsgToKernel(Global.redoTextForDeleteAll_preedit);
+                        softKeyboard.sendMsgToKernel(Global.redoTextForDeleteAll_preedit);
                         Global.redoTextForDeleteAll_preedit = "";
                     } else {
                         if (Global.redoText_single.size()>0){
                             InputAction ia = Global.redoText_single.pop();
                             if (ia.Type == InputAction.TEXT_TO_KERNEL){
-                                softKeyboard8.sendMsgToKernel(ia.text.toString());
+                                softKeyboard.sendMsgToKernel(ia.text.toString());
                             } else {
-                                softKeyboard8.commitText(ia.text.toString());
+                                softKeyboard.commitText(ia.text.toString());
                             }
                         }
                     }
                 } else {
-                    softKeyboard8.deleteLast();
+                    softKeyboard.deleteLast();
                 }
             }
             onTouchEffectWithAnim(v, event.getAction(), skinInfoManager.skinData.backcolor_delete);

@@ -87,7 +87,7 @@ public class SpecialSymbolChooseViewGroup extends NonScrollViewGroup implements 
 
     public QuickButton addButtonS(String text) {
         QuickButton button = super.addButton(text,
-                skinInfoManager.skinData.textcolors_quickSymbol,
+                skinInfoManager.skinData.textcolor_quickSymbol,
                 skinInfoManager.skinData.backcolor_quickSymbol
         );
         LinearLayout.LayoutParams buttonLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -102,39 +102,39 @@ public class SpecialSymbolChooseViewGroup extends NonScrollViewGroup implements 
 
     private void showSymbolsByIndex(int index){
         if (index == 0){
-            softKeyboard8.candidatesViewGroup.displayCandidates(
+            softKeyboard.candidatesViewGroup.displayCandidates(
                     Global.SYMBOL,
-                    StringUtil.convertStringstoList(softKeyboard8.symbolsManager.SPECIAL),100);
+                    StringUtil.convertStringstoList(softKeyboard.symbolsManager.SPECIAL),100);
         } else if (index == 1){
-            softKeyboard8.candidatesViewGroup.displayCandidates(
+            softKeyboard.candidatesViewGroup.displayCandidates(
                     Global.SYMBOL,
-                    StringUtil.convertStringstoList(softKeyboard8.symbolsManager.BU_SHOU),100);
+                    StringUtil.convertStringstoList(softKeyboard.symbolsManager.BU_SHOU),100);
         } else if (index == 2){
-            softKeyboard8.candidatesViewGroup.displayCandidates(
+            softKeyboard.candidatesViewGroup.displayCandidates(
                     Global.SYMBOL,
-                    StringUtil.convertStringstoList(softKeyboard8.symbolsManager.PHONETIC),100);
+                    StringUtil.convertStringstoList(softKeyboard.symbolsManager.PHONETIC),100);
         } else if (index == 3){
-            softKeyboard8.candidatesViewGroup.displayCandidates(
+            softKeyboard.candidatesViewGroup.displayCandidates(
                     Global.SYMBOL,
-                    StringUtil.convertStringstoList(softKeyboard8.symbolsManager.RUSSIAN),100);
+                    StringUtil.convertStringstoList(softKeyboard.symbolsManager.RUSSIAN),100);
         } else if (index == 4){
-            softKeyboard8.candidatesViewGroup.displayCandidates(
+            softKeyboard.candidatesViewGroup.displayCandidates(
                     Global.SYMBOL,
-                    StringUtil.convertStringstoList(softKeyboard8.symbolsManager.JAPANESE),100);
+                    StringUtil.convertStringstoList(softKeyboard.symbolsManager.JAPANESE),100);
         } else if (index == 5){
-            softKeyboard8.candidatesViewGroup.displayCandidates(
+            softKeyboard.candidatesViewGroup.displayCandidates(
                     Global.SYMBOL,
-                    StringUtil.convertStringstoList(softKeyboard8.symbolsManager.BOPOMOFO),100);
+                    StringUtil.convertStringstoList(softKeyboard.symbolsManager.BOPOMOFO),100);
         } else if (index == 6){
-            softKeyboard8.candidatesViewGroup.displayCandidates(
+            softKeyboard.candidatesViewGroup.displayCandidates(
                     Global.SYMBOL,
-                    StringUtil.convertStringstoList(softKeyboard8.symbolsManager.GREECE),50);
+                    StringUtil.convertStringstoList(softKeyboard.symbolsManager.GREECE),50);
         }
     }
 
     View.OnTouchListener mOnTouchListener = new View.OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
-            softKeyboard8.keyboardTouchEffect.onTouchEffectWithAnim(v, event.getAction(),
+            softKeyboard.keyboardTouchEffect.onTouchEffectWithAnim(v, event.getAction(),
                     skinInfoManager.skinData.backcolor_touchdown,
                     skinInfoManager.skinData.backcolor_quickSymbol,
                     context

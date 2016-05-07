@@ -4,18 +4,18 @@ package com.hit.wi.ve.datastruct;
  * Created by Administrator on 2015/6/4.
  */
 public class SkinInfoDataStruct {
-    public int textcolors_functionKeys;
-    public int textcolors_candidate_qk;
-    public int textcolors_quickSymbol;
-    public int textcolors_delete;
-    public int textcolors_t9keys;
-    public int textcolors_26keys;
-    public int textcolors_zero;
-    public int textcolors_space;
-    public int textcolors_enter;
-    public int textcolors_candidate_t9;
-    public int textcolors_preEdit;
-    public int textcolors_shift;
+    public int textcolor_functionKeys;
+    public int textcolor_candidate_qk;
+    public int textcolor_quickSymbol;
+    public int textcolor_delete;
+    public int textcolor_t9keys;
+    public int textcolor_26keys;
+    public int textcolor_zero;
+    public int textcolor_space;
+    public int textcolor_enter;
+    public int textcolor_candidate_t9;
+    public int textcolor_preEdit;
+    public int textcolor_shift;
 
     public int backcolor_functionKeys;
     public int backcolor_candidate_qk;

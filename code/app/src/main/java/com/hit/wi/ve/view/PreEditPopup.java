@@ -66,7 +66,7 @@ public class PreEditPopup {
         editText.setBackgroundResource(R.drawable.blank);
         ViewsUtil.setBackgroundWithGradientDrawable(editText, softKeyboard.skinInfoManager.skinData.backcolor_preEdit);
         //editText.setBackgroundColor(softKeyboard.skinInfoManager.skinData.backcolor_preEdit);
-        editText.setTextColor(softKeyboard.skinInfoManager.skinData.textcolors_preEdit);
+        editText.setTextColor(softKeyboard.skinInfoManager.skinData.textcolor_preEdit);
         editText.getBackground().setAlpha(Global.getCurrentAlpha());
         editText.setShadowLayer(Global.shadowRadius,0,0,softKeyboard.skinInfoManager.skinData.shadow);
     }
@@ -74,7 +74,7 @@ public class PreEditPopup {
         return container.isShowing() | editText.isShown();
     }
 
-    public void refresh(){
+    public void refreshState(){
         if(editText==null) return;
         String pinyin = Kernel.getWordsShowPinyin();
         if(pinyin.length()>0){

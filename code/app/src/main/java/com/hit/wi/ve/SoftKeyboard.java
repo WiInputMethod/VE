@@ -404,12 +404,13 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         viewSizeUpdate.UpdateQuickSymbolSize();
         candidatesViewGroup.refreshState(hideCandidate, isNK ? Global.EMOJI : Global.QUANPIN);
         specialSymbolChooseViewGroup.refreshState(hideCandidate);
-        prefixViewGroup.refresh();
+        prefixViewGroup.refreshState();
         t9InputViewGroup.refreshState();
         qkInputViewGroups.refreshState();
         quickSymbolViewGroup.refreshState();
+        bottomBarViewGroup.refreshState();
         functionsC.computeCursorPosition();
-        preEditPopup.refresh();
+        preEditPopup.refreshState();
     }
 
     /**
@@ -642,7 +643,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             }
 
             refreshDisplay();
-            bottomBarViewGroup.switchToKeyboard(keyboard);
             viewSizeUpdate.updateViewSizeAndPosition();
         }
     }
@@ -875,7 +875,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
         private void CreateLargeButton() {
             largeCandidateButton = new QuickButton(SoftKeyboard.this);
-            largeCandidateButton.setTextColor(skinInfoManager.skinData.textcolors_quickSymbol);
+            largeCandidateButton.setTextColor(skinInfoManager.skinData.textcolor_quickSymbol);
             largeCandidateButton.setBackgroundColor(skinInfoManager.skinData.backcolor_quickSymbol);
             largeCandidateButton.getBackground().setAlpha(Global.getCurrentAlpha());
             largeCandidateButton.setTypeface(mTypeface);
@@ -1097,7 +1097,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             qkInputViewGroups.updateSkin();
             functionViewGroup.updateSkin();
             bottomBarViewGroup.updateSkin();
-            functionsC.updateSkin(largeCandidateButton, skinInfoManager.skinData.textcolors_quickSymbol, skinInfoManager.skinData.backcolor_quickSymbol);
+            functionsC.updateSkin(largeCandidateButton, skinInfoManager.skinData.textcolor_quickSymbol, skinInfoManager.skinData.backcolor_quickSymbol);
             if (keyboardLayout.getBackground() != null)
                 keyboardLayout.getBackground().setAlpha((int) (Global.keyboardViewBackgroundAlpha * 255));
             else {
@@ -1411,7 +1411,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
         Global.inLarge = false;
         //设置enter_text
-        BottomBarViewGroup.setEnterText(bottomBarViewGroup.enterButton, info, Global.currentKeyboard);
+        bottomBarViewGroup.setEnterText(bottomBarViewGroup.enterButton, info, Global.currentKeyboard);
         /*
          * 获取中文键盘类型
 		 */

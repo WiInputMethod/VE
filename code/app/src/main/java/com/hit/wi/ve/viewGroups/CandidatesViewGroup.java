@@ -73,7 +73,7 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
 
     public void create(Context context){
         super.create(vertical,context);
-        mTextColor = softKeyboard8.skinInfoManager.skinData.textcolors_candidate_t9;
+        mTextColor = softKeyboard8.skinInfoManager.skinData.textcolor_candidate_t9;
         mBackColor = softKeyboard8.skinInfoManager.skinData.backcolor_candidate_t9;
         mQKEmojiManager = new QKEmojiManager(softKeyboard8);
         standardButtonHeight = 0;
@@ -267,10 +267,10 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
     public void updateSkin() {
         if(Global.currentKeyboard == Global.KEYBOARD_QK || Global.currentKeyboard == Global.KEYBOARD_EN){
             mBackColor = softKeyboard8.skinInfoManager.skinData.backcolor_candidate_qk;
-            mTextColor = softKeyboard8.skinInfoManager.skinData.textcolors_candidate_qk;
+            mTextColor = softKeyboard8.skinInfoManager.skinData.textcolor_candidate_qk;
         }else {
             mBackColor = softKeyboard8.skinInfoManager.skinData.backcolor_candidate_t9;
-            mTextColor = softKeyboard8.skinInfoManager.skinData.textcolors_candidate_t9;
+            mTextColor = softKeyboard8.skinInfoManager.skinData.textcolor_candidate_t9;
         }
         super.updateSkin(mTextColor,mBackColor);
     }

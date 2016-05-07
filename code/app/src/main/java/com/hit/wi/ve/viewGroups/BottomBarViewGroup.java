@@ -28,28 +28,51 @@ import java.util.*;
  * Created by Administrator on 2015/9/17.
  */
 public class BottomBarViewGroup extends NonScrollViewGroup {
+    private final int KEYBOARD_BUTTON_NUM = 4;
+
     public QuickButton switchKeyboardButton;
     public QuickButton expressionButton;
     public QuickButton spaceButton;
     public QuickButton enterButton;
     public QuickButton zeroButton;
     public QuickButton returnButton;
+
+    public QuickButton keyboardButtonQK;
+    public QuickButton keyboardButtonEn;
+    public QuickButton keyboardButtonT9;
+    public QuickButton keyboardButtonNum;
+
     String[] button_text;
 
     private String spaceText;
     private Context mContext;
+
+    private final String text_return = "返回";
+    private final String text_qk = "全键";
+    private final String text_t9 = "九键";
+    private final String text_num = "数字";
+    private final String text_en = "英文";
 
     public void create(Context context) {
         super.create(context);
         mContext = context;
         button_text = res.getStringArray(R.array.BOTTOMBAR_TEXT);
         spaceText = InputMode.fullToHalf(PreferenceManager.getDefaultSharedPreferences(context).getString("ZH_SPACE_TEXT", button_text[2]));
-        switchKeyboardButton = addButtonB(button_text[0]);
-        expressionButton = addButtonB(button_text[1]);
-        spaceButton = addButtonB(spaceText);
-        enterButton = addButtonB(button_text[3]);
-        zeroButton = addButtonB("0");
-        returnButton = addButtonB("返回");
+        initButtons();
+    }
+
+    private void initButtons() {
+        switchKeyboardButton = addButton(button_text[0]);
+        expressionButton = addButton(button_text[1]);
+        spaceButton = addButton(spaceText);
+        enterButton = addButton(button_text[3]);
+        zeroButton = addButton("0");
+        returnButton = addButton(text_return);
+
+        keyboardButtonQK = addButton(text_qk);
+        keyboardButtonEn = addButton(text_en);
+        keyboardButtonNum = addButton(text_num);
+        keyboardButtonT9 = addButton(text_t9);
 
         switchKeyboardButton.setOnTouchListener(switchKeyOnTouchListener);
         expressionButton.setOnTouchListener(expressionOnTouchListener);
@@ -58,6 +81,11 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         zeroButton.setOnTouchListener(zeroOnTouchListener);
         returnButton.setOnTouchListener(returnOnTouchListener);
 
+        keyboardButtonQK.setOnTouchListener(keyboardSwitchKeyOnTouchListener);
+        keyboardButtonEn.setOnTouchListener(keyboardSwitchKeyOnTouchListener);
+        keyboardButtonNum.setOnTouchListener(keyboardSwitchKeyOnTouchListener);
+        keyboardButtonT9.setOnTouchListener(keyboardSwitchKeyOnTouchListener);
+
         buttonList.add(switchKeyboardButton);
         buttonList.add(expressionButton);
         buttonList.add(spaceButton);
@@ -65,35 +93,20 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         buttonList.add(zeroButton);
         buttonList.add(returnButton);
 
-        removeButton(returnButton);
-        removeButton(zeroButton);
+        buttonList.add(keyboardButtonQK);
+        buttonList.add(keyboardButtonEn);
+        buttonList.add(keyboardButtonNum);
+        buttonList.add(keyboardButtonT9);
+
+        returnButton.setVisibility(View.GONE);
+        zeroButton.setVisibility(View.GONE);
     }
 
-    public void setText(List<String> texts) {
-        int i = 0;
-        for (String text : texts) {
-            if (i < buttonList.size()) {
-                QuickButton button = buttonList.get(i++);
-                button.setText(text);
-            } else {
-                QuickButton button = addButtonB(text);
-                button.setVisibility(View.VISIBLE);
-                buttonList.add(button);
-                i++;
-            }
-        }
-        while (i < buttonList.size()) {
-            removeButton(buttonList.get(buttonList.size() - 1));
-        }
-        updateTextSize();
-    }
-
-
-
-    public QuickButton addButtonB(String text) {
+    public QuickButton addButton(String text) {
         QuickButton button = super.addButton(text,
-                skinInfoManager.skinData.textcolors_26keys,
-                skinInfoManager.skinData.backcolor_26keys);
+                skinInfoManager.skinData.textcolor_26keys,
+                skinInfoManager.skinData.backcolor_26keys
+        );
 
         LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         buttonParams.leftMargin = padding;
@@ -105,7 +118,6 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
 
     public void removeButton(QuickButton button) {
         if (!buttonList.contains(button)) return;
-        viewGroupWrapper.removeView(button);
         buttonList.remove(button);
     }
 
@@ -113,15 +125,20 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         if (!buttonList.contains(button)){
             buttonList.add(position, button);
         }
-        if(viewGroupWrapper.indexOfChild(button)<0){
-            viewGroupWrapper.addView(button, position);
-        }
         button.clearAnimation();
         button.setVisibility(View.VISIBLE);
     }
 
     public void receiveButtonToTail(QuickButton button) {
         receiveButtonToPosition(button, buttonList.size());
+    }
+
+    private int getShowNum() {
+        int num = 0;
+        for (QuickButton button:buttonList) {
+            num += button.isShown()?1:0;
+        }
+        return num;
     }
 
     public void intoReturnState () {
@@ -140,43 +157,15 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         setButtonWidthByRate(res.getIntArray(R.array.BOTTOMBAR_KEY_WIDTH));
     }
 
-
-    public void switchToKeyboard(int keyboard) {
-        receiveButtonToPosition(switchKeyboardButton,0);
-        viewGroupWrapper.updateViewLayout(switchKeyboardButton,switchKeyboardButton.itsLayoutParams);
-        expressionButton.setText(button_text[1]);
-        switch (keyboard) {
-            case Global.KEYBOARD_T9:
-            case Global.KEYBOARD_QK:
-            case Global.KEYBOARD_EN:
-                removeButton(zeroButton);
-                receiveButtonToPosition(expressionButton, 1);
-                removeButton(returnButton);
-                receiveButtonToTail(spaceButton);
-                setButtonWidthByRate(res.getIntArray(R.array.BOTTOMBAR_KEY_WIDTH));
-                break;
-            case Global.KEYBOARD_SYM:
-                removeButton(zeroButton);
-                receiveButtonToPosition(expressionButton, 1);
-                receiveButtonToPosition(returnButton,3);
-                receiveButtonToTail(enterButton);
-                setButtonWidthByRate(res.getIntArray(R.array.BOTTOMBAR_KEY_WIDTH));
-                break;
-            case Global.KEYBOARD_NUM:
-                removeButton(expressionButton);
-                removeButton(returnButton);
-                removeButton(spaceButton);
-                receiveButtonToPosition(zeroButton, 2);
-                ((LinearLayout.LayoutParams) zeroButton.itsLayoutParams).leftMargin = padding;//special, i dont know why, but dont delete it
-                setButtonWidthByRate(res.getIntArray(R.array.BOTTOMBAR_NUM_KEY_WIDTH));
-                break;
-            default:
-                removeButton(zeroButton);
-                receiveButtonToPosition(expressionButton, 1);
-                setButtonWidthByRate(res.getIntArray(R.array.BOTTOMBAR_KEY_WIDTH));
-                break;
+    public void setShownButton(QuickButton... buttons) {
+        setVisibility(View.GONE);
+        viewGroupWrapper.setVisibility(View.VISIBLE);
+        for (QuickButton button :buttons) {
+            button.setVisibility(View.VISIBLE);
         }
-        viewGroupWrapper.updateViewLayout(switchKeyboardButton,switchKeyboardButton.itsLayoutParams);
+    }
+
+    private void writeKeyboardToSharedPreference(int keyboard) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
         switch (keyboard) {
             case Global.KEYBOARD_T9:
@@ -189,79 +178,125 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         editor.commit();
     }
 
+    public void refreshState() {
+        expressionButton.setText(button_text[1]);
+        if (Global.inLarge){
+            setShownButton(switchKeyboardButton,expressionButton,spaceButton,enterButton);
+        } else {
+            switch (Global.currentKeyboard) {
+                case Global.KEYBOARD_T9:
+                case Global.KEYBOARD_QK:
+                case Global.KEYBOARD_EN:
+                    setShownButton(switchKeyboardButton,expressionButton,spaceButton,enterButton);
+                    setButtonWidthByRate(res.getIntArray(R.array.BOTTOMBAR_KEY_WIDTH));
+                    writeKeyboardToSharedPreference(Global.currentKeyboard);
+                    break;
+                case Global.KEYBOARD_SYM:
+                    setShownButton(switchKeyboardButton,expressionButton,spaceButton,returnButton);
+                    setButtonWidthByRate(res.getIntArray(R.array.BOTTOMBAR_KEY_WIDTH));
+                    break;
+                case Global.KEYBOARD_NUM:
+                    ((LinearLayout.LayoutParams) zeroButton.itsLayoutParams).leftMargin = padding;//special, i dont know why, but dont delete it
+                    setShownButton(switchKeyboardButton,zeroButton,spaceButton);
+                    setButtonWidthByRate(res.getIntArray(R.array.BOTTOMBAR_NUM_KEY_WIDTH));
+                    break;
+            }
+        }
+    }
+
     public void setTypeFace(Typeface typeFace) {
         for (QuickButton button : buttonList) {
             button.setTypeface(typeFace);
         }
     }
 
+    private void tool_updateSkin(QuickButton button,int textColor,int backgroundColor) {
+        button.setTextColor(textColor);
+        ViewsUtil.setBackgroundWithGradientDrawable(button,backgroundColor);
+    }
+
     public void updateSkin() {
-        switchKeyboardButton.setTextColor(skinInfoManager.skinData.textcolors_enter);
-        ViewsUtil.setBackgroundWithGradientDrawable(switchKeyboardButton, skinInfoManager.skinData.backcolor_enter);
-
-        expressionButton.setTextColor(skinInfoManager.skinData.textcolors_space);
-        ViewsUtil.setBackgroundWithGradientDrawable(expressionButton, skinInfoManager.skinData.backcolor_space);
-
-        spaceButton.setTextColor(skinInfoManager.skinData.textcolors_space);
-        ViewsUtil.setBackgroundWithGradientDrawable(spaceButton, skinInfoManager.skinData.backcolor_space);
-
-        enterButton.setTextColor(skinInfoManager.skinData.textcolors_enter);
-        ViewsUtil.setBackgroundWithGradientDrawable(enterButton, skinInfoManager.skinData.backcolor_enter);
-
-        zeroButton.setTextColor(skinInfoManager.skinData.textcolors_zero);
-        ViewsUtil.setBackgroundWithGradientDrawable(zeroButton,skinInfoManager.skinData.backcolor_zero);
-
-        returnButton.setTextColor(skinInfoManager.skinData.textcolors_enter);
-        ViewsUtil.setBackgroundWithGradientDrawable(returnButton,skinInfoManager.skinData.backcolor_enter);
+        tool_updateSkin(switchKeyboardButton,
+                skinInfoManager.skinData.textcolor_enter,
+                skinInfoManager.skinData.backcolor_enter
+        );
+        tool_updateSkin(expressionButton,
+                skinInfoManager.skinData.textcolor_space,
+                skinInfoManager.skinData.backcolor_space
+        );
+        tool_updateSkin(enterButton,
+                skinInfoManager.skinData.textcolor_enter,
+                skinInfoManager.skinData.backcolor_enter
+        );
+        tool_updateSkin(spaceButton,
+                skinInfoManager.skinData.textcolor_space,
+                skinInfoManager.skinData.backcolor_space
+        );
+        tool_updateSkin(zeroButton,
+                skinInfoManager.skinData.textcolor_zero,
+                skinInfoManager.skinData.backcolor_zero
+        );
+        tool_updateSkin(returnButton,
+                skinInfoManager.skinData.textcolor_enter,
+                skinInfoManager.skinData.backcolor_enter
+        );
+        tool_updateSkin(keyboardButtonQK,
+                skinInfoManager.skinData.textcolor_26keys,
+                skinInfoManager.skinData.backcolor_26keys
+        );
+        tool_updateSkin(keyboardButtonEn,
+                skinInfoManager.skinData.textcolor_26keys,
+                skinInfoManager.skinData.backcolor_26keys
+        );
+        tool_updateSkin(keyboardButtonNum,
+                skinInfoManager.skinData.textcolor_26keys,
+                skinInfoManager.skinData.backcolor_26keys
+        );
+        tool_updateSkin(keyboardButtonT9,
+                skinInfoManager.skinData.textcolor_26keys,
+                skinInfoManager.skinData.backcolor_26keys
+        );
 
         setBackgroundAlpha(Global.getCurrentAlpha());
     }
 
     private void onTouchEffect(View view, int action, int touchdownColor, int normalColor) {
-        softKeyboard8.transparencyHandle.handleAlpha(action);
-        softKeyboard8.keyboardTouchEffect.onTouchEffectWithAnim(view, action, touchdownColor, normalColor, context);
+        softKeyboard.transparencyHandle.handleAlpha(action);
+        softKeyboard.keyboardTouchEffect.onTouchEffectWithAnim(view, action, touchdownColor, normalColor, context);
     }
 
+    private void setSpaceText() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
+        if (Global.currentKeyboard == Global.KEYBOARD_EN) {
+            spaceButton.setText(sp.getString("EN_SPACE_TEXT", "space"));
+        } else if (Global.currentKeyboard == Global.KEYBOARD_QK) {
+            spaceButton.setText(sp.getString("ZH_SPACE_TEXT", "空格"));
+        }
+    }
 
     private View.OnTouchListener switchKeyOnTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            int position = (((int) (event.getRawX() - softKeyboard8.keyboardParams.x)) / (buttonWidth + padding)) % 5;
+            int position = (((int) (event.getRawX() - softKeyboard.keyboardParams.x)) / (buttonWidth + padding)) % 5;
             if (!Global.inLarge){
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        removeButton(expressionButton);
-                        removeButton(spaceButton);
-                        removeButton(zeroButton);
-                        removeButton(enterButton);
-                        setText(StringUtil.convertStringstoList(res.getStringArray(R.array.KEYBOARD_TYPE)));
-                        setButtonWidth(paramsForViewGroup.width / buttonList.size() - padding);
-                        setBackgroundColor(skinInfoManager.skinData.backcolor_26keys);
+                        setShownButton(switchKeyboardButton,keyboardButtonQK,keyboardButtonEn,keyboardButtonNum,keyboardButtonT9);
+                        setButtonWidth(paramsForViewGroup.width / (KEYBOARD_BUTTON_NUM+1) - padding);
                         break;
                     case MotionEvent.ACTION_MOVE:
                         setBackgroundColor(skinInfoManager.skinData.backcolor_26keys);
                         ViewsUtil.setBackgroundWithGradientDrawable(buttonList.get(position),skinInfoManager.skinData.backcolor_touchdown);
                         break;
                     case MotionEvent.ACTION_UP:
-                        setText(Collections.EMPTY_LIST);
-                        int[] keyboards = {Global.currentKeyboard, Global.KEYBOARD_QK, Global.KEYBOARD_EN, Global.KEYBOARD_NUM, Global.KEYBOARD_T9};
-                        if (keyboards[position] != Global.KEYBOARD_NUM) receiveButtonToTail(expressionButton);
-                        receiveButtonToTail(spaceButton);
-                        if (keyboards[position] == Global.KEYBOARD_NUM) receiveButtonToTail(zeroButton);
-                        receiveButtonToTail(enterButton);
-                        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
-                        if (keyboards[position] == Global.KEYBOARD_EN) {
-                            buttonList.get(position).setText(sp.getString("EN_SPACE_TEXT", "space"));
-                        }
-                        if (keyboards[position] == Global.KEYBOARD_QK) {
-                            buttonList.get(position + 1).setText(sp.getString("ZH_SPACE_TEXT", "空格"));
-                        }
-                        setEnterText(enterButton, softKeyboard8.getCurrentInputEditorInfo(), keyboards[position]);
-                        softKeyboard8.switchKeyboardTo(keyboards[position], true);
+                        int[] keyboards = {Global.KEYBOARD_QK,Global.KEYBOARD_EN,Global.KEYBOARD_NUM,Global.KEYBOARD_T9};
+                        softKeyboard.switchKeyboardTo(keyboards[position], true);
+                        setEnterText(enterButton, softKeyboard.getCurrentInputEditorInfo(), keyboards[position]);
+                        refreshState();
+                        setSpaceText();
                         updateSkin();
                         break;
                 }
-//                setBackgroundAlpha(Global.getCurrentAlpha());
             }
             onTouchEffect(v, event.getAction(),
                     skinInfoManager.skinData.backcolor_touchdown,
@@ -276,9 +311,9 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
     private List<String> getExpression(int flag){
         List<String> expression;
         if (flag == 0){
-            expression = StringUtil.convertStringstoList(softKeyboard8.symbolsManager.EmojiFace);
+            expression = StringUtil.convertStringstoList(softKeyboard.symbolsManager.EmojiFace);
         } else if (flag == 1){
-            expression = StringUtil.convertStringstoList(softKeyboard8.symbolsManager.SMILE);
+            expression = StringUtil.convertStringstoList(softKeyboard.symbolsManager.SMILE);
         } else {
             expression = new ArrayList<>();
         }
@@ -293,9 +328,9 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
                     Kernel.cleanKernel();
                     List<String> expressions = getExpression(expressionFlag);
                     if(expressions != Collections.EMPTY_LIST){
-                        softKeyboard8.candidatesViewGroup.displayCandidates(Global.SYMBOL,expressions, Global.inLarge?200:9);
-                        if (Global.inLarge)softKeyboard8.candidatesViewGroup.largeTheCandidate();
-                        softKeyboard8.refreshDisplay(true);
+                        softKeyboard.candidatesViewGroup.displayCandidates(Global.SYMBOL,expressions, Global.inLarge?200:9);
+                        if (Global.inLarge) softKeyboard.candidatesViewGroup.largeTheCandidate();
+                        softKeyboard.refreshDisplay(true);
                     }else {
                         CommonFuncs.showToast(context, "很抱歉，我们暂时不能再您的手机上获取emoji库，正在修复中……");
                     }
@@ -316,26 +351,26 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                softKeyboard8.lightViewManager.lightViewAnimate(v,event);
+                softKeyboard.lightViewManager.lightViewAnimate(v,event);
                 if (Kernel.getWordsNumber()>0 && Global.currentKeyboard != Global.KEYBOARD_SYM) {
-                    softKeyboard8.chooseWord(0);
+                    softKeyboard.chooseWord(0);
                 } else{
                     int index = ViewsUtil.computePosition(event.getX(), event.getY(), v.getHeight(), v.getWidth());
                     if (index == Global.ERR)index = 4;
-                    softKeyboard8.commitText(commit_text_space[index]);
+                    softKeyboard.commitText(commit_text_space[index]);
                 }
 
-                if (Global.inLarge && softKeyboard8.candidatesViewGroup.isShown()) {
-                    softKeyboard8.candidatesViewGroup.largeTheCandidate();
+                if (Global.inLarge && softKeyboard.candidatesViewGroup.isShown()) {
+                    softKeyboard.candidatesViewGroup.largeTheCandidate();
                 } else {
-                    softKeyboard8.refreshDisplay();
+                    softKeyboard.refreshDisplay();
                     backReturnState();
                 }
             } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                softKeyboard8.lightViewManager.HideLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight());
+                softKeyboard.lightViewManager.HideLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight());
                 int index = ViewsUtil.computePosition(event.getX(), event.getY(), v.getHeight(), v.getWidth());
                 if (index == Global.ERR)index = 4;
-                softKeyboard8.lightViewManager.ShowLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight(),commit_text_space[index]);
+                softKeyboard.lightViewManager.ShowLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight(),commit_text_space[index]);
             }
             onTouchEffect(v, event.getAction(), skinInfoManager.skinData.backcolor_touchdown, skinInfoManager.skinData.backcolor_space);
             return false;
@@ -348,18 +383,18 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 if (Kernel.getWordsNumber()>0) {
                     if (event.getY() > 0) {
-                        softKeyboard8.commitText(Kernel.returnAction());
+                        softKeyboard.commitText(Kernel.returnAction());
                     }
-                    softKeyboard8.t9InputViewGroup.updateFirstKeyText();
+                    softKeyboard.t9InputViewGroup.updateFirstKeyText();
                 } else {
-                    if (!softKeyboard8.sendDefaultEditorAction(true) && Global.isInView(v,event)) {
-                        softKeyboard8.sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER);
+                    if (!softKeyboard.sendDefaultEditorAction(true) && Global.isInView(v,event)) {
+                        softKeyboard.sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER);
                     }
                 }
-                softKeyboard8.candidatesViewGroup.smallTheCandidate();
+                softKeyboard.candidatesViewGroup.smallTheCandidate();
                 backReturnState();
                 Global.inLarge = false;
-                Global.refreshState(softKeyboard8);
+                Global.refreshState(softKeyboard);
             }
             onTouchEffect(v, event.getAction(),
                     skinInfoManager.skinData.backcolor_touchdown,
@@ -373,7 +408,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                softKeyboard8.commitText("0");
+                softKeyboard.commitText("0");
             }
             onTouchEffect(v, event.getAction(),
                     skinInfoManager.skinData.backcolor_touchdown,
@@ -388,14 +423,14 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         public boolean onTouch(View view, MotionEvent motionEvent) {
             if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                 if (Global.isInView(view,motionEvent) && Global.inLarge){
-                    softKeyboard8.candidatesViewGroup.smallTheCandidate();
+                    softKeyboard.candidatesViewGroup.smallTheCandidate();
                     backReturnState();
                     Global.inLarge = false;
-                    Global.refreshState(softKeyboard8);
+                    Global.refreshState(softKeyboard);
                 } else if (Global.currentKeyboard == Global.KEYBOARD_SYM) {
-                    int inputeyboard = PreferenceManager.getDefaultSharedPreferences(context).getString("KEYBOARD_SELECTOR", "2").equals("1") ?
+                    int inputKeyboard = PreferenceManager.getDefaultSharedPreferences(context).getString("KEYBOARD_SELECTOR", "2").equals("1") ?
                             Global.KEYBOARD_T9 : Global.KEYBOARD_QK;
-                    softKeyboard8.switchKeyboardTo(inputeyboard, true);
+                    softKeyboard.switchKeyboardTo(inputKeyboard, true);
                 }
             }
             onTouchEffect(view, motionEvent.getAction(),
@@ -406,33 +441,34 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         }
     };
 
-    public static void setEnterText(Button ebt, EditorInfo info, int mCurrentKeyboard) {
-        String text_next = mCurrentKeyboard == Global.KEYBOARD_EN ? "next" : "下一行";
-        String text_send = mCurrentKeyboard == Global.KEYBOARD_EN ? "send" : "发送";
-        String text_search = mCurrentKeyboard == Global.KEYBOARD_EN ? "search" : "搜索";
-        String text_done = mCurrentKeyboard == Global.KEYBOARD_EN ? "done" : "完成";
-        String text_go = mCurrentKeyboard == Global.KEYBOARD_EN ? "go" : "前往";
-        String text_default = "\u21b5";
-        switch (info.imeOptions) {
-            case EditorInfo.IME_ACTION_NEXT:
-                ebt.setText(text_next);
-                break;
-            case EditorInfo.IME_ACTION_SEND:
-                ebt.setText(text_send);
-                break;
-            case EditorInfo.IME_ACTION_SEARCH:
-                ebt.setText(text_search);
-                break;
-            case EditorInfo.IME_ACTION_DONE:
-                ebt.setText(text_done);
-                break;
-            case EditorInfo.IME_ACTION_GO:
-                ebt.setText(text_go);
-                break;
-            default:
-                ebt.setText(text_default);
-                break;
+    private View.OnTouchListener keyboardSwitchKeyOnTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+
+            return false;
         }
+    };
+
+
+    public void setEnterText(Button ebt, EditorInfo info, int mCurrentKeyboard) {
+        Boolean isEn =  mCurrentKeyboard == Global.KEYBOARD_EN ;
+        String[] text_CH = {"下一行", "发送", "搜索", "完成", "前往", };
+        String[] text_EN = {"next", "send", "search", "done", "go", };
+        String textDefault = "\u21b5";
+        final int[] actionCases = {
+                EditorInfo.IME_ACTION_NEXT,
+                EditorInfo.IME_ACTION_SEND,
+                EditorInfo.IME_ACTION_SEARCH,
+                EditorInfo.IME_ACTION_DONE,
+                EditorInfo.IME_ACTION_GO,
+        };
+        for(int i=0;i<actionCases.length;i++){
+            if (actionCases[i] == info.imeOptions){
+                ebt.setText(isEn?text_EN[i]:text_CH[i]);
+                return;
+            }
+        }
+        ebt.setText(textDefault);
     }
 
     private void tool_showAnimation(QuickButton button){

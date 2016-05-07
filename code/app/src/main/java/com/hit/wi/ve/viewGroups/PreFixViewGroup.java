@@ -24,7 +24,7 @@ public class PrefixViewGroup extends ScrolledViewGroup {
 
     public QuickButton addButtonP(String text) {
         QuickButton button = super.addButton(
-                skinInfoManager.skinData.textcolors_quickSymbol,
+                skinInfoManager.skinData.textcolor_quickSymbol,
                 skinInfoManager.skinData.backcolor_prefix,
                 text);
 
@@ -38,7 +38,7 @@ public class PrefixViewGroup extends ScrolledViewGroup {
     }
 
     private int lastState = -1;
-    public void refresh() {
+    public void refreshState() {
         int prefixnum = Kernel.getPrefixNumber();
         if(lastState == prefixnum)return;
         if (prefixnum > 1 && Global.currentKeyboard == Global.KEYBOARD_T9 && !Global.inLarge) {
@@ -90,7 +90,7 @@ public class PrefixViewGroup extends ScrolledViewGroup {
 
     public void updateSkin() {
         super.updateSkin(
-                skinInfoManager.skinData.textcolors_quickSymbol,
+                skinInfoManager.skinData.textcolor_quickSymbol,
                 skinInfoManager.skinData.backcolor_prefix
         );
     }
