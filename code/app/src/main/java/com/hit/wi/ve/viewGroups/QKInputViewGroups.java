@@ -642,10 +642,10 @@ public class QKInputViewGroups extends NonScrollViewGroup {
                 softKeyboard.mHandler.sendEmptyMessageDelayed(softKeyboard.MSG_REPEAT, softKeyboard.REPEAT_START_DELAY);
             } else if (event.getAction() == MotionEvent.ACTION_MOVE && Global.slideDeleteSwitch) {
                 softKeyboard.lightViewManager.HideLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight());
-                if (Global.LEFT == ViewsUtil.computePosition(event.getX(), event.getY(), v.getWidth(), v.getHeight()) ) {
+                if (Global.LEFT == ViewsUtil.computeDirection(event.getX(), event.getY(), v.getWidth(), v.getHeight()) ) {
                     softKeyboard.lightViewManager.ShowLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight(),"清空");
                     softKeyboard.mHandler.removeMessages(softKeyboard.MSG_REPEAT);
-                } else if(Global.UP == ViewsUtil.computePosition(event.getX(), event.getY(), v.getWidth(), v.getHeight()) ){
+                } else if(Global.UP == ViewsUtil.computeDirection(event.getX(), event.getY(), v.getWidth(), v.getHeight()) ){
                     softKeyboard.lightViewManager.ShowLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight(),"恢复");
                     softKeyboard.mHandler.removeMessages(softKeyboard.MSG_REPEAT);
                 }

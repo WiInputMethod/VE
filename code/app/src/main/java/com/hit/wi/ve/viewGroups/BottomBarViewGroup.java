@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -41,6 +42,8 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
     public QuickButton keyboardButtonEn;
     public QuickButton keyboardButtonT9;
     public QuickButton keyboardButtonNum;
+
+    private QuickButton[] keyboardButtons = {keyboardButtonQK,keyboardButtonEn,keyboardButtonNum,keyboardButtonT9,};
 
     String[] button_text;
 
@@ -277,7 +280,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
     private View.OnTouchListener switchKeyOnTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            int position = (((int) (event.getRawX() - softKeyboard.keyboardParams.x)) / (buttonWidth + padding)) % 5;
+            int position = (int)((event.getRawX() - softKeyboard.keyboardParams.x) / (softKeyboard.keyboardParams.width/(KEYBOARD_BUTTON_NUM+1))) % (KEYBOARD_BUTTON_NUM+1);
             if (!Global.inLarge){
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
@@ -286,15 +289,17 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
                         break;
                     case MotionEvent.ACTION_MOVE:
                         setBackgroundColor(skinInfoManager.skinData.backcolor_26keys);
-                        ViewsUtil.setBackgroundWithGradientDrawable(buttonList.get(position),skinInfoManager.skinData.backcolor_touchdown);
+                        if (position>0)
+                            ViewsUtil.setBackgroundWithGradientDrawable(keyboardButtons[position-1],skinInfoManager.skinData.backcolor_touchdown);
                         break;
                     case MotionEvent.ACTION_UP:
-                        int[] keyboards = {Global.KEYBOARD_QK,Global.KEYBOARD_EN,Global.KEYBOARD_NUM,Global.KEYBOARD_T9};
-                        softKeyboard.switchKeyboardTo(keyboards[position], true);
-                        setEnterText(enterButton, softKeyboard.getCurrentInputEditorInfo(), keyboards[position]);
-                        refreshState();
-                        setSpaceText();
-                        updateSkin();
+                        if (position != 0){
+                            int[] keyboards = {Global.currentKeyboard, Global.KEYBOARD_QK, Global.KEYBOARD_EN, Global.KEYBOARD_NUM, Global.KEYBOARD_T9};
+                            softKeyboard.switchKeyboardTo(keyboards[position], true);
+                            setEnterText(softKeyboard.getCurrentInputEditorInfo(), keyboards[position]);
+                            setSpaceText();
+                            updateSkin();
+                        }
                         break;
                 }
             }
@@ -355,7 +360,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
                 if (Kernel.getWordsNumber()>0 && Global.currentKeyboard != Global.KEYBOARD_SYM) {
                     softKeyboard.chooseWord(0);
                 } else{
-                    int index = ViewsUtil.computePosition(event.getX(), event.getY(), v.getHeight(), v.getWidth());
+                    int index = ViewsUtil.computeDirection(event.getX(), event.getY(), v.getHeight(), v.getWidth());
                     if (index == Global.ERR)index = 4;
                     softKeyboard.commitText(commit_text_space[index]);
                 }
@@ -368,7 +373,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
                 }
             } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
                 softKeyboard.lightViewManager.HideLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight());
-                int index = ViewsUtil.computePosition(event.getX(), event.getY(), v.getHeight(), v.getWidth());
+                int index = ViewsUtil.computeDirection(event.getX(), event.getY(), v.getHeight(), v.getWidth());
                 if (index == Global.ERR)index = 4;
                 softKeyboard.lightViewManager.ShowLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight(),commit_text_space[index]);
             }
@@ -443,14 +448,26 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
 
     private View.OnTouchListener keyboardSwitchKeyOnTouchListener = new View.OnTouchListener() {
         @Override
-        public boolean onTouch(View v, MotionEvent event) {
-
+        public boolean onTouch(View v, MotionEvent event) {//简直靠巧合编程的经典示范
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                int[] keyboards = {Global.currentKeyboard, Global.KEYBOARD_QK, Global.KEYBOARD_EN, Global.KEYBOARD_NUM, Global.KEYBOARD_T9};
+//                for (int i=0;i<keyboardButtons.length;i++){
+                    Log.d("WIVE","fuck"+(buttonList.indexOf(v)+" "+buttonList.size()));
+//                    if (v.equals(keyboardButtons[i])){
+                        softKeyboard.switchKeyboardTo(keyboards[buttonList.indexOf(v)],true);
+//                    }
+//                }
+            }
+            onTouchEffect(v, event.getAction(),
+                    skinInfoManager.skinData.backcolor_touchdown,
+                    skinInfoManager.skinData.backcolor_26keys
+            );
             return false;
         }
     };
 
 
-    public void setEnterText(Button ebt, EditorInfo info, int mCurrentKeyboard) {
+    public void setEnterText(EditorInfo info, int mCurrentKeyboard) {
         Boolean isEn =  mCurrentKeyboard == Global.KEYBOARD_EN ;
         String[] text_CH = {"下一行", "发送", "搜索", "完成", "前往", };
         String[] text_EN = {"next", "send", "search", "done", "go", };
@@ -464,11 +481,11 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         };
         for(int i=0;i<actionCases.length;i++){
             if (actionCases[i] == info.imeOptions){
-                ebt.setText(isEn?text_EN[i]:text_CH[i]);
+                enterButton.setText(isEn?text_EN[i]:text_CH[i]);
                 return;
             }
         }
-        ebt.setText(textDefault);
+        enterButton.setText(textDefault);
     }
 
     private void tool_showAnimation(QuickButton button){

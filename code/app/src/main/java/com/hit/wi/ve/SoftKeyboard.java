@@ -1411,7 +1411,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
         Global.inLarge = false;
         //设置enter_text
-        bottomBarViewGroup.setEnterText(bottomBarViewGroup.enterButton, info, Global.currentKeyboard);
+        bottomBarViewGroup.setEnterText(info, Global.currentKeyboard);
         /*
          * 获取中文键盘类型
 		 */
@@ -1425,6 +1425,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             transparencyHandle.DownAlpha();
         }
         Global.keyboardRestTimeCount = 0;
+
         mHandler.removeMessages(MSG_DOUBLE_CLICK_REFRESH);
         mHandler.removeMessages(MSG_KERNEL_CLEAN);
         mHandler.sendEmptyMessageDelayed(MSG_DOUBLE_CLICK_REFRESH, 0);

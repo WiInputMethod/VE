@@ -17,7 +17,7 @@ public class ViewsUtil {
     private static final int RIGHT = 3;
     public static final int ERR = -1;
 
-    public static int computePosition(float x, float y, int height, int width){
+    public static int computeDirection(float x, float y, int height, int width){
         if(x<0 && x<y && x+y<height){
             return LEFT;
         } else if(x>width && x+y>width && x>y-height+width) {

@@ -180,7 +180,7 @@ public class LightViewManager {
     }
 
     public int lightViewAnimate(View v, MotionEvent event){
-        int index = ViewsUtil.computePosition(event.getX(), event.getY(), v.getHeight(), v.getWidth());
+        int index = ViewsUtil.computeDirection(event.getX(), event.getY(), v.getHeight(), v.getWidth());
         if (index == Global.ERR){
             for (int i = 0;i <mLightNum ;i++){
                 if(mLightView[i].isShown())animate(mLightView[i],offAnim_noraml_hide[i],View.GONE);
@@ -222,7 +222,7 @@ public class LightViewManager {
     }
 
     public boolean HideLightView(float x, float y, float width, float height) {
-        int index = ViewsUtil.computePosition(x, y, (int) height, (int) width);
+        int index = ViewsUtil.computeDirection(x, y, (int) height, (int) width);
         for (int i =0;i<mLightNum;i++){
             if (i == index )continue;
             if(mLightView[i].isShown())
@@ -257,7 +257,7 @@ public class LightViewManager {
         for (int i = 0; i < 4; ++i) {
             mLightShow |= mLightView[i].isShown();
         }
-        int index = ViewsUtil.computePosition(x, y, (int) height, (int) width);
+        int index = ViewsUtil.computeDirection(x, y, (int) height, (int) width);
         int[] follow = {1,3,0,2};
         if (index!= -1 && !mLightShow) {
             animate(mLightView[index],showAnim[index],View.VISIBLE);
