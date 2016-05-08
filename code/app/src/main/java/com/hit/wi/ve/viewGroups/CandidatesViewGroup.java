@@ -314,6 +314,14 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
         }
     }
 
+    private void onTouchEffect(View v, MotionEvent event) {
+        softKeyboard8.keyboardTouchEffect.onTouchEffect(v,event.getAction(),
+                skinInfoManager.skinData.backcolor_touchdown,
+                mBackColor
+        );
+        softKeyboard8.transparencyHandle.handleAlpha(event.getAction());
+    }
+
     private float downX, downY;
     private boolean touched = false;
     /**
@@ -321,12 +329,7 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
      */
     private OnTouchListener mCandidateOnTouch = new OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
-            softKeyboard8.keyboardTouchEffect.onTouchEffectWithAnim(v,event.getAction(),
-                    skinInfoManager.skinData.backcolor_touchdown,
-                    mBackColor,
-                    context
-            );
-            softKeyboard8.transparencyHandle.handleAlpha(event.getAction());
+            onTouchEffect(v,event);
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     if (!touched){
@@ -356,7 +359,6 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
                                 int inputKeyboard = PreferenceManager.getDefaultSharedPreferences(context).getString("KEYBOARD_SELECTOR", "2").equals("1") ?
                                         Global.KEYBOARD_T9 : Global.KEYBOARD_QK;
                                 softKeyboard8.switchKeyboardTo(inputKeyboard, true);
-                                softKeyboard8.refreshDisplay();
                             }
                             softKeyboard8.commitText(text);
                         } else if (mQKOrEmoji.equals(Global.SYMBOL)) {

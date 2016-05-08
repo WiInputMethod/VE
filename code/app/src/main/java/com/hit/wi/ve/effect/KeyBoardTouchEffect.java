@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.hit.wi.util.ViewsUtil;
@@ -23,9 +24,15 @@ public class KeyBoardTouchEffect implements KeyboardTouchEffectInterface {
      */
     SoundManager soundManager;
 
+    Animation downAnim;
+    Animation upAnim;
+
     public KeyBoardTouchEffect(Context context) {
         vibrateManager = new VibrateManager(context);
         soundManager = new SoundManager(context);
+        downAnim = AnimationUtils.loadAnimation(context, R.anim.touch_down);
+        upAnim = AnimationUtils.loadAnimation(context, R.anim.touch_up);
+
     }
 
     public void loadSetting(SharedPreferences sharedPreferences) {
@@ -64,11 +71,11 @@ public class KeyBoardTouchEffect implements KeyboardTouchEffectInterface {
     public void animEffect(View v,int action,Context context){
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                v.startAnimation(AnimationUtils.loadAnimation(context, R.anim.touch_down));
+                v.startAnimation(downAnim);
                 break;
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
-                v.startAnimation(AnimationUtils.loadAnimation(context, R.anim.touch_down2));
+                v.startAnimation(upAnim);
                 break;
         }
     }
@@ -83,5 +90,4 @@ public class KeyBoardTouchEffect implements KeyboardTouchEffectInterface {
         onTouchEffect(v.findViewById(R.id.main_text),action,touchdown_color,normal_color);
         onTouchEffect(v.findViewById(R.id.predict_text),action,touchdown_color,normal_color);
     }
-
 }
