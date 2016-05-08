@@ -119,7 +119,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
             linearParams[i] = new LinearLayout.LayoutParams(0,0);
             linears[i].setOrientation(LinearLayout.HORIZONTAL);
             for (int j = 0; j < KEY_NUM/LAYER_NUM;j++){
-                QuickButton button = addButtonT(mT9keyText[count++]);
+                QuickButton button = addButton(mT9keyText[count++]);
                 linears[i].addView(button, button.itsLayoutParams);
                 buttonList.add(button);
             }
@@ -141,10 +141,10 @@ public class T9InputViewGroup extends NonScrollViewGroup {
         deleteButton.setOnTouchListener(mDeleteOnTouchListener);
     }
 
-    private QuickButton addButtonT(String text){
+    private QuickButton addButton(String text){
         QuickButton button = super.addButton(text,
-                skinInfoManager.skinData.textcolor_delete,
-                skinInfoManager.skinData.backcolor_delete);
+                skinInfoManager.skinData.textcolor_t9keys,
+                skinInfoManager.skinData.backcolor_t9keys);
         button.setOnTouchListener(mInputViewOnTouchListener);
         button.itsLayoutParams = new LinearLayout.LayoutParams(0,0);
         return button;
@@ -232,25 +232,25 @@ public class T9InputViewGroup extends NonScrollViewGroup {
         if (lastState==Global.currentKeyboard)return;
         int i = 0;
         if(Global.currentKeyboard == Global.KEYBOARD_T9){
-            setVisibility(View.VISIBLE);
+            if(!isShown())setVisibility(View.VISIBLE);
             for (QuickButton button:buttonList){
                 button.setOnTouchListener(mInputViewOnTouchListener);
                 button.setText(mT9keyText[i++]);
             }
         } else if (Global.currentKeyboard == Global.KEYBOARD_NUM){
-            setVisibility(View.VISIBLE);
+            if(!isShown())setVisibility(View.VISIBLE);
             for (QuickButton button:buttonList){
                 button.setOnTouchListener(mNumKeyboardOnTouchListener);
                 button.setText(mNumKeyText[i++]);
             }
         } else if (Global.currentKeyboard == Global.KEYBOARD_SYM){
-            setVisibility(View.VISIBLE);
+            if(!isShown())setVisibility(View.VISIBLE);
             for (QuickButton button:buttonList){
                 button.setOnTouchListener(mSymbolKeyOnTouchListener);
                 button.setText(mSymbolKeyText[i++]);
             }
         } else {
-            setVisibility(View.GONE);
+            if(isShown())setVisibility(View.GONE);
         }
         lastState = Global.currentKeyboard;
     }
@@ -262,17 +262,12 @@ public class T9InputViewGroup extends NonScrollViewGroup {
      * @param showAnim 是否播放动画
      */
     public void showT9(boolean showAnim) {
-        int i=0;
         for (QuickButton button:buttonList) {
             button.setVisibility(View.VISIBLE);
             button.setEnabled(true);
             button.setClickable(true);
-            if (showAnim) {
-                button.startAnimation(AnimationUtils.loadAnimation(context, keySwitchShow[i]));
-                i++;
-            }
         }
-        deleteButton.clearAnimation();
+        if(showAnim)startAnimation(keySwitchShow);
         deleteButton.setVisibility(View.VISIBLE);
     }
 

@@ -402,6 +402,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             viewSizeUpdate.UpdateCandidateSize();
             viewSizeUpdate.UpdateLargeCandidateSize();
         }
+
         viewSizeUpdate.UpdateQuickSymbolSize();
         candidatesViewGroup.refreshState(hideCandidate, isNK ? Global.EMOJI : Global.QUANPIN);
         specialSymbolChooseViewGroup.refreshState(hideCandidate);
@@ -582,26 +583,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
      */
     private class KeyBoardSwitcherC {
 
-        private static final int HOR_GAP_NUM = 2;
-
-        /**
-         * 功能：使键盘占满屏幕的Width
-         * 调用时机：从九键切到英文键盘
-         */
-        private void fullWidth() {
-            quickSymbolViewGroup.setSize(keyboardWidth - HOR_GAP_NUM * standardHorizontalGapDistance, ViewGroup.LayoutParams.MATCH_PARENT);
-            prefixViewGroup.setSize(keyboardWidth -HOR_GAP_NUM * standardHorizontalGapDistance, ViewGroup.LayoutParams.MATCH_PARENT);
-        }
-
-        /**
-         * 功能：使键盘宽度不占满整个Width
-         * 调用时机：英文键盘切向九键
-         */
-        private void backWidth() {
-            quickSymbolViewGroup.setSize(keyboardWidth * res.getInteger(R.integer.PREEDIT_WIDTH) / 100, ViewGroup.LayoutParams.MATCH_PARENT);
-            prefixViewGroup.setSize(keyboardWidth * res.getInteger(R.integer.PREEDIT_WIDTH) / 100, ViewGroup.LayoutParams.MATCH_PARENT);
-        }
-
         private void hideKeyboard(int keyboard, boolean showAnim) {
             if (Global.isQK(Global.currentKeyboard)) {
                 qkInputViewGroups.startHideAnimation(showAnim);
@@ -610,10 +591,8 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                     t9InputViewGroup.T9ToNum(showAnim);
                 } else {
                     t9InputViewGroup.hideT9(showAnim);
-                    fullWidth();
                 }
             }
-//            if (prefixViewGroup.isShown()) prefixViewGroup.setVisibility(View.GONE);
         }
 
         private void showKeyboard(int keyboard, boolean showAnim) {
@@ -621,7 +600,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                 qkInputViewGroups.startShowAnimation(showAnim);
             } else {
                 t9InputViewGroup.showT9(showAnim);
-                backWidth();
             }
         }
 
@@ -1472,6 +1450,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         bottomBarViewGroup.spaceButton.setText(InputMode.halfToFull(sp.getString("ZH_SPACE_TEXT", "空格")));
         skinUpdateC.updateSkin();
         keyboardTouchEffect.loadSetting(sp);
+
         super.onWindowShown();
     }
 
