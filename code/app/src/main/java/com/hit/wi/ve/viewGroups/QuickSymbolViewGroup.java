@@ -131,20 +131,16 @@ public class QuickSymbolViewGroup extends ScrolledViewGroup implements QuickSymb
         updateCurrentSymbolsAndSetTheContent(currentSymbolFlag);
     }
 
-    private boolean lastState = false;
     public void refreshState() {
         clearAnimation();
-        if (lastState == softKeyboard8.specialSymbolChooseViewGroup.isShown() ||
-                softKeyboard8.prefixViewGroup.isShown())return;
-        if (!lastState){
-            hide();
+        if (softKeyboard8.specialSymbolChooseViewGroup.isShown() || softKeyboard8.prefixViewGroup.isShown()){
+            if(isShown())hide();
         } else {
-            show();
+            if(!isShown())show();
         }
-        lastState = !lastState;
     }
 
-    public boolean islock() {
+    public boolean isLock() {
         return mLockSymbolState;
     }
 

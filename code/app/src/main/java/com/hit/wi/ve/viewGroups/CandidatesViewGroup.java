@@ -355,7 +355,7 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
                     if(Global.isInView(v,event)) {
                         if (Global.currentKeyboard == Global.KEYBOARD_SYM){
                             CharSequence text = ((TextView)v).getText();
-                            if (!softKeyboard8.quickSymbolViewGroup.islock()) {
+                            if (!softKeyboard8.quickSymbolViewGroup.isLock()) {
                                 int inputKeyboard = PreferenceManager.getDefaultSharedPreferences(context).getString("KEYBOARD_SELECTOR", "2").equals("1") ?
                                         Global.KEYBOARD_T9 : Global.KEYBOARD_QK;
                                 softKeyboard8.switchKeyboardTo(inputKeyboard, true);
