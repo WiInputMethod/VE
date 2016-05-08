@@ -209,8 +209,9 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_HIDE:
+                    Log.d("WIVE","hide count" + Global.keyboardRestTimeCount);
                     if (Global.keyboardRestTimeCount > ALPHA_DOWN_TIME) {
-                        transparencyHandle.UpAlpha();
+                        if(!transparencyHandle.isUpAlpha)transparencyHandle.UpAlpha();
                         Global.keyboardRestTimeCount = 0;
                     } else
                         Global.keyboardRestTimeCount++;
@@ -276,7 +277,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         screenInfoC.refreshScreenInfo();
         KeyBoardCreate keyBoardCreate = new KeyBoardCreate();
         keyBoardCreate.createKeyboard();
-        transparencyHandle.startAutoDownAlpha();
         super.onCreate();
     }
 
@@ -1185,6 +1185,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
      * 键盘透明度处理，包括一些动画
      */
     public class TransparencyHandle {
+        boolean isUpAlpha = false;
 
         private void startAutoDownAlpha() {
             mHandler.sendEmptyMessageDelayed(MSG_HIDE, 1000);
@@ -1218,8 +1219,9 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             if (functionViewGroup.isShown()) functionViewGroup.startAnimation(anim);
             if (specialSymbolChooseViewGroup.isShown()) specialSymbolChooseViewGroup.startAnimation(anim);
             if (quickSymbolViewGroup.isShown()) quickSymbolViewGroup.startAnimation(anim);
-            if (candidatesViewGroup.isShown()) candidatesViewGroup.startAnimation(anim);
-            if (largeCandidateButton.isShown()) largeCandidateButton.startAnimation(anim);
+            if (candidatesViewGroup.isShown()) candidatesViewGroup.setBackgroundAlpha(200);
+            if (largeCandidateButton.isShown()) largeCandidateButton.getBackground().setAlpha(200);
+            isUpAlpha = true;
         }
 
         /**
@@ -1239,14 +1241,15 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             if (specialSymbolChooseViewGroup.isShown()) specialSymbolChooseViewGroup.startAnimation(anim);
             if (quickSymbolViewGroup.isShown()) quickSymbolViewGroup.startAnimation(anim);
             if (prefixViewGroup.isShown()) prefixViewGroup.startAnimation(anim);
-            if (candidatesViewGroup.isShown()) candidatesViewGroup.startAnimation(anim);
-            if (largeCandidateButton.isShown()) largeCandidateButton.startAnimation(anim);
+            if (candidatesViewGroup.isShown()) candidatesViewGroup.setBackgroundAlpha();
+            if (largeCandidateButton.isShown()) largeCandidateButton.getBackground().setAlpha(Global.getCurrentAlpha());
+            isUpAlpha =false;
         }
 
         public void handleAlpha(int eventAction) {
             Global.keyboardRestTimeCount = 0;
             if (eventAction == MotionEvent.ACTION_DOWN) {
-                if (Global.keyboardRestTimeCount > ALPHA_DOWN_TIME ){
+                if (isUpAlpha){
                     DownAlpha();
                 }
             }
@@ -1453,6 +1456,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
         bottomBarViewGroup.spaceButton.setText(InputMode.halfToFull(sp.getString("ZH_SPACE_TEXT", "空格")));
         skinUpdateC.updateSkin();
+        transparencyHandle.startAutoDownAlpha();
         keyboardTouchEffect.loadSetting(sp);
 
         super.onWindowShown();
@@ -1472,6 +1476,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         if (mSetKeyboardSizeViewOn) {
             mOnSizeChangeListener.onFinishSetting();
         }
+        mHandler.removeMessages(MSG_HIDE);
         super.onWindowHidden();
     }
 
