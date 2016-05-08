@@ -709,30 +709,32 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
          * 判断输入域类型，返回确定键盘类型
          */
         private int getKeyboardType(EditorInfo pEditorInfo) {
-            int keyboardType;
+            int keyboardType = Global.KEYBOARD_QK;
             // 判断输入框类型,选择对应的键盘
-            switch (pEditorInfo.inputType & EditorInfo.TYPE_MASK_CLASS) {
-                case EditorInfo.TYPE_CLASS_NUMBER:
-                case EditorInfo.TYPE_CLASS_DATETIME:
-                case EditorInfo.TYPE_CLASS_PHONE:
-                    keyboardType = Global.KEYBOARD_NUM;
-                    break;
-                case EditorInfo.TYPE_CLASS_TEXT:
-                    switch (EditorInfo.TYPE_MASK_VARIATION & pEditorInfo.inputType) {
-                        case EditorInfo.TYPE_TEXT_VARIATION_URI:
-                        case EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS:
-                        case EditorInfo.TYPE_TEXT_VARIATION_PASSWORD:
-                        case EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD:
-                            keyboardType = Global.KEYBOARD_EN;
-                            break;
-                        default:
-                            keyboardType = zhKeyboard;
-                            break;
-                    }
-                    break;
-                default:// 默认为英文键盘——
-                    keyboardType = zhKeyboard;
-                    break;
+            if(pEditorInfo != null){
+                switch (pEditorInfo.inputType & EditorInfo.TYPE_MASK_CLASS) {
+                    case EditorInfo.TYPE_CLASS_NUMBER:
+                    case EditorInfo.TYPE_CLASS_DATETIME:
+                    case EditorInfo.TYPE_CLASS_PHONE:
+                        keyboardType = Global.KEYBOARD_NUM;
+                        break;
+                    case EditorInfo.TYPE_CLASS_TEXT:
+                        switch (EditorInfo.TYPE_MASK_VARIATION & pEditorInfo.inputType) {
+                            case EditorInfo.TYPE_TEXT_VARIATION_URI:
+                            case EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS:
+                            case EditorInfo.TYPE_TEXT_VARIATION_PASSWORD:
+                            case EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD:
+                                keyboardType = Global.KEYBOARD_EN;
+                                break;
+                            default:
+                                keyboardType = zhKeyboard;
+                                break;
+                        }
+                        break;
+                    default:// 默认为英文键盘——
+                        keyboardType = zhKeyboard;
+                        break;
+                }
             }
             return keyboardType;
         }
@@ -1329,10 +1331,10 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
         prefixViewGroup.setVisibility(View.GONE);
         quickSymbolViewGroup.setVisibility(View.VISIBLE);
-        functionViewGroup.startShowAnimation();
         functionViewGroup.setVisibility(View.VISIBLE);
-        bottomBarViewGroup.startShowAnimation();
+        functionViewGroup.startShowAnimation();
         bottomBarViewGroup.setVisibility(View.VISIBLE);
+        bottomBarViewGroup.startShowAnimation();
         if (keyboardLayout.getBackground() != null) {
             keyboardLayout.getBackground().setAlpha((int) (Global.keyboardViewBackgroundAlpha * 255));
         }

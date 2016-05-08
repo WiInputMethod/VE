@@ -217,6 +217,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
 
     private void tool_updateSkin(QuickButton button,int textColor,int backgroundColor) {
         button.setTextColor(textColor);
+        button.getBackground().setAlpha(Global.getCurrentAlpha());
         ViewsUtil.setBackgroundWithGradientDrawable(button,backgroundColor);
     }
 
@@ -262,7 +263,6 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
                 skinInfoManager.skinData.backcolor_26keys
         );
 
-        setBackgroundAlpha(Global.getCurrentAlpha());
     }
 
     private void onTouchEffect(View view, int action, int touchdownColor, int normalColor) {
@@ -305,8 +305,6 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
                             updateSkin();
                         } else if (isSwitchState) {
                             refreshState();
-                        } else {
-                            setBackgroundAlpha(Global.getCurrentAlpha());
                         }
                         break;
                 }
@@ -500,9 +498,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         tool_showAnimation(switchKeyboardButton);
         tool_showAnimation(expressionButton);
         tool_showAnimation(spaceButton);
-        tool_showAnimation(zeroButton);
         tool_showAnimation(enterButton);
-        tool_showAnimation(returnButton);
     }
 
     private void tool_hideAnimation(QuickButton button){
