@@ -244,15 +244,17 @@ public class QKInputViewGroups extends NonScrollViewGroup {
 
         shiftButton.itsLayoutParams.width = widthKeyWidth;
         ((LinearLayout.LayoutParams)shiftButton.itsLayoutParams).setMargins(padding,padding,padding,padding);
+        shiftButton.getPaint().setTextSize(DisplayUtil.px2sp(context,Math.min(keyWidth * 3/2, keyHeight) * TEXTSIZE_RATE_DELETE));
         linears[2].updateViewLayout(shiftButton,shiftButton.itsLayoutParams);
 
         smileButton.itsLayoutParams.width = widthKeyWidth ;
         ((LinearLayout.LayoutParams)smileButton.itsLayoutParams).setMargins(padding,padding,padding,padding);
+        smileButton.getPaint().setTextSize(DisplayUtil.px2sp(context,Math.min(keyWidth * 3/2, keyHeight) * TEXTSIZE_RATE_DELETE));
         linears[2].updateViewLayout(smileButton,smileButton.itsLayoutParams);
 
         deleteButton.itsLayoutParams.width = widthKeyWidth;
         ((LinearLayout.LayoutParams)deleteButton.itsLayoutParams).setMargins(padding,padding,padding,padding);
-        deleteButton.getPaint().setTextSize(DisplayUtil.px2sp(context,Math.min(keyWidth *3/2,keyHeight) * TEXTSIZE_RATE_DELETE));
+        deleteButton.getPaint().setTextSize(DisplayUtil.px2sp(context,Math.min(keyWidth * 3/2, keyHeight) * TEXTSIZE_RATE_DELETE));
         linears[2].updateViewLayout(deleteButton,deleteButton.itsLayoutParams);
     }
 

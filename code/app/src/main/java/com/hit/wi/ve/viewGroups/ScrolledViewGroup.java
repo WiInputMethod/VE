@@ -33,7 +33,7 @@ public class ScrolledViewGroup extends myViewGroup {
     protected LinearLayout layoutforWrapButtons;
     protected Resources res;
     protected int buttonpadding = 0;
-    protected SoftKeyboard softKeyboard8;
+    protected SoftKeyboard softKeyboard;
     protected Typeface typeface;
 
 
@@ -51,7 +51,7 @@ public class ScrolledViewGroup extends myViewGroup {
     }
 
     public void setSoftKeyboard(SoftKeyboard softKeyboard8) {
-        this.softKeyboard8 = softKeyboard8;
+        this.softKeyboard = softKeyboard8;
     }
 
     @Override

@@ -125,23 +125,6 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         return button;
     }
 
-    public void removeButton(QuickButton button) {
-        if (!buttonList.contains(button)) return;
-        buttonList.remove(button);
-    }
-
-    public void receiveButtonToPosition(QuickButton button, int position) {
-        if (!buttonList.contains(button)){
-            buttonList.add(position, button);
-        }
-        button.clearAnimation();
-        button.setVisibility(View.VISIBLE);
-    }
-
-    public void receiveButtonToTail(QuickButton button) {
-        receiveButtonToPosition(button, buttonList.size());
-    }
-
     private void moveButtonToPosition(QuickButton button,int position) {
         viewGroupWrapper.removeView(button);
         viewGroupWrapper.addView(button,position,button.itsLayoutParams);
@@ -262,7 +245,6 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
                 skinInfoManager.skinData.textcolor_26keys,
                 skinInfoManager.skinData.backcolor_26keys
         );
-
     }
 
     private void onTouchEffect(View view, int action, int touchdownColor, int normalColor) {

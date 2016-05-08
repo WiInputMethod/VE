@@ -50,11 +50,11 @@ public class PreFixViewGroup extends ScrolledViewGroup {
                 texts.add(Kernel.getPrefix(i));
             }
             setText(texts);
-            softKeyboard8.quickSymbolViewGroup.setVisibility(View.GONE);
-            softKeyboard8.specialSymbolChooseViewGroup.setVisibility(View.GONE);
+            softKeyboard.quickSymbolViewGroup.setVisibility(View.GONE);
+            softKeyboard.specialSymbolChooseViewGroup.setVisibility(View.GONE);
             setVisibility(View.VISIBLE);
         } else {
-            softKeyboard8.quickSymbolViewGroup.setVisibility(View.VISIBLE);
+            softKeyboard.quickSymbolViewGroup.setVisibility(View.VISIBLE);
             setVisibility(View.GONE);
         }
         lastState = prefixNumber;
@@ -101,21 +101,22 @@ public class PreFixViewGroup extends ScrolledViewGroup {
         );
     }
 
+    private void onTouchEffect(View v, MotionEvent event){
+        softKeyboard.keyboardTouchEffect.onTouchEffectWithAnim(v, event.getAction(),
+                skinInfoManager.skinData.backcolor_touchdown,
+                skinInfoManager.skinData.backcolor_prefix,
+                context);
+        softKeyboard.transparencyHandle.handleAlpha(event.getAction());
+    }
+
     private View.OnTouchListener prefixOnTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            softKeyboard8.transparencyHandle.handleAlpha(event.getAction());
+            onTouchEffect(v,event);
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                String words = Kernel.getPrefix(buttonList.size() - buttonList.indexOf(v));
-                if (words != null) {
-                    softKeyboard8.commitText(words);
-                }
-                softKeyboard8.refreshDisplay();
+                Kernel.selectPrefix(buttonList.size() - buttonList.indexOf(v));
+                softKeyboard.refreshDisplay();
             }
-            softKeyboard8.keyboardTouchEffect.onTouchEffectWithAnim(v, event.getAction(),
-                    skinInfoManager.skinData.backcolor_touchdown,
-                    skinInfoManager.skinData.backcolor_prefix,
-                    context);
             return false;
         }
     };

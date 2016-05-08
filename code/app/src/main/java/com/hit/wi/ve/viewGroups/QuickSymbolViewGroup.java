@@ -133,7 +133,7 @@ public class QuickSymbolViewGroup extends ScrolledViewGroup implements QuickSymb
 
     public void refreshState() {
         clearAnimation();
-        if (softKeyboard8.specialSymbolChooseViewGroup.isShown() || softKeyboard8.prefixViewGroup.isShown()){
+        if (softKeyboard.specialSymbolChooseViewGroup.isShown() || softKeyboard.prefixViewGroup.isShown()){
             if(isShown())hide();
         } else {
             if(!isShown())show();
@@ -232,8 +232,8 @@ public class QuickSymbolViewGroup extends ScrolledViewGroup implements QuickSymb
     }
 
     private void onTouchEffect(View v, MotionEvent event) {
-        softKeyboard8.transparencyHandle.handleAlpha(event.getAction());
-        softKeyboard8.keyboardTouchEffect.onTouchEffectWithAnim(v, event.getAction(),
+        softKeyboard.transparencyHandle.handleAlpha(event.getAction());
+        softKeyboard.keyboardTouchEffect.onTouchEffectWithAnim(v, event.getAction(),
                 skinInfoManager.skinData.backcolor_touchdown,
                 skinInfoManager.skinData.backcolor_quickSymbol,
                 context
@@ -260,7 +260,7 @@ public class QuickSymbolViewGroup extends ScrolledViewGroup implements QuickSymb
             onTouchEffect(v, event);
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 Kernel.cleanKernel();
-                softKeyboard8.commitText(((Button) v).getText());
+                softKeyboard.commitText(((Button) v).getText());
             }
             return true;
         }
@@ -272,13 +272,13 @@ public class QuickSymbolViewGroup extends ScrolledViewGroup implements QuickSymb
             onTouchEffect(view, motionEvent);
             if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                 Kernel.cleanKernel();
-                Global.refreshState(softKeyboard8);
+                Global.refreshState(softKeyboard);
                 if (Global.currentKeyboard == Global.KEYBOARD_SYM) {
                     firstButton.setText(mLockSymbolState?mUnLockSymbol:mLockSymbol);
                     mLockSymbolState = !mLockSymbolState;
                 } else {
-                    softKeyboard8.switchKeyboardTo(Global.KEYBOARD_SYM, true);
-                    softKeyboard8.functionsC.showDefaultSymbolSet();
+                    softKeyboard.switchKeyboardTo(Global.KEYBOARD_SYM, true);
+                    softKeyboard.functionsC.showDefaultSymbolSet();
                     firstButton.setText(mUnLockSymbol);
                 }
             }

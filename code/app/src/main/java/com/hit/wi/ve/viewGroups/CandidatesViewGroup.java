@@ -75,9 +75,9 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
 
     public void create(Context context){
         super.create(vertical,context);
-        mTextColor = softKeyboard8.skinInfoManager.skinData.textcolor_candidate_t9;
-        mBackColor = softKeyboard8.skinInfoManager.skinData.backcolor_candidate_t9;
-        mQKEmojiManager = new QKEmojiManager(softKeyboard8);
+        mTextColor = softKeyboard.skinInfoManager.skinData.textcolor_candidate_t9;
+        mBackColor = softKeyboard.skinInfoManager.skinData.backcolor_candidate_t9;
+        mQKEmojiManager = new QKEmojiManager(softKeyboard);
         standardButtonHeight = 0;
         standardButtonWidth = 0;
 //        SharedPreferences sp = SharedPreferenceManager.getDefaultSharedPreferences(context);
@@ -266,41 +266,41 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
 
     public void updateSkin() {
         if(Global.currentKeyboard == Global.KEYBOARD_QK || Global.currentKeyboard == Global.KEYBOARD_EN){
-            mBackColor = softKeyboard8.skinInfoManager.skinData.backcolor_candidate_qk;
-            mTextColor = softKeyboard8.skinInfoManager.skinData.textcolor_candidate_qk;
+            mBackColor = softKeyboard.skinInfoManager.skinData.backcolor_candidate_qk;
+            mTextColor = softKeyboard.skinInfoManager.skinData.textcolor_candidate_qk;
         }else {
-            mBackColor = softKeyboard8.skinInfoManager.skinData.backcolor_candidate_t9;
-            mTextColor = softKeyboard8.skinInfoManager.skinData.textcolor_candidate_t9;
+            mBackColor = softKeyboard.skinInfoManager.skinData.backcolor_candidate_t9;
+            mTextColor = softKeyboard.skinInfoManager.skinData.textcolor_candidate_t9;
         }
         super.updateSkin(mTextColor,mBackColor);
     }
 
     public void largeTheCandidate() {
-        softKeyboard8.functionViewGroup.setVisibility(View.GONE);
-        softKeyboard8.mInputViewGG.setVisibility(View.GONE);
-        softKeyboard8.secondLayerLayout.setVisibility(View.GONE);
-        int largeheight = softKeyboard8.keyboardParams.height - softKeyboard8.bottomBarViewGroup.getHeight();
+        softKeyboard.functionViewGroup.setVisibility(View.GONE);
+        softKeyboard.mInputViewGG.setVisibility(View.GONE);
+        softKeyboard.secondLayerLayout.setVisibility(View.GONE);
+        int largeheight = softKeyboard.keyboardParams.height - softKeyboard.bottomBarViewGroup.getHeight();
         if (getHeight() != largeheight)
             setHeight(largeheight);
     }
 
     public  void smallTheCandidate() {
-        softKeyboard8.viewSizeUpdate.UpdateCandidateSize();
+        softKeyboard.viewSizeUpdate.UpdateCandidateSize();
         if (Global.currentKeyboard == Global.KEYBOARD_QK || Global.currentKeyboard == Global.KEYBOARD_EN) {
-            softKeyboard8.functionViewGroup.setVisibility(View.VISIBLE);
+            softKeyboard.functionViewGroup.setVisibility(View.VISIBLE);
         } else {
-            softKeyboard8.secondLayerLayout.setVisibility(View.VISIBLE);
+            softKeyboard.secondLayerLayout.setVisibility(View.VISIBLE);
         }
-        softKeyboard8.mInputViewGG.setVisibility(View.VISIBLE);
+        softKeyboard.mInputViewGG.setVisibility(View.VISIBLE);
     }
 
     private void commitQKCandidate(View v) {
         String text = Kernel.getWordSelectedWord(buttonList.indexOf(v));
         scrollView.fullScroll(ScrollView.FOCUS_UP);
-        InputConnection ic = softKeyboard8.getCurrentInputConnection();
+        InputConnection ic = softKeyboard.getCurrentInputConnection();
         if (ic != null && text!= null) {
             try {
-                mQKEmojiManager.commitEmoji(softKeyboard8, text);
+                mQKEmojiManager.commitEmoji(softKeyboard, text);
             } catch (Exception e ){
                 Log.d("WIVE","expception"+e.toString());
             }
@@ -310,16 +310,16 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
     private void commitT9Candidate(View v){
         String text = Kernel.getWordSelectedWord(buttonList.indexOf(v));
         if ( text!=null ){
-            softKeyboard8.commitText(text);
+            softKeyboard.commitText(text);
         }
     }
 
     private void onTouchEffect(View v, MotionEvent event) {
-        softKeyboard8.keyboardTouchEffect.onTouchEffect(v,event.getAction(),
+        softKeyboard.keyboardTouchEffect.onTouchEffect(v,event.getAction(),
                 skinInfoManager.skinData.backcolor_touchdown,
                 mBackColor
         );
-        softKeyboard8.transparencyHandle.handleAlpha(event.getAction());
+        softKeyboard.transparencyHandle.handleAlpha(event.getAction());
     }
 
     private float downX, downY;
@@ -341,7 +341,7 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
                     if (Math.abs(event.getY() - downY) + Math.abs(event.getX() - downX) < 50) break;
                     if (!Global.inLarge) {
                         largeTheCandidate();
-                        softKeyboard8.bottomBarViewGroup.intoReturnState();
+                        softKeyboard.bottomBarViewGroup.intoReturnState();
                         Global.inLarge = true;
                     }
                     break;
@@ -349,28 +349,28 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
                     if (!Global.isInView(v, event)) break;
                     if (Global.inLarge) {
                         smallTheCandidate();
-                        softKeyboard8.bottomBarViewGroup.backReturnState();
+                        softKeyboard.bottomBarViewGroup.backReturnState();
                         Global.inLarge = false;
                     }
                     if(Global.isInView(v,event)) {
                         if (Global.currentKeyboard == Global.KEYBOARD_SYM){
                             CharSequence text = ((TextView)v).getText();
-                            if (!softKeyboard8.quickSymbolViewGroup.isLock()) {
+                            if (!softKeyboard.quickSymbolViewGroup.isLock()) {
                                 int inputKeyboard = PreferenceManager.getDefaultSharedPreferences(context).getString("KEYBOARD_SELECTOR", "2").equals("1") ?
                                         Global.KEYBOARD_T9 : Global.KEYBOARD_QK;
-                                softKeyboard8.switchKeyboardTo(inputKeyboard, true);
+                                softKeyboard.switchKeyboardTo(inputKeyboard, true);
                             }
-                            softKeyboard8.commitText(text);
+                            softKeyboard.commitText(text);
                         } else if (mQKOrEmoji.equals(Global.SYMBOL)) {
                             CharSequence text = ((TextView)v).getText();
-                            softKeyboard8.commitText(text);
-                            softKeyboard8.refreshDisplay();
+                            softKeyboard.commitText(text);
+                            softKeyboard.refreshDisplay();
                         } else if (mQKOrEmoji.equals(Global.QUANPIN )) {
                             commitQKCandidate(v);
-                            softKeyboard8.refreshDisplay();
+                            softKeyboard.refreshDisplay();
                         } else {
                             commitT9Candidate(v);
-                            softKeyboard8.refreshDisplay();
+                            softKeyboard.refreshDisplay();
                         }
                         touched = false;
                     }
