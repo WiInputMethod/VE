@@ -361,7 +361,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         final String pinyin = Kernel.getWordsShowPinyin();
         if (pinyin.length() != pinyinProc.mCandidateEnd - pinyinProc.mCandidateStart) return;
 
-        //切割字符串
+        //切割字符串,顺便还做了删除处理，卧槽师兄想的真tm周全，小小的代码里全是坑
         final int isDel = delete && pinyinProc.mSelStart == pinyinProc.mSelEnd ? 1 : 0;
         String sBefore = pinyin.substring(0, pinyinProc.mSelStart - pinyinProc.mCandidateStart - isDel).replace("'", "")+s;
         String sAfter = pinyinProc.mSelEnd <= pinyinProc.mCandidateStart ? pinyin :
@@ -1374,6 +1374,8 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         functionViewGroup.startHideAnimation();
         bottomBarViewGroup.startHideAnimation();
         candidatesViewGroup.setVisibility(View.GONE);
+        largeCandidateButton.clearAnimation();
+        largeCandidateButton.setVisibility(View.GONE);
 
         lightViewManager.invisibleLightView();
         keyboardParams.flags = DISABLE_LAYOUTPARAMS_FLAG;

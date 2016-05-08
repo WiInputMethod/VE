@@ -10,6 +10,7 @@ import com.hit.wi.ve.SoftKeyboard;
  * Created by purebluesong on 2016/4/25.
  */
 public class PinyinEditProcess {
+    private final char QUOTATION_ASC = 39;
     public int mSelStart;
     public int mSelEnd;
     public int mCandidateStart;
@@ -20,7 +21,7 @@ public class PinyinEditProcess {
         this.softKeyboard = softKeyboard;
     }
 
-    private void commitChanges(int start, int end){
+    private void commitChangesInPreEdit(int start, int end){
         softKeyboard.preEditPopup.setCursor(start, end);
         softKeyboard.refreshDisplay();
     }
@@ -49,55 +50,59 @@ public class PinyinEditProcess {
         return false;
     }
 
-    private void innerPinyinInsert(InputConnection ic, String sBegin, String sEnd) {
-        Log.d("WIVE","pinyin insert"+sBegin+"!!!!!"+sEnd);
-        int i,j;
-        Kernel.cleanKernel();
-        Kernel.inputPinyin(sBegin + sEnd);
-        String r = Kernel.getWordsShowPinyin();
-        for (i = 0,j = 0; j < sBegin.length() && j < r.length(); i++) {
-            if (r.charAt(j) != '\'') j++;
+    private int countQuotation(int readLength,String str){
+        int count = 0;
+        for (int i=0;i<readLength && i<str.length();i++){
+            if (str.charAt(i)== QUOTATION_ASC){count++;readLength++;}
         }
-        commitChanges(mCandidateStart+i,mCandidateEnd+i);
-
-        ic.setComposingText(r, 1);
-        ic.setSelection(mCandidateStart + i, mCandidateStart + i);
+        return count;
     }
 
-    private void deletePinyinToHead(InputConnection ic){
-        Log.d("WIVE","pinyin delete");
-        // Kernel.cleanKernel();
-        // Kernel.inputPinyin(sEnd);
-        commitChanges(0,0);
-        ic.setSelection(0, 0);
+    private void innerPinyinProcess(InputConnection ic, String sBegin, String sEnd) {
+        Log.d("WIVE","pinyin process ");
+
+        Kernel.cleanKernel();
+        Kernel.inputPinyin(sBegin + sEnd);
+        String showPinyin = Kernel.getWordsShowPinyin();
+        Log.d("WIVE",showPinyin);
+
+        int position = sBegin.length()+countQuotation(sBegin.length(),showPinyin);
+        commitChangesInPreEdit(mCandidateStart+position,mCandidateStart+position);
+        ic.setComposingText(showPinyin, 1);
+        ic.setSelection(mCandidateStart + position, mCandidateStart + position);
     }
 
     private void innerChineseInsert(InputConnection ic,String s) {
         Log.d("WIVE","chinese insert");
+        //因为内核的缺陷，选择了无视用户的请求=。=b
         Kernel.inputPinyin(s);
-        commitChanges(mSelStart,mSelEnd);
+        commitChangesInPreEdit(mSelStart,mSelEnd);
     }
 
-    private void innerChineseDelete(InputConnection ic,String sBegin,String sEnd,int i,int j){
+    private void innerChineseDelete(InputConnection ic, String sBegin, String sEnd, int sBeforeEngPosition, int sAfterEngPosition){
         Log.d("WIVE","chinese delete");
         ic.commitText(sBegin, 1);
-        ic.commitText(sEnd.substring(0, j), 1);
-        final String sylla = sEnd.substring(j);
+        ic.commitText(sEnd.substring(0, sAfterEngPosition), 1);
+
         Kernel.cleanKernel();
-        Kernel.inputPinyin(sylla);
-        String r = Kernel.getWordsShowPinyin();
-        ic.setComposingText(r, 1);
-        ic.setSelection(mCandidateStart + i + j, mCandidateStart + i + j);
-        commitChanges(mCandidateStart + i + j,mCandidateStart + i + j);
+        Kernel.inputPinyin(sEnd.substring(sAfterEngPosition));
+
+        String showPinyin = Kernel.getWordsShowPinyin();
+        ic.setComposingText(showPinyin, 1);
+        ic.setSelection(mCandidateStart + showPinyin.length(), mCandidateStart + showPinyin.length());
+        commitChangesInPreEdit(mCandidateStart + showPinyin.length(),mCandidateStart + showPinyin.length());
     }
 
-    private void borderChinesePinyinInsert(InputConnection ic,String sBefore,String s){
+    private void borderChinesePinyinInsert(InputConnection ic,String sBefore,String pinyin){
         Log.d("WIVE","border chinese insert");
-        ic.commitText(sBefore, 1);
+
+        ic.commitText(sBefore.substring(0,sBefore.length()-1), 1);
         Kernel.cleanKernel();
-        Kernel.inputPinyin(s);
-        ic.setSelection(mCandidateStart + 1, mCandidateStart + 1);
-        commitChanges(mCandidateStart+1, mCandidateStart+1);
+        Kernel.inputPinyin(pinyin);
+
+        ic.setComposingText(Kernel.getWordsShowPinyin(),1);
+        ic.setSelection(mCandidateStart, mCandidateStart);
+        commitChangesInPreEdit(mCandidateStart, mCandidateStart);
     }
 
     private void withChineseInsert(InputConnection ic,String sBefore,String sAfter,int i) {
@@ -113,7 +118,7 @@ public class PinyinEditProcess {
         }
         ic.setComposingText(r, 1);
         ic.setSelection(mCandidateStart + i + j, mCandidateStart + i + j);
-        commitChanges(mCandidateStart+i+j, mCandidateEnd+i+j);
+        commitChangesInPreEdit(mCandidateStart+i+j, mCandidateEnd+i+j);
     }
 
     private void withChineseDelete(InputConnection ic, String sBefore, String sAfter, int i) {
@@ -121,41 +126,45 @@ public class PinyinEditProcess {
 
     }
 
-    public void innerEditProcess(InputConnection ic, String sBefore,String s, String sAfter,Boolean delete) {
+    private int getFirstEnglishLetterPosition(int readLength,String sBefore){
+        int i = 0;
+        while(i<readLength && Character.getType(sBefore.charAt(i)) == Character.OTHER_LETTER){
+            i++;
+        }
+        return i;
+    }
+
+    public void innerEditProcess(InputConnection ic, String sBefore, String s, String sAfter, Boolean delete) {
+        Log.d("WIVE","inner edit");
         int beforeLength = sBefore.length();
         int afterLength = sAfter.length();
 
         //Character.OTHER_LETTER means chinese character
-        if (beforeLength > 0 && Character.getType(sBefore.charAt(0)) != Character.OTHER_LETTER) {
-            innerPinyinInsert(ic,sBefore,sAfter);
-        } else if ((beforeLength == 0) && (afterLength <= 0 || Character.getType(sAfter.charAt(0)) != Character.OTHER_LETTER)) {
-            deletePinyinToHead(ic);
-        } else {
-            //未上屏字符中有中文
-            int i, j;
-            //move pointer i to the first english letter or symbol in begin string
-            for (i = 0; i < beforeLength && Character.getType(sBefore.charAt(i)) == Character.OTHER_LETTER; i++);
-            // 光标前是中文
-            if (i == beforeLength || (i == beforeLength - 1 && !delete)) {
-                //move the pointer j to the first english letter or symbol in end string
-                for (j = 0; j < afterLength && Character.getType(sAfter.charAt(j)) == Character.OTHER_LETTER; j++);
-
+        if ((beforeLength >= 0 && Character.getType(sBefore.charAt(0)) != Character.OTHER_LETTER )||
+                (beforeLength == 0 && afterLength <= 0)) {
+            innerPinyinProcess(ic, sBefore, sAfter);
+        } else { //未上屏字符中有中文
+            int sBeforeEngPosition = getFirstEnglishLetterPosition(beforeLength,sBefore);
+            if (sBeforeEngPosition == beforeLength || (sBeforeEngPosition == beforeLength - 1 && !delete)) {
+                // 光标前是中文
+                int sAfterEngPosition = getFirstEnglishLetterPosition(afterLength,sAfter);
                 if (delete) {
-                    innerChineseDelete(ic,sBefore,sAfter,i,j);
-                } else if (j != 0 ) {// if current cursor is in chinese characters
+                    innerChineseDelete(ic,sBefore,sAfter,sBeforeEngPosition,sAfterEngPosition);
+                } else if (sAfterEngPosition != 0 ) {// if current cursor is in chinese characters
                     innerChineseInsert(ic,s);
                 } else if (beforeLength > 0) {//if before cursor is chinese and after cursor is pinyin
                     borderChinesePinyinInsert(ic,sBefore,s+sAfter);
                 }
             } else {
-                // 光标前不是汉字
+                // 光标前不是中文
                 if(delete){
-                    withChineseDelete(ic,sBefore,sAfter,i);
+                    withChineseDelete(ic,sBefore,sAfter,sBeforeEngPosition);
                 } else {
-                    withChineseInsert(ic,sBefore,sAfter,i);
+                    withChineseInsert(ic,sBefore,sAfter,sBeforeEngPosition);
                 }
             }
         }
     }
+
 
 }
