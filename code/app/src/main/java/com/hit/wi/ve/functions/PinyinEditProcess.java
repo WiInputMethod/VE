@@ -101,8 +101,8 @@ public class PinyinEditProcess {
         Kernel.inputPinyin(pinyin);
 
         ic.setComposingText(Kernel.getWordsShowPinyin(),1);
-        ic.setSelection(mCandidateStart, mCandidateStart);
-        commitChangesInPreEdit(mCandidateStart, mCandidateStart);
+        ic.setSelection(mCandidateEnd, mCandidateEnd);
+        commitChangesInPreEdit(mCandidateEnd, mCandidateEnd);
     }
 
     private void withChineseInsert(InputConnection ic,String sBefore,String sAfter,int i) {
