@@ -1216,10 +1216,12 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             } else {
                 if(qkInputViewGroups.isShown())qkInputViewGroups.startAnimation(anim);
             }
-            if (bottomBarViewGroup.isShown()) bottomBarViewGroup.setButtonAlpha(autoDownAlpha);
+//            if (bottomBarViewGroup.isShown()) bottomBarViewGroup.setButtonAlpha(autoDownAlpha);
+            if (bottomBarViewGroup.isShown())bottomBarViewGroup.startAnimation(anim);
             if (functionViewGroup.isShown()) functionViewGroup.startAnimation(anim);
             if (specialSymbolChooseViewGroup.isShown()) specialSymbolChooseViewGroup.startAnimation(anim);
             if (quickSymbolViewGroup.isShown()) quickSymbolViewGroup.startAnimation(anim);
+//            if (candidatesViewGroup.isShown())candidatesViewGroup.startAnimation(anim);
             if (candidatesViewGroup.isShown()) candidatesViewGroup.setButtonAlpha(autoDownAlpha);
             if (largeCandidateButton.isShown()) largeCandidateButton.setAlpha(autoDownAlpha);
             isUpAlpha = true;
@@ -1231,19 +1233,20 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
          */
         public void DownAlpha() {
             if (!mWindowShown) return;
+            Log.d("WIVE","down alpha");
             Animation anim = AnimationUtils.loadAnimation(SoftKeyboard.this, R.anim.show);
             if (!Global.isQK(Global.currentKeyboard)) {
                 if (t9InputViewGroup.isShown())t9InputViewGroup.startAnimation(anim);
             } else {
                 if (qkInputViewGroups.isShown())qkInputViewGroups.startAnimation(anim);
             }
-            if(bottomBarViewGroup.isShown()){bottomBarViewGroup.setButtonAlpha(autoDownAlphaTop);}
+//            bottomBarViewGroup.setButtonAlpha(autoDownAlphaTop);
             if (functionViewGroup.isShown()) functionViewGroup.startAnimation(anim);
             if (specialSymbolChooseViewGroup.isShown()) specialSymbolChooseViewGroup.startAnimation(anim);
             if (quickSymbolViewGroup.isShown()) quickSymbolViewGroup.startAnimation(anim);
             if (prefixViewGroup.isShown()) prefixViewGroup.startAnimation(anim);
-            if (candidatesViewGroup.isShown()) {candidatesViewGroup.setButtonAlpha(autoDownAlphaTop);}
-            if (largeCandidateButton.isShown()) {largeCandidateButton.setAlpha(autoDownAlphaTop);}
+            candidatesViewGroup.setButtonAlpha(autoDownAlphaTop);
+            largeCandidateButton.setAlpha(autoDownAlphaTop);
             isUpAlpha =false;
         }
 
@@ -1456,8 +1459,8 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         startAnimation();
 
         bottomBarViewGroup.spaceButton.setText(InputMode.halfToFull(sp.getString("ZH_SPACE_TEXT", "空格")));
-        skinUpdateC.updateSkin();
         if(sp.getBoolean("AUTO_DOWN_ALPHA_CHECK",true))transparencyHandle.startAutoDownAlpha();
+        skinUpdateC.updateSkin();
         keyboardTouchEffect.loadSetting(sp);
 
         super.onWindowShown();

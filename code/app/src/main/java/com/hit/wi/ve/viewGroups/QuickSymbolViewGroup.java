@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.view.animation.Animation;
 import android.widget.*;
 
 import com.hit.wi.jni.Kernel;
@@ -229,6 +230,12 @@ public class QuickSymbolViewGroup extends ScrolledViewGroup implements QuickSymb
 
         String numfilename = symbolModeName + ".num" + flagstring;
         fileManager.writeToFile(numfilename, symbolsDataStruct.numberSymbols);
+    }
+
+    @Override
+    public void startAnimation(Animation anim) {
+        super.startAnimation(anim);
+        lastButton.startAnimation(anim);
     }
 
     private void onTouchEffect(View v, MotionEvent event) {

@@ -211,9 +211,29 @@ public class ScrolledViewGroup extends myViewGroup {
         }
     }
 
+    private Animation.AnimationListener getClearAnimationListener(final View v) {
+        return new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                v.clearAnimation();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        };
+    }
+
     @Override
     public void startAnimation(Animation animation) {
         for (QuickButton quickButton : buttonList) {
+            animation.setAnimationListener(getClearAnimationListener(quickButton));
             quickButton.startAnimation(animation);
         }
     }
