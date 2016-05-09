@@ -235,7 +235,6 @@ public class QuickSymbolViewGroup extends ScrolledViewGroup implements QuickSymb
     @Override
     public void startAnimation(Animation anim) {
         super.startAnimation(anim);
-        lastButton.startAnimation(anim);
     }
 
     private void onTouchEffect(View v, MotionEvent event) {

@@ -1216,8 +1216,8 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             } else {
                 if(qkInputViewGroups.isShown())qkInputViewGroups.startAnimation(anim);
             }
-//            if (bottomBarViewGroup.isShown()) bottomBarViewGroup.setButtonAlpha(autoDownAlpha);
-            if (bottomBarViewGroup.isShown())bottomBarViewGroup.startAnimation(anim);
+            if (bottomBarViewGroup.isShown()) bottomBarViewGroup.setButtonAlpha(autoDownAlpha);
+//            if (bottomBarViewGroup.isShown())bottomBarViewGroup.startAnimation(anim);
             if (functionViewGroup.isShown()) functionViewGroup.startAnimation(anim);
             if (specialSymbolChooseViewGroup.isShown()) specialSymbolChooseViewGroup.startAnimation(anim);
             if (quickSymbolViewGroup.isShown()) quickSymbolViewGroup.startAnimation(anim);
@@ -1240,7 +1240,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             } else {
                 if (qkInputViewGroups.isShown())qkInputViewGroups.startAnimation(anim);
             }
-//            bottomBarViewGroup.setButtonAlpha(autoDownAlphaTop);
+            bottomBarViewGroup.setButtonAlpha(autoDownAlphaTop);
             if (functionViewGroup.isShown()) functionViewGroup.startAnimation(anim);
             if (specialSymbolChooseViewGroup.isShown()) specialSymbolChooseViewGroup.startAnimation(anim);
             if (quickSymbolViewGroup.isShown()) quickSymbolViewGroup.startAnimation(anim);
@@ -1457,6 +1457,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         keyBoardSwitcher.switchKeyboard(functionsC.getKeyboardType(info), false);
         //显示键盘出场动画
         startAnimation();
+        transparencyHandle.DownAlpha();
 
         bottomBarViewGroup.spaceButton.setText(InputMode.halfToFull(sp.getString("ZH_SPACE_TEXT", "空格")));
         if(sp.getBoolean("AUTO_DOWN_ALPHA_CHECK",true))transparencyHandle.startAutoDownAlpha();
