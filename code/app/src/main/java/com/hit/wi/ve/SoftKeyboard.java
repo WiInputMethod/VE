@@ -913,7 +913,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
      * 整合所有view大小和位置更新方法到一个内部类中
      */
     public class ViewSizeUpdateC {
-        private final float TEXTSIZE_RATE_CANDIDATE = (float) 0.4;
+        private final float TEXTSIZE_RATE_CANDIDATE = (float) 0.8;
         private final float TEXTSIZE_RATE_BOTTOM = (float) 0.8;
         private final float TEXTSIZE_RATE_FUNCTION = (float) 0.8;
         private final float TEXTSIZE_RATE_T9 = (float) 0.8;
@@ -1023,7 +1023,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             ((LinearLayout.LayoutParams) largeCandidateButton.itsLayoutParams).leftMargin = standardHorizontalGapDistance;
 
             largeCandidateButton.getPaint().setTextSize(DisplayUtil.px2sp(SoftKeyboard.this,
-                    Math.min(3 * Math.min(secondParams.height, (100 - res.getInteger(R.integer.PREEDIT_WIDTH)) * keyboardWidth / 100) * TEXTSIZE_RATE_CANDIDATE, 30)
+                    Math.min(secondParams.height, (100 - res.getInteger(R.integer.PREEDIT_WIDTH)) * keyboardWidth / 100) * TEXTSIZE_RATE_CANDIDATE
             ));
         }
 
@@ -1185,6 +1185,8 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
      */
     public class TransparencyHandle {
         boolean isUpAlpha = false;
+        private final float autoDownAlpha = (float) 0.1;
+        private final float autoDownAlphaTop = (float) 1.0;
 
         private void startAutoDownAlpha() {
             mHandler.sendEmptyMessageDelayed(MSG_HIDE, 1000);
@@ -1214,12 +1216,12 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             } else {
                 if(qkInputViewGroups.isShown())qkInputViewGroups.startAnimation(anim);
             }
-            if (bottomBarViewGroup.isShown()) bottomBarViewGroup.setBackgroundAlpha(200);
+            if (bottomBarViewGroup.isShown()) bottomBarViewGroup.setButtonAlpha(autoDownAlpha);
             if (functionViewGroup.isShown()) functionViewGroup.startAnimation(anim);
             if (specialSymbolChooseViewGroup.isShown()) specialSymbolChooseViewGroup.startAnimation(anim);
             if (quickSymbolViewGroup.isShown()) quickSymbolViewGroup.startAnimation(anim);
-            if (candidatesViewGroup.isShown()) candidatesViewGroup.setBackgroundAlpha(200);
-            if (largeCandidateButton.isShown()) largeCandidateButton.getBackground().setAlpha(200);
+            if (candidatesViewGroup.isShown()) candidatesViewGroup.setButtonAlpha(autoDownAlpha);
+            if (largeCandidateButton.isShown()) largeCandidateButton.setAlpha(autoDownAlpha);
             isUpAlpha = true;
         }
 
@@ -1235,13 +1237,13 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             } else {
                 if (qkInputViewGroups.isShown())qkInputViewGroups.startAnimation(anim);
             }
-            if (bottomBarViewGroup.isShown()) bottomBarViewGroup.setBackgroundAlpha(Global.getCurrentAlpha());
+            if(bottomBarViewGroup.isShown()){bottomBarViewGroup.setButtonAlpha(autoDownAlphaTop);}
             if (functionViewGroup.isShown()) functionViewGroup.startAnimation(anim);
             if (specialSymbolChooseViewGroup.isShown()) specialSymbolChooseViewGroup.startAnimation(anim);
             if (quickSymbolViewGroup.isShown()) quickSymbolViewGroup.startAnimation(anim);
             if (prefixViewGroup.isShown()) prefixViewGroup.startAnimation(anim);
-            if (candidatesViewGroup.isShown()) candidatesViewGroup.setBackgroundAlpha();
-            if (largeCandidateButton.isShown()) largeCandidateButton.getBackground().setAlpha(Global.getCurrentAlpha());
+            if (candidatesViewGroup.isShown()) {candidatesViewGroup.setButtonAlpha(autoDownAlphaTop);}
+            if (largeCandidateButton.isShown()) {largeCandidateButton.setAlpha(autoDownAlphaTop);}
             isUpAlpha =false;
         }
 
@@ -1455,7 +1457,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
         bottomBarViewGroup.spaceButton.setText(InputMode.halfToFull(sp.getString("ZH_SPACE_TEXT", "空格")));
         skinUpdateC.updateSkin();
-        transparencyHandle.startAutoDownAlpha();
+        if(sp.getBoolean("AUTO_DOWN_ALPHA_CHECK",true))transparencyHandle.startAutoDownAlpha();
         keyboardTouchEffect.loadSetting(sp);
 
         super.onWindowShown();

@@ -86,6 +86,7 @@
     <string name="summary_slide_recommend_2">点滑输入数字和常用符号，也可根据习惯自定义</string>
     <string name="title_slide_recommend_3">常用符号混输方案</string>
     <string name="summary_slide_recommend_3">按键点滑输入常用符号，也可根据习惯自定义</string>
+    <string name="title_advance">高级</string>
 
     <string name="special_function">自定义键盘大小</string>
     <string name="sound">按键音设置</string>
@@ -140,6 +141,10 @@
     <string name="title_update_log">更新日志</string>
     <string name="title_share">好友推荐</string>
     <string name="summary_share">快推荐给您的好友吧</string>
+    <string name="summary_donate">感谢您的支持</string>
+    <string name="summary_input_setting">定制输入方式</string>
+    <string name="title_auto_alpha_down">自动降低透明度</string>
+    <string name="summary_auto_alpha_down">若7秒无响应键盘透明度升高</string>
     <string name="user_guide">用户手册</string>
     <string name="about">关于</string>
     <string name="donate">捐助</string>
@@ -344,6 +349,5 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
-    <string name="summary_donate">感谢您的支持</string>
-    <string name="summary_input_setting">定制输入方式</string>
+
 </resources>

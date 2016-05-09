@@ -220,7 +220,17 @@
                 android:title="@string/title_data_recover"/>
     </PreferenceScreen>
 
-    <!-- 帮助 -->
+    <PreferenceScreen
+    android:title="@string/title_advance">
+        <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="AUTO_DOWN_ALPHA_CHECK"
+                android:title="@string/title_auto_alpha_down"
+                android:summary="@string/summary_auto_alpha_down"
+        />
+    </PreferenceScreen>
+
+   <!-- 帮助 -->
     <PreferenceScreen
             android:key="helper"
             android:summary="@string/summary_about"
