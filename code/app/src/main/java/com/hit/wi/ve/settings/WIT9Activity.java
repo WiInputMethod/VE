@@ -18,14 +18,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.CheckBoxPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
+import android.preference.*;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
-import android.preference.PreferenceScreen;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -70,7 +65,7 @@ public final class WIT9Activity extends PreferenceActivity implements OnPreferen
 //    private Preference mReverse;
 //    private Preference mLeftHand;
     private ListPreference mKeyboardSelector;
-    private PreferenceScreen mSlidePin;
+    private PreferenceCategory mSlidePin;
     /**
      * 双拼的选项
      */
@@ -123,7 +118,7 @@ public final class WIT9Activity extends PreferenceActivity implements OnPreferen
 //        mReverse = findPreference("REVERSE_CANDIDATE");
 //        mLeftHand = findPreference("LEFT_HAND");
         mKeyboardSelector = (ListPreference) findPreference("KEYBOARD_SELECTOR");
-        mSlidePin = (PreferenceScreen) findPreference("slide_pin_mode");
+        mSlidePin = (PreferenceCategory) findPreference("slide_pin_mode");
 
         mSlideRecommend0 = findPreference("SLIDE_RECOMMEND0");
         mSlideRecommend1 = findPreference("SLIDE_RECOMMEND1");

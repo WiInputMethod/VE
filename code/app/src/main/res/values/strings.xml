@@ -9,8 +9,8 @@
 
     <!-- Symbols that are commonly considered word separators in this language -->
 
-    <string name="title_common_setting">常用设置</string>
-    <string name="summary_common_setting">定制您的输入法</string>
+    <string name="title_keyboard_and_outlook_setting">键盘与外观</string>
+    <string name="summary_keyboard_and_outlook_setting">定制您的输入法</string>
     <string name="title_mohu_setting">模糊音设置</string>
     <string name="summary_mohu_setting">定制您的偏好</string>
     <string name="title_reverse_candidate">翻转候选顺序</string>
@@ -132,8 +132,8 @@
     <string name="title_data_recover">本地恢复</string>
     <string name="summary_data_recover">从SD卡恢复您的用户词典</string>
     <string name="help">使用帮助</string>
-    <string name="title_helper">使用帮助</string>
-    <string name="summary_helper">帮助</string>
+    <string name="title_about">关于</string>
+    <string name="summary_about">帮助与关于</string>
     <string name="title_user_skill">使用技巧</string>
     <string name="title_donate">捐助</string>
     <string name="title_about_us">关于我们</string>
@@ -149,7 +149,7 @@
     <string name="miui_permission">MIUI开启悬浮窗</string>
     <!-- 键盘部分 -->
     <string name="title_keyboard_select">全新九键全键切换</string>
-    <string name="title_keyboard_setting">键盘选项</string>
+    <string name="title_input_setting">输入设置</string>
     <string name="summary_keyboard_setting">选择中文键盘</string>
     <string name="title_slide_pin_mode">全键点滑设置</string>
     <string name="summary_slide_pin_mode">设置点滑状态、声音大小、自定义点滑等</string>
@@ -344,4 +344,6 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+    <string name="summary_donate">感谢您的支持</string>
+    <string name="summary_input_setting">定制输入方式</string>
 </resources>

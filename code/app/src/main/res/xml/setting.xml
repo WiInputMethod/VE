@@ -1,33 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- 常用的设置选项 -->
     <PreferenceScreen
-            android:key="common_setting_window"
-            android:summary="@string/summary_common_setting"
-            android:title="@string/title_common_setting">
-        <!-- 功能选项：EMOJI表情、中文联想 -->
-        <PreferenceCategory android:title="@string/categorytitle_changyong_gongneng"
-                            android:key="changyong_gongneng">
-            <ListPreference
-                    android:defaultValue="27"
-                    android:key="LIANXIANG_SELECTOR"
-                    android:dialogTitle="@string/dialog_title_lianxiang"
-                    android:entries= "@array/lianxiang_option"
-                    android:entryValues= "@array/lianxiang_option_value"
-                    android:summary="@string/summary_lianxiang"
-                    android:title="@string/title_lianxiang">
-            </ListPreference>
+        android:key="KEYBOARD_AND_OUTLOOK"
+        android:summary="@string/summary_keyboard_and_outlook_setting"
+        android:title="@string/title_keyboard_and_outlook_setting">
+        <ListPreference
+                android:defaultValue="2"
+                android:dialogTitle="@string/title_keyboard_select"
+                android:entries="@array/keyboard_option"
+                android:entryValues="@array/keyboard_option_value"
+                android:key="KEYBOARD_SELECTOR"
+                android:summary="@string/summary_keyboard_setting"
+                android:title="@string/title_keyboard_select"/>
 
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="SLIDE_DELETE_CHECK"
-                android:summary="@string/SLIDE_DELETE_STR"
-                android:title="@string/SLIDE_DELETE_TITLE"
-            />
+        <!-- 样式选项：翻转候选词，左手模式，空格文字，皮肤 -->
+        <PreferenceCategory android:title="@string/categorytitle_changyong_yangshi" android:key="changyong_yangshi">
+            <!--<CheckBoxPreference-->
+            <!--android:defaultValue="false"-->
+            <!--android:key="@string/key_reverse_candidate"-->
+            <!--android:summary="@string/summary_reverse_candidate"-->
+            <!--android:title="@string/title_reverse_candidate"/>-->
 
+            <!--<CheckBoxPreference-->
+            <!--android:defaultValue="false"-->
+            <!--android:key="@string/key_left_hand"-->
+            <!--android:summary="@string/summary_left_hand"-->
+            <!--android:title="@string/title_left_hand"/>-->
+            <Preference
+                    android:key="skin_picker"
+                    android:summary="@string/summary_skin_picker"
+                    android:title="@string/title_skin_picker">
+                <intent
+                        android:action="android.intent.action.MAIN"
+                        android:targetPackage="com.hit.wi.ve"
+                        android:targetClass="com.hit.wi.ve.settings.SkinPickerActivity"/>
+            </Preference>
+
+            <com.hit.wi.ve.view.DefSpacePreference
+                    android:key="USER_DEF_SPACE_TEXT"
+                    android:dialogLayout="@layout/def_space_text"
+                    android:summary="@string/summary_user_def_space_text"
+                    android:title="@string/title_user_def_space_text"
+                    android:dialogTitle="@string/dialogtitle_user_def_space_text"
+                    android:positiveButtonText="@string/save"
+                    android:negativeButtonText="@string/cancel"/>
 
         </PreferenceCategory>
+
+        <PreferenceCategory android:title="@string/categorytitle_changyong_fankui" android:key="changyong_fankui">
+            <ListPreference
+                    android:defaultValue="1"
+                    android:dialogTitle="@string/dialog_title_sound_effect"
+                    android:entries="@array/sound_effect_option"
+                    android:entryValues="@array/sound_effect_option_value"
+                    android:key="KEY_SOUND_EFFECT_SELECTOR"
+                    android:summary="@string/summary_sound_effect"
+                    android:title="@string/title_sound_effect"/>
+            <com.hit.wi.ve.view.SeekbarPreference
+                    android:dialogLayout="@layout/sound_setting"
+                    android:dialogTitle="@string/sound"
+                    android:key="SOUND"
+                    android:summary="@string/summary_sound"
+                    android:title="@string/sound"/>
+            <com.hit.wi.ve.view.SeekbarPreference
+                    android:dialogLayout="@layout/sound_setting"
+                    android:dialogTitle="@string/vibrator"
+                    android:key="VIBRATOR"
+                    android:summary="@string/summary_vibrator"
+                    android:title="@string/vibrator"/>
+            <com.hit.wi.ve.view.SeekbarPreference
+                    android:dialogLayout="@layout/sound_setting"
+                    android:dialogTitle="@string/title_slide_pin_volume"
+                    android:key="SLIDE_PIN_VOLUME"
+                    android:summary="@string/summary_slide_pin_volume"
+                    android:title="@string/title_slide_pin_volume"/>
+        </PreferenceCategory>
+
 
         <PreferenceCategory android:title="@string/shadow_category_STR" android:key="shadow">
             <CheckBoxPreference
@@ -47,36 +96,32 @@
             />
         </PreferenceCategory>
 
-        <!-- 样式选项：翻转候选词，左手模式，空格文字，皮肤 -->
-        <PreferenceCategory android:title="@string/categorytitle_changyong_yangshi" android:key="changyong_yangshi">
-            <!--<CheckBoxPreference-->
-                    <!--android:defaultValue="false"-->
-                    <!--android:key="@string/key_reverse_candidate"-->
-                    <!--android:summary="@string/summary_reverse_candidate"-->
-                    <!--android:title="@string/title_reverse_candidate"/>-->
 
-            <!--<CheckBoxPreference-->
-                    <!--android:defaultValue="false"-->
-                    <!--android:key="@string/key_left_hand"-->
-                    <!--android:summary="@string/summary_left_hand"-->
-                    <!--android:title="@string/title_left_hand"/>-->
-            <com.hit.wi.ve.view.DefSpacePreference
-                    android:key="USER_DEF_SPACE_TEXT"
-                    android:dialogLayout="@layout/def_space_text"
-                    android:summary="@string/summary_user_def_space_text"
-                    android:title="@string/title_user_def_space_text"
-                    android:dialogTitle="@string/dialogtitle_user_def_space_text"
-                    android:positiveButtonText="@string/save"
-                    android:negativeButtonText="@string/cancel"/>
-            <Preference
-                    android:key="skin_picker"
-                    android:summary="@string/summary_skin_picker"
-                    android:title="@string/title_skin_picker">
-                <intent
-                        android:action="android.intent.action.MAIN"
-                        android:targetPackage="com.hit.wi.ve"
-                        android:targetClass="com.hit.wi.ve.settings.SkinPickerActivity"/>
-            </Preference>
+    </PreferenceScreen>
+
+    <!-- 设置键盘 -->
+    <PreferenceScreen
+            android:summary="@string/summary_input_setting"
+            android:title="@string/title_input_setting">
+        <!--联想设置-->
+        <PreferenceCategory android:title="@string/categorytitle_changyong_gongneng"
+                            android:key="changyong_gongneng">
+            <ListPreference
+                    android:defaultValue="27"
+                    android:key="LIANXIANG_SELECTOR"
+                    android:dialogTitle="@string/dialog_title_lianxiang"
+                    android:entries= "@array/lianxiang_option"
+                    android:entryValues= "@array/lianxiang_option_value"
+                    android:summary="@string/summary_lianxiang"
+                    android:title="@string/title_lianxiang">
+            </ListPreference>
+
+            <CheckBoxPreference
+                    android:defaultValue="true"
+                    android:key="SLIDE_DELETE_CHECK"
+                    android:summary="@string/SLIDE_DELETE_STR"
+                    android:title="@string/SLIDE_DELETE_TITLE"
+            />
 
         </PreferenceCategory>
 
@@ -115,55 +160,10 @@
         </PreferenceCategory>
         <!-- 双拼设置 -->
 
-
-        <PreferenceCategory android:title="@string/categorytitle_changyong_fankui" android:key="changyong_fankui">
-            <ListPreference
-                    android:defaultValue="1"
-                    android:dialogTitle="@string/dialog_title_sound_effect"
-                    android:entries="@array/sound_effect_option"
-                    android:entryValues="@array/sound_effect_option_value"
-                    android:key="KEY_SOUND_EFFECT_SELECTOR"
-                    android:summary="@string/summary_sound_effect"
-                    android:title="@string/title_sound_effect"/>
-            <com.hit.wi.ve.view.SeekbarPreference
-                    android:dialogLayout="@layout/sound_setting"
-                    android:dialogTitle="@string/sound"
-                    android:key="SOUND"
-                    android:summary="@string/summary_sound"
-                    android:title="@string/sound"/>
-            <com.hit.wi.ve.view.SeekbarPreference
-                    android:dialogLayout="@layout/sound_setting"
-                    android:dialogTitle="@string/vibrator"
-                    android:key="VIBRATOR"
-                    android:summary="@string/summary_vibrator"
-                    android:title="@string/vibrator"/>
-        </PreferenceCategory>
-
-    </PreferenceScreen>
-
-    <!-- 设置键盘 -->
-    <PreferenceCategory android:title="@string/title_keyboard_setting">
-        <ListPreference
-                android:defaultValue="2"
-                android:dialogTitle="@string/title_keyboard_select"
-                android:entries="@array/keyboard_option"
-                android:entryValues="@array/keyboard_option_value"
-                android:key="KEYBOARD_SELECTOR"
-                android:summary="@string/summary_keyboard_setting"
-                android:title="@string/title_keyboard_select"/>
-
-        <PreferenceScreen
-                android:summary="@string/qk_summary_slide_pin_mode"
+        <PreferenceCategory
                 android:title="@string/title_slide_pin_mode"
                 android:key="slide_pin_mode"
                 android:enabled="false">
-
-            <com.hit.wi.ve.view.SeekbarPreference
-                    android:dialogLayout="@layout/sound_setting"
-                    android:dialogTitle="@string/title_slide_pin_volume"
-                    android:key="SLIDE_PIN_VOLUME"
-                    android:summary="@string/summary_slide_pin_volume"
-                    android:title="@string/title_slide_pin_volume"/>
 
             <PreferenceScreen
                     android:key="SLIDE_RECOMMEND"
@@ -199,72 +199,46 @@
                         android:key="SELF_DEF_SLIDE_PIN_ADD"
                         android:layout="@layout/user_def_word_add_pre_layout"/>
             </PreferenceScreen>
-        </PreferenceScreen>
-    </PreferenceCategory>
+
+        </PreferenceCategory>
+    </PreferenceScreen>
     <!-- 设置键盘 -->
 
 
     <!-- 数据设置选项 -->
-    <PreferenceCategory android:title="@string/data_setting">
+    <PreferenceScreen
+            android:key="DATA_SYNC"
+            android:summary="@string/summary_data_sync"
+            android:title="@string/title_data_sync">
+        <Preference
+                android:key="DATA_BACK_UP"
+                android:summary="@string/summary_data_back_up"
+                android:title="@string/title_data_back_up"/>
+        <Preference
+                android:key="DATA_RECOVER"
+                android:summary="@string/summary_data_recover"
+                android:title="@string/title_data_recover"/>
+    </PreferenceScreen>
 
-        <PreferenceScreen
-                android:key="DATA_SYNC"
-                android:summary="@string/summary_data_sync"
-                android:title="@string/title_data_sync">
-            <Preference
-                    android:key="DATA_BACK_UP"
-                    android:summary="@string/summary_data_back_up"
-                    android:title="@string/title_data_back_up"/>
-            <Preference
-                    android:key="DATA_RECOVER"
-                    android:summary="@string/summary_data_recover"
-                    android:title="@string/title_data_recover"/>
-        </PreferenceScreen>
-    </PreferenceCategory>
     <!-- 帮助 -->
-    <PreferenceCategory android:title="@string/help">
+    <PreferenceScreen
+            android:key="helper"
+            android:summary="@string/summary_about"
+            android:title="@string/title_about">
+        <Preference
+                android:key="hand_book"
+                android:title="@string/title_user_skill">
+            <intent
+                    android:action="android.intent.action.MAIN"
+                    android:targetClass="com.hit.wi.ve.settings.HandBookActivity"
+                    android:targetPackage="com.hit.wi.ve"/>
+        </Preference>
+
         <Preference
                 android:key="miui_permission"
                 android:title="@string/miui_permission">
-
         </Preference>
-        <PreferenceScreen
-                android:key="helper"
-                android:summary="@string/summary_helper"
-                android:title="@string/title_helper">
-            <Preference
-                    android:key="hand_book"
-                    android:title="@string/title_user_skill">
-                <intent
-                        android:action="android.intent.action.MAIN"
-                        android:targetClass="com.hit.wi.ve.settings.HandBookActivity"
-                        android:targetPackage="com.hit.wi.ve"/>
-            </Preference>
-            <Preference
-                    android:key="donate"
-                    android:title="@string/title_donate">
-                <intent
-                        android:action="android.intent.action.MAIN"
-                        android:targetClass="com.hit.wi.ve.settings.DonateWiActivity"
-                        android:targetPackage="com.hit.wi.ve"/>
-            </Preference>
-            <Preference
-                    android:key="about_us"
-                    android:title="@string/title_about_us">
-                <intent
-                        android:action="android.intent.action.MAIN"
-                        android:targetClass="com.hit.wi.ve.settings.AboutWiActivity"
-                        android:targetPackage="com.hit.wi.ve"/>
-            </Preference>
-            <Preference
-                    android:key="update_log"
-                    android:title="@string/title_update_log">
-                <intent
-                        android:action="android.intent.action.MAIN"
-                        android:targetClass="com.hit.wi.ve.settings.UpdateLogActivity"
-                        android:targetPackage="com.hit.wi.ve"/>
-            </Preference>
-        </PreferenceScreen>
+
         <Preference
                 android:key="@string/key_unshown_help"
                 android:title="@string/title_unshown_help"
@@ -274,16 +248,47 @@
                     android:targetClass="com.hit.wi.ve.settings.UnshownHelpActivity"
                     android:targetPackage="com.hit.wi.ve"/>
         </Preference>
-        <!-- 分享部分 -->
+
         <Preference
-                android:key="share"
-                android:summary="@string/summary_share"
-                android:title="@string/title_share">
+                android:key="about_us"
+                android:title="@string/title_about_us">
             <intent
                     android:action="android.intent.action.MAIN"
-                    android:targetClass="com.hit.wi.ve.settings.ShareActivity"
+                    android:targetClass="com.hit.wi.ve.settings.AboutWiActivity"
                     android:targetPackage="com.hit.wi.ve"/>
         </Preference>
-    </PreferenceCategory>
+
+        <Preference
+                android:key="update_log"
+                android:title="@string/title_update_log">
+            <intent
+                    android:action="android.intent.action.MAIN"
+                    android:targetClass="com.hit.wi.ve.settings.UpdateLogActivity"
+                    android:targetPackage="com.hit.wi.ve"/>
+        </Preference>
+
+        <Preference
+                android:key="donate"
+                android:title="@string/title_donate"
+                android:summary="@string/summary_donate"
+        >
+            <intent
+                    android:action="android.intent.action.MAIN"
+                    android:targetClass="com.hit.wi.ve.settings.DonateWiActivity"
+                    android:targetPackage="com.hit.wi.ve"/>
+        </Preference>
+    </PreferenceScreen>
+
+
+    <!-- 分享部分 -->
+    <Preference
+            android:key="share"
+            android:summary="@string/summary_share"
+            android:title="@string/title_share">
+        <intent
+                android:action="android.intent.action.MAIN"
+                android:targetClass="com.hit.wi.ve.settings.ShareActivity"
+                android:targetPackage="com.hit.wi.ve"/>
+    </Preference>
 
 </PreferenceScreen>

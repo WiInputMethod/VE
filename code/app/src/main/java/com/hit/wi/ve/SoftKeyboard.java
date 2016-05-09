@@ -209,7 +209,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_HIDE:
-                    Log.d("WIVE","hide count" + Global.keyboardRestTimeCount);
                     if (Global.keyboardRestTimeCount > ALPHA_DOWN_TIME) {
                         if(!transparencyHandle.isUpAlpha)transparencyHandle.UpAlpha();
                         Global.keyboardRestTimeCount = 0;
@@ -1215,7 +1214,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             } else {
                 if(qkInputViewGroups.isShown())qkInputViewGroups.startAnimation(anim);
             }
-            if (bottomBarViewGroup.isShown()) bottomBarViewGroup.startAnimation(anim);
+            if (bottomBarViewGroup.isShown()) bottomBarViewGroup.setBackgroundAlpha(200);
             if (functionViewGroup.isShown()) functionViewGroup.startAnimation(anim);
             if (specialSymbolChooseViewGroup.isShown()) specialSymbolChooseViewGroup.startAnimation(anim);
             if (quickSymbolViewGroup.isShown()) quickSymbolViewGroup.startAnimation(anim);
@@ -1236,7 +1235,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             } else {
                 if (qkInputViewGroups.isShown())qkInputViewGroups.startAnimation(anim);
             }
-            if (bottomBarViewGroup.isShown()) bottomBarViewGroup.startAnimation(anim);
+            if (bottomBarViewGroup.isShown()) bottomBarViewGroup.setBackgroundAlpha(Global.getCurrentAlpha());
             if (functionViewGroup.isShown()) functionViewGroup.startAnimation(anim);
             if (specialSymbolChooseViewGroup.isShown()) specialSymbolChooseViewGroup.startAnimation(anim);
             if (quickSymbolViewGroup.isShown()) quickSymbolViewGroup.startAnimation(anim);
