@@ -274,30 +274,30 @@ public class SkinDiyActivity extends FragmentActivity {
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         oldQkColors = new int[8];
         oldT9Colors = new int[2];
-        oldQkColors[0] = sp.getInt("diy_backcolor_functionKeys", 0xFF673ab7);
-        oldQkColors[1] = sp.getInt("diy_textcolors_functionKeys", 0xFFe8eaf6);
-        oldQkColors[2] = sp.getInt("diy_backcolor_quickSymbol", 0xFF673ab7);
-        oldQkColors[3] = sp.getInt("diy_textcolors_quickSymbol", 0xFFe8eaf6);
-        oldQkColors[4] = sp.getInt("diy_backcolor_26keys", 0xFF673ab7);
-        oldQkColors[5] = sp.getInt("diy_textcolors_26keys", 0xFFe8eaf6);
-        oldQkColors[6] = sp.getInt("diy_backcolor_bottom", 0xFF673ab7);
-        oldQkColors[7] = sp.getInt("diy_textcolors_bottom", 0xFFe8eaf6);
+        oldQkColors[0] = sp.getInt("diy_backcolor_functionKeys", 0xFFF0F0F0);
+        oldQkColors[1] = sp.getInt("diy_textcolors_functionKeys", 0xFF272822);
+        oldQkColors[2] = sp.getInt("diy_backcolor_quickSymbol", 0xFFF0F0F0);
+        oldQkColors[3] = sp.getInt("diy_textcolors_quickSymbol", 0xFF272822);
+        oldQkColors[4] = sp.getInt("diy_backcolor_26keys", 0xFFF0F0F0);
+        oldQkColors[5] = sp.getInt("diy_textcolors_26keys", 0xFF272822);
+        oldQkColors[6] = sp.getInt("diy_backcolor_bottom", 0xFFF0F0F0);
+        oldQkColors[7] = sp.getInt("diy_textcolors_bottom", 0xFF272822);
 
 
-        oldT9Colors[0] = sp.getInt("diy_backcolor_t9keys", 0xFF673ab7);
-        oldT9Colors[1] = sp.getInt("diy_textcolors_t9keys", 0xFFe8eaf6);
+        oldT9Colors[0] = sp.getInt("diy_backcolor_t9keys", 0xFFF0F0F0);
+        oldT9Colors[1] = sp.getInt("diy_textcolors_t9keys", 0xFF272822);
 
-        backColorCandidateBox = sp.getInt("diy_backcolor_candidate", 0xFF673ab7);
-        textColorCandidateBox = sp.getInt("diy_textcolors_candidate", 0xFFe8eaf6);
+        backColorCandidateBox = sp.getInt("diy_backcolor_candidate", 0xFFF0F0F0);
+        textColorCandidateBox = sp.getInt("diy_textcolors_candidate", 0xFF272822);
 
-        backColorEditBox = sp.getInt("diy_backcolor_preEdit", 0xFF673ab7);
-        textColorEditBox = sp.getInt("diy_textcolors_preEdit", 0xFFe8eaf6);
+        backColorEditBox = sp.getInt("diy_backcolor_preEdit", 0xFF1F7BE5);
+        textColorEditBox = sp.getInt("diy_textcolors_preEdit", 0xFF272822);
 
         selectedColorsQk = oldQkColors;
         selectedColorsT9 = oldT9Colors;
 
-        colorTouchDown = sp.getInt("diy_backcolor_touchdown", 0xFF5677fc);
-        shadowColor = sp.getInt("diy_shadow", 0xFF00bcd4);
+        colorTouchDown = sp.getInt("diy_backcolor_touchdown", 0xFF1F7BE5);
+        shadowColor = sp.getInt("diy_shadow", 0xBFC9C9C9);
     }
 
     public void cancelSet() {
