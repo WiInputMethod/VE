@@ -117,13 +117,14 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     private static final int DISABLE_LAYOUTPARAMS_FLAG = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
             | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
             | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
-    private static final int ABLE_LAYOUTPARAMS_FLAG = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
     //默认是FLAG_NOT_FOCUSABLE，否则会抢夺输入框的焦点导致键盘收回
 
+    private static final int ABLE_LAYOUTPARAMS_FLAG = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
     //透明度有关
-//    public static final int SET_ALPHA_VIEW_DESTROY = -803;
+    //    public static final int SET_ALPHA_VIEW_DESTROY = -803;
 
     private final int MSG_HIDE = 0;
+
     public final int MSG_REPEAT = 1;
     private final int MSG_SEND_TO_KERNEL = 2;
     private final int QK_MSG_SEND_TO_KERNEL = 3;
@@ -132,6 +133,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     private final int MSG_LAZY_LOAD_CANDIDATE = 6;
     private final int MSG_DOUBLE_CLICK_REFRESH = 7;
     private final int MSG_KERNEL_CLEAN = 8;
+    private final int MSG_CLEAR_ANIMATION = 9;
 
     private final int ALPHA_DOWN_TIME = 7;
     private static final int REPEAT_INTERVAL = 50; // 重复按键的时间
@@ -244,6 +246,9 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                     break;
                 case MSG_KERNEL_CLEAN:
                     mHandler.removeMessages(MSG_KERNEL_CLEAN);
+                    break;
+                case MSG_CLEAR_ANIMATION:
+                    clearAnimation();
                     break;
             }
 
@@ -524,6 +529,19 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
     public void switchKeyboardTo(int keyboard, boolean showAnim) {
         keyBoardSwitcher.switchKeyboard(keyboard, showAnim);
+    }
+
+    public void clearAnimation(){
+        quickSymbolViewGroup.clearAnimation();
+        t9InputViewGroup.clearAnimation();
+        qkInputViewGroups.clearAnimation();
+        functionViewGroup.clearAnimation();
+        bottomBarViewGroup.clearAnimation();
+        prefixViewGroup.clearAnimation();
+        largeCandidateButton.clearAnimation();
+        candidatesViewGroup.clearAnimation();
+        lightViewManager.invisibleLightView();
+        specialSymbolChooseViewGroup.clearAnimation();
     }
 
     public OnChangeListener mOnSizeChangeListener = new OnChangeListener() {
@@ -1482,6 +1500,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             mOnSizeChangeListener.onFinishSetting();
         }
         mHandler.removeMessages(MSG_HIDE);
+        mHandler.sendEmptyMessageDelayed(MSG_CLEAR_ANIMATION,2000);
         super.onWindowHidden();
     }
 

@@ -171,6 +171,12 @@ public class T9InputViewGroup extends NonScrollViewGroup {
     }
 
     @Override
+    public void clearAnimation() {
+        super.clearAnimation();
+        deleteButton.clearAnimation();
+    }
+
+    @Override
     public void setBackgroundAlpha(int alpha){
         super.setBackgroundAlpha(alpha);
         deleteButton.getBackground().setAlpha(alpha);

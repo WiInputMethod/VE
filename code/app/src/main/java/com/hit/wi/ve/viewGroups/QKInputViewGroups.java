@@ -442,6 +442,14 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         deleteButton.getBackground().setAlpha(alpha);
     }
 
+    @Override
+    public void clearAnimation() {
+        super.clearAnimation();
+        deleteButton.clearAnimation();
+        shiftButton.clearAnimation();
+        smileButton.clearAnimation();
+    }
+
     public void setTypeface(Typeface typeface){
         shiftButton.setTypeface(typeface);
         deleteButton.setTypeface(typeface);
