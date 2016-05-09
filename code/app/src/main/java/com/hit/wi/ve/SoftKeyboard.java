@@ -1068,6 +1068,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             boolean isDiy = PreferenceManager.getDefaultSharedPreferences(SoftKeyboard.this).getBoolean("IS_DIY", false);
             if (themeType != Global.currentSkinType) {
                 skinInfoManager.loadConfigurationFromXML(themeType, res);
+                Global.currentSkinType=themeType;
             }
             if (isDiy) {
                 skinInfoManager.loadConfigurationFromDIY(SoftKeyboard.this);

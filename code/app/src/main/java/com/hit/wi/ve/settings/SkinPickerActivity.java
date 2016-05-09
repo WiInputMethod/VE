@@ -116,7 +116,6 @@ public class SkinPickerActivity extends Activity {
                         map = (HashMap<String, Object>) adapter.getItem(lastItem);
                         map.put("Layer", R.drawable.theme_picked);
                         adapter.notifyDataSetChanged();
-
                     }
 
                     SharedPreferences.Editor editor = sp.edit();
