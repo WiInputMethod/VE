@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical">
+
+<SeekBar android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:id="@+id/textsizeBar"
+         android:layout_marginLeft="20dip"
+         android:layout_marginRight="10dip"
+         android:max="100"
+         android:progress="50">
+</SeekBar>
+
+    <TextView android:text="候选词大小:"
+              android:layout_height="wrap_content"
+              android:layout_width="wrap_content"
+
+              android:layout_marginLeft="20dip">
+    </TextView>
+    <TextView android:layout_width="match_parent" android:layout_height="110dip"
+              android:text="AAA"
+              android:id="@+id/tv_textsize_sample"
+              android:layout_marginLeft="20dip"
+
+    />
+
+</LinearLayout>

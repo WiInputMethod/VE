@@ -201,6 +201,17 @@
             </PreferenceScreen>
 
         </PreferenceCategory>
+        <PreferenceCategory
+            android:title="候选词"
+            android:key="candidata_set"
+        >
+            <com.hit.wi.ve.view.TextSizePreference
+                    android:dialogLayout="@layout/textsize_setting"
+                    android:dialogTitle="候选词字体"
+                    android:key="CANDIDATE_TEXT_SIZE"
+                    android:title="候选词字体"/>
+
+        </PreferenceCategory>
     </PreferenceScreen>
     <!-- 设置键盘 -->
 
