@@ -28,9 +28,8 @@ public class TextSizePreference extends DialogPreference implements
         final SeekBar textsizeBar = (SeekBar) view.findViewById(R.id.textsizeBar);
         tv_sample = (TextView) view.findViewById(R.id.tv_textsize_sample);
         textsizeBar.setOnSeekBarChangeListener(this);
-        textsizeBar.setProgress(getSharedPreferences().getInt(getKey(),0));
+        textsizeBar.setProgress(getSharedPreferences().getInt(getKey(),0)*100);
         super.onBindDialogView(view);
-
     }
     public final void onProgressChanged(final SeekBar seekBar,
                                         final int progress, final boolean fromUser) {
