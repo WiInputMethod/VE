@@ -249,7 +249,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
 
     private void onTouchEffect(View view, int action, int touchdownColor, int normalColor) {
         softKeyboard.transparencyHandle.handleAlpha(action);
-        softKeyboard.keyboardTouchEffect.onTouchEffectWithAnim(view, action, touchdownColor, normalColor, context);
+        softKeyboard.keyboardTouchEffect.onTouchEffectWithAnim(view, action, touchdownColor, normalColor);
     }
 
     private void setSpaceText() {

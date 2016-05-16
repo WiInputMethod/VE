@@ -461,8 +461,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         softKeyboard.keyboardTouchEffect.onTouchEffectWithAnim(
                 view,action,
                 skinInfoManager.skinData.backcolor_touchdown,
-                backgroundColor,
-                context
+                backgroundColor
         );
     }
 
@@ -470,8 +469,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         softKeyboard.transparencyHandle.handleAlpha(action);
         softKeyboard.keyboardTouchEffect.onTouchEffectWithAnimForQK(view,action,
                 skinInfoManager.skinData.backcolor_touchdown,
-                backgroundColor,
-                context
+                backgroundColor
         );
     }
 

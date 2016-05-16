@@ -104,8 +104,8 @@ public class PreFixViewGroup extends ScrolledViewGroup {
     private void onTouchEffect(View v, MotionEvent event){
         softKeyboard.keyboardTouchEffect.onTouchEffectWithAnim(v, event.getAction(),
                 skinInfoManager.skinData.backcolor_touchdown,
-                skinInfoManager.skinData.backcolor_prefix,
-                context);
+                skinInfoManager.skinData.backcolor_prefix
+        );
         softKeyboard.transparencyHandle.handleAlpha(event.getAction());
     }
 

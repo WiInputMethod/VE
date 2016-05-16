@@ -241,8 +241,7 @@ public class QuickSymbolViewGroup extends ScrolledViewGroup implements QuickSymb
         softKeyboard.transparencyHandle.handleAlpha(event.getAction());
         softKeyboard.keyboardTouchEffect.onTouchEffectWithAnim(v, event.getAction(),
                 skinInfoManager.skinData.backcolor_touchdown,
-                skinInfoManager.skinData.backcolor_quickSymbol,
-                context
+                skinInfoManager.skinData.backcolor_quickSymbol
         );
     }
 

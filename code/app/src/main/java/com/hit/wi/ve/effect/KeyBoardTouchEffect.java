@@ -30,8 +30,8 @@ public class KeyBoardTouchEffect implements KeyboardTouchEffectInterface {
     public KeyBoardTouchEffect(Context context) {
         vibrateManager = new VibrateManager(context);
         soundManager = new SoundManager(context);
-        downAnim = AnimationUtils.loadAnimation(context, R.anim.touch_down);
-        upAnim = AnimationUtils.loadAnimation(context, R.anim.touch_up);
+        downAnim = AnimationUtils.loadAnimation(context.getApplicationContext(), R.anim.touch_down);
+        upAnim = AnimationUtils.loadAnimation(context.getApplicationContext(), R.anim.touch_up);
 
     }
 
@@ -68,7 +68,7 @@ public class KeyBoardTouchEffect implements KeyboardTouchEffectInterface {
         v.getBackground().setAlpha(Global.getCurrentAlpha());
     }
 
-    public void animEffect(View v,int action,Context context){
+    public void animEffect(View v,int action){
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 v.startAnimation(downAnim);
@@ -80,13 +80,13 @@ public class KeyBoardTouchEffect implements KeyboardTouchEffectInterface {
         }
     }
 
-    public void onTouchEffectWithAnim(View v, int action, int touchdown_color, int normal_color, Context context) {
-        animEffect(v,action,context);
+    public void onTouchEffectWithAnim(View v, int action, int touchdown_color, int normal_color) {
+        animEffect(v,action);
         onTouchEffect(v, action, touchdown_color, normal_color);
     }
 
-    public void onTouchEffectWithAnimForQK(View v, int action, int touchdown_color, int normal_color, Context context){
-        animEffect(v,action,context);
+    public void onTouchEffectWithAnimForQK(View v, int action, int touchdown_color, int normal_color){
+        animEffect(v,action);
         onTouchEffect(v.findViewById(R.id.main_text),action,touchdown_color,normal_color);
         onTouchEffect(v.findViewById(R.id.predict_text),action,touchdown_color,normal_color);
     }
