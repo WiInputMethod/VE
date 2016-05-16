@@ -355,28 +355,26 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
                         softKeyboard.bottomBarViewGroup.backReturnState();
                         Global.inLarge = false;
                     }
-                    if(Global.isInView(v,event)) {
-                        if (Global.currentKeyboard == Global.KEYBOARD_SYM){
-                            CharSequence text = ((TextView)v).getText();
-                            if (!softKeyboard.quickSymbolViewGroup.isLock()) {
-                                int inputKeyboard = PreferenceManager.getDefaultSharedPreferences(context).getString("KEYBOARD_SELECTOR", "2").equals("1") ?
-                                        Global.KEYBOARD_T9 : Global.KEYBOARD_QK;
-                                softKeyboard.switchKeyboardTo(inputKeyboard, true);
-                            }
-                            softKeyboard.commitText(text);
-                        } else if (mQKOrEmoji.equals(Global.SYMBOL)) {
-                            CharSequence text = ((TextView)v).getText();
-                            softKeyboard.commitText(text);
-                            softKeyboard.refreshDisplay();
-                        } else if (mQKOrEmoji.equals(Global.QUANPIN )) {
-                            commitQKCandidate(v);
-                            softKeyboard.refreshDisplay();
-                        } else {
-                            commitT9Candidate(v);
-                            softKeyboard.refreshDisplay();
+                    if (Global.currentKeyboard == Global.KEYBOARD_SYM){
+                        CharSequence text = ((TextView)v).getText();
+                        if (!softKeyboard.quickSymbolViewGroup.isLock()) {
+                            int inputKeyboard = PreferenceManager.getDefaultSharedPreferences(context).getString("KEYBOARD_SELECTOR", "2").equals("1") ?
+                                    Global.KEYBOARD_T9 : Global.KEYBOARD_QK;
+                            softKeyboard.switchKeyboardTo(inputKeyboard, true);
                         }
-                        touched = false;
+                        softKeyboard.commitText(text);
+                    } else if (mQKOrEmoji.equals(Global.SYMBOL)) {
+                        CharSequence text = ((TextView)v).getText();
+                        softKeyboard.commitText(text);
+                        softKeyboard.refreshDisplay();
+                    } else if (mQKOrEmoji.equals(Global.QUANPIN )) {
+                        commitQKCandidate(v);
+                        softKeyboard.refreshDisplay();
+                    } else {
+                        commitT9Candidate(v);
+                        softKeyboard.refreshDisplay();
                     }
+                    touched = false;
                     break;
             }
             return true;
@@ -387,8 +385,28 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_MOVE){
-                if (scrollView.getScrollY()==0 && event.getY()>v.getHeight() * SCROLL_LARGE_HEIGHT_RATE) {
+                if (v.getScrollY() == 0
+                        && event.getY()>v.getHeight() * SCROLL_LARGE_HEIGHT_RATE
+                        && !Global.inLarge) {
+
                     largeTheCandidate();
+                    softKeyboard.bottomBarViewGroup.intoReturnState();
+                    Global.inLarge = true;
+
+                } else if (v.getScrollY() + v.getHeight() == scrollView.getChildAt(0).getMeasuredHeight()
+                        && event.getY() < 0
+                        && Global.inLarge) {
+
+                    smallTheCandidate();
+                    softKeyboard.bottomBarViewGroup.backReturnState();
+                    Global.inLarge = false;
+
+                    softKeyboard.functionViewGroup.refreshState(false);
+                    softKeyboard.functionsC.refreshStateForSecondLayout();
+                    softKeyboard.prefixViewGroup.refreshState();
+                    softKeyboard.quickSymbolViewGroup.refreshState();
+//                    scrollView.fullScroll(ScrollView.FOCUS_UP);
+
                 }
             }
             return scrollView.onTouchEvent(event);

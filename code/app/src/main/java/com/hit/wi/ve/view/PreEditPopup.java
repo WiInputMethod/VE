@@ -3,6 +3,7 @@ package com.hit.wi.ve.view;
 import android.content.Context;
 import android.graphics.Paint;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -111,6 +112,12 @@ public class PreEditPopup {
         this.selectStop = Math.max(stop,0);
     }
 
+    public void setButtonAlpha(float alpha) {
+//        Log.d("WIVE","button alpha"+alpha);
+        editText.setAlpha(alpha);
+//        editText.invalidate();
+    }
+
     /**
      * for sync the cursor of inputConnection and edit
      * */
@@ -121,5 +128,6 @@ public class PreEditPopup {
             ic.setSelection(editText.getSelectionStart(),editText.getSelectionEnd());
         }
     };
+
 
 }

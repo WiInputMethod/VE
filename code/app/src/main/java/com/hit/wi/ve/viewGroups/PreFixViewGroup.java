@@ -50,11 +50,8 @@ public class PreFixViewGroup extends ScrolledViewGroup {
                 texts.add(Kernel.getPrefix(i));
             }
             setText(texts);
-            softKeyboard.quickSymbolViewGroup.setVisibility(View.GONE);
-            softKeyboard.specialSymbolChooseViewGroup.setVisibility(View.GONE);
             setVisibility(View.VISIBLE);
         } else {
-            softKeyboard.quickSymbolViewGroup.setVisibility(View.VISIBLE);
             setVisibility(View.GONE);
         }
         lastState = prefixNumber;

@@ -701,7 +701,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             }
         }
 
-        void refreshStateForSecondLayout() {
+        public void refreshStateForSecondLayout() {
             if (Global.inLarge) {
                 secondLayerLayout.setVisibility(View.GONE);
             } else {
@@ -709,7 +709,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             }
         }
 
-        void refreshStateForLargeCandidate(boolean show) {
+        public void refreshStateForLargeCandidate(boolean show) {
             if (Global.inLarge || show) {
                 largeCandidateButton.setVisibility(View.GONE);
             } else {
@@ -1237,14 +1237,15 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             } else {
                 if(qkInputViewGroups.isShown())qkInputViewGroups.startAnimation(anim);
             }
-            if (bottomBarViewGroup.isShown()) bottomBarViewGroup.setButtonAlpha(autoDownAlpha);
+            bottomBarViewGroup.setButtonAlpha(autoDownAlpha);
 //            if (bottomBarViewGroup.isShown())bottomBarViewGroup.startAnimation(anim);
             if (functionViewGroup.isShown()) functionViewGroup.startAnimation(anim);
             if (specialSymbolChooseViewGroup.isShown()) specialSymbolChooseViewGroup.startAnimation(anim);
             if (quickSymbolViewGroup.isShown()) quickSymbolViewGroup.startAnimation(anim);
 //            if (candidatesViewGroup.isShown())candidatesViewGroup.startAnimation(anim);
-            if (candidatesViewGroup.isShown()) candidatesViewGroup.setButtonAlpha(autoDownAlpha);
-            if (largeCandidateButton.isShown()) largeCandidateButton.setAlpha(autoDownAlpha);
+            candidatesViewGroup.setButtonAlpha(autoDownAlpha);
+            largeCandidateButton.setAlpha(autoDownAlpha);
+            preEditPopup.setButtonAlpha(autoDownAlpha);
             isUpAlpha = true;
         }
 
@@ -1254,7 +1255,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
          */
         public void DownAlpha() {
             if (!mWindowShown) return;
-            Log.d("WIVE","down alpha");
             Animation anim = AnimationUtils.loadAnimation(SoftKeyboard.this, R.anim.show);
             if (!Global.isQK(Global.currentKeyboard)) {
                 if (t9InputViewGroup.isShown()){
@@ -1269,6 +1269,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             if (specialSymbolChooseViewGroup.isShown()) specialSymbolChooseViewGroup.startAnimation(anim);
             if (quickSymbolViewGroup.isShown()) quickSymbolViewGroup.startAnimation(anim);
             if (prefixViewGroup.isShown()) prefixViewGroup.startAnimation(anim);
+            preEditPopup.setButtonAlpha(autoDownAlphaTop);
             candidatesViewGroup.setButtonAlpha(autoDownAlphaTop);
             largeCandidateButton.setAlpha(autoDownAlphaTop);
             isUpAlpha =false;
@@ -1301,7 +1302,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                 keyboardParams.flags = DISABLE_LAYOUTPARAMS_FLAG;
                 keyboardParams.gravity = Gravity.TOP | Gravity.LEFT;
 
-                viewSizeUpdate.updateViewSizeAndPosition();
                 wm.addView(keyboardLayout, keyboardParams);
             }
         }
@@ -1466,10 +1466,11 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         Global.mCurrentAlpha = sp.getFloat("CURRENT_ALPHA", 1f);
         Global.shadowRadius = Integer.parseInt(sp.getString("SHADOW_TEXT_RADIUS", "5"));
         Global.slideDeleteSwitch = sp.getBoolean("SLIDE_DELETE_CHECK", true);
-        skinUpdateC.updateShadowLayer();
         viewManagerC.addInputView();
-        lightViewManager.removeView();//真是种lowB方式，为了保证光线片在键盘之上也是醉了……，问题是wm就没有别的方式来保证啊
         lightViewManager.addToWindow();
+        viewSizeUpdate.updateViewSizeAndPosition();
+
+        skinUpdateC.updateShadowLayer();
         mInputViewGG.setVisibility(View.VISIBLE);
 
         try {
@@ -1505,6 +1506,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         if (mSetKeyboardSizeViewOn) {
             mOnSizeChangeListener.onFinishSetting();
         }
+        lightViewManager.removeView();
         mHandler.removeMessages(MSG_HIDE);
         mHandler.sendEmptyMessageDelayed(MSG_CLEAR_ANIMATION,1000);
         super.onWindowHidden();

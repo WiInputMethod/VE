@@ -6,6 +6,7 @@ package com.hit.wi.ve.functions.data.emojicon;
 public class PeopleEmoji {
     public static final String[] DATA = new String[]{
             Emojicon.fromCodePoint(0x1f604).getEmoji(),
+            Emojicon.fromCodePoint(0x1f602).getEmoji(),
             Emojicon.fromCodePoint(0x1f603).getEmoji(),
             Emojicon.fromCodePoint(0x1f600).getEmoji(),
             Emojicon.fromCodePoint(0x1f60a).getEmoji(),
@@ -27,7 +28,6 @@ public class PeopleEmoji {
             Emojicon.fromCodePoint(0x1f61e).getEmoji(),
             Emojicon.fromCodePoint(0x1f623).getEmoji(),
             Emojicon.fromCodePoint(0x1f622).getEmoji(),
-            Emojicon.fromCodePoint(0x1f602).getEmoji(),
             Emojicon.fromCodePoint(0x1f62d).getEmoji(),
             Emojicon.fromCodePoint(0x1f62a).getEmoji(),
             Emojicon.fromCodePoint(0x1f625).getEmoji(),
