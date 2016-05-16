@@ -32,6 +32,7 @@ import java.util.List;
  */
 public class CandidatesViewGroup extends ScrolledViewGroup {
 
+    private final float SCROLL_LARGE_HEIGHT_RATE = (float) 1.5;
     private final float TEXTSIZE_RATE = (float) 0.2;
     private final int TEXT_LENGTH_FACTOR = 4;
     private final int WORD_MAX_NUM = 300;
@@ -385,11 +386,11 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
     private OnTouchListener scrollOnTouchListener = new OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-//            if (mEdgeGlowTop != null
-//                    && (!mEdgeGlowTop.isFinished() || !mEdgeGlowBottom.isFinished())){
-//
-//            }
-            Log.d("WIVE","scroll on touch listener");
+            if (event.getAction() == MotionEvent.ACTION_MOVE){
+                if (scrollView.getScrollY()==0 && event.getY()>v.getHeight() * SCROLL_LARGE_HEIGHT_RATE) {
+                    largeTheCandidate();
+                }
+            }
             return scrollView.onTouchEvent(event);
         }
     };
