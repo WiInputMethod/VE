@@ -27,7 +27,8 @@ import java.util.List;
 /**
  * 全键候选词管理器
  *
- * @author 郭高扬
+ * author 郭高扬
+ * author purebluesong
  */
 public class CandidatesViewGroup extends ScrolledViewGroup {
 
@@ -80,6 +81,7 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
         mQKEmojiManager = new QKEmojiManager(softKeyboard);
         standardButtonHeight = 0;
         standardButtonWidth = 0;
+        scrollView.setOnTouchListener(scrollOnTouchListener);
 //        SharedPreferences sp = SharedPreferenceManager.getDefaultSharedPreferences(context);
     }
 
@@ -377,6 +379,18 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
                     break;
             }
             return true;
+        }
+    };
+
+    private OnTouchListener scrollOnTouchListener = new OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+//            if (mEdgeGlowTop != null
+//                    && (!mEdgeGlowTop.isFinished() || !mEdgeGlowBottom.isFinished())){
+//
+//            }
+            Log.d("WIVE","scroll on touch listener");
+            return scrollView.onTouchEvent(event);
         }
     };
 }
