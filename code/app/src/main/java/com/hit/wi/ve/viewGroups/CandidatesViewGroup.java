@@ -27,10 +27,12 @@ import java.util.List;
 /**
  * 全键候选词管理器
  *
- * @author 郭高扬
+ * author 郭高扬
+ * author purebluesong
  */
 public class CandidatesViewGroup extends ScrolledViewGroup {
 
+    private final float SCROLL_LARGE_HEIGHT_RATE = (float) 1.5;
     private final float TEXTSIZE_RATE = (float) 0.2;
     private final int TEXT_LENGTH_FACTOR = 4;
     private final int WORD_MAX_NUM = 300;
@@ -80,6 +82,7 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
         mQKEmojiManager = new QKEmojiManager(softKeyboard);
         standardButtonHeight = 0;
         standardButtonWidth = 0;
+        scrollView.setOnTouchListener(scrollOnTouchListener);
 //        SharedPreferences sp = SharedPreferenceManager.getDefaultSharedPreferences(context);
     }
 
@@ -377,6 +380,18 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
                     break;
             }
             return true;
+        }
+    };
+
+    private OnTouchListener scrollOnTouchListener = new OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            if (event.getAction() == MotionEvent.ACTION_MOVE){
+                if (scrollView.getScrollY()==0 && event.getY()>v.getHeight() * SCROLL_LARGE_HEIGHT_RATE) {
+                    largeTheCandidate();
+                }
+            }
+            return scrollView.onTouchEvent(event);
         }
     };
 }

@@ -249,7 +249,9 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                     break;
                 case MSG_CLEAR_ANIMATION:
                     clearAnimation();
+                    viewManagerC.removeInputView();
                     break;
+
             }
 
             super.handleMessage(msg);
@@ -602,6 +604,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
         private void hideKeyboard(int keyboard, boolean showAnim) {
             if (Global.isQK(Global.currentKeyboard)) {
+                qkInputViewGroups.clearAnimation();
                 qkInputViewGroups.startHideAnimation(showAnim);
             } else {
                 if (keyboard == Global.KEYBOARD_NUM || keyboard == Global.KEYBOARD_SYM  || keyboard == Global.KEYBOARD_T9) {
@@ -614,6 +617,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
         private void showKeyboard(int keyboard, boolean showAnim) {
             if(Global.isQK(keyboard)){
+                qkInputViewGroups.clearAnimation();
                 qkInputViewGroups.startShowAnimation(showAnim);
             } else {
                 t9InputViewGroup.showT9(showAnim);
@@ -774,8 +778,8 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                 }
                 keyboardTouchEffect.onTouchEffectWithAnim(view, motionEvent.getAction(),
                         skinInfoManager.skinData.backcolor_touchdown,
-                        skinInfoManager.skinData.backcolor_quickSymbol,
-                        SoftKeyboard.this);
+                        skinInfoManager.skinData.backcolor_quickSymbol
+                );
                 return false;
             }
         };
@@ -1267,7 +1271,8 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             if (!Global.isQK(Global.currentKeyboard)) {
                 if (t9InputViewGroup.isShown()){
                     t9InputViewGroup.clearAnimation();
-                    t9InputViewGroup.startAnimation(anim);}
+                    t9InputViewGroup.startAnimation(anim);
+                }
             } else {
                 if (qkInputViewGroups.isShown()){
                     qkInputViewGroups.clearAnimation();
@@ -1487,6 +1492,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         MobclickAgent.onResume(this);
         mWindowShown = true;
         mHandler.removeMessages(MSG_HIDE);
+        mHandler.removeMessages(MSG_CLEAR_ANIMATION);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         Global.mCurrentAlpha = sp.getFloat("CURRENT_ALPHA", 1f);
@@ -1509,7 +1515,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         //显示键盘出场动画
         startAnimation();
         //transparencyHandle.DownAlpha();
-
         bottomBarViewGroup.spaceButton.setText(InputMode.halfToFull(sp.getString("ZH_SPACE_TEXT", "空格")));
         if(sp.getBoolean("AUTO_DOWN_ALPHA_CHECK",true))transparencyHandle.startAutoDownAlpha();
         skinUpdateC.updateSkin();
@@ -1533,7 +1538,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             mOnSizeChangeListener.onFinishSetting();
         }
         mHandler.removeMessages(MSG_HIDE);
-        mHandler.sendEmptyMessageDelayed(MSG_CLEAR_ANIMATION,2000);
+        mHandler.sendEmptyMessageDelayed(MSG_CLEAR_ANIMATION,1000);
         super.onWindowHidden();
     }
 

@@ -175,8 +175,7 @@ public class FunctionViewGroup extends NonScrollViewGroup implements ViewGroupIn
         softKeyboard.transparencyHandle.handleAlpha(action);
         softKeyboard.keyboardTouchEffect.onTouchEffectWithAnim(view, action,
                 skinInfoManager.skinData.backcolor_touchdown,
-                skinInfoManager.skinData.backcolor_functionKeys,
-                context
+                skinInfoManager.skinData.backcolor_functionKeys
         );
     }
 

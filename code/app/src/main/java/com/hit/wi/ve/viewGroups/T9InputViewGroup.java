@@ -358,8 +358,8 @@ public class T9InputViewGroup extends NonScrollViewGroup {
     private void onTouchEffectWithAnim(View v,int action,int backcolor){
         softKeyboard.keyboardTouchEffect.onTouchEffectWithAnim(v,action,
                 skinInfoManager.skinData.backcolor_touchdown,
-                backcolor,
-                context);
+                backcolor
+        );
     }
 
     /**

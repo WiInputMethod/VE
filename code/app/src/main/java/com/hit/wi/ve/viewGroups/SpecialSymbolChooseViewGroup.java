@@ -136,8 +136,7 @@ public class SpecialSymbolChooseViewGroup extends NonScrollViewGroup implements 
         public boolean onTouch(View v, MotionEvent event) {
             softKeyboard.keyboardTouchEffect.onTouchEffectWithAnim(v, event.getAction(),
                     skinInfoManager.skinData.backcolor_touchdown,
-                    skinInfoManager.skinData.backcolor_quickSymbol,
-                    context
+                    skinInfoManager.skinData.backcolor_quickSymbol
             );
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 if (v.getId() == rightbutton.getId()) {

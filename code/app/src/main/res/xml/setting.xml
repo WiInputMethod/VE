@@ -234,7 +234,7 @@
     <PreferenceScreen
     android:title="@string/title_advance">
         <CheckBoxPreference
-                android:defaultValue="true"
+                android:defaultValue="false"
                 android:key="AUTO_DOWN_ALPHA_CHECK"
                 android:title="@string/title_auto_alpha_down"
                 android:summary="@string/summary_auto_alpha_down"

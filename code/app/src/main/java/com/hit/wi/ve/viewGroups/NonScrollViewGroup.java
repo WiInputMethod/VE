@@ -154,7 +154,7 @@ public class NonScrollViewGroup extends myViewGroup {
     @Override
     public void startAnimation(Animation animation) {
         for (QuickButton quickButton : buttonList) {
-            animation.setAnimationListener(getClearAnimationListener(quickButton));
+//            animation.setAnimationListener(getClearAnimationListener(quickButton));
             quickButton.startAnimation(animation);
         }
     }
