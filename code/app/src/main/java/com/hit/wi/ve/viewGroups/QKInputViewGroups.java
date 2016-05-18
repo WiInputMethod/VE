@@ -15,6 +15,7 @@ import com.hit.wi.util.InputMode;
 import com.hit.wi.util.ViewsUtil;
 import com.hit.wi.util.StringUtil;
 import com.hit.wi.ve.R;
+import com.hit.wi.ve.SoftKeyboard;
 import com.hit.wi.ve.datastruct.InputAction;
 import com.hit.wi.ve.functions.PredictManager;
 import com.hit.wi.ve.values.Global;
@@ -302,9 +303,9 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         lastState = Global.currentKeyboard;
     }
 
-    private void tool_updateSkin(TextView v, int textcolor, int backgroundcolor) {
-        v.setTextColor(textcolor);
-        ViewsUtil.setBackgroundWithGradientDrawable(v, backgroundcolor);
+    private void tool_updateSkin(TextView v, int textColor, int backgroundColor) {
+        v.setTextColor(textColor);
+        ViewsUtil.setBackgroundWithGradientDrawable(v, backgroundColor);
 
         v.getBackground().setAlpha(Global.getCurrentAlpha());
         v.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
@@ -341,11 +342,11 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         );
     }
 
-    public void startHideAnimation(){
-        startHideAnimation(true);
+    public void hide(){
+        hide(true);
     }
 
-    public void startHideAnimation(boolean show){
+    public void hide(boolean show){
         shiftButton.clearAnimation();
         smileButton.clearAnimation();
         deleteButton.clearAnimation();
@@ -365,7 +366,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         }
     }
 
-    public void startShowAnimation(boolean show){
+    public void show(boolean show){
         int i = 0;
         clearAnimation();
         for (LinearLayout button : buttonList) {
@@ -388,8 +389,8 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         if(show)deleteButton.startAnimation(AnimationUtils.loadAnimation(context, enShow[KEY_M_INDEX]));
     }
 
-    public void startShowAnimation(){
-        startShowAnimation(true);
+    public void show(){
+        show(true);
     }
 
     public void startAnimation(Animation anim){
@@ -444,7 +445,9 @@ public class QKInputViewGroups extends NonScrollViewGroup {
 
     @Override
     public void clearAnimation() {
-        super.clearAnimation();
+        for (LinearLayout button:buttonList) {
+            button.clearAnimation();
+        }
         deleteButton.clearAnimation();
         shiftButton.clearAnimation();
         smileButton.clearAnimation();
@@ -653,7 +656,7 @@ public class QKInputViewGroups extends NonScrollViewGroup {
         public boolean onTouch(View v, MotionEvent event) {
             softKeyboard.transparencyHandle.handleAlpha(event.getAction());
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                softKeyboard.mHandler.sendEmptyMessageDelayed(softKeyboard.MSG_REPEAT, softKeyboard.REPEAT_START_DELAY);
+                softKeyboard.mHandler.sendEmptyMessageDelayed(softKeyboard.MSG_REPEAT, SoftKeyboard.REPEAT_START_DELAY);
             } else if (event.getAction() == MotionEvent.ACTION_MOVE && Global.slideDeleteSwitch) {
                 softKeyboard.lightViewManager.HideLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight());
                 if (Global.LEFT == ViewsUtil.computeDirection(event.getX(), event.getY(), v.getWidth(), v.getHeight()) ) {

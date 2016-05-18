@@ -55,6 +55,7 @@ import java.util.List;
 
 public final class SoftKeyboard extends InputMethodService implements SoftKeyboardInterface {
 
+
     /**
      * 功能：加载输入法内核链接库
      * 调用时机：该输入法类加载时调用
@@ -93,6 +94,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
      * 中文键盘类型
      */
     private int zhKeyboard;
+    private boolean keyboard_animation_switch;
 
     /**
      * 屏幕宽度
@@ -134,6 +136,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     private final int MSG_DOUBLE_CLICK_REFRESH = 7;
     private final int MSG_KERNEL_CLEAN = 8;
     private final int MSG_CLEAR_ANIMATION = 9;
+    private final int MSG_REMOVE_INPUT = 10;
 
     private final int ALPHA_DOWN_TIME = 7;
     private static final int REPEAT_INTERVAL = 50; // 重复按键的时间
@@ -249,9 +252,10 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                     break;
                 case MSG_CLEAR_ANIMATION:
                     clearAnimation();
+                    break;
+                case MSG_REMOVE_INPUT:
                     viewManagerC.removeInputView();
                     break;
-
             }
 
             super.handleMessage(msg);
@@ -604,7 +608,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
         private void hideKeyboard(int keyboard, boolean showAnim) {
             if (Global.isQK(Global.currentKeyboard)) {
-                qkInputViewGroups.startHideAnimation(showAnim);
+                qkInputViewGroups.hide(showAnim);
             } else {
                 if (keyboard == Global.KEYBOARD_NUM || keyboard == Global.KEYBOARD_SYM  || keyboard == Global.KEYBOARD_T9) {
                     t9InputViewGroup.T9ToNum(showAnim);
@@ -616,10 +620,15 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
         private void showKeyboard(int keyboard, boolean showAnim) {
             if(Global.isQK(keyboard)){
-                qkInputViewGroups.startShowAnimation(showAnim);
+                qkInputViewGroups.reloadPredictText(keyboard);
+                qkInputViewGroups.show(showAnim);
             } else {
-                t9InputViewGroup.showT9(showAnim);
+                t9InputViewGroup.show(showAnim);
             }
+        }
+
+        public void switchKeyboard(int keyboard) {
+            switchKeyboard(keyboard, false);
         }
 
         /**
@@ -630,18 +639,17 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
          * @param showAnim 是否播放动画
          */
         public void switchKeyboard(int keyboard, boolean showAnim) {
-            qkInputViewGroups.reloadPredictText(keyboard);
             Kernel.cleanKernel();
 
             if(Global.currentKeyboard != keyboard){
                 hideKeyboard(keyboard, showAnim);
                 showKeyboard(keyboard, showAnim);
-                Global.currentKeyboard = keyboard;
                 quickSymbolViewGroup.updateCurrentSymbolsAndSetTheContent(keyboard);
+                Global.currentKeyboard = keyboard;
             }
 
-            refreshDisplay();
             viewSizeUpdate.updateViewSizeAndPosition();
+            refreshDisplay();
         }
     }
 
@@ -1238,11 +1246,11 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                 if(qkInputViewGroups.isShown())qkInputViewGroups.startAnimation(anim);
             }
             bottomBarViewGroup.setButtonAlpha(autoDownAlpha);
-//            if (bottomBarViewGroup.isShown())bottomBarViewGroup.startAnimation(anim);
+//            if (bottomBarViewGroup.isShown())bottomBarViewGroup.show(anim);
             if (functionViewGroup.isShown()) functionViewGroup.startAnimation(anim);
             if (specialSymbolChooseViewGroup.isShown()) specialSymbolChooseViewGroup.startAnimation(anim);
             if (quickSymbolViewGroup.isShown()) quickSymbolViewGroup.startAnimation(anim);
-//            if (candidatesViewGroup.isShown())candidatesViewGroup.startAnimation(anim);
+//            if (candidatesViewGroup.isShown())candidatesViewGroup.show(anim);
             candidatesViewGroup.setButtonAlpha(autoDownAlpha);
             largeCandidateButton.setAlpha(autoDownAlpha);
             preEditPopup.setButtonAlpha(autoDownAlpha);
@@ -1351,13 +1359,13 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     /**
      * 键盘的的出场动画
      */
-    private void startAnimation() {
-        if (Global.currentKeyboard == Global.KEYBOARD_T9 || Global.currentKeyboard == Global.KEYBOARD_NUM || Global.currentKeyboard == Global.KEYBOARD_SYM) {
-            t9InputViewGroup.startShowAnimation();
+    private void startShowAnimation() {
+        if (!Global.isQK(Global.currentKeyboard)) {
             qkInputViewGroups.setVisibility(View.GONE);
+            t9InputViewGroup.startShowAnimation();
         } else {
-            qkInputViewGroups.startShowAnimation();
             t9InputViewGroup.setVisibility(View.GONE);
+            qkInputViewGroups.show();
         }
 
         prefixViewGroup.setVisibility(View.GONE);
@@ -1367,15 +1375,9 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         bottomBarViewGroup.setVisibility(View.VISIBLE);
         bottomBarViewGroup.startShowAnimation();
         if (keyboardLayout.getBackground() != null) {
-            keyboardLayout.getBackground().setAlpha((int) (Global.keyboardViewBackgroundAlpha * 255));
+            keyboardLayout.getBackground().setAlpha((int) (Global.keyboardViewBackgroundAlpha*255));
         }
-        keyboardParams.flags = ABLE_LAYOUTPARAMS_FLAG;
 
-        viewSizeUpdate.UpdateQuickSymbolSize();
-        if (keyboardLayout.isShown()) {
-            WindowManager wm = (WindowManager) getApplicationContext().getSystemService(WINDOW_SERVICE);
-            wm.updateViewLayout(keyboardLayout, keyboardParams);
-        }
     }
 
     /**
@@ -1387,33 +1389,28 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             t9InputViewGroup.startHideAnimation();
         } else {
             t9InputViewGroup.setVisibility(View.GONE);
-            qkInputViewGroups.startHideAnimation();
+            qkInputViewGroups.hide();
         }
         if (keyboardLayout.getBackground() != null)
             keyboardLayout.getBackground().setAlpha(0);
 
-        if (largeCandidateButton.isShown()) largeCandidateButton.setVisibility(View.GONE);
+        if (largeCandidateButton.isShown()) {
+            largeCandidateButton.setVisibility(View.GONE);
+        }
          if (quickSymbolViewGroup.isShown()) {
             quickSymbolViewGroup.hide();
-            quickSymbolViewGroup.startAnimation(R.anim.key_1_out);
         }
         if (specialSymbolChooseViewGroup.isShown()) {
-            specialSymbolChooseViewGroup.startAnimation(R.anim.key_1_out);
             specialSymbolChooseViewGroup.setVisibility(View.GONE);
         }
         prefixViewGroup.hide();
         functionViewGroup.startHideAnimation();
         bottomBarViewGroup.startHideAnimation();
         candidatesViewGroup.setVisibility(View.GONE);
-        largeCandidateButton.clearAnimation();
         largeCandidateButton.setVisibility(View.GONE);
 
         lightViewManager.invisibleLightView();
-        keyboardParams.flags = DISABLE_LAYOUTPARAMS_FLAG;
-        if (keyboardLayout.isShown()) {
-            WindowManager wm = (WindowManager) getApplicationContext().getSystemService(WINDOW_SERVICE);
-            wm.updateViewLayout(keyboardLayout, keyboardParams);
-        }
+
     }
 
     @Override
@@ -1457,20 +1454,22 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
      * */
     @Override
     public void onWindowShown() {
+        Log.d("WIVE","onWindowShown");
         MobclickAgent.onResume(this);
         mWindowShown = true;
         mHandler.removeMessages(MSG_HIDE);
         mHandler.removeMessages(MSG_CLEAR_ANIMATION);
+        mHandler.removeMessages(MSG_REMOVE_INPUT);
+        clearAnimation();
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        keyboardTouchEffect.loadSetting(sp);
         Global.mCurrentAlpha = sp.getFloat("CURRENT_ALPHA", 1f);
         Global.shadowRadius = Integer.parseInt(sp.getString("SHADOW_TEXT_RADIUS", "5"));
         Global.slideDeleteSwitch = sp.getBoolean("SLIDE_DELETE_CHECK", true);
+
         viewManagerC.addInputView();
         lightViewManager.addToWindow();
-        viewSizeUpdate.updateViewSizeAndPosition();
-
-        skinUpdateC.updateShadowLayer();
         mInputViewGG.setVisibility(View.VISIBLE);
 
         try {
@@ -1480,15 +1479,28 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         }
 
         EditorInfo info = this.getCurrentInputEditorInfo();
-        keyBoardSwitcher.switchKeyboard(functionsC.getKeyboardType(info), false);
-        //显示键盘出场动画
-        startAnimation();
+        keyBoardSwitcher.switchKeyboard(functionsC.getKeyboardType(info));
+
+        Log.d("WIVE","keyboard"+t9InputViewGroup.isShown() + " " + qkInputViewGroups.isShown());
+        keyboard_animation_switch = sp.getBoolean("KEYBOARD_ANIMATION",true);
+
+        if (keyboard_animation_switch) {
+            //显示键盘出场动画
+            startShowAnimation();
+        } else {
+            keyBoardSwitcher.showKeyboard(functionsC.getKeyboardType(info), false);
+        }
+
+        keyboardParams.flags = ABLE_LAYOUTPARAMS_FLAG;
+        if (keyboardLayout.isShown()) {
+            WindowManager wm = (WindowManager) getApplicationContext().getSystemService(WINDOW_SERVICE);
+            wm.updateViewLayout(keyboardLayout, keyboardParams);
+        }
 
         bottomBarViewGroup.spaceButton.setText(InputMode.halfToFull(sp.getString("ZH_SPACE_TEXT", "空格")));
         if(sp.getBoolean("AUTO_DOWN_ALPHA_CHECK",true))transparencyHandle.startAutoDownAlpha();
         skinUpdateC.updateSkin();
-        keyboardTouchEffect.loadSetting(sp);
-
+        skinUpdateC.updateShadowLayer();
         super.onWindowShown();
     }
 
@@ -1501,14 +1513,27 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         mWindowShown = false;
         Kernel.cleanKernel();
         refreshDisplay();
+        clearAnimation();
         t9InputViewGroup.updateFirstKeyText();
-        startOutAnimation();
+        if(keyboard_animation_switch){
+            startOutAnimation();
+            mHandler.sendEmptyMessageDelayed(MSG_CLEAR_ANIMATION,1000);
+            mHandler.sendEmptyMessageDelayed(MSG_REMOVE_INPUT,1000);
+        } else {
+            viewManagerC.removeInputView();
+        }
+
         if (mSetKeyboardSizeViewOn) {
             mOnSizeChangeListener.onFinishSetting();
         }
+
+        keyboardParams.flags = DISABLE_LAYOUTPARAMS_FLAG;
+        if (keyboardLayout.isShown()) {
+            WindowManager wm = (WindowManager) getApplicationContext().getSystemService(WINDOW_SERVICE);
+            wm.updateViewLayout(keyboardLayout, keyboardParams);
+        }
         lightViewManager.removeView();
         mHandler.removeMessages(MSG_HIDE);
-        mHandler.sendEmptyMessageDelayed(MSG_CLEAR_ANIMATION,1000);
         super.onWindowHidden();
     }
 

@@ -101,7 +101,6 @@ public class QuickSymbolViewGroup extends ScrolledViewGroup implements QuickSymb
                 buttonList.get(i).setText(buttonText);
             } else {
                 QuickButton button = addButton(buttonText, i);
-                button.setVisibility(View.VISIBLE);
                 buttonList.add(button);
                 button.setOnTouchListener(commonButtonOnTouchListener);
             }
@@ -174,6 +173,7 @@ public class QuickSymbolViewGroup extends ScrolledViewGroup implements QuickSymb
         layoutParams.leftMargin = buttonpadding;
 
         button.itsLayoutParams = layoutParams;
+        button.setVisibility(View.VISIBLE);
         layoutforWrapButtons.addView(button, position, layoutParams);
 
         return button;

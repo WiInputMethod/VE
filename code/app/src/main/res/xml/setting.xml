@@ -239,6 +239,13 @@
                 android:title="@string/title_auto_alpha_down"
                 android:summary="@string/summary_auto_alpha_down"
         />
+
+        <SwitchPreference
+                android:defaultValue="true"
+                android:key="KEYBOARD_ANIMATION"
+                android:title="@string/title_keyboard_animation"
+                android:summary="@string/summary_keyboard_animation"
+        />
     </PreferenceScreen>
 
    <!-- 帮助 -->

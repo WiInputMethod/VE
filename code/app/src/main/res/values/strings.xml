@@ -349,5 +349,7 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+    <string name="title_keyboard_animation">键盘动画</string>
+    <string name="summary_keyboard_animation">开启或关闭键盘出现或消失动画</string>
 
 </resources>

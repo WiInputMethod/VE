@@ -267,7 +267,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
      *
      * @param showAnim 是否播放动画
      */
-    public void showT9(boolean showAnim) {
+    public void show(boolean showAnim) {
         for (QuickButton button:buttonList) {
             button.setVisibility(View.VISIBLE);
             button.setEnabled(true);
