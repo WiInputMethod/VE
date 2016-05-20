@@ -126,8 +126,8 @@ public class NonScrollViewGroup extends myViewGroup {
         for (QuickButton quickButton : buttonList) {
             quickButton.clearAnimation();
         }
-        int childnum = viewGroupWrapper.getChildCount();
-        for (int i = 0; i < childnum; i++) {
+        int childNum = viewGroupWrapper.getChildCount();
+        for (int i = 0; i < childNum; i++) {
             viewGroupWrapper.getChildAt(i).clearAnimation();
         }
     }
@@ -246,9 +246,9 @@ public class NonScrollViewGroup extends myViewGroup {
     public void setButtonSize(int[] width, int height) {
         int i = 0;
         buttonHeight = height;
-        for (QuickButton eachquickButton : buttonList) {
-            eachquickButton.itsLayoutParams.width = width[i++];
-            eachquickButton.itsLayoutParams.height = height;
+        for (QuickButton eachQuickButton : buttonList) {
+            eachQuickButton.itsLayoutParams.width = width[i++];
+            eachQuickButton.itsLayoutParams.height = height;
         }
     }
 

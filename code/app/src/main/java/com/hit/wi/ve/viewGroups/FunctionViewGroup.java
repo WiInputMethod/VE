@@ -80,14 +80,13 @@ public class FunctionViewGroup extends NonScrollViewGroup implements ViewGroupIn
     }
 
     public void startHideAnimation() {
-        int i = 0;
-        for (QuickButton quickButton : buttonList) {
-            quickButton.clearAnimation();
-            Animation anim = AnimationUtils.loadAnimation(context, hideAnima[i++]);
-            anim.setAnimationListener(getMyAnimationListener(quickButton));
-            quickButton.startAnimation(anim);
-        }
+        super.startAnimation(hideAnima);
     }
+
+//    @Override
+//    public void clearAnimation() {
+//        super.clearAnimation();
+//    }
 
     public void startShowAnimation() {
         super.startAnimation(showAnima);

@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Created by purebluesong on 2016/2/26.
  */
-public class QKInputViewGroups extends NonScrollViewGroup {
+public class QKInputViewGroup extends NonScrollViewGroup {
 
 
     private final float TEXTSIZE_RATE_DELETE = (float) 0.8;
@@ -368,10 +368,12 @@ public class QKInputViewGroups extends NonScrollViewGroup {
 
     public void show(boolean show){
         int i = 0;
-        clearAnimation();
+//        clearAnimation();
         for (LinearLayout button : buttonList) {
             button.setVisibility(View.VISIBLE);
-            if(show)button.startAnimation(AnimationUtils.loadAnimation(context, enShow[i++]));
+            if(show){
+                button.startAnimation(AnimationUtils.loadAnimation(context, enShow[i++]));
+            }
         }
         shiftButton.clearAnimation();
         smileButton.clearAnimation();

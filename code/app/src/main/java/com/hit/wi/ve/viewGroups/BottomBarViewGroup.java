@@ -493,8 +493,14 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
     private void tool_hideAnimation(QuickButton button){
         Animation anim = AnimationUtils.loadAnimation(context,R.anim.func_key_1_out);
         if(button.isShown()){
-            anim.setAnimationListener(getMyAnimationListener(button));
             button.startAnimation(anim);
+        }
+    }
+
+    @Override
+    public void clearAnimation(){
+        for (QuickButton button : allButtons) {
+            button.clearAnimation();
         }
     }
 

@@ -140,7 +140,7 @@ public class PinyinEditProcess {
         int afterLength = sAfter.length();
 
         //Character.OTHER_LETTER means chinese character
-        if ((beforeLength >= 0 && Character.getType(sBefore.charAt(0)) != Character.OTHER_LETTER )||
+        if ((beforeLength > 0 && Character.getType(sBefore.charAt(0)) != Character.OTHER_LETTER )||
                 (beforeLength == 0 && afterLength <= 0)) {
             innerPinyinProcess(ic, sBefore, sAfter);
         } else { //未上屏字符中有中文
