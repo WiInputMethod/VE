@@ -378,7 +378,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         //切割字符串,顺便还做了删除处理，卧槽师兄想的真tm周全，小小的代码里全是坑
         final int isDel = delete && pinyinProc.mSelStart == pinyinProc.mSelEnd ? 1 : 0;
         int cursorBefore = pinyinProc.mSelStart - pinyinProc.mCandidateStart - isDel;
-        String sBefore = cursorBefore > pinyin.length() ? pinyin.substring(0,cursorBefore):pinyin;
+        String sBefore = cursorBefore < pinyin.length() ? pinyin.substring(0,cursorBefore):pinyin;
         sBefore = sBefore.replace("'", "")+s;
         String sAfter = pinyinProc.mSelEnd <= pinyinProc.mCandidateStart ? pinyin :
                 (pinyinProc.mSelEnd >= pinyinProc.mCandidateEnd ? "":

@@ -76,9 +76,8 @@ public class PinyinEditProcess {
         Kernel.cleanKernel();
         Kernel.inputPinyin(sBegin + sEnd);
         String showPinyin = Kernel.getWordsShowPinyin();
-        Log.d("WIVE",showPinyin);
 
-        int position = sBegin.length()+countQuotation(sBegin.length(),showPinyin);
+        int position = sBegin.length() + countQuotation(sBegin.length(), showPinyin);
         commitChangesInPreEdit(mCandidateStart+position,mCandidateStart+position);
         ic.setComposingText(showPinyin, 1);
         ic.setSelection(mCandidateStart + position, mCandidateStart + position);
@@ -153,7 +152,7 @@ public class PinyinEditProcess {
 
         //Character.OTHER_LETTER means chinese character
         if ((beforeLength > 0 && Character.getType(sBefore.charAt(0)) != Character.OTHER_LETTER )||
-                (beforeLength == 0 && afterLength <= 0)) {
+                (beforeLength == 0 && afterLength >= 0)) {
             innerPinyinProcess(ic, sBefore, sAfter);
         } else { //未上屏字符中有中文
             int sBeforeEngPosition = getFirstEnglishLetterPosition(beforeLength,sBefore);
