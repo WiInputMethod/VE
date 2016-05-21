@@ -21,6 +21,17 @@ public class PinyinEditProcess {
         this.softKeyboard = softKeyboard;
     }
 
+    public void computeCursorPosition(InputConnection ic) {
+        //上屏
+        if (ic != null) {
+            //计算光标位置
+            int cursor = Kernel.getWordsShowPinyin()==null ? 0: Kernel.getWordsShowPinyin().length();
+            ic.beginBatchEdit();
+            ic.setComposingText(Kernel.getWordsShowPinyin(),1);
+            ic.endBatchEdit();
+        }
+    }
+
     private void commitChangesInPreEdit(int start, int end){
         softKeyboard.preEditPopup.setCursor(start, end);
         softKeyboard.refreshDisplay();
@@ -30,7 +41,7 @@ public class PinyinEditProcess {
      * author： purebluesong
      * @return 是否向下传递
      * */
-    public boolean borderEditProcess(String s,boolean delete){
+    public boolean borderEditProcess(String s, boolean delete){
         if (delete && (mSelStart <= mCandidateStart || mSelStart > mCandidateEnd)) {
             softKeyboard.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL);
             softKeyboard.preEditPopup.setCursor(mSelStart -1, mSelEnd -1);
@@ -42,8 +53,9 @@ public class PinyinEditProcess {
             } else {
                 Kernel.inputPinyin(s);
             }
-            if(mSelEnd !=0)
+            if(mSelEnd !=0){
                 softKeyboard.preEditPopup.setCursor(Kernel.getWordsShowPinyin().length());
+            }
             softKeyboard.refreshDisplay();
             return true;
         }

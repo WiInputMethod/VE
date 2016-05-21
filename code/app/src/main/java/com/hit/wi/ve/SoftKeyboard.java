@@ -243,9 +243,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
                     candidatesViewGroup.setCandidates((List<String>) msg.obj);
                     break;
                 case MSG_DOUBLE_CLICK_REFRESH:
-                    if (bottomBarViewGroup != null) {
-                        bottomBarViewGroup.expressionFlag = 0;
-                    }
                     mHandler.removeMessages(MSG_DOUBLE_CLICK_REFRESH);
                     mHandler.sendEmptyMessageDelayed(MSG_DOUBLE_CLICK_REFRESH, 3 * Global.metaRefreshTime);
                     break;
@@ -339,6 +336,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         pinyinProc.mSelEnd = Math.max(newSelStart,newSelEnd);
         pinyinProc.mCandidateStart = Math.min(candidatesStart,candidatesEnd);
         pinyinProc.mCandidateEnd = Math.max(candidatesStart,candidatesEnd);
+        transparencyHandle.handleAlpha(MotionEvent.ACTION_DOWN);
         super.onUpdateSelection(oldSelStart, oldSelEnd, newSelStart, newSelEnd,
                 candidatesStart, candidatesEnd);
     }
@@ -365,7 +363,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
      * @param s 向内核传入的字符,delete 是否删除操作
      */
     public void editPinyin(String s, boolean delete) {
-        if(pinyinProc.borderEditProcess(s,delete))return;// promise candidateStart<selStart<candidateEnd
+        if(pinyinProc.borderEditProcess(s, delete))return;// promise candidateStart<selStart<candidateEnd
         mQKOrEmoji = Global.QUANPIN;
 
         final InputConnection ic = getCurrentInputConnection();
@@ -375,7 +373,9 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
         //切割字符串,顺便还做了删除处理，卧槽师兄想的真tm周全，小小的代码里全是坑
         final int isDel = delete && pinyinProc.mSelStart == pinyinProc.mSelEnd ? 1 : 0;
-        String sBefore = pinyin.substring(0, pinyinProc.mSelStart - pinyinProc.mCandidateStart - isDel).replace("'", "")+s;
+        int cursorBefore = pinyinProc.mSelStart - pinyinProc.mCandidateStart - isDel;
+        String sBefore = cursorBefore > pinyin.length() ? pinyin.substring(0,cursorBefore):pinyin;
+        sBefore = sBefore.replace("'", "")+s;
         String sAfter = pinyinProc.mSelEnd <= pinyinProc.mCandidateStart ? pinyin :
                 (pinyinProc.mSelEnd >= pinyinProc.mCandidateEnd ? "":
                         pinyin.substring(pinyinProc.mSelEnd - pinyinProc.mCandidateStart).replace("'", ""));
@@ -423,7 +423,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         quickSymbolViewGroup.refreshState();
         viewSizeUpdate.UpdateQuickSymbolSize();
         bottomBarViewGroup.refreshState();
-        functionsC.computeCursorPosition();
+        pinyinProc.computeCursorPosition(getCurrentInputConnection());
         preEditPopup.refreshState();
     }
 
@@ -659,18 +659,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
      * 一些工具函数集中存放的地方
      */
     public class  FunctionsC {
-        //For others
-        void computeCursorPosition() {
-            //计算光标位置
-            int cursor = Kernel.getWordsShowPinyin() == null ? 0 : Kernel.getWordsShowPinyin().length();
-            //上屏
-            InputConnection ic = getCurrentInputConnection();
-            if (ic != null) {
-                ic.beginBatchEdit();
-                ic.setComposingText(Kernel.getWordsShowPinyin(), cursor);
-                ic.endBatchEdit();
-            }
-        }
 
         /**
          * 功能：判断当前输入框是否要输入网址，为了显示相应的字符
@@ -1096,12 +1084,11 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
              */
             int themeType = PreferenceManager.getDefaultSharedPreferences(SoftKeyboard.this).getInt("THEME_TYPE", 0);
             boolean isDiy = PreferenceManager.getDefaultSharedPreferences(SoftKeyboard.this).getBoolean("IS_DIY", false);
-            if (themeType != Global.currentSkinType) {
-                skinInfoManager.loadConfigurationFromXML(themeType, res);
-                Global.currentSkinType=themeType;
-            }
             if (isDiy) {
                 skinInfoManager.loadConfigurationFromDIY(SoftKeyboard.this);
+            } else if (themeType != Global.currentSkinType) {
+                skinInfoManager.loadConfigurationFromXML(themeType, res);
+                Global.currentSkinType=themeType;
             }
 
             candidatesViewGroup.updateSkin();
@@ -1489,14 +1476,15 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
         bottomBarViewGroup.spaceButton.setText(InputMode.halfToFull(sp.getString("ZH_SPACE_TEXT", "空格")));
         if(sp.getBoolean("AUTO_DOWN_ALPHA_CHECK",true))transparencyHandle.startAutoDownAlpha();
-        skinUpdateC.updateSkin();
-        skinUpdateC.updateShadowLayer();
+
         keyboard_animation_switch = sp.getBoolean("KEYBOARD_ANIMATION",true);
         if (keyboard_animation_switch) {
             startShowAnimation();
         } else {
             keyBoardSwitcher.showKeyboard(functionsC.getKeyboardType(info), false);
         }
+        skinUpdateC.updateSkin();
+        skinUpdateC.updateShadowLayer();
         super.onWindowShown();
     }
 

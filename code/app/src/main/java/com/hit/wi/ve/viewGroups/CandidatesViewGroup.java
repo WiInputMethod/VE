@@ -320,11 +320,11 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
     }
 
     private void onTouchEffect(View v, MotionEvent event) {
+        softKeyboard.transparencyHandle.handleAlpha(event.getAction());
         softKeyboard.keyboardTouchEffect.onTouchEffect(v,event.getAction(),
                 skinInfoManager.skinData.backcolor_touchdown,
                 mBackColor
         );
-        softKeyboard.transparencyHandle.handleAlpha(event.getAction());
     }
 
     private float downX, downY;
@@ -332,85 +332,93 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
     /**
      * Event listener for touching a candidate
      */
+
+    protected boolean onCandidateTouchEvent(View v, MotionEvent event) {
+        onTouchEffect(v,event);
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if (!touched){
+                    displayCandidates();
+                    touched = true;
+                }
+                downX = event.getX();downY = event.getY();
+            case MotionEvent.ACTION_MOVE:
+                if (Math.abs(event.getY() - downY) + Math.abs(event.getX() - downX) < 50) break;
+                if (!Global.inLarge) {
+                    largeTheCandidate();
+                    softKeyboard.bottomBarViewGroup.intoReturnState();
+                    Global.inLarge = true;
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                if (!Global.isInView(v, event)) break;
+                if (Global.inLarge) {
+                    smallTheCandidate();
+                    softKeyboard.bottomBarViewGroup.backReturnState();
+                    Global.inLarge = false;
+                }
+                if (Global.currentKeyboard == Global.KEYBOARD_SYM){
+                    CharSequence text = ((TextView)v).getText();
+                    if (!softKeyboard.quickSymbolViewGroup.isLock()) {
+                        int inputKeyboard = PreferenceManager.getDefaultSharedPreferences(context).getString("KEYBOARD_SELECTOR", "2").equals("1") ?
+                                Global.KEYBOARD_T9 : Global.KEYBOARD_QK;
+                        softKeyboard.switchKeyboardTo(inputKeyboard, true);
+                    }
+                    softKeyboard.commitText(text);
+                } else if (mQKOrEmoji.equals(Global.SYMBOL)) {
+                    CharSequence text = ((TextView)v).getText();
+                    softKeyboard.commitText(text);
+                    softKeyboard.refreshDisplay();
+                } else if (mQKOrEmoji.equals(Global.QUANPIN )) {
+                    commitQKCandidate(v);
+                    softKeyboard.refreshDisplay();
+                } else {
+                    commitT9Candidate(v);
+                    softKeyboard.refreshDisplay();
+                }
+                touched = false;
+                break;
+        }
+        return true;
+    }
+
     private OnTouchListener mCandidateOnTouch = new OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
-            onTouchEffect(v,event);
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    if (!touched){
-                        displayCandidates();
-                        touched = true;
-                    }
-                    downX = event.getX();downY = event.getY();
-                case MotionEvent.ACTION_MOVE:
-                    if (Math.abs(event.getY() - downY) + Math.abs(event.getX() - downX) < 50) break;
-                    if (!Global.inLarge) {
-                        largeTheCandidate();
-                        softKeyboard.bottomBarViewGroup.intoReturnState();
-                        Global.inLarge = true;
-                    }
-                    break;
-                case MotionEvent.ACTION_UP:
-                    if (!Global.isInView(v, event)) break;
-                    if (Global.inLarge) {
-                        smallTheCandidate();
-                        softKeyboard.bottomBarViewGroup.backReturnState();
-                        Global.inLarge = false;
-                    }
-                    if (Global.currentKeyboard == Global.KEYBOARD_SYM){
-                        CharSequence text = ((TextView)v).getText();
-                        if (!softKeyboard.quickSymbolViewGroup.isLock()) {
-                            int inputKeyboard = PreferenceManager.getDefaultSharedPreferences(context).getString("KEYBOARD_SELECTOR", "2").equals("1") ?
-                                    Global.KEYBOARD_T9 : Global.KEYBOARD_QK;
-                            softKeyboard.switchKeyboardTo(inputKeyboard, true);
-                        }
-                        softKeyboard.commitText(text);
-                    } else if (mQKOrEmoji.equals(Global.SYMBOL)) {
-                        CharSequence text = ((TextView)v).getText();
-                        softKeyboard.commitText(text);
-                        softKeyboard.refreshDisplay();
-                    } else if (mQKOrEmoji.equals(Global.QUANPIN )) {
-                        commitQKCandidate(v);
-                        softKeyboard.refreshDisplay();
-                    } else {
-                        commitT9Candidate(v);
-                        softKeyboard.refreshDisplay();
-                    }
-                    touched = false;
-                    break;
-            }
-            return true;
+           return onCandidateTouchEvent(v, event);
         }
     };
+
+    protected void onScrollOnTouchEvent(View v, MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_MOVE){
+            if (v.getScrollY() == 0
+                    && event.getY()>v.getHeight() * SCROLL_LARGE_HEIGHT_RATE
+                    && !Global.inLarge) {
+
+                largeTheCandidate();
+                softKeyboard.bottomBarViewGroup.intoReturnState();
+                Global.inLarge = true;
+
+            } else if (v.getScrollY() + v.getHeight() == scrollView.getChildAt(0).getMeasuredHeight()
+                    && event.getY() < 0
+                    && Global.inLarge) {
+
+                smallTheCandidate();
+                softKeyboard.bottomBarViewGroup.backReturnState();
+                Global.inLarge = false;
+
+                softKeyboard.functionViewGroup.refreshState(false);
+                softKeyboard.functionsC.refreshStateForSecondLayout();
+                softKeyboard.prefixViewGroup.refreshState();
+                softKeyboard.quickSymbolViewGroup.refreshState();
+//                    scrollView.fullScroll(ScrollView.FOCUS_UP);
+            }
+        }
+    }
 
     private OnTouchListener scrollOnTouchListener = new OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            if (event.getAction() == MotionEvent.ACTION_MOVE){
-                if (v.getScrollY() == 0
-                        && event.getY()>v.getHeight() * SCROLL_LARGE_HEIGHT_RATE
-                        && !Global.inLarge) {
-
-                    largeTheCandidate();
-                    softKeyboard.bottomBarViewGroup.intoReturnState();
-                    Global.inLarge = true;
-
-                } else if (v.getScrollY() + v.getHeight() == scrollView.getChildAt(0).getMeasuredHeight()
-                        && event.getY() < 0
-                        && Global.inLarge) {
-
-                    smallTheCandidate();
-                    softKeyboard.bottomBarViewGroup.backReturnState();
-                    Global.inLarge = false;
-
-                    softKeyboard.functionViewGroup.refreshState(false);
-                    softKeyboard.functionsC.refreshStateForSecondLayout();
-                    softKeyboard.prefixViewGroup.refreshState();
-                    softKeyboard.quickSymbolViewGroup.refreshState();
-//                    scrollView.fullScroll(ScrollView.FOCUS_UP);
-
-                }
-            }
+            onScrollOnTouchEvent(v, event);
             return scrollView.onTouchEvent(event);
         }
     };

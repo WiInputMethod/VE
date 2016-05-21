@@ -306,7 +306,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         }
     };
 
-    public int expressionFlag = 0;
+    public char expressionFlag = 0;
 
     private List<String> getExpression(int flag){
         List<String> expression;
@@ -334,7 +334,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
                     }else {
                         CommonFuncs.showToast(context, "很抱歉，我们暂时不能再您的手机上获取emoji库，正在修复中……");
                     }
-                    expressionFlag = (expressionFlag + 1) % 2;
+                    expressionFlag = (char) ((expressionFlag + 1) % 2);
                 }
             }
             onTouchEffect(v, event.getAction(),
