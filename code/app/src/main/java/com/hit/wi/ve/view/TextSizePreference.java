@@ -21,23 +21,23 @@ public class TextSizePreference extends DialogPreference implements
 
     public TextSizePreference(final Context context, final AttributeSet attrs) {
         super(context, attrs);
-
     }
+
     @Override
     protected void onBindDialogView(View view) {
         final SeekBar textsizeBar = (SeekBar) view.findViewById(R.id.textsizeBar);
         tv_sample = (TextView) view.findViewById(R.id.tv_textsize_sample);
         textsizeBar.setOnSeekBarChangeListener(this);
-        textsizeBar.setProgress(getSharedPreferences().getInt(getKey(),0)*100);
+//        textsizeBar.setProgress(getSharedPreferences().getInt(getKey(),0)*100);
         super.onBindDialogView(view);
     }
+
     public final void onProgressChanged(final SeekBar seekBar,
                                         final int progress, final boolean fromUser) {
         tv_sample.setTextSize(progress);
         Global.textsizeFactor =  ((float) progress)/50;
         Global.textsizeFactor = Math.max(0f, Math.min(Global.textsizeFactor, 2f));
     }
-
 
     public final void onStartTrackingTouch(final SeekBar seekBar) {
     }

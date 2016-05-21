@@ -415,13 +415,13 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             viewSizeUpdate.UpdateLargeCandidateSize();
         }
 
-        viewSizeUpdate.UpdateQuickSymbolSize();
         candidatesViewGroup.refreshState(hideCandidate, isNK ? Global.EMOJI : Global.QUANPIN);
         specialSymbolChooseViewGroup.refreshState(hideCandidate);
         prefixViewGroup.refreshState();
         t9InputViewGroup.refreshState();
         qkInputViewGroup.refreshState();
         quickSymbolViewGroup.refreshState();
+        viewSizeUpdate.UpdateQuickSymbolSize();
         bottomBarViewGroup.refreshState();
         functionsC.computeCursorPosition();
         preEditPopup.refreshState();
@@ -1426,7 +1426,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
      * */
     @Override
     public void onStartInputView(EditorInfo info, boolean restarting) {
-        Log.d("WIVE","onStartInputView");
+//        Log.d("WIVE","onStartInputView");
         initInputParam.initKernal(this.getApplicationContext());
 
         Global.inLarge = false;
@@ -1434,7 +1434,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         bottomBarViewGroup.setEnterText(info, Global.currentKeyboard);
         /*
          * 获取中文键盘类型
-		 */
+         */
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         zhKeyboard = sharedPreferences.getString("KEYBOARD_SELECTOR", "2").equals("1") ? Global.KEYBOARD_T9 : Global.KEYBOARD_QK;
         if (mWindowShown) {

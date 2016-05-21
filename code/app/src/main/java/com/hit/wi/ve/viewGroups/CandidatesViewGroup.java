@@ -33,8 +33,8 @@ import java.util.List;
 public class CandidatesViewGroup extends ScrolledViewGroup {
 
     private final float SCROLL_LARGE_HEIGHT_RATE = (float) 1.5;
-    private final float TEXTSIZE_RATE = (float) 0.2;
-    private final int TEXT_LENGTH_FACTOR = 4;
+    private final float TEXTSIZE_RATE = (float) 0.4;
+    private final int TEXT_LENGTH_FACTOR = 3;
     private final int WORD_MAX_NUM = 300;
     private final int WORD_NUM_LAZY_LOAD = 6;
     /**
@@ -120,7 +120,7 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
 
     public void resetButtonWidthAndResetLayerHeight(){
         for (QuickButton button :buttonList) {
-            button.itsLayoutParams.width = measureTextLength(button.getText());
+            button.itsLayoutParams.width = measureButtonLengthByText(button.getText());
             button.itsLayoutParams.height = standardButtonHeight;
         }
         layerParams.height = standardButtonHeight;
@@ -197,7 +197,7 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
         button.setOnTouchListener(mCandidateOnTouch);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                measureTextLength(text), ViewGroup.LayoutParams.MATCH_PARENT
+                measureButtonLengthByText(text), ViewGroup.LayoutParams.MATCH_PARENT
         );
         button.itsLayoutParams = params;
         button.setLayoutParams(params);
@@ -213,7 +213,7 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
         LinearLayout layer = getWorkingLayer(layerPointer);
         int remainLength = getLayerRemainLength(layer);
         button.setText(text);
-        button.itsLayoutParams.width = measureTextLength(text);
+        button.itsLayoutParams.width = measureButtonLengthByText(text);
         if(button.itsLayoutParams.width > remainLength){
             if(remainLength > 20){
                 ((QuickButton)layer.getChildAt(layer.getChildCount()-1)).itsLayoutParams.width += remainLength;
@@ -223,10 +223,10 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
         }
         layer.addView(button,button.itsLayoutParams);
         button.clearAnimation();
-        button.setEllipsize(standardButtonWidth * CAND_DIV_NUM <= measureTextLength(text)?TextUtils.TruncateAt.END:null);
+        button.setEllipsize(standardButtonWidth * CAND_DIV_NUM <= measureButtonLengthByText(text)?TextUtils.TruncateAt.END:null);
         button.getBackground().setAlpha(Global.getCurrentAlpha());
         button.setPressed(false);
-        button.setTextSize(DisplayUtil.px2sp(context,2*Global.textsizeFactor*standardButtonHeight * TEXTSIZE_RATE));
+        button.setTextSize(DisplayUtil.px2sp(context, Global.textsizeFactor*standardButtonHeight * TEXTSIZE_RATE));
         return button;
     }
 
@@ -262,9 +262,11 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
         touched = false;
     }
 
-    private int measureTextLength(CharSequence text) {
+    private int measureButtonLengthByText(CharSequence text) {
         Paint paint = new Paint();
-        return Math.min(((int)(TEXT_LENGTH_FACTOR*paint.measureText((String) text)))/standardButtonWidth +1, CAND_DIV_NUM)*standardButtonWidth;
+        int measuredTextLength = (int) (Global.textsizeFactor * TEXT_LENGTH_FACTOR*paint.measureText((String) text));
+        int divNum = Math.min( measuredTextLength/standardButtonWidth +1 , CAND_DIV_NUM);
+        return divNum*standardButtonWidth;
     }
 
     public void updateSkin() {
