@@ -353,7 +353,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     public void onDestroy() {
         Log.i("Test","onDestroy");
         viewManagerC.removeInputView();
-        lightViewManager.removeView();
+//        lightViewManager.removeView();
         Kernel.cleanKernel();
         Kernel.resetWiIme(InitInputParam.RESET);
         Kernel.freeIme();

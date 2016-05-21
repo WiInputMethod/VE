@@ -97,8 +97,8 @@ public class LightViewManager {
         viewsWraper = new AbsoluteLayout(context);
         res = context.getResources();
         for (int i = 0; i < mLightNum; ++i) {
-            mLightView[i] = addBtton(mLightBackground[i]);
-            mOutLightView[i] = addBtton(mOutLightBackground[i]);
+            mLightView[i] = addButton(mLightBackground[i]);
+            mOutLightView[i] = addButton(mOutLightBackground[i]);
             mLightParams[i] = new AbsoluteLayout.LayoutParams(0,0,0,0);
             viewsWraper.addView(mLightView[i],mLightParams[i]);
             viewsWraper.addView(mOutLightView[i],mLightParams[i]);
@@ -123,11 +123,13 @@ public class LightViewManager {
     }
 
     public void removeView() {
-        WindowManager wm = (WindowManager) context.getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
-        wm.removeView(viewsWraper);
+        if (viewsWraper != null && viewsWraper.isShown()){
+            WindowManager wm = (WindowManager) context.getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
+            wm.removeView(viewsWraper);
+        }
     }
 
-    public TextView addBtton(int resID){
+    public TextView addButton(int resID){
         TextView light = new TextView(context);
         light.setTextColor(Color.BLACK);
         light.setGravity(Gravity.CENTER);
