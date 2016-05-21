@@ -3,7 +3,6 @@ package com.hit.wi.ve.view;
 import android.content.Context;
 import android.graphics.Paint;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,19 +79,23 @@ public class PreEditPopup {
         if(editText==null) return;
         String pinyin = Kernel.getWordsShowPinyin();
         if(pinyin.length()>0){
-            show(pinyin);
+            showText(pinyin);
             editText.setSelection(Math.min(selectStart,pinyin.length()),Math.min(selectStop,pinyin.length()));
         } else {
             dismiss();
         }
     }
 
-    public void show(CharSequence text){
+    public void showText(CharSequence text){
         editText.setText(text);
         float length = toolPaint.measureText((String) text);
         editText.setTextSize(DisplayUtil.px2sp(softKeyboard,
                 Math.min((float) (container.getHeight()*TEXTSIZE_RATE_BY_HEIGHT),TEXTSIZE_RATE_BY_WIDTH * container.getWidth()/length) * TEXTSIZE_RATE
         ));
+        show();
+    }
+
+    public void show(){
         if (!isShown()){
             container.showAsDropDown(softKeyboard.keyboardLayout,leftMargin,-container.getHeight()-softKeyboard.keyboardParams.height);
         }
@@ -112,11 +115,9 @@ public class PreEditPopup {
         this.selectStop = Math.max(stop,0);
     }
 
-    public void setButtonAlpha(float alpha) {
-//        Log.d("WIVE","button alpha"+alpha);
-        editText.setAlpha(alpha);
-//        editText.invalidate();
-    }
+//    public void setButtonAlpha(float alpha) {
+//        editText.setAlpha(alpha);
+//    }
 
     /**
      * for sync the cursor of inputConnection and edit
@@ -124,8 +125,9 @@ public class PreEditPopup {
     private View.OnClickListener editOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            int baseCursor = softKeyboard.pinyinProc.mCandidateStart;
             InputConnection ic = softKeyboard.getCurrentInputConnection();
-            ic.setSelection(editText.getSelectionStart(),editText.getSelectionEnd());
+            ic.setSelection(baseCursor+editText.getSelectionStart(),baseCursor+editText.getSelectionEnd());
         }
     };
 

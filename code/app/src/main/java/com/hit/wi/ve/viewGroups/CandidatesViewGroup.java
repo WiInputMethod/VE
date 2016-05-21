@@ -284,9 +284,10 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
         softKeyboard.functionViewGroup.setVisibility(View.GONE);
         softKeyboard.mInputViewGG.setVisibility(View.GONE);
         softKeyboard.secondLayerLayout.setVisibility(View.GONE);
-        int largeheight = softKeyboard.keyboardParams.height - softKeyboard.bottomBarViewGroup.getHeight();
-        if (getHeight() != largeheight)
+        int largeheight = softKeyboard.keyboardParams.height - softKeyboard.bottomBarViewGroup.getHeight() - softKeyboard.standardVerticalGapDistance;
+        if (getHeight() != largeheight) {
             setHeight(largeheight);
+        }
     }
 
     public  void smallTheCandidate() {

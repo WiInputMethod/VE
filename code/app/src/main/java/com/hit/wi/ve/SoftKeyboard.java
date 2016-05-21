@@ -52,6 +52,8 @@ import com.umeng.analytics.MobclickAgent;
 import java.io.IOException;
 import java.util.List;
 
+import javax.microedition.khronos.opengles.GL;
+
 import static java.lang.Thread.sleep;
 
 
@@ -164,8 +166,8 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
     public int keyboardWidth = 0;
     public int keyboardHeight = 0;
-    private int standardVerticalGapDistance = 10;
-    private int standardHorizontalGapDistance = 0;
+    public int standardVerticalGapDistance = 10;
+    public int standardHorizontalGapDistance = 0;
     private int maxFreeKernelTime = 60;
 
     private InitInputParam initInputParam;
@@ -216,11 +218,13 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_HIDE:
+                    if (candidatesViewGroup.isShown()) Global.keyboardRestTimeCount=0;
                     if (Global.keyboardRestTimeCount > ALPHA_DOWN_TIME) {
                         if(!transparencyHandle.isUpAlpha)transparencyHandle.UpAlpha();
                         Global.keyboardRestTimeCount = 0;
-                    } else
+                    } else {
                         Global.keyboardRestTimeCount++;
+                    }
                     mHandler.removeMessages(MSG_HIDE);
                     mHandler.sendEmptyMessageDelayed(MSG_HIDE, Global.metaRefreshTime);
                     break;
@@ -1242,7 +1246,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 //            if (candidatesViewGroup.isShown())candidatesViewGroup.show(anim);
             candidatesViewGroup.setButtonAlpha(autoDownAlpha);
             largeCandidateButton.setAlpha(autoDownAlpha);
-            preEditPopup.setButtonAlpha(autoDownAlpha);
+//            preEditPopup.setButtonAlpha(autoDownAlpha);
             isUpAlpha = true;
         }
 
@@ -1266,7 +1270,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             if (specialSymbolChooseViewGroup.isShown()) specialSymbolChooseViewGroup.startAnimation(anim);
             if (quickSymbolViewGroup.isShown()) quickSymbolViewGroup.startAnimation(anim);
             if (prefixViewGroup.isShown()) prefixViewGroup.startAnimation(anim);
-            preEditPopup.setButtonAlpha(autoDownAlphaTop);
+//            preEditPopup.setButtonAlpha(autoDownAlphaTop);
             candidatesViewGroup.setButtonAlpha(autoDownAlphaTop);
             largeCandidateButton.setAlpha(autoDownAlphaTop);
             isUpAlpha =false;
