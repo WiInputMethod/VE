@@ -196,6 +196,7 @@ public class LightViewManager {
     }
 
     public void updateViewPosAndSize(int keyboardWidth,int inputHeight,int posX,int posY){
+        if(viewsWraper==null || !viewsWraper.isShown())return;
         WindowManager wm = (WindowManager) context.getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
         viewsParams.x = posX;
         viewsParams.y = posY;
@@ -206,6 +207,7 @@ public class LightViewManager {
     }
 
     public void setSize(int keyboardWidth,int inputHeight,int posX,int posY){
+        if (viewsWraper==null) return;
         updateViewPosAndSize(keyboardWidth,inputHeight,posX,posY);
 
         int[] lightX = res.getIntArray(R.array.LIGHT_POS_X);

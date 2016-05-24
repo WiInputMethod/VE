@@ -98,8 +98,8 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
      * 中文键盘类型
      */
     private int zhKeyboard;
-    private boolean keyboard_animation_switch;
 
+    private boolean keyboard_animation_switch;
     /**
      * 屏幕宽度
      */
@@ -123,15 +123,18 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     private static final int DISABLE_LAYOUTPARAMS_FLAG = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
             | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
             | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
-    //默认是FLAG_NOT_FOCUSABLE，否则会抢夺输入框的焦点导致键盘收回
 
+    //默认是FLAG_NOT_FOCUSABLE，否则会抢夺输入框的焦点导致键盘收回\
     private static final int ABLE_LAYOUTPARAMS_FLAG = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-    //透明度有关
-    //    public static final int SET_ALPHA_VIEW_DESTROY = -803;
+
 
     private final int MSG_HIDE = 0;
 
+    //    public static final int SET_ALPHA_VIEW_DESTROY = -803;
+    //透明度有关
+
     public final int MSG_REPEAT = 1;
+
     private final int MSG_SEND_TO_KERNEL = 2;
     private final int QK_MSG_SEND_TO_KERNEL = 3;
     private final int MSG_CHOOSE_WORD = 4;
@@ -141,10 +144,11 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     private final int MSG_KERNEL_CLEAN = 8;
     private final int MSG_CLEAR_ANIMATION = 9;
     private final int MSG_REMOVE_INPUT = 10;
-
     private final int ALPHA_DOWN_TIME = 7;
+
     private static final int REPEAT_INTERVAL = 50; // 重复按键的时间
     public static final int REPEAT_START_DELAY = 400;// 重复按键
+    private static final short DELAY_TIME_REMOVE = 400;
 
     //屏幕信息
     private int DEFAULT_FULL_WIDTH;
@@ -1230,19 +1234,34 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             largeCandidateButton.getBackground().setAlpha(alpha);
         }
 
+        /**
+         * 提高键盘透明度，动画实现
+         * 调用时机：7秒无键盘响应事件
+         * */
         private void UpAlpha() {
             if (!mWindowShown)return;
             Animation anim = AnimationUtils.loadAnimation(SoftKeyboard.this, R.anim.hide);
             if (!Global.isQK(Global.currentKeyboard)) {
+                t9InputViewGroup.clearAnimation();
                 if(t9InputViewGroup.isShown())t9InputViewGroup.startAnimation(anim);
             } else {
+                qkInputViewGroup.clearAnimation();
                 if(qkInputViewGroup.isShown()) qkInputViewGroup.startAnimation(anim);
             }
             bottomBarViewGroup.setButtonAlpha(autoDownAlpha);
 //            if (bottomBarViewGroup.isShown())bottomBarViewGroup.show(anim);
-            if (functionViewGroup.isShown()) functionViewGroup.startAnimation(anim);
-            if (specialSymbolChooseViewGroup.isShown()) specialSymbolChooseViewGroup.startAnimation(anim);
-            if (quickSymbolViewGroup.isShown()) quickSymbolViewGroup.startAnimation(anim);
+            if (functionViewGroup.isShown()) {
+                functionViewGroup.clearAnimation();
+                functionViewGroup.startAnimation(anim);
+            }
+            if (specialSymbolChooseViewGroup.isShown()) {
+                specialSymbolChooseViewGroup.clearAnimation();
+                specialSymbolChooseViewGroup.startAnimation(anim);
+            }
+            if (quickSymbolViewGroup.isShown()) {
+                quickSymbolViewGroup.clearAnimation();
+                quickSymbolViewGroup.startAnimation(anim);
+            }
 //            if (candidatesViewGroup.isShown())candidatesViewGroup.show(anim);
             candidatesViewGroup.setButtonAlpha(autoDownAlpha);
             largeCandidateButton.setAlpha(autoDownAlpha);
@@ -1255,7 +1274,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
          * 调用时机：键盘上的任意touch事件
          */
         public void DownAlpha() {
-            if (!mWindowShown) return;
             Animation anim = AnimationUtils.loadAnimation(SoftKeyboard.this, R.anim.show);
             if (!Global.isQK(Global.currentKeyboard)) {
                 if (t9InputViewGroup.isShown()){
@@ -1280,6 +1298,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             Global.keyboardRestTimeCount = 0;
             if (eventAction == MotionEvent.ACTION_DOWN) {
                 if (isUpAlpha){
+                    if (!mWindowShown) return;
                     DownAlpha();
                 }
             }
@@ -1499,15 +1518,16 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     public void onWindowHidden() {
 //        Log.d("WIVE","onWindowHidden");
         MobclickAgent.onPause(this);
-        mWindowShown = false;
         Kernel.cleanKernel();
         refreshDisplay();
+        if(transparencyHandle.isUpAlpha)transparencyHandle.DownAlpha();
         clearAnimation();
+        mWindowShown = false;
         t9InputViewGroup.updateFirstKeyText();
         if(keyboard_animation_switch){
             startOutAnimation();
-            mHandler.sendEmptyMessageDelayed(MSG_CLEAR_ANIMATION,400);
-            mHandler.sendEmptyMessageDelayed(MSG_REMOVE_INPUT,400);
+            mHandler.sendEmptyMessageDelayed(MSG_CLEAR_ANIMATION, DELAY_TIME_REMOVE);
+            mHandler.sendEmptyMessageDelayed(MSG_REMOVE_INPUT, DELAY_TIME_REMOVE);
         } else {
             viewManagerC.removeInputView();
         }

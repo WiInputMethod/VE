@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -480,7 +481,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
     }
 
     private void tool_showAnimation(QuickButton button){
-        button.startAnimation(AnimationUtils.loadAnimation(context,R.anim.func_key_1_in));
+        button.startAnimation(AnimationUtils.loadAnimation(context,R.anim.func_key_2_in));
     }
 
     public void startShowAnimation(){
@@ -491,10 +492,8 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
     }
 
     private void tool_hideAnimation(QuickButton button){
-        Animation anim = AnimationUtils.loadAnimation(context,R.anim.func_key_1_out);
-        if(button.isShown()){
-            button.startAnimation(anim);
-        }
+        Animation anim = AnimationUtils.loadAnimation(context,R.anim.func_key_2_out);
+        button.startAnimation(anim);
     }
 
     @Override
@@ -505,7 +504,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
     }
 
     public void startHideAnimation() {
-        tool_hideAnimation(switchKeyboardButton);
+//        tool_hideAnimation(switchKeyboardButton);
         tool_hideAnimation(expressionButton);
         tool_hideAnimation(spaceButton);
         tool_hideAnimation(zeroButton);
