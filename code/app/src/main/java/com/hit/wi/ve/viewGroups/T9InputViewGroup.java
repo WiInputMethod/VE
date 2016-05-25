@@ -11,6 +11,7 @@ import com.hit.wi.jni.Kernel;
 import com.hit.wi.util.StringUtil;
 
 import com.hit.wi.ve.R;
+import com.hit.wi.ve.SoftKeyboard;
 import com.hit.wi.ve.datastruct.InputAction;
 import com.hit.wi.ve.values.Global;
 import com.hit.wi.ve.view.QuickButton;
@@ -465,7 +466,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
         public boolean onTouch(View v, MotionEvent event) {
             softKeyboard.transparencyHandle.handleAlpha(event.getAction());
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                softKeyboard.mHandler.sendEmptyMessageDelayed(softKeyboard.MSG_REPEAT, softKeyboard.REPEAT_START_DELAY);
+                softKeyboard.mHandler.sendEmptyMessageDelayed(softKeyboard.MSG_REPEAT, SoftKeyboard.REPEAT_START_DELAY);
             } else if (event.getAction() == MotionEvent.ACTION_MOVE && Global.slideDeleteSwitch) {
                 softKeyboard.lightViewManager.HideLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight());
                 if(event.getX()<0){

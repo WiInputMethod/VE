@@ -32,12 +32,13 @@ public class PreEditPopup {
     private int leftMargin = 0;
     private int selectStart;
     private int selectStop;
+    private CharSequence mText;
 
-    public void setSoftKeyboard(SoftKeyboard softKeyboard){
+    public void setSoftKeyboard(SoftKeyboard softKeyboard) {
         this.softKeyboard = softKeyboard;
     }
 
-    public void create(Context context){
+    public void create(Context context) {
         toolPaint = new Paint();
         editText = new EditText(context);
         editText.setPadding(0, 0, 0, 0);
@@ -45,11 +46,12 @@ public class PreEditPopup {
         editText.setVisibility(View.VISIBLE);
         editText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         editText.setBackgroundResource(R.drawable.blank);
-        ViewsUtil.setBackgroundWithGradientDrawable(editText,softKeyboard.skinInfoManager.skinData.backcolor_editText);
+        ViewsUtil.setBackgroundWithGradientDrawable(editText, softKeyboard.skinInfoManager.skinData.backcolor_editText);
         //editText.setBackgroundColor(softKeyboard.skinInfoManager.skinData.backcolor_editText);
         editText.getBackground().setAlpha(Global.getCurrentAlpha());
         editText.setOnClickListener(editOnClickListener);
-        if (Global.shadowSwitch) editText.setShadowLayer(Global.shadowRadius, 0, 0, softKeyboard.skinInfoManager.skinData.shadow);
+        if (Global.shadowSwitch)
+            editText.setShadowLayer(Global.shadowRadius, 0, 0, softKeyboard.skinInfoManager.skinData.shadow);
 
         container = new PopupWindow(editText, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
         container.setFocusable(false);
@@ -58,7 +60,7 @@ public class PreEditPopup {
         container.setBackgroundDrawable(null);
     }
 
-    public void upadteSize(int width,int height,int leftMargin){
+    public void upadteSize(int width, int height, int leftMargin) {
         container.setHeight(height);
         container.setWidth(width);
         this.leftMargin = leftMargin;
@@ -69,50 +71,57 @@ public class PreEditPopup {
         editText.setBackgroundColor(softKeyboard.skinInfoManager.skinData.backcolor_preEdit);
         editText.setTextColor(softKeyboard.skinInfoManager.skinData.textcolor_preEdit);
         editText.getBackground().setAlpha(Global.getCurrentAlpha());
-        editText.setShadowLayer(Global.shadowRadius,0,0,softKeyboard.skinInfoManager.skinData.shadow);
+        editText.setShadowLayer(Global.shadowRadius, 0, 0, softKeyboard.skinInfoManager.skinData.shadow);
     }
+
     public boolean isShown() {
         return container.isShowing() | editText.isShown();
     }
 
-    public void refreshState(){
-        if(editText==null) return;
+    public void refreshState() {
+        if (editText == null) return;
         String pinyin = Kernel.getWordsShowPinyin();
-        if(pinyin.length()>0){
+        if (pinyin.length() > 0) {
             showText(pinyin);
-            editText.setSelection(Math.min(selectStart,pinyin.length()),Math.min(selectStop,pinyin.length()));
+            editText.setSelection(Math.min(selectStart, pinyin.length()), Math.min(selectStop, pinyin.length()));
         } else {
             dismiss();
         }
     }
 
-    public void showText(CharSequence text){
+    public void showText(CharSequence text) {
         editText.setText(text);
+        mText = text;
         float length = toolPaint.measureText((String) text);
         editText.setTextSize(DisplayUtil.px2sp(softKeyboard,
-                Math.min((float) (container.getHeight()*TEXTSIZE_RATE_BY_HEIGHT),TEXTSIZE_RATE_BY_WIDTH * container.getWidth()/length) * TEXTSIZE_RATE
+                Math.min(container.getHeight() * TEXTSIZE_RATE_BY_HEIGHT, TEXTSIZE_RATE_BY_WIDTH * container.getWidth() / length) * TEXTSIZE_RATE
         ));
         show();
     }
 
-    public void show(){
-        if (!isShown()){
-            container.showAsDropDown(softKeyboard.keyboardLayout,leftMargin,-container.getHeight()-softKeyboard.keyboardParams.height);
+    public void show() {
+        if (!isShown()) {
+            container.showAsDropDown(softKeyboard.keyboardLayout, leftMargin, -container.getHeight() - softKeyboard.keyboardParams.height);
         }
     }
 
-    public void dismiss(){
+    public void dismiss() {
+        mText = "";
         container.dismiss();
     }
 
     public void setCursor(int cursor) {
-        this.selectStart = Math.max(cursor,0);
-        this.selectStop = Math.max(cursor,0);
+        this.selectStart = Math.max(cursor, 0);
+        this.selectStop = Math.max(cursor, 0);
     }
 
-    public void setCursor(int start,int stop) {
-        this.selectStart = Math.max(start,0);
-        this.selectStop = Math.max(stop,0);
+    public void setCursor(int start, int stop) {
+        this.selectStart = Math.max(start, 0);
+        this.selectStop = Math.max(stop, 0);
+    }
+
+    public int getTextLength() {
+        return mText.length();
     }
 
 //    public void setButtonAlpha(float alpha) {
@@ -121,13 +130,13 @@ public class PreEditPopup {
 
     /**
      * for sync the cursor of inputConnection and edit
-     * */
+     */
     private View.OnClickListener editOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             int baseCursor = softKeyboard.pinyinProc.mCandidateStart;
             InputConnection ic = softKeyboard.getCurrentInputConnection();
-            ic.setSelection(baseCursor+editText.getSelectionStart(),baseCursor+editText.getSelectionEnd());
+            ic.setSelection(baseCursor + editText.getSelectionStart(), baseCursor + editText.getSelectionEnd());
         }
     };
 

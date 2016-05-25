@@ -104,12 +104,12 @@ public class SkinDiyActivity extends FragmentActivity {
             }
         });
 
-        vColorEditBoxBack = (View) findViewById(R.id.v_diy_editbox_back);
-        vColorEditBoxText = (View) findViewById(R.id.v_diy_editbox_text);
-        vColorCandidateBoxBack = (View) findViewById(R.id.v_diy_candidate_back);
-        vColorCandidateBoxText = (View) findViewById(R.id.v_diy_candidate_text);
-        vColorTouchDown = (View) findViewById(R.id.v_diy_touchdown);
-        vShadow = (View) findViewById(R.id.v_diy_shadow);
+        vColorEditBoxBack = findViewById(R.id.v_diy_editbox_back);
+        vColorEditBoxText = findViewById(R.id.v_diy_editbox_text);
+        vColorCandidateBoxBack = findViewById(R.id.v_diy_candidate_back);
+        vColorCandidateBoxText = findViewById(R.id.v_diy_candidate_text);
+        vColorTouchDown = findViewById(R.id.v_diy_touchdown);
+        vShadow = findViewById(R.id.v_diy_shadow);
         vColorEditBoxBack.setOnClickListener(listener);
         vColorEditBoxBack.setBackgroundColor(backColorEditBox);
         vColorEditBoxText.setOnClickListener(listener);

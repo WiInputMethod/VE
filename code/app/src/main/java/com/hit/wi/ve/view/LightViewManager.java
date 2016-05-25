@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -117,8 +118,11 @@ public class LightViewManager {
                     1
                     );
             viewsParams.gravity = Gravity.TOP | Gravity.LEFT;
-
-            wm.addView(viewsWraper,viewsParams);
+            try {
+                wm.addView(viewsWraper,viewsParams);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

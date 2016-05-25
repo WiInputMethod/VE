@@ -27,7 +27,7 @@ public class QKEmojiManager {
     }
 
     public boolean isEmojiString(String s) {
-        return mSoftBank2UnifiedMap == null ? false : mSoftBank2UnifiedMap.containsKey(s);
+        return mSoftBank2UnifiedMap != null && mSoftBank2UnifiedMap.containsKey(s);
     }
 
     public String getShowString(String s) {
