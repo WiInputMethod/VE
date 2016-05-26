@@ -3,6 +3,7 @@ package com.hit.wi.ve.values;
 
 import android.view.MotionEvent;
 import android.view.View;
+
 import com.hit.wi.ve.SoftKeyboard;
 import com.hit.wi.ve.datastruct.InputAction;
 
@@ -80,21 +81,22 @@ public final class Global {
         }
     }
 
-    public static boolean isQK(int keyboard){
-        return keyboard == Global.KEYBOARD_EN || keyboard==Global.KEYBOARD_QK;
+    public static boolean isQK(int keyboard) {
+        return keyboard == Global.KEYBOARD_EN || keyboard == Global.KEYBOARD_QK;
     }
 
-    public static void refreshState(SoftKeyboard softKeyboard8){
+    public static void refreshState(SoftKeyboard softKeyboard8) {
         softKeyboard8.refreshDisplay();
     }
 
-    public static void addToRedo(CharSequence redoText){
+    public static void addToRedo(CharSequence redoText) {
         redoText_single.push(new InputAction(redoText, InputAction.TEXT_TO_KERNEL));
-        if(redoText_single.size()>redo_MAX_NUM)redoText_single.remove(redoText_single.size()-1);
+        if (redoText_single.size() > redo_MAX_NUM)
+            redoText_single.remove(redoText_single.size() - 1);
     }
 
-    public static int getCurrentAlpha(){
-        return (int) (mCurrentAlpha*255);
+    public static int getCurrentAlpha() {
+        return (int) (mCurrentAlpha * 255);
     }
 
 }

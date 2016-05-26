@@ -3,6 +3,7 @@ package com.hit.wi.ve.functions;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.inputmethod.InputConnection;
+
 import com.hit.wi.jni.Kernel;
 import com.hit.wi.ve.SoftKeyboard;
 
@@ -197,7 +198,7 @@ public class PinyinEditProcess {
                 ic.setSelection(mCandidateStart + realPosition, mCandidateStart + realPosition);
             }
         } else if (ic != null) {
-            int textLength = ic.getTextAfterCursor(100, 0).length() + ic.getTextBeforeCursor(100,0).length();
+            int textLength = ic.getTextAfterCursor(100, 0).length() + ic.getTextBeforeCursor(100, 0).length();
             int realPosition = (int) (rate * textLength);
             ic.setSelection(realPosition, realPosition);
         }

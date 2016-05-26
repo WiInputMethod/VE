@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import android.widget.TextView;
+
 import com.hit.wi.jni.Kernel;
 import com.hit.wi.util.DisplayUtil;
 import com.hit.wi.ve.functions.QKEmojiManager;
@@ -26,7 +27,7 @@ import java.util.List;
 
 /**
  * 全键候选词管理器
- *
+ * <p>
  * author 郭高扬
  * author purebluesong
  */
@@ -42,8 +43,8 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
      */
     private final int CAND_DIV_NUM = 6;
     /**
-    * min value of the layer show num
-    * */
+     * min value of the layer show num
+     */
     private final int MIN_LAYER_SHOWNUM = 10;
     /**
      * general information about a display
@@ -75,8 +76,8 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
         layerParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
     }
 
-    public void create(Context context){
-        super.create(vertical,context);
+    public void create(Context context) {
+        super.create(vertical, context);
         mTextColor = softKeyboard.skinInfoManager.skinData.textcolor_candidate_t9;
         mBackColor = softKeyboard.skinInfoManager.skinData.backcolor_candidate_t9;
         mQKEmojiManager = new QKEmojiManager(softKeyboard);
@@ -87,15 +88,17 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
     }
 
     // state machine
-    public void refreshState(boolean hide,String type){
+    public void refreshState(boolean hide, String type) {
         if (hide) {
             Kernel.cleanKernel();
-            if (scrollView.isShown()) {hide();}
+            if (scrollView.isShown()) {
+                hide();
+            }
         } else {
             if (!scrollView.isShown()) {
                 show();
             }
-            if (Kernel.getWordsNumber()>0){
+            if (Kernel.getWordsNumber() > 0) {
                 displayCandidates(type);
             }
             scrollView.fullScroll(ScrollView.FOCUS_UP);
@@ -103,23 +106,23 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
     }
 
     @Override
-    public void show(){
-        for(LinearLayout layout:layerList){
+    public void show() {
+        for (LinearLayout layout : layerList) {
             layout.setVisibility(View.VISIBLE);
         }
         clearAnimation();
         setVisibility(View.VISIBLE);
     }
 
-    public void setSize(int width ,int height){
-        super.setSize(width,height);
-        standardButtonWidth = width/ CAND_DIV_NUM;
+    public void setSize(int width, int height) {
+        super.setSize(width, height);
+        standardButtonWidth = width / CAND_DIV_NUM;
         standardButtonHeight = height;
         resetButtonWidthAndResetLayerHeight();
     }
 
-    public void resetButtonWidthAndResetLayerHeight(){
-        for (QuickButton button :buttonList) {
+    public void resetButtonWidthAndResetLayerHeight() {
+        for (QuickButton button : buttonList) {
             button.itsLayoutParams.width = measureButtonLengthByText(button.getText());
             button.itsLayoutParams.height = standardButtonHeight;
         }
@@ -128,32 +131,33 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
     }
 
     public void displayCandidates() {
-        if (mQKOrEmoji.equals(Global.QUANPIN)|| mQKOrEmoji.equals(Global.EMOJI)){
-            displayCandidates(mQKOrEmoji,WORD_MAX_NUM);
+        if (mQKOrEmoji.equals(Global.QUANPIN) || mQKOrEmoji.equals(Global.EMOJI)) {
+            displayCandidates(mQKOrEmoji, WORD_MAX_NUM);
         } else {
-            displayCandidates(mQKOrEmoji,symbols,WORD_MAX_NUM);
+            displayCandidates(mQKOrEmoji, symbols, WORD_MAX_NUM);
         }
     }
 
-    public void displayCandidates(String type){
-        displayCandidates(type,WORD_NUM_LAZY_LOAD);
+    public void displayCandidates(String type) {
+        displayCandidates(type, WORD_NUM_LAZY_LOAD);
     }
 
-    public void displayCandidates(String type,int show_num){
-        displayCandidates(type, Collections.EMPTY_LIST,show_num);
+    public void displayCandidates(String type, int show_num) {
+        displayCandidates(type, Collections.EMPTY_LIST, show_num);
     }
 
     List<String> symbols;
-    public void displayCandidates(String type,List<String> strings,int show_num) {
+
+    public void displayCandidates(String type, List<String> strings, int show_num) {
         mQKOrEmoji = type;
-        int i=0;
+        int i = 0;
         List<String> words = new ArrayList<>();
         symbols = strings;
-        if(!strings.equals(Collections.EMPTY_LIST)){
-            words = strings.subList(0,Math.min(show_num,strings.size()-1));
-        }else {
-            int total = Math.min(show_num,Kernel.getWordsNumber()-1);
-            while(i<total){
+        if (!strings.equals(Collections.EMPTY_LIST)) {
+            words = strings.subList(0, Math.min(show_num, strings.size() - 1));
+        } else {
+            int total = Math.min(show_num, Kernel.getWordsNumber() - 1);
+            while (i < total) {
                 String text = Kernel.getWordByIndex(i);
                 words.add(mQKEmojiManager.getShowString(text));
                 i++;
@@ -164,7 +168,7 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
     }
 
     private LinearLayout getWorkingLayer(int position) {
-        if (layerList.size() <= position){
+        if (layerList.size() <= position) {
             return addLayer();
         } else {
             return layerList.get(position);
@@ -173,25 +177,25 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
 
     private int getLayerRemainLength(LinearLayout layer) {
         int remainLength = standardButtonWidth * CAND_DIV_NUM;
-        for (int i=layer.getChildCount()-1;i>=0;i--){
+        for (int i = layer.getChildCount() - 1; i >= 0; i--) {
             QuickButton button = (QuickButton) layer.getChildAt(i);
             remainLength -= button.itsLayoutParams.width;
         }
         return remainLength;
     }
 
-    private LinearLayout addLayer(){
+    private LinearLayout addLayer() {
         LinearLayout layout = new LinearLayout(context);
         layout.setOrientation(LinearLayout.HORIZONTAL);
         layout.setVisibility(View.VISIBLE);
-        layoutforWrapButtons.addView(layout,layerParams);
+        layoutforWrapButtons.addView(layout, layerParams);
         layerList.add(layout);
         return layout;
     }
 
 
-    private QuickButton initNewButton(String text){
-        QuickButton button = super.addButton(mTextColor,mBackColor,text);
+    private QuickButton initNewButton(String text) {
+        QuickButton button = super.addButton(mTextColor, mBackColor, text);
         button.setVisibility(View.VISIBLE);
         button.setPressed(false);
         button.setOnTouchListener(mCandidateOnTouch);
@@ -202,7 +206,7 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
         button.itsLayoutParams = params;
         button.setLayoutParams(params);
 
-        button.setTextSize(DisplayUtil.px2sp(context, Global.textsizeFactor*standardButtonHeight * TEXTSIZE_RATE));
+        button.setTextSize(DisplayUtil.px2sp(context, Global.textsizeFactor * standardButtonHeight * TEXTSIZE_RATE));
         return button;
     }
 
@@ -214,49 +218,49 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
         int remainLength = getLayerRemainLength(layer);
         button.setText(text);
         button.itsLayoutParams.width = measureButtonLengthByText(text);
-        if(button.itsLayoutParams.width > remainLength){
-            if(remainLength > 20){
-                ((QuickButton)layer.getChildAt(layer.getChildCount()-1)).itsLayoutParams.width += remainLength;
+        if (button.itsLayoutParams.width > remainLength) {
+            if (remainLength > 20) {
+                ((QuickButton) layer.getChildAt(layer.getChildCount() - 1)).itsLayoutParams.width += remainLength;
             }
             layerPointer++;
             layer = getWorkingLayer(layerPointer);
         }
-        layer.addView(button,button.itsLayoutParams);
+        layer.addView(button, button.itsLayoutParams);
         button.clearAnimation();
-        button.setEllipsize(standardButtonWidth * CAND_DIV_NUM <= measureButtonLengthByText(text)?TextUtils.TruncateAt.END:null);
+        button.setEllipsize(standardButtonWidth * CAND_DIV_NUM <= measureButtonLengthByText(text) ? TextUtils.TruncateAt.END : null);
         button.getBackground().setAlpha(Global.getCurrentAlpha());
         button.setPressed(false);
-        button.setTextSize(DisplayUtil.px2sp(context, Global.textsizeFactor*standardButtonHeight * TEXTSIZE_RATE));
+        button.setTextSize(DisplayUtil.px2sp(context, Global.textsizeFactor * standardButtonHeight * TEXTSIZE_RATE));
         return button;
     }
 
     @SuppressLint("NewApi")
     public void setCandidates(List<String> words) {
         int i = 0;
-        for (LinearLayout layout:layerList){
+        for (LinearLayout layout : layerList) {
             layout.removeAllViews();
         }
         layerPointer = 0;
 
-        for (;i<buttonList.size() && i<words.size();i++){
-            addButtonQ(words.get(i),buttonList.get(i));
+        for (; i < buttonList.size() && i < words.size(); i++) {
+            addButtonQ(words.get(i), buttonList.get(i));
         }
-        for (;i<words.size();i++){
+        for (; i < words.size(); i++) {
             QuickButton button = initNewButton(words.get(i));
             button.setVisibility(View.VISIBLE);
             buttonList.add(button);
-            addButtonQ(words.get(i),button);
+            addButtonQ(words.get(i), button);
         }
-        for (;i<buttonList.size();i++){
+        for (; i < buttonList.size(); i++) {
             buttonList.get(i).setText("");//clear button
         }
 
-        int j=0;
-        for (;j<layerPointer;j++){
+        int j = 0;
+        for (; j < layerPointer; j++) {
             layerList.get(j).setVisibility(View.VISIBLE);
         }
-        if(j<MIN_LAYER_SHOWNUM)j=MIN_LAYER_SHOWNUM;
-        for(;j<layerList.size();j++){
+        if (j < MIN_LAYER_SHOWNUM) j = MIN_LAYER_SHOWNUM;
+        for (; j < layerList.size(); j++) {
             layerList.get(j).setVisibility(View.GONE);
         }
         touched = false;
@@ -264,20 +268,20 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
 
     private int measureButtonLengthByText(CharSequence text) {
         Paint paint = new Paint();
-        int measuredTextLength = (int) (Global.textsizeFactor * TEXT_LENGTH_FACTOR*paint.measureText((String) text));
-        int divNum = Math.min( measuredTextLength/standardButtonWidth +1 , CAND_DIV_NUM);
-        return divNum*standardButtonWidth;
+        int measuredTextLength = (int) (Global.textsizeFactor * TEXT_LENGTH_FACTOR * paint.measureText((String) text));
+        int divNum = Math.min(measuredTextLength / standardButtonWidth + 1, CAND_DIV_NUM);
+        return divNum * standardButtonWidth;
     }
 
     public void updateSkin() {
-        if(Global.currentKeyboard == Global.KEYBOARD_QK || Global.currentKeyboard == Global.KEYBOARD_EN){
+        if (Global.currentKeyboard == Global.KEYBOARD_QK || Global.currentKeyboard == Global.KEYBOARD_EN) {
             mBackColor = softKeyboard.skinInfoManager.skinData.backcolor_candidate_qk;
             mTextColor = softKeyboard.skinInfoManager.skinData.textcolor_candidate_qk;
-        }else {
+        } else {
             mBackColor = softKeyboard.skinInfoManager.skinData.backcolor_candidate_t9;
             mTextColor = softKeyboard.skinInfoManager.skinData.textcolor_candidate_t9;
         }
-        super.updateSkin(mTextColor,mBackColor);
+        super.updateSkin(mTextColor, mBackColor);
     }
 
     public void largeTheCandidate() {
@@ -290,7 +294,7 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
         }
     }
 
-    public  void smallTheCandidate() {
+    public void smallTheCandidate() {
         softKeyboard.viewSizeUpdate.UpdateCandidateSize();
         if (Global.currentKeyboard == Global.KEYBOARD_QK || Global.currentKeyboard == Global.KEYBOARD_EN) {
             softKeyboard.functionViewGroup.setVisibility(View.VISIBLE);
@@ -304,25 +308,25 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
         String text = Kernel.getWordSelectedWord(buttonList.indexOf(v));
         scrollView.fullScroll(ScrollView.FOCUS_UP);
         InputConnection ic = softKeyboard.getCurrentInputConnection();
-        if (ic != null && text!= null) {
+        if (ic != null && text != null) {
             try {
                 mQKEmojiManager.commitEmoji(softKeyboard, text);
-            } catch (Exception e ){
-                Log.d("WIVE","expception"+e.toString());
+            } catch (Exception e) {
+                Log.d("WIVE", "expception" + e.toString());
             }
         }
     }
 
-    private void commitT9Candidate(View v){
+    private void commitT9Candidate(View v) {
         String text = Kernel.getWordSelectedWord(buttonList.indexOf(v));
-        if ( text!=null ){
+        if (text != null) {
             softKeyboard.commitText(text);
         }
     }
 
     private void onTouchEffect(View v, MotionEvent event) {
         softKeyboard.transparencyHandle.handleAlpha(event.getAction());
-        softKeyboard.keyboardTouchEffect.onTouchEffect(v,event.getAction(),
+        softKeyboard.keyboardTouchEffect.onTouchEffect(v, event.getAction(),
                 skinInfoManager.skinData.backcolor_touchdown,
                 mBackColor
         );
@@ -330,19 +334,21 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
 
     private float downX, downY;
     private boolean touched = false;
+
     /**
      * Event listener for touching a candidate
      */
 
     protected boolean onCandidateTouchEvent(View v, MotionEvent event) {
-        onTouchEffect(v,event);
+        onTouchEffect(v, event);
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if (!touched){
+                if (!touched) {
                     displayCandidates();
                     touched = true;
                 }
-                downX = event.getX();downY = event.getY();
+                downX = event.getX();
+                downY = event.getY();
             case MotionEvent.ACTION_MOVE:
                 if (Math.abs(event.getY() - downY) + Math.abs(event.getX() - downX) < 50) break;
                 if (!Global.inLarge) {
@@ -358,8 +364,8 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
                     softKeyboard.bottomBarViewGroup.backReturnState();
                     Global.inLarge = false;
                 }
-                if (Global.currentKeyboard == Global.KEYBOARD_SYM){
-                    CharSequence text = ((TextView)v).getText();
+                if (Global.currentKeyboard == Global.KEYBOARD_SYM) {
+                    CharSequence text = ((TextView) v).getText();
                     if (!softKeyboard.quickSymbolViewGroup.isLock()) {
                         int inputKeyboard = PreferenceManager.getDefaultSharedPreferences(context).getString("KEYBOARD_SELECTOR", "2").equals("1") ?
                                 Global.KEYBOARD_T9 : Global.KEYBOARD_QK;
@@ -367,10 +373,10 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
                     }
                     softKeyboard.commitText(text);
                 } else if (mQKOrEmoji.equals(Global.SYMBOL)) {
-                    CharSequence text = ((TextView)v).getText();
+                    CharSequence text = ((TextView) v).getText();
                     softKeyboard.commitText(text);
                     softKeyboard.refreshDisplay();
-                } else if (mQKOrEmoji.equals(Global.QUANPIN )) {
+                } else if (mQKOrEmoji.equals(Global.QUANPIN)) {
                     commitQKCandidate(v);
                     softKeyboard.refreshDisplay();
                 } else {
@@ -385,14 +391,14 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
 
     private OnTouchListener mCandidateOnTouch = new OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
-           return onCandidateTouchEvent(v, event);
+            return onCandidateTouchEvent(v, event);
         }
     };
 
     protected void onScrollOnTouchEvent(View v, MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_MOVE){
+        if (event.getAction() == MotionEvent.ACTION_MOVE) {
             if (v.getScrollY() == 0
-                    && event.getY()>v.getHeight() * SCROLL_LARGE_HEIGHT_RATE
+                    && event.getY() > v.getHeight() * SCROLL_LARGE_HEIGHT_RATE
                     && !Global.inLarge) {
 
                 largeTheCandidate();

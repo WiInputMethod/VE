@@ -5,6 +5,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
 import com.hit.wi.jni.Kernel;
 import com.hit.wi.util.DisplayUtil;
 import com.hit.wi.util.ViewsUtil;
@@ -41,9 +42,10 @@ public class PreFixViewGroup extends ScrolledViewGroup {
     }
 
     private int lastState = -1;
+
     public void refreshState() {
         int prefixNumber = Kernel.getPrefixNumber();
-        if(lastState == prefixNumber)return;
+        if (lastState == prefixNumber) return;
         if (prefixNumber > 1 && Global.currentKeyboard == Global.KEYBOARD_T9 && !Global.inLarge) {
             List<String> texts = new ArrayList<>();
             for (int i = prefixNumber - 1; i > 0; i--) {
@@ -72,9 +74,10 @@ public class PreFixViewGroup extends ScrolledViewGroup {
                 i++;
             }
             int textsizeJudge;
-            if (WIMath.min(buttonWidth, height) <= 0)textsizeJudge = buttonWidth==0?height:buttonWidth;
+            if (WIMath.min(buttonWidth, height) <= 0)
+                textsizeJudge = buttonWidth == 0 ? height : buttonWidth;
             else textsizeJudge = WIMath.min(buttonWidth, height);
-            button.setTextSize(DisplayUtil.px2sp(context,textsizeJudge * TEXTSIZE_RATE));
+            button.setTextSize(DisplayUtil.px2sp(context, textsizeJudge * TEXTSIZE_RATE));
             button.setText(text);
             button.setVisibility(View.VISIBLE);
         }
@@ -83,11 +86,12 @@ public class PreFixViewGroup extends ScrolledViewGroup {
             buttonList.remove(buttonList.size() - 1);
         }
         setButtonWidth(width / Math.min(buttonList.size() + 1, 4) - buttonpadding);
-        if (buttonList.size() > 0) ((LinearLayout.LayoutParams) buttonList.get(0).itsLayoutParams).leftMargin = 0;
+        if (buttonList.size() > 0)
+            ((LinearLayout.LayoutParams) buttonList.get(0).itsLayoutParams).leftMargin = 0;
     }
 
     public void setBackgroundColorByIndex(int color, int index) {
-        ViewsUtil.setBackgroundWithGradientDrawable(buttonList.get(index),color);
+        ViewsUtil.setBackgroundWithGradientDrawable(buttonList.get(index), color);
 //        buttonList.get(index).setBackgroundColor(color);
     }
 
@@ -98,7 +102,7 @@ public class PreFixViewGroup extends ScrolledViewGroup {
         );
     }
 
-    private void onTouchEffect(View v, MotionEvent event){
+    private void onTouchEffect(View v, MotionEvent event) {
         softKeyboard.keyboardTouchEffect.onTouchEffectWithAnim(v, event.getAction(),
                 skinInfoManager.skinData.backcolor_touchdown,
                 skinInfoManager.skinData.backcolor_prefix
@@ -109,7 +113,7 @@ public class PreFixViewGroup extends ScrolledViewGroup {
     private View.OnTouchListener prefixOnTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            onTouchEffect(v,event);
+            onTouchEffect(v, event);
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 Kernel.selectPrefix(buttonList.size() - buttonList.indexOf(v));
                 softKeyboard.refreshDisplay();

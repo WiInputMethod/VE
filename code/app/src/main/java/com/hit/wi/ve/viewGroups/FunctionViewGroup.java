@@ -13,6 +13,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
 import com.hit.wi.ve.Interfaces.ViewGroupInterface;
 import com.hit.wi.ve.R;
 import com.hit.wi.ve.settings.WIT9Activity;
@@ -74,8 +75,8 @@ public class FunctionViewGroup extends NonScrollViewGroup implements ViewGroupIn
         }
     }
 
-    public void refreshState(Boolean show){
-        if(!show)hide();
+    public void refreshState(Boolean show) {
+        if (!show) hide();
         else show();
     }
 
@@ -93,7 +94,7 @@ public class FunctionViewGroup extends NonScrollViewGroup implements ViewGroupIn
     }
 
     private QuickButton addButtonF(String text) {
-        QuickButton button = super.addButton(text,skinInfoManager.skinData.textcolor_functionKeys,skinInfoManager.skinData.backcolor_functionKeys);
+        QuickButton button = super.addButton(text, skinInfoManager.skinData.textcolor_functionKeys, skinInfoManager.skinData.backcolor_functionKeys);
 
         button.setBackgroundResource(R.drawable.middle_button);
         button.setId(Global.generateViewId());
@@ -198,7 +199,7 @@ public class FunctionViewGroup extends NonScrollViewGroup implements ViewGroupIn
 //                    lastTouchPoint.y = (int) motionEvent.getRawY();
                     break;
                 case MotionEvent.ACTION_UP:
-                    if (Global.isInView(view,motionEvent)) {
+                    if (Global.isInView(view, motionEvent)) {
                         softKeyboard.mSetKeyboardSizeParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
                         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
                         wm.updateViewLayout(softKeyboard.mSetKeyboardSizeView, softKeyboard.mSetKeyboardSizeParams);
@@ -254,18 +255,18 @@ public class FunctionViewGroup extends NonScrollViewGroup implements ViewGroupIn
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             } else if (motionEvent.getAction() == MotionEvent.ACTION_MOVE && !Global.isInView(view, motionEvent)) {
-                if (motionEvent.getY()<0 || motionEvent.getY()> view.getHeight()){
-                    float textsizeFactorDelta = (lastTouchY - motionEvent.getY() ) / (2 * softKeyboard.keyboardParams.height);
+                if (motionEvent.getY() < 0 || motionEvent.getY() > view.getHeight()) {
+                    float textsizeFactorDelta = (lastTouchY - motionEvent.getY()) / (2 * softKeyboard.keyboardParams.height);
                     lastTouchY = motionEvent.getY();
-                    Global.textsizeFactor +=  textsizeFactorDelta;
+                    Global.textsizeFactor += textsizeFactorDelta;
                     Global.textsizeFactor = Math.max(0f, Math.min(Global.textsizeFactor, 2f));
-                } else{
+                } else {
                     float inputViewBackgroundAlphaDelta = (motionEvent.getX() - lastTouchX) / softKeyboard.keyboardParams.width;
                     lastTouchX = motionEvent.getX();
                     inputViewBackgroundAlpha += inputViewBackgroundAlphaDelta;
                     Global.keyboardViewBackgroundAlpha = Math.max(0f, Math.min(inputViewBackgroundAlpha, 1f));
-                    if (softKeyboard.keyboardLayout.getBackground()!=null)
-                        softKeyboard.keyboardLayout.getBackground().setAlpha((int) (Global.keyboardViewBackgroundAlpha *255));
+                    if (softKeyboard.keyboardLayout.getBackground() != null)
+                        softKeyboard.keyboardLayout.getBackground().setAlpha((int) (Global.keyboardViewBackgroundAlpha * 255));
                 }
             } else if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                 lastTouchX = 0;

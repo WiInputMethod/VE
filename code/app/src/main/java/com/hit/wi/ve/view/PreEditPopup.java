@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputConnection;
 import android.widget.EditText;
 import android.widget.PopupWindow;
+
 import com.hit.wi.jni.Kernel;
 import com.hit.wi.util.DisplayUtil;
 import com.hit.wi.util.ViewsUtil;

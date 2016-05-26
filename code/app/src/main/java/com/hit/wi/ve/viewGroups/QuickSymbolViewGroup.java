@@ -133,10 +133,10 @@ public class QuickSymbolViewGroup extends ScrolledViewGroup implements QuickSymb
 
     public void refreshState() {
         clearAnimation();
-        if (softKeyboard.specialSymbolChooseViewGroup.isShown() || softKeyboard.prefixViewGroup.isShown()){
-            if(isShown())hide();
+        if (softKeyboard.specialSymbolChooseViewGroup.isShown() || softKeyboard.prefixViewGroup.isShown()) {
+            if (isShown()) hide();
         } else {
-            if(!isShown())show();
+            if (!isShown()) show();
         }
     }
 
@@ -279,7 +279,7 @@ public class QuickSymbolViewGroup extends ScrolledViewGroup implements QuickSymb
                 Kernel.cleanKernel();
                 Global.refreshState(softKeyboard);
                 if (Global.currentKeyboard == Global.KEYBOARD_SYM) {
-                    firstButton.setText(mLockSymbolState?mUnLockSymbol:mLockSymbol);
+                    firstButton.setText(mLockSymbolState ? mUnLockSymbol : mLockSymbol);
                     mLockSymbolState = !mLockSymbolState;
                 } else {
                     softKeyboard.switchKeyboardTo(Global.KEYBOARD_SYM, true);

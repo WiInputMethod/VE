@@ -76,6 +76,7 @@ public class NonScrollViewGroup extends myViewGroup {
             ViewsUtil.setBackgroundWithGradientDrawable(quickButton, color);
         }
     }
+
     @Override
     public void setBackgroundAlpha(int alpha) {
         backgroundAlpha = alpha;
@@ -170,7 +171,7 @@ public class NonScrollViewGroup extends myViewGroup {
         }
     }
 
-    protected Animation.AnimationListener getMyAnimationListener(final View view){
+    protected Animation.AnimationListener getMyAnimationListener(final View view) {
         Animation.AnimationListener al = new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -278,27 +279,28 @@ public class NonScrollViewGroup extends myViewGroup {
         button.setText(text);
         button.setSingleLine();
 
-        if(Global.shadowSwitch)button.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
+        if (Global.shadowSwitch)
+            button.setShadowLayer(Global.shadowRadius, 0, 0, skinInfoManager.skinData.shadow);
 
         return button;
     }
 
-    public void setShadowLayer(int radius,int color){
-        if(Global.shadowSwitch)
-            for (QuickButton button:buttonList) {
-                button.setShadowLayer(radius,0,0,color);
+    public void setShadowLayer(int radius, int color) {
+        if (Global.shadowSwitch)
+            for (QuickButton button : buttonList) {
+                button.setShadowLayer(radius, 0, 0, color);
             }
     }
 
-    public QuickButton addButton(String text,int textColor,int backgroundColor) {
+    public QuickButton addButton(String text, int textColor, int backgroundColor) {
         QuickButton button = this.addNewButton(text);
 
         button.setBackgroundResource(R.drawable.middle_button);
         button.setTextColor(textColor);
-        ViewsUtil.setBackgroundWithGradientDrawable(button,backgroundColor);
+        ViewsUtil.setBackgroundWithGradientDrawable(button, backgroundColor);
         //button.setBackgroundColor(backgroundColor);
         button.getBackground().setAlpha(Global.getCurrentAlpha());
-        return  button;
+        return button;
     }
 
 
@@ -328,7 +330,7 @@ public class NonScrollViewGroup extends myViewGroup {
         int i = 0;
         for (QuickButton button : buttonList) {
             if (widths.length <= i) {
-               break;
+                break;
             }
             button.itsLayoutParams.width = widths[i++];
         }

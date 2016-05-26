@@ -5,6 +5,7 @@ import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
+
 import com.hit.wi.util.DisplayUtil;
 import com.hit.wi.util.ViewsUtil;
 import com.hit.wi.jni.Kernel;
@@ -102,10 +103,10 @@ public class T9InputViewGroup extends NonScrollViewGroup {
 
 
     @Override
-    public void create(Context context){
+    public void create(Context context) {
         super.create(context);
         viewGroupWrapper.setOrientation(LinearLayout.VERTICAL);
-        mSlideText = res.getStringArray(R.array .KEY_SLIDE_TEXT);
+        mSlideText = res.getStringArray(R.array.KEY_SLIDE_TEXT);
         mT9keyText = res.getStringArray(R.array.KEY_TEXT);
         mNumKeyText = res.getStringArray(R.array.NUM_KEY_TEXT);
         mSymbolKeySendText = res.getStringArray(R.array.KEY_SYMBOL_SEND_TEXT);
@@ -117,21 +118,21 @@ public class T9InputViewGroup extends NonScrollViewGroup {
         int count = 0;
         for (int i = 0; i < LAYER_NUM; ++i) {
             linears[i] = new LinearLayout(context);
-            linearParams[i] = new LinearLayout.LayoutParams(0,0);
+            linearParams[i] = new LinearLayout.LayoutParams(0, 0);
             linears[i].setOrientation(LinearLayout.HORIZONTAL);
-            for (int j = 0; j < KEY_NUM/LAYER_NUM;j++){
+            for (int j = 0; j < KEY_NUM / LAYER_NUM; j++) {
                 QuickButton button = addButton(mT9keyText[count++]);
                 linears[i].addView(button, button.itsLayoutParams);
                 buttonList.add(button);
             }
             linears[i].setGravity(Gravity.CENTER | Gravity.CENTER_HORIZONTAL);
-            viewGroupWrapper.addView(linears[i],linearParams[i]);
+            viewGroupWrapper.addView(linears[i], linearParams[i]);
         }
 
         addDeleteButton();
     }
 
-    private void addDeleteButton(){
+    private void addDeleteButton() {
         deleteButton = super.addButton(res.getString(R.string.delete_text),
                 skinInfoManager.skinData.textcolor_delete,
                 skinInfoManager.skinData.backcolor_delete);
@@ -142,27 +143,27 @@ public class T9InputViewGroup extends NonScrollViewGroup {
         deleteButton.setOnTouchListener(mDeleteOnTouchListener);
     }
 
-    private QuickButton addButton(String text){
+    private QuickButton addButton(String text) {
         QuickButton button = super.addButton(text,
                 skinInfoManager.skinData.textcolor_t9keys,
                 skinInfoManager.skinData.backcolor_t9keys);
         button.setOnTouchListener(mInputViewOnTouchListener);
-        button.itsLayoutParams = new LinearLayout.LayoutParams(0,0);
+        button.itsLayoutParams = new LinearLayout.LayoutParams(0, 0);
         return button;
     }
 
-    public void updateSkin(){
-        for(QuickButton button:buttonList){
+    public void updateSkin() {
+        for (QuickButton button : buttonList) {
             button.setTextColor(skinInfoManager.skinData.textcolor_t9keys);
             ViewsUtil.setBackgroundWithGradientDrawable(button, skinInfoManager.skinData.backcolor_t9keys);
             button.getBackground().setAlpha(Global.getCurrentAlpha());
-            button.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
+            button.setShadowLayer(Global.shadowRadius, 0, 0, skinInfoManager.skinData.shadow);
         }
 
         deleteButton.setTextColor(skinInfoManager.skinData.textcolor_delete);
-        ViewsUtil.setBackgroundWithGradientDrawable(deleteButton,skinInfoManager.skinData.backcolor_delete);
+        ViewsUtil.setBackgroundWithGradientDrawable(deleteButton, skinInfoManager.skinData.backcolor_delete);
         deleteButton.getBackground().setAlpha(Global.getCurrentAlpha());
-        deleteButton.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
+        deleteButton.setShadowLayer(Global.shadowRadius, 0, 0, skinInfoManager.skinData.shadow);
     }
 
     public void updateFirstKeyText() {
@@ -178,20 +179,20 @@ public class T9InputViewGroup extends NonScrollViewGroup {
     }
 
     @Override
-    public void setBackgroundAlpha(int alpha){
+    public void setBackgroundAlpha(int alpha) {
         super.setBackgroundAlpha(alpha);
         deleteButton.getBackground().setAlpha(alpha);
     }
 
     @Override
-    public void startAnimation(Animation anim){
+    public void startAnimation(Animation anim) {
         super.startAnimation(anim);
         deleteButton.startAnimation(anim);
     }
 
-    public void startShowAnimation(){
-        int i=0;
-        for (QuickButton button:buttonList){
+    public void startShowAnimation() {
+        int i = 0;
+        for (QuickButton button : buttonList) {
             button.startAnimation(AnimationUtils.loadAnimation(context, keyShow[i++]));
             button.setVisibility(View.VISIBLE);
         }
@@ -199,65 +200,66 @@ public class T9InputViewGroup extends NonScrollViewGroup {
         deleteButton.setVisibility(View.VISIBLE);
     }
 
-    public void startHideAnimation(){
-        int i=0;
-        for (final QuickButton button:buttonList){
+    public void startHideAnimation() {
+        int i = 0;
+        for (final QuickButton button : buttonList) {
             Animation anim = AnimationUtils.loadAnimation(context, keyHide[i++]);
             anim.setAnimationListener(getMyAnimationListener(button));
-            if(button.isShown())button.startAnimation(anim);
+            if (button.isShown()) button.startAnimation(anim);
         }
         Animation anim = AnimationUtils.loadAnimation(context, keyHide[2]);
         anim.setAnimationListener(getMyAnimationListener(deleteButton));
-        if(deleteButton.isShown())deleteButton.startAnimation(anim);
+        if (deleteButton.isShown()) deleteButton.startAnimation(anim);
     }
 
-    public void setSize(int keyboardWidth,int height,int horGap){
-        for (LinearLayout.LayoutParams params:linearParams){
+    public void setSize(int keyboardWidth, int height, int horGap) {
+        for (LinearLayout.LayoutParams params : linearParams) {
             params.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            params.height = height/LAYER_NUM - 2*horGap/3;
+            params.height = height / LAYER_NUM - 2 * horGap / 3;
             params.bottomMargin = horGap;
         }
         linearParams[2].bottomMargin = 0;
-        int margin = horGap/2;
+        int margin = horGap / 2;
         int keyWidth = (int) (keyboardWidth * BUTTON_WIDTH_RATE - horGap);
-        for(QuickButton button:buttonList){
+        for (QuickButton button : buttonList) {
             button.itsLayoutParams.width = keyWidth;
             button.itsLayoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT;
-            ((LinearLayout.LayoutParams)button.itsLayoutParams).leftMargin = margin;
-            ((LinearLayout.LayoutParams)button.itsLayoutParams).rightMargin = margin;
-            button.getPaint().setTextSize(DisplayUtil.px2sp(context, Math.min(keyboardWidth / 3 - horGap,height/LAYER_NUM - 2*horGap/3) * TEXTSIZE_RATE));
+            ((LinearLayout.LayoutParams) button.itsLayoutParams).leftMargin = margin;
+            ((LinearLayout.LayoutParams) button.itsLayoutParams).rightMargin = margin;
+            button.getPaint().setTextSize(DisplayUtil.px2sp(context, Math.min(keyboardWidth / 3 - horGap, height / LAYER_NUM - 2 * horGap / 3) * TEXTSIZE_RATE));
         }
 
-        ((LinearLayout.LayoutParams)deleteButton.itsLayoutParams).leftMargin = horGap;
-        ((LinearLayout.LayoutParams)deleteButton.itsLayoutParams).rightMargin = horGap;
-        deleteButton.itsLayoutParams.width = keyboardWidth-3*horGap-res.getInteger(R.integer.PREEDIT_WIDTH)*keyboardWidth/100;
+        ((LinearLayout.LayoutParams) deleteButton.itsLayoutParams).leftMargin = horGap;
+        ((LinearLayout.LayoutParams) deleteButton.itsLayoutParams).rightMargin = horGap;
+        deleteButton.itsLayoutParams.width = keyboardWidth - 3 * horGap - res.getInteger(R.integer.PREEDIT_WIDTH) * keyboardWidth / 100;
         deleteButton.itsLayoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
     }
 
-    private  int lastState = -1;
-    public void refreshState(){
-        if (lastState==Global.currentKeyboard)return;
+    private int lastState = -1;
+
+    public void refreshState() {
+        if (lastState == Global.currentKeyboard) return;
         int i = 0;
-        if(Global.currentKeyboard == Global.KEYBOARD_T9){
-            if(!isShown())setVisibility(View.VISIBLE);
-            for (QuickButton button:buttonList){
+        if (Global.currentKeyboard == Global.KEYBOARD_T9) {
+            if (!isShown()) setVisibility(View.VISIBLE);
+            for (QuickButton button : buttonList) {
                 button.setOnTouchListener(mInputViewOnTouchListener);
                 button.setText(mT9keyText[i++]);
             }
-        } else if (Global.currentKeyboard == Global.KEYBOARD_NUM){
-            if(!isShown())setVisibility(View.VISIBLE);
-            for (QuickButton button:buttonList){
+        } else if (Global.currentKeyboard == Global.KEYBOARD_NUM) {
+            if (!isShown()) setVisibility(View.VISIBLE);
+            for (QuickButton button : buttonList) {
                 button.setOnTouchListener(mNumKeyboardOnTouchListener);
                 button.setText(mNumKeyText[i++]);
             }
-        } else if (Global.currentKeyboard == Global.KEYBOARD_SYM){
-            if(!isShown())setVisibility(View.VISIBLE);
-            for (QuickButton button:buttonList){
+        } else if (Global.currentKeyboard == Global.KEYBOARD_SYM) {
+            if (!isShown()) setVisibility(View.VISIBLE);
+            for (QuickButton button : buttonList) {
                 button.setOnTouchListener(mSymbolKeyOnTouchListener);
                 button.setText(mSymbolKeyText[i++]);
             }
         } else {
-            if(isShown())setVisibility(View.GONE);
+            if (isShown()) setVisibility(View.GONE);
         }
         lastState = Global.currentKeyboard;
     }
@@ -269,12 +271,12 @@ public class T9InputViewGroup extends NonScrollViewGroup {
      * @param showAnim 是否播放动画
      */
     public void show(boolean showAnim) {
-        for (QuickButton button:buttonList) {
+        for (QuickButton button : buttonList) {
             button.setVisibility(View.VISIBLE);
             button.setEnabled(true);
             button.setClickable(true);
         }
-        if(showAnim)startAnimation(keySwitchShow);
+        if (showAnim) startAnimation(keySwitchShow);
         deleteButton.setVisibility(View.VISIBLE);
     }
 
@@ -285,8 +287,8 @@ public class T9InputViewGroup extends NonScrollViewGroup {
      * @param showAnim 是否播放动画
      */
     public void hideT9(boolean showAnim) {
-        int i=0;
-        for (QuickButton button:buttonList) {
+        int i = 0;
+        for (QuickButton button : buttonList) {
             if (showAnim) {
                 button.startAnimation(AnimationUtils.loadAnimation(context, keySwitchOut[i]));
             } else {
@@ -300,7 +302,7 @@ public class T9InputViewGroup extends NonScrollViewGroup {
         deleteButton.clearAnimation();
         deleteButton.setVisibility(View.GONE);
     }
-    
+
     /**
      * 功能：九键之间的切换（九键中文，数字键盘，符号键盘）
      * 调用时机：九键之间切换时
@@ -322,13 +324,13 @@ public class T9InputViewGroup extends NonScrollViewGroup {
                 }
 
                 public void onAnimationEnd(Animation animation) {
-                    for (QuickButton button:buttonList){
+                    for (QuickButton button : buttonList) {
                         button.startAnimation(anim2);
                     }
                 }
             };
             anim.setAnimationListener(animLis);
-            for (QuickButton button:buttonList){
+            for (QuickButton button : buttonList) {
                 button.startAnimation(anim);
             }
         }
@@ -356,8 +358,8 @@ public class T9InputViewGroup extends NonScrollViewGroup {
         softKeyboard.specialSymbolChooseViewGroup.hide();
     }
 
-    private void onTouchEffectWithAnim(View v,int action,int backcolor){
-        softKeyboard.keyboardTouchEffect.onTouchEffectWithAnim(v,action,
+    private void onTouchEffectWithAnim(View v, int action, int backcolor) {
+        softKeyboard.keyboardTouchEffect.onTouchEffectWithAnim(v, action,
                 skinInfoManager.skinData.backcolor_touchdown,
                 backcolor
         );
@@ -371,9 +373,9 @@ public class T9InputViewGroup extends NonScrollViewGroup {
         public boolean onTouch(View v, MotionEvent event) {
             softKeyboard.transparencyHandle.handleAlpha(event.getAction());
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                softKeyboard.commitText(((QuickButton)v).getText());
+                softKeyboard.commitText(((QuickButton) v).getText());
             }
-            onTouchEffectWithAnim(v, event.getAction(),skinInfoManager.skinData.backcolor_t9keys);
+            onTouchEffectWithAnim(v, event.getAction(), skinInfoManager.skinData.backcolor_t9keys);
             return true;
         }
     };
@@ -392,19 +394,19 @@ public class T9InputViewGroup extends NonScrollViewGroup {
                 int index = buttonList.indexOf(v);
                 if (buttonList.indexOf(v) == KEY_OTHER_INDEX) {
                     switchSymbolToFunc(mOtherSymbolTypeList, mOtherSymbolTypeSendKeyList);
-                    softKeyboard.candidatesViewGroup.displayCandidates(Global.SYMBOL, StringUtil.convertStringstoList(softKeyboard.symbolsManager.SPECIAL),100);
-                } else if (index == 6){
-                    softKeyboard.candidatesViewGroup.displayCandidates(Global.SYMBOL, StringUtil.convertStringstoList(softKeyboard.symbolsManager.NUMBER),100);
+                    softKeyboard.candidatesViewGroup.displayCandidates(Global.SYMBOL, StringUtil.convertStringstoList(softKeyboard.symbolsManager.SPECIAL), 100);
+                } else if (index == 6) {
+                    softKeyboard.candidatesViewGroup.displayCandidates(Global.SYMBOL, StringUtil.convertStringstoList(softKeyboard.symbolsManager.NUMBER), 100);
                     softKeyboard.refreshDisplay(true);
-                } else if (index == 7){
-                    softKeyboard.candidatesViewGroup.displayCandidates(Global.SYMBOL, StringUtil.convertStringstoList(softKeyboard.symbolsManager.MATH),100);
+                } else if (index == 7) {
+                    softKeyboard.candidatesViewGroup.displayCandidates(Global.SYMBOL, StringUtil.convertStringstoList(softKeyboard.symbolsManager.MATH), 100);
                     softKeyboard.refreshDisplay(true);
                 } else {
                     switchBackFunc();
-                    softKeyboard.sendMsgToKernel("'"+mSymbolKeySendText[index]);
+                    softKeyboard.sendMsgToKernel("'" + mSymbolKeySendText[index]);
                 }
             }
-            onTouchEffectWithAnim(v, event.getAction(),skinInfoManager.skinData.backcolor_t9keys);
+            onTouchEffectWithAnim(v, event.getAction(), skinInfoManager.skinData.backcolor_t9keys);
             return true;
         }
     };
@@ -430,13 +432,13 @@ public class T9InputViewGroup extends NonScrollViewGroup {
                     Global.inLarge = false;
                     char ch = (char) ('1' + buttonIndex);
                     String commitText = ch + "";
-                    int index = softKeyboard.lightViewManager.lightViewAnimate(v,event);
-                    int[] follow = {1,3,0,2};//对应于左上下右，因为三个字符串分别要这么对应，所以需要表驱动
+                    int index = softKeyboard.lightViewManager.lightViewAnimate(v, event);
+                    int[] follow = {1, 3, 0, 2};//对应于左上下右，因为三个字符串分别要这么对应，所以需要表驱动
                     if (index > 0 && text.length() > follow[index])
-                        commitText = text.substring(follow[index], follow[index]+1);
+                        commitText = text.substring(follow[index], follow[index] + 1);
                     if (buttonIndex == 0) {
                         if (Kernel.getWordsNumber() > 0) {
-                            if (Global.isInView(v,event)) {
+                            if (Global.isInView(v, event)) {
                                 softKeyboard.sendMsgToKernel("'");
                             } else {
                                 softKeyboard.chooseWord(0);
@@ -468,32 +470,32 @@ public class T9InputViewGroup extends NonScrollViewGroup {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 softKeyboard.mHandler.sendEmptyMessageDelayed(softKeyboard.MSG_REPEAT, SoftKeyboard.REPEAT_START_DELAY);
             } else if (event.getAction() == MotionEvent.ACTION_MOVE && Global.slideDeleteSwitch) {
-                softKeyboard.lightViewManager.HideLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight());
-                if(event.getX()<0){
-                    softKeyboard.lightViewManager.ShowLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight(),"清空");
+                softKeyboard.lightViewManager.HideLightView(event.getX(), event.getY(), v.getWidth(), v.getHeight());
+                if (event.getX() < 0) {
+                    softKeyboard.lightViewManager.ShowLightView(event.getX(), event.getY(), v.getWidth(), v.getHeight(), "清空");
                     softKeyboard.mHandler.removeMessages(softKeyboard.MSG_REPEAT);
                 }
-                if(event.getY() <0){
-                    softKeyboard.lightViewManager.ShowLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight(),"恢复");
+                if (event.getY() < 0) {
+                    softKeyboard.lightViewManager.ShowLightView(event.getX(), event.getY(), v.getWidth(), v.getHeight(), "恢复");
                     softKeyboard.mHandler.removeMessages(softKeyboard.MSG_REPEAT);
                 }
             } else if (event.getAction() == MotionEvent.ACTION_UP) {
                 softKeyboard.mHandler.removeMessages(softKeyboard.MSG_REPEAT);
-                softKeyboard.lightViewManager.lightViewAnimate(v,event);
+                softKeyboard.lightViewManager.lightViewAnimate(v, event);
                 if (event.getX() < 0 && Global.slideDeleteSwitch) {
                     softKeyboard.deleteAll();
                 } else if (event.getY() < 0) {
-                    if(Global.redoTextForDeleteAll != ""){
+                    if (Global.redoTextForDeleteAll != "") {
                         softKeyboard.commitText(Global.redoTextForDeleteAll);
                         Global.redoTextForDeleteAll = "";
                     }
-                    if(!Global.redoTextForDeleteAll_preedit.equals("")){
+                    if (!Global.redoTextForDeleteAll_preedit.equals("")) {
                         softKeyboard.sendMsgToKernel(Global.redoTextForDeleteAll_preedit);
                         Global.redoTextForDeleteAll_preedit = "";
                     } else {
-                        if (Global.redoText_single.size()>0){
+                        if (Global.redoText_single.size() > 0) {
                             InputAction ia = Global.redoText_single.pop();
-                            if (ia.Type == InputAction.TEXT_TO_KERNEL){
+                            if (ia.Type == InputAction.TEXT_TO_KERNEL) {
                                 softKeyboard.sendMsgToKernel(ia.text.toString());
                             } else {
                                 softKeyboard.commitText(ia.text.toString());

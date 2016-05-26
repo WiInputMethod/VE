@@ -372,7 +372,8 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
      * @param s 向内核传入的字符,delete 是否删除操作
      */
     public void editPinyin(String s, boolean delete) {
-        if (pinyinProc.borderEditProcess(s, delete)) return;// promise candidateStart<selStart<candidateEnd
+        if (pinyinProc.borderEditProcess(s, delete))
+            return;// promise candidateStart<selStart<candidateEnd
         mQKOrEmoji = Global.QUANPIN;
 
         final InputConnection ic = getCurrentInputConnection();
@@ -1291,7 +1292,8 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             }
             bottomBarViewGroup.setButtonAlpha(autoDownAlphaTop);
             if (functionViewGroup.isShown()) functionViewGroup.startAnimation(anim);
-            if (specialSymbolChooseViewGroup.isShown()) specialSymbolChooseViewGroup.startAnimation(anim);
+            if (specialSymbolChooseViewGroup.isShown())
+                specialSymbolChooseViewGroup.startAnimation(anim);
             if (quickSymbolViewGroup.isShown()) quickSymbolViewGroup.startAnimation(anim);
             if (prefixViewGroup.isShown()) prefixViewGroup.startAnimation(anim);
 //            preEditPopup.setButtonAlpha(autoDownAlphaTop);

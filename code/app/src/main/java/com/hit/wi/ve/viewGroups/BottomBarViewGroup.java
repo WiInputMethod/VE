@@ -10,6 +10,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
+
 import com.hit.wi.jni.Kernel;
 
 import com.hit.wi.util.CommonFuncs;
@@ -48,7 +49,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
     private Context mContext;
 
     List<QuickButton> keyboardButtons = new ArrayList<>();//不能用数组，数组会复制每个对象，而不是引用
-    List<QuickButton> allButtons ;
+    List<QuickButton> allButtons;
 
 
     private final String text_return = "返回";
@@ -126,30 +127,30 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         return button;
     }
 
-    private void moveButtonToPosition(QuickButton button,int position) {
+    private void moveButtonToPosition(QuickButton button, int position) {
         viewGroupWrapper.removeView(button);
-        viewGroupWrapper.addView(button,position,button.itsLayoutParams);
+        viewGroupWrapper.addView(button, position, button.itsLayoutParams);
         buttonList.remove(button);
-        buttonList.add(position,button);
+        buttonList.add(position, button);
     }
 
-    public void intoReturnState () {
-        setShownButton(expressionButton,spaceButton,enterButton,returnButton);
+    public void intoReturnState() {
+        setShownButton(expressionButton, spaceButton, enterButton, returnButton);
     }
 
-    public void backReturnState () {
+    public void backReturnState() {
         refreshState();
     }
 
     public void setShownButton(QuickButton... buttons) {
-        for (QuickButton button:allButtons){
+        for (QuickButton button : allButtons) {
             button.setVisibility(View.GONE);
         }
         buttonList.clear();
-        for (int i=0;i<buttons.length;i++) {
+        for (int i = 0; i < buttons.length; i++) {
             buttonList.add(buttons[i]);
-            if (viewGroupWrapper.getChildAt(i) != buttons[i]){
-                moveButtonToPosition(buttons[i],i);
+            if (viewGroupWrapper.getChildAt(i) != buttons[i]) {
+                moveButtonToPosition(buttons[i], i);
             }
         }
         setVisibility(View.VISIBLE);
@@ -170,23 +171,23 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
 
     public void refreshState() {
         expressionButton.setText(button_text[1]);
-        if (Global.inLarge){
-            setShownButton(switchKeyboardButton,expressionButton,spaceButton,enterButton);
+        if (Global.inLarge) {
+            setShownButton(switchKeyboardButton, expressionButton, spaceButton, enterButton);
         } else {
             switch (Global.currentKeyboard) {
                 case Global.KEYBOARD_T9:
                 case Global.KEYBOARD_QK:
                 case Global.KEYBOARD_EN:
-                    setShownButton(switchKeyboardButton,expressionButton,spaceButton,enterButton);
+                    setShownButton(switchKeyboardButton, expressionButton, spaceButton, enterButton);
                     setButtonWidthByRate(res.getIntArray(R.array.BOTTOMBAR_KEY_WIDTH));
                     writeKeyboardToSharedPreference(Global.currentKeyboard);
                     break;
                 case Global.KEYBOARD_SYM:
-                    setShownButton(switchKeyboardButton,expressionButton,spaceButton,returnButton);
+                    setShownButton(switchKeyboardButton, expressionButton, spaceButton, returnButton);
                     setButtonWidthByRate(res.getIntArray(R.array.BOTTOMBAR_KEY_WIDTH));
                     break;
                 case Global.KEYBOARD_NUM:
-                    setShownButton(switchKeyboardButton,zeroButton,spaceButton);
+                    setShownButton(switchKeyboardButton, zeroButton, spaceButton);
                     setButtonWidthByRate(res.getIntArray(R.array.BOTTOMBAR_NUM_KEY_WIDTH));
                     break;
             }
@@ -199,10 +200,10 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         }
     }
 
-    private void tool_updateSkin(QuickButton button,int textColor,int backgroundColor) {
+    private void tool_updateSkin(QuickButton button, int textColor, int backgroundColor) {
         button.setTextColor(textColor);
         button.getBackground().setAlpha(Global.getCurrentAlpha());
-        ViewsUtil.setBackgroundWithGradientDrawable(button,backgroundColor);
+        ViewsUtil.setBackgroundWithGradientDrawable(button, backgroundColor);
     }
 
     public void updateSkin() {
@@ -264,7 +265,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
 
     @Override
     public void setButtonAlpha(float alpha) {
-        for (QuickButton button:allButtons) {
+        for (QuickButton button : allButtons) {
             button.setAlpha(alpha);
         }
     }
@@ -273,21 +274,21 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
     private View.OnTouchListener switchKeyOnTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            int position = (int)((event.getRawX() - softKeyboard.keyboardParams.x) / (softKeyboard.keyboardParams.width/(KEYBOARD_BUTTON_NUM+1))) % (KEYBOARD_BUTTON_NUM+1);
-            if (!Global.inLarge){
+            int position = (int) ((event.getRawX() - softKeyboard.keyboardParams.x) / (softKeyboard.keyboardParams.width / (KEYBOARD_BUTTON_NUM + 1))) % (KEYBOARD_BUTTON_NUM + 1);
+            if (!Global.inLarge) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         isSwitchState = keyboardButtonQK.isShown();
-                        setShownButton(switchKeyboardButton,keyboardButtonQK,keyboardButtonEn,keyboardButtonNum,keyboardButtonT9);
-                        setButtonWidth(paramsForViewGroup.width / (KEYBOARD_BUTTON_NUM+1) - padding);
+                        setShownButton(switchKeyboardButton, keyboardButtonQK, keyboardButtonEn, keyboardButtonNum, keyboardButtonT9);
+                        setButtonWidth(paramsForViewGroup.width / (KEYBOARD_BUTTON_NUM + 1) - padding);
                         break;
                     case MotionEvent.ACTION_MOVE:
                         setBackgroundColor(skinInfoManager.skinData.backcolor_26keys);
-                        if (position>0)
-                            ViewsUtil.setBackgroundWithGradientDrawable(keyboardButtons.get(position-1),skinInfoManager.skinData.backcolor_touchdown);
+                        if (position > 0)
+                            ViewsUtil.setBackgroundWithGradientDrawable(keyboardButtons.get(position - 1), skinInfoManager.skinData.backcolor_touchdown);
                         break;
                     case MotionEvent.ACTION_UP:
-                        if (position != 0){
+                        if (position != 0) {
                             int[] keyboards = {Global.currentKeyboard, Global.KEYBOARD_QK, Global.KEYBOARD_EN, Global.KEYBOARD_NUM, Global.KEYBOARD_T9};
                             softKeyboard.switchKeyboardTo(keyboards[position], true);
                             setEnterText(softKeyboard.getCurrentInputEditorInfo(), keyboards[position]);
@@ -309,11 +310,11 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
 
     public char expressionFlag = 0;
 
-    private List<String> getExpression(int flag){
+    private List<String> getExpression(int flag) {
         List<String> expression;
-        if (flag == 0){
+        if (flag == 0) {
             expression = StringUtil.convertStringstoList(softKeyboard.symbolsManager.EmojiFace);
-        } else if (flag == 1){
+        } else if (flag == 1) {
             expression = StringUtil.convertStringstoList(softKeyboard.symbolsManager.SMILE);
         } else {
             expression = new ArrayList<>();
@@ -325,14 +326,14 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                if(Global.isInView(v,event)) {
+                if (Global.isInView(v, event)) {
                     Kernel.cleanKernel();
                     List<String> expressions = getExpression(expressionFlag);
-                    if(expressions != Collections.EMPTY_LIST){
-                        softKeyboard.candidatesViewGroup.displayCandidates(Global.SYMBOL,expressions, Global.inLarge?200:9);
+                    if (expressions != Collections.EMPTY_LIST) {
+                        softKeyboard.candidatesViewGroup.displayCandidates(Global.SYMBOL, expressions, Global.inLarge ? 200 : 9);
                         if (Global.inLarge) softKeyboard.candidatesViewGroup.largeTheCandidate();
                         softKeyboard.refreshDisplay(true);
-                    }else {
+                    } else {
                         CommonFuncs.showToast(context, "很抱歉，我们暂时不能再您的手机上获取emoji库，正在修复中……");
                     }
                     expressionFlag = (char) ((expressionFlag + 1) % 2);
@@ -346,18 +347,18 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         }
     };
 
-    String[] commit_text_space = {"，","。","!","?"," "};
+    String[] commit_text_space = {"，", "。", "!", "?", " "};
 
     private View.OnTouchListener spaceOnTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                softKeyboard.lightViewManager.lightViewAnimate(v,event);
-                if (Kernel.getWordsNumber()>0 && Global.currentKeyboard != Global.KEYBOARD_SYM) {
+                softKeyboard.lightViewManager.lightViewAnimate(v, event);
+                if (Kernel.getWordsNumber() > 0 && Global.currentKeyboard != Global.KEYBOARD_SYM) {
                     softKeyboard.chooseWord(0);
-                } else{
+                } else {
                     int index = ViewsUtil.computeDirection(event.getX(), event.getY(), v.getHeight(), v.getWidth());
-                    if (index == Global.ERR)index = 4;
+                    if (index == Global.ERR) index = 4;
                     softKeyboard.commitText(commit_text_space[index]);
                 }
 
@@ -368,10 +369,10 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
                     backReturnState();
                 }
             } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                softKeyboard.lightViewManager.HideLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight());
+                softKeyboard.lightViewManager.HideLightView(event.getX(), event.getY(), v.getWidth(), v.getHeight());
                 int index = ViewsUtil.computeDirection(event.getX(), event.getY(), v.getHeight(), v.getWidth());
-                if (index == Global.ERR)index = 4;
-                softKeyboard.lightViewManager.ShowLightView(event.getX(),event.getY(),v.getWidth(),v.getHeight(),commit_text_space[index]);
+                if (index == Global.ERR) index = 4;
+                softKeyboard.lightViewManager.ShowLightView(event.getX(), event.getY(), v.getWidth(), v.getHeight(), commit_text_space[index]);
             }
             onTouchEffect(v, event.getAction(), skinInfoManager.skinData.backcolor_touchdown, skinInfoManager.skinData.backcolor_space);
             return false;
@@ -382,13 +383,13 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                if (Kernel.getWordsNumber()>0) {
+                if (Kernel.getWordsNumber() > 0) {
                     if (event.getY() > 0) {
                         softKeyboard.commitText(Kernel.returnAction());
                     }
                     softKeyboard.t9InputViewGroup.updateFirstKeyText();
                 } else {
-                    if (!softKeyboard.sendDefaultEditorAction(true) && Global.isInView(v,event)) {
+                    if (!softKeyboard.sendDefaultEditorAction(true) && Global.isInView(v, event)) {
                         softKeyboard.sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER);
                     }
                 }
@@ -423,7 +424,7 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
             if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                if (Global.isInView(view,motionEvent) && Global.inLarge){
+                if (Global.isInView(view, motionEvent) && Global.inLarge) {
                     softKeyboard.candidatesViewGroup.smallTheCandidate();
                     backReturnState();
                     Global.inLarge = false;
@@ -443,12 +444,12 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
     };
 
 
-    private View.OnTouchListener keyboardSwitchKeyOnTouchListenerFactory(final int keyboard){
+    private View.OnTouchListener keyboardSwitchKeyOnTouchListenerFactory(final int keyboard) {
         return new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_UP)
-                            softKeyboard.switchKeyboardTo(keyboard ,true);
+                    softKeyboard.switchKeyboardTo(keyboard, true);
                 onTouchEffect(v, event.getAction(),
                         skinInfoManager.skinData.backcolor_touchdown,
                         skinInfoManager.skinData.backcolor_26keys
@@ -460,9 +461,9 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
 
 
     public void setEnterText(EditorInfo info, int mCurrentKeyboard) {
-        Boolean isEn =  mCurrentKeyboard == Global.KEYBOARD_EN ;
-        String[] text_CH = {"下一行", "发送", "搜索", "完成", "前往", };
-        String[] text_EN = {"next", "send", "search", "done", "go", };
+        Boolean isEn = mCurrentKeyboard == Global.KEYBOARD_EN;
+        String[] text_CH = {"下一行", "发送", "搜索", "完成", "前往",};
+        String[] text_EN = {"next", "send", "search", "done", "go",};
         String textDefault = "\u21b5";
         final int[] actionCases = {
                 EditorInfo.IME_ACTION_NEXT,
@@ -471,33 +472,33 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
                 EditorInfo.IME_ACTION_DONE,
                 EditorInfo.IME_ACTION_GO,
         };
-        for(int i=0;i<actionCases.length;i++){
-            if (actionCases[i] == info.imeOptions){
-                enterButton.setText(isEn?text_EN[i]:text_CH[i]);
+        for (int i = 0; i < actionCases.length; i++) {
+            if (actionCases[i] == info.imeOptions) {
+                enterButton.setText(isEn ? text_EN[i] : text_CH[i]);
                 return;
             }
         }
         enterButton.setText(textDefault);
     }
 
-    private void tool_showAnimation(QuickButton button){
-        button.startAnimation(AnimationUtils.loadAnimation(context,R.anim.func_key_2_in));
+    private void tool_showAnimation(QuickButton button) {
+        button.startAnimation(AnimationUtils.loadAnimation(context, R.anim.func_key_2_in));
     }
 
-    public void startShowAnimation(){
+    public void startShowAnimation() {
         tool_showAnimation(switchKeyboardButton);
         tool_showAnimation(expressionButton);
         tool_showAnimation(spaceButton);
         tool_showAnimation(enterButton);
     }
 
-    private void tool_hideAnimation(QuickButton button){
-        Animation anim = AnimationUtils.loadAnimation(context,R.anim.func_key_2_out);
+    private void tool_hideAnimation(QuickButton button) {
+        Animation anim = AnimationUtils.loadAnimation(context, R.anim.func_key_2_out);
         button.startAnimation(anim);
     }
 
     @Override
-    public void clearAnimation(){
+    public void clearAnimation() {
         for (QuickButton button : allButtons) {
             button.clearAnimation();
         }

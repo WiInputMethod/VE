@@ -90,7 +90,7 @@ public class ScrolledViewGroup extends myViewGroup {
     public void setBackgroundColor(int color) {
         backgroundColor = color;
         for (QuickButton quickButton : buttonList) {
-            ViewsUtil.setBackgroundWithGradientDrawable(quickButton,color);
+            ViewsUtil.setBackgroundWithGradientDrawable(quickButton, color);
 //            quickButton.setBackgroundColor(color);
         }
     }
@@ -147,13 +147,13 @@ public class ScrolledViewGroup extends myViewGroup {
         this.backgroundColor = backgroundcolor;
         for (QuickButton button : buttonList) {
             button.setTextColor(textcolor);
-            ViewsUtil.setBackgroundWithGradientDrawable(button,backgroundcolor);
+            ViewsUtil.setBackgroundWithGradientDrawable(button, backgroundcolor);
             button.getBackground().setAlpha(Global.getCurrentAlpha());
 
         }
     }
 
-    public void setHeight(int height ){
+    public void setHeight(int height) {
         this.height = height;
         outerLayoutParams.height = height;
         innerLayoutParams.height = height;
@@ -282,13 +282,14 @@ public class ScrolledViewGroup extends myViewGroup {
         for (QuickButton eachButton : buttonList) {
             ((LinearLayout.LayoutParams) eachButton.itsLayoutParams).leftMargin = padding;
         }
-        if (buttonList.size() > 0) ((LinearLayout.LayoutParams) buttonList.get(0).itsLayoutParams).leftMargin = 0;
+        if (buttonList.size() > 0)
+            ((LinearLayout.LayoutParams) buttonList.get(0).itsLayoutParams).leftMargin = 0;
     }
 
-    public void setShadowLayer(int radius,int color){
-        if(Global.shadowSwitch)
-            for (QuickButton button:buttonList) {
-                button.setShadowLayer(radius,0,0,color);
+    public void setShadowLayer(int radius, int color) {
+        if (Global.shadowSwitch)
+            for (QuickButton button : buttonList) {
+                button.setShadowLayer(radius, 0, 0, color);
             }
     }
 
@@ -303,7 +304,8 @@ public class ScrolledViewGroup extends myViewGroup {
         button.setText(text);
         button.setVisibility(View.GONE);
         button.setBackgroundResource(R.drawable.button_back_x);
-        if(Global.shadowSwitch)button.setShadowLayer(Global.shadowRadius,0,0,skinInfoManager.skinData.shadow);
+        if (Global.shadowSwitch)
+            button.setShadowLayer(Global.shadowRadius, 0, 0, skinInfoManager.skinData.shadow);
 
         return button;
     }
@@ -312,7 +314,7 @@ public class ScrolledViewGroup extends myViewGroup {
     protected QuickButton addButton(int textColor, int backgroundColor, String text) {
         QuickButton button = createButton(text);
         button.setTextColor(textColor);
-        ViewsUtil.setBackgroundWithGradientDrawable(button,backgroundColor);
+        ViewsUtil.setBackgroundWithGradientDrawable(button, backgroundColor);
         button.getBackground().setAlpha(Global.getCurrentAlpha());
         return button;
     }

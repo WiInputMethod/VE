@@ -10,6 +10,7 @@ import android.view.inputmethod.InputConnection;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.hit.wi.jni.Kernel;
 import com.hit.wi.util.DisplayUtil;
 import com.hit.wi.util.InputMode;
@@ -386,15 +387,18 @@ public class QKInputViewGroup extends NonScrollViewGroup {
         if (Global.currentKeyboard == Global.KEYBOARD_EN) {
             shiftButton.setVisibility(View.VISIBLE);
             smileButton.setVisibility(View.GONE);
-            if (show) shiftButton.startAnimation(AnimationUtils.loadAnimation(context, enShow[KEY_Z_INDEX]));
+            if (show)
+                shiftButton.startAnimation(AnimationUtils.loadAnimation(context, enShow[KEY_Z_INDEX]));
         } else if (Global.currentKeyboard == Global.KEYBOARD_QK) {
             smileButton.setVisibility(View.VISIBLE);
             shiftButton.setVisibility(View.GONE);
-            if (show) smileButton.startAnimation(AnimationUtils.loadAnimation(context, enShow[KEY_Z_INDEX]));
+            if (show)
+                smileButton.startAnimation(AnimationUtils.loadAnimation(context, enShow[KEY_Z_INDEX]));
         }
         deleteButton.clearAnimation();
         deleteButton.setVisibility(View.VISIBLE);
-        if (show) deleteButton.startAnimation(AnimationUtils.loadAnimation(context, enShow[KEY_M_INDEX]));
+        if (show)
+            deleteButton.startAnimation(AnimationUtils.loadAnimation(context, enShow[KEY_M_INDEX]));
     }
 
     public void show() {
