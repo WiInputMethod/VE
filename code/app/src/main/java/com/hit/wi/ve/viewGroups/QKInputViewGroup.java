@@ -519,7 +519,6 @@ public class QKInputViewGroup extends NonScrollViewGroup {
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
-                Log.d("WIVE", "qk up");
                 upLightView = softKeyboard.lightViewManager.mLightView[0];
                 if (upLightView.isShown()) {
                     upLightView.setVisibility(View.GONE);
@@ -546,7 +545,6 @@ public class QKInputViewGroup extends NonScrollViewGroup {
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
-                Log.d("WIVE", "qk move");
                 upLightView = softKeyboard.lightViewManager.mLightView[0];
                 if (motionEvent.getY() >= view.getY() && upLightView.isShown()) {
                     upLightView.setVisibility(View.GONE);

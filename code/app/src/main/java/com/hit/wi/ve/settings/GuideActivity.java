@@ -23,6 +23,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -53,40 +54,13 @@ import com.umeng.analytics.MobclickAgent;
 public final class GuideActivity extends Activity implements OnTouchListener {
     //常量
     private static final int PAGE1_SCROLL_ANIMATION = 1;
-    private static final int PAGE2_SCROLL_ANIMATION = 2;
-    private static final int PAGE3_SCROLL_ANIMATION = 3;
-    private static final int PAGE4_SCROLL_ANIMATION = 4;
-    private static final int PAGE5_SCROLL_ANIMATION = 5;
-    private static final int PAGE6_SCROLL_ANIMATION = 6;
-    private static final int PAGE7_SCROLL_ANIMATION = 7;
-    private static final int PAGE8_SCROLL_ANIMATION = 8;
     private static final String WI_VE_IM = "com.hit.wi.ve/.SoftKeyboard";
-
 
     //个页面的控件
     private RelativeLayout screenLayout;
     private ImageView page1AppIcon;
     private TextView page1AppTitle;
     private TextView page1AppSummary;
-
-    private ImageView page2KeyBoard;
-    private TextView page2Summary;
-    private ImageView page2LocationIcon;
-
-    private ImageView page3KeyBoard;
-    private ImageView page3ResizeIcon;
-    private TextView page3Summary;
-
-    private ImageView page4KeyBoard;
-    private ImageView page4AlphaIcon;
-    private ImageView page4Arrow;
-    private TextView page4Summary;
-
-    private ImageView page5Keyboard;
-    private ImageView page5SlidePoint;
-    private TextView page5SlideText;
-    private TextView page5Summary1;
-    private TextView page5Summary2;
 
     private TextView page6Summary;
     private ImageView page6FirstImageView;
@@ -124,7 +98,6 @@ public final class GuideActivity extends Activity implements OnTouchListener {
 
     @Override
     protected void onResume() {
-
         super.onResume();
         MobclickAgent.onResume(this);
     }
@@ -246,9 +219,7 @@ public final class GuideActivity extends Activity implements OnTouchListener {
         if (currentPage == 6) {
             check();
             if (isInList && isDefault) {
-                Intent temp_intent = new Intent(GuideActivity.this, WIT9Activity.class);
-                startActivity(temp_intent);
-                GuideActivity.this.finish();
+                runToSettingActivity();
             } else {
                 updateWindow();
             }
@@ -266,7 +237,8 @@ public final class GuideActivity extends Activity implements OnTouchListener {
 
     @Override
     public void onStart() {
-        super.onStart();//把透明度调节放在这里，这样前景和后景的透明度可以一起调节
+        super.onStart();
+        //把透明度调节放在这里，这样前景和后景的透明度可以一起调节
 
         AlphaAnimation aa = new AlphaAnimation(0f, 0f);
         aa.setDuration(0);
@@ -274,14 +246,10 @@ public final class GuideActivity extends Activity implements OnTouchListener {
         page6Summary.startAnimation(aa);
         page6Success.startAnimation(aa);
         page6Number.startAnimation(aa);
-        if (page5SlidePoint != null) {
-            page5SlidePoint.startAnimation(aa);
-        }
-        if (page5SlideText != null) {
-            page5SlideText.startAnimation(aa);
-        }
+
     }
 
+    @Override
     public boolean onTouch(View v, MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
@@ -291,17 +259,14 @@ public final class GuideActivity extends Activity implements OnTouchListener {
                     check();
                     if (!isInList) {
                         Intent intent = new Intent("/");
-                        ComponentName cm = new ComponentName("com.android.settings",
-                                "com.android.settings.LanguageSettings");
+                        ComponentName cm = new ComponentName("com.android.settings", "com.android.settings.LanguageSettings");
                         intent.setComponent(cm);
-                        intent.setAction("android.intent.action.VIEW");
+                        intent.setAction(Intent.ACTION_VIEW);
                         this.startActivityForResult(intent, 0);
                     } else if (!isDefault) {
-                        ((InputMethodManager) getSystemService("input_method")).showInputMethodPicker();
+                        ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).showInputMethodPicker();
                     } else if (isInList && isDefault) {
-                        Intent temp_intent = new Intent(GuideActivity.this, WIT9Activity.class);
-                        startActivity(temp_intent);
-                        GuideActivity.this.finish();
+                        runToSettingActivity();
                     }
                 }
                 break;
@@ -325,6 +290,12 @@ public final class GuideActivity extends Activity implements OnTouchListener {
                 break;
         }
         return true;
+    }
+
+    public void runToSettingActivity(){
+        Intent intent = new Intent(GuideActivity.this, WIT9Activity.class);
+        startActivity(intent);
+        finish();
     }
 
     //=====   动画函数   =======
@@ -384,7 +355,7 @@ public final class GuideActivity extends Activity implements OnTouchListener {
                     .getSystemService(Context.INPUT_METHOD_SERVICE))
                     .getEnabledInputMethodList();
 
-			/* 检查系统输入法列表 */
+            /* 检查系统输入法列表 */
             for (int i = 0; i < InputMethods.size(); i++) {
                 isInList = false;
                 if (WI_VE_IM.equals(InputMethods.get(i).getId())) {
@@ -392,7 +363,7 @@ public final class GuideActivity extends Activity implements OnTouchListener {
                     break;
                 }
             }
-			/* 检查系统的默认输入法 */
+            /* 检查系统的默认输入法 */
             String curInputMethod = Settings.Secure.getString(
                     this.getContentResolver(),
                     Settings.Secure.DEFAULT_INPUT_METHOD);
@@ -401,6 +372,7 @@ public final class GuideActivity extends Activity implements OnTouchListener {
             }
 
         } catch (Exception e) {
+            Log.d("WIVE","some thing wrong");
             // DO Nothing
         }
     }
@@ -564,9 +536,7 @@ public final class GuideActivity extends Activity implements OnTouchListener {
 
     boolean IsFirstVisit() {
         final String versionName = getVersionName(this);
-
-        final SharedPreferences sp = PreferenceManager
-                .getDefaultSharedPreferences(this);
+        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         final String tag = "FIRST_SHOW_GUIDE" + versionName;
 
         if (sp.getBoolean(tag, true)) {

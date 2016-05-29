@@ -23,6 +23,7 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,17 +31,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hit.wi.jni.DictManager;
+import com.hit.wi.jni.NKInitDictFile;
 import com.hit.wi.jni.WIInputMethodNK;
 import com.hit.wi.util.CommonFuncs;
 import com.hit.wi.ve.R;
 import com.hit.wi.ve.values.Global;
 import com.umeng.analytics.MobclickAgent;
-/* 自定义点滑 */
-/* 添加自定义点滑 */
 
 /**
  * 输入法设置界面
- * Called when the activity is first created.
  */
 public final class WIT9Activity extends PreferenceActivity implements OnPreferenceClickListener, OnPreferenceChangeListener {
     private Preference mDataBackUp;
@@ -91,6 +90,7 @@ public final class WIT9Activity extends PreferenceActivity implements OnPreferen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.addPreferencesFromResource(R.xml.setting);
+        NKInitDictFile.NKInitWiDict(getApplicationContext());
 
         properties = new Properties();
         try {
@@ -173,8 +173,12 @@ public final class WIT9Activity extends PreferenceActivity implements OnPreferen
         super.onPause();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     /**
-     *
      * @param intent 打开MIUI的权限设置界面
      */
     public void showPermissionDialog(final Intent intent) {
@@ -209,7 +213,7 @@ public final class WIT9Activity extends PreferenceActivity implements OnPreferen
                 Uri uri = Uri.parse(Global.PACKAGE);
                 intent.setData(uri);
                 return intent;
-            } else if (Global.V6.equals(properties.getProperty(Global.KEY_MIUI_VERSION_NAME))) {
+            } else if (Global.V6.equals(properties.getProperty(Global.KEY_MIUI_VERSION_NAME ))) {
                 intent = new Intent("miui.intent.action.APP_PERM_EDITOR");
                 intent.setClassName("com.miui.securitycenter", "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
                 intent.putExtra("extra_pkgname", getPackageName());
@@ -267,6 +271,7 @@ public final class WIT9Activity extends PreferenceActivity implements OnPreferen
 
             return json.toString();
         } catch (Exception e) {
+            Log.d("WIVE","get Device info"+e.getMessage());
             e.printStackTrace();
         }
         return null;
@@ -322,8 +327,7 @@ public final class WIT9Activity extends PreferenceActivity implements OnPreferen
     private final void refreshSlidPinList() {
         mUserdefSlidePin.removeAll();
         mUserdefSlidePin.addPreference(mAddUserdefSlidePin);
-        final SharedPreferences sp = PreferenceManager
-                .getDefaultSharedPreferences(this);
+        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         for (char i = 'A'; i <= 'Z'; i++) {
             final String pin = sp.getString("SLIDE_PIN_" + i, null);
             if (pin != null && pin.length() > 0) {

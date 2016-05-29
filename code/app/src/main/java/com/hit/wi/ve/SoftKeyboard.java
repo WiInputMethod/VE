@@ -277,14 +277,13 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
     public void onCreate() {
         /*
          * 加载内核
-		 */
-        Log.i("Test", "onCreate");
-        NKInitDictFile.NKInitWiDict(this);//todo:第一次加载键盘要读文件到内存中，这一步上耗时很长，尝试使用Handler扔到子线程中执行
+         */
+        Log.i("WIVE", "onCreate");
         initInputParam = new InitInputParam();
 
-		/*
+        /*
          * 初始化SharedPreferences数据
-		 */
+         */
         SharedPreferenceManager.initSharedPreferencesData(this);//初始化系统默认的点划设置
 
         iniComponent();
@@ -355,7 +354,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
      */
     @Override
     public void onDestroy() {
-        Log.i("Test", "onDestroy");
+//        Log.i("WIVE", "onDestroy softkeyboard");
         viewManagerC.removeInputView();
 //        lightViewManager.removeView();
         Kernel.cleanKernel();
@@ -1436,6 +1435,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
 
     @Override
     public View onCreateInputView() {
+//        Log.d("WIVE","onCreateInputView");
         return super.onCreateInputView();
     }
 
