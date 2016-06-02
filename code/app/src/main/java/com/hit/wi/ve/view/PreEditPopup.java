@@ -89,6 +89,10 @@ public class PreEditPopup {
             dismiss();
         }
     }
+    public void setBackgroundAlpha(int alpha){
+
+        editText.getBackground().setAlpha(alpha);
+    }
 
     public void showText(CharSequence text) {
         editText.setText(text);
@@ -140,6 +144,5 @@ public class PreEditPopup {
             ic.setSelection(baseCursor + editText.getSelectionStart(), baseCursor + editText.getSelectionEnd());
         }
     };
-
 
 }
