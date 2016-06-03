@@ -533,7 +533,6 @@ public final class GuideActivity extends Activity implements OnTouchListener {
         return versionName;
     }
 
-
     boolean IsFirstVisit() {
         final String versionName = getVersionName(this);
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);

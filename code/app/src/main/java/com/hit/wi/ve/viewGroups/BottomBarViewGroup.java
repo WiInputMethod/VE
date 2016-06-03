@@ -270,6 +270,13 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
         }
     }
 
+    @Override
+    public void setBackgroundAlpha(int alpha) {
+        for (QuickButton button:allButtons) {
+            button.getBackground().setAlpha(alpha);
+        }
+    }
+
     private boolean isSwitchState = false;
     private View.OnTouchListener switchKeyOnTouchListener = new View.OnTouchListener() {
         @Override
