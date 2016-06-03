@@ -1238,6 +1238,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
             qkInputViewGroup.setBackgroundAlpha(alpha);
             quickSymbolViewGroup.setBackgroundAlpha(alpha);
             largeCandidateButton.getBackground().setAlpha(alpha);
+            preEditPopup.setBackgroundAlpha(alpha);
         }
 
         /**
