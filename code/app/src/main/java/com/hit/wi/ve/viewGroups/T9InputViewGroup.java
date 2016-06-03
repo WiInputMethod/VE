@@ -17,6 +17,9 @@ import com.hit.wi.ve.datastruct.InputAction;
 import com.hit.wi.ve.values.Global;
 import com.hit.wi.ve.view.QuickButton;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by purebluesong on 2016/2/29.
  */
@@ -380,6 +383,15 @@ public class T9InputViewGroup extends NonScrollViewGroup {
         }
     };
 
+    private List<String> cleanFormat(List<String> list) {
+        List<String> tmp = new ArrayList<>();
+        for (int j=0;j<list.size();j++) {
+            String bitch = list.get(j).trim();
+            tmp.add(bitch);
+        }
+        return tmp;
+    }
+
 
     /**
      * 功能：监听符号键盘的touch 事件
@@ -394,12 +406,12 @@ public class T9InputViewGroup extends NonScrollViewGroup {
                 int index = buttonList.indexOf(v);
                 if (buttonList.indexOf(v) == KEY_OTHER_INDEX) {
                     switchSymbolToFunc(mOtherSymbolTypeList, mOtherSymbolTypeSendKeyList);
-                    softKeyboard.candidatesViewGroup.displayCandidates(Global.SYMBOL, StringUtil.convertStringstoList(softKeyboard.symbolsManager.SPECIAL), 100);
+                    softKeyboard.candidatesViewGroup.displayCandidates(Global.SYMBOL, cleanFormat(StringUtil.convertStringstoList(softKeyboard.symbolsManager.SPECIAL)), 1000);
                 } else if (index == 6) {
-                    softKeyboard.candidatesViewGroup.displayCandidates(Global.SYMBOL, StringUtil.convertStringstoList(softKeyboard.symbolsManager.NUMBER), 100);
+                    softKeyboard.candidatesViewGroup.displayCandidates(Global.SYMBOL, cleanFormat(StringUtil.convertStringstoList(softKeyboard.symbolsManager.NUMBER)), 1000);
                     softKeyboard.refreshDisplay(true);
                 } else if (index == 7) {
-                    softKeyboard.candidatesViewGroup.displayCandidates(Global.SYMBOL, StringUtil.convertStringstoList(softKeyboard.symbolsManager.MATH), 100);
+                    softKeyboard.candidatesViewGroup.displayCandidates(Global.SYMBOL, cleanFormat(StringUtil.convertStringstoList(softKeyboard.symbolsManager.MATH)), 1000);
                     softKeyboard.refreshDisplay(true);
                 } else {
                     switchBackFunc();

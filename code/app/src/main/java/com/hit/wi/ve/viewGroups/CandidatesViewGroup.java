@@ -163,6 +163,7 @@ public class CandidatesViewGroup extends ScrolledViewGroup {
                 i++;
             }
         }
+
         setCandidates(words);
         scrollView.fullScroll(View.FOCUS_UP);//go to top
     }

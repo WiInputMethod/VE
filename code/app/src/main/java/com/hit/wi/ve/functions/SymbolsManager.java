@@ -6,6 +6,7 @@ import com.hit.wi.util.StringUtil;
 import com.hit.wi.ve.functions.data.SymbolEmoji;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by admin on 2015/10/30.
@@ -31,22 +32,26 @@ public class SymbolsManager {
 
     public Symbols symbols;
     private  IniAnalysis iniAnalysis;
+    
+    private String[] convertValues(List<String> list) {
+        return StringUtil.convertListToString(list);
+    }
 
     public SymbolsManager(Context context){
         iniAnalysis = new IniAnalysis(context);
         symbols = new Symbols();
         try {
-            SMILE       = StringUtil.convertListToString(iniAnalysis.getValuesFromFile(symbols.SMILE));
-            MATH        = StringUtil.convertListToString(iniAnalysis.getValuesFromFile(symbols.MATH));
-            BU_SHOU     = StringUtil.convertListToString(iniAnalysis.getValuesFromFile(symbols.BU_SHOU));
-            SPECIAL     = StringUtil.convertListToString(iniAnalysis.getValuesFromFile(symbols.SPECIAL));
-            NET         = StringUtil.convertListToString(iniAnalysis.getValuesFromFile(symbols.NET));
-            RUSSIAN     = StringUtil.convertListToString(iniAnalysis.getValuesFromFile(symbols.RUSSIAN));
-            PHONETIC    = StringUtil.convertListToString(iniAnalysis.getValuesFromFile(symbols.PHONETIC));
-            NUMBER      = StringUtil.convertListToString(iniAnalysis.getValuesFromFile(symbols.NUMBER));
-            BOPOMOFO    = StringUtil.convertListToString(iniAnalysis.getValuesFromFile(symbols.BOPOMOFO));
-            JAPANESE    = StringUtil.convertListToString(iniAnalysis.getValuesFromFile(symbols.JAPNAESE));
-            GREECE      = StringUtil.convertListToString(iniAnalysis.getValuesFromFile(symbols.GREECE));
+            SMILE       = convertValues(iniAnalysis.getValuesFromFile(symbols.SMILE));
+            MATH        = convertValues(iniAnalysis.getValuesFromFile(symbols.MATH));
+            BU_SHOU     = convertValues(iniAnalysis.getValuesFromFile(symbols.BU_SHOU));
+            SPECIAL     = convertValues(iniAnalysis.getValuesFromFile(symbols.SPECIAL));
+            NET         = convertValues(iniAnalysis.getValuesFromFile(symbols.NET));
+            RUSSIAN     = convertValues(iniAnalysis.getValuesFromFile(symbols.RUSSIAN));
+            PHONETIC    = convertValues(iniAnalysis.getValuesFromFile(symbols.PHONETIC));
+            NUMBER      = convertValues(iniAnalysis.getValuesFromFile(symbols.NUMBER));
+            BOPOMOFO    = convertValues(iniAnalysis.getValuesFromFile(symbols.BOPOMOFO));
+            JAPANESE    = convertValues(iniAnalysis.getValuesFromFile(symbols.JAPNAESE));
+            GREECE      = convertValues(iniAnalysis.getValuesFromFile(symbols.GREECE));
         } catch (IOException e) {
             Log.d("WIVE","lightViewAnimate"+e.toString());
             e.printStackTrace();

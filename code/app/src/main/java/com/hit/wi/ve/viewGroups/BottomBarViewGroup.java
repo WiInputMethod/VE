@@ -323,6 +323,13 @@ public class BottomBarViewGroup extends NonScrollViewGroup {
             expression = StringUtil.convertStringstoList(softKeyboard.symbolsManager.EmojiFace);
         } else if (flag == 1) {
             expression = StringUtil.convertStringstoList(softKeyboard.symbolsManager.SMILE);
+            List<String> tmp = new ArrayList<>();
+            for (int j=0;j<expression.size();j++) {
+                String bitch = expression.get(j).trim();
+                tmp.add(bitch);
+            }
+            expression.clear();
+            expression = tmp;
         } else {
             expression = new ArrayList<>();
         }
