@@ -213,12 +213,10 @@ public final class WIT9Activity extends PreferenceActivity implements OnPreferen
                 Uri uri = Uri.parse(Global.PACKAGE);
                 intent.setData(uri);
                 return intent;
-            } else if (Global.V6.equals(properties.getProperty(Global.KEY_MIUI_VERSION_NAME ))) {
-                intent = new Intent("miui.intent.action.APP_PERM_EDITOR");
-                intent.setClassName("com.miui.securitycenter", "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
-                intent.putExtra("extra_pkgname", getPackageName());
-                return intent;
-            } else if (Global.V7.equals(properties.getProperty(Global.KEY_MIUI_VERSION_NAME))) {
+            } else if (Global.V6.equals(properties.getProperty(Global.KEY_MIUI_VERSION_NAME )) ||
+                    Global.V7.equals(properties.getProperty(Global.KEY_MIUI_VERSION_NAME)) ||
+                    Global.V8.equals(properties.getProperty(Global.KEY_MIUI_VERSION_NAME))
+                    ) {
                 intent = new Intent("miui.intent.action.APP_PERM_EDITOR");
                 intent.setClassName("com.miui.securitycenter", "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
                 intent.putExtra("extra_pkgname", getPackageName());

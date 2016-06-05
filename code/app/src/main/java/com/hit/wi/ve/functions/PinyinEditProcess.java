@@ -23,15 +23,14 @@ public class PinyinEditProcess {
     }
 
     public void computeCursorPosition(InputConnection ic) {
-        if (ic == null) ic = softKeyboard.getCurrentInputConnection();
-        if (ic == null) Log.d("WIVE", "ic is null");
         //上屏
         if (ic != null) {
             //计算光标位置
-            int cursor = Kernel.getWordsShowPinyin() == null ? 0 : Kernel.getWordsShowPinyin().length();
             ic.beginBatchEdit();
             ic.setComposingText(Kernel.getWordsShowPinyin(), 1);
             ic.endBatchEdit();
+        } else {
+            Log.d("WIVE", "ic is null");
         }
     }
 
@@ -41,13 +40,40 @@ public class PinyinEditProcess {
     }
 
     /**
+     * 后来发现出问题的原因是这里与小米联系人输入框对于candidateEnd与Start的设置冲突了
+     * 但是要改的话就是整个候选词显示方式的改动
+    * @author purebluesong
+    * */
+    private int mOldSelEnd=0;
+    private boolean isXiaomi = false;
+    private int mOldCandidateEnd=0;
+    private boolean isXiaomiContact() {
+        if (!isXiaomi){
+            isXiaomi = mCandidateEnd == -1 && mCandidateStart == mCandidateEnd && mCandidateEnd <= mOldCandidateEnd && mSelEnd > mOldSelEnd;
+        } else {
+            isXiaomi &= mCandidateEnd == -1;
+        }
+        mOldSelEnd = mSelEnd;
+        mOldCandidateEnd = mCandidateEnd;
+        return isXiaomi;
+    }
+
+    private void specialOperateForXiaomiContact() {
+        if (isXiaomiContact()) {
+            InputConnection ic = softKeyboard.getCurrentInputConnection();
+            ic.setComposingRegion(0,mSelEnd);
+            ic.setComposingText("",1);
+        }
+    }
+
+    /**
      * 句子边界编辑处理，也就是游标在句首或者句尾的时候的处理，处理完全就不必向下传递
      * author： purebluesong
      *
      * @return 是否向下传递
      */
     public boolean borderEditProcess(String s, boolean delete) {
-        if (delete && (mSelStart <= mCandidateStart || mSelStart > mCandidateEnd)) {
+        if (delete && (mSelStart <= mCandidateStart || mSelStart > mCandidateEnd) && mCandidateEnd!=-1) {
             softKeyboard.sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL);
             softKeyboard.preEditPopup.setCursor(mSelStart - 1, mSelEnd - 1);
             return true;
@@ -58,9 +84,12 @@ public class PinyinEditProcess {
             } else {
                 Kernel.inputPinyin(s);
             }
+            int cursor = Kernel.getWordsShowPinyin().length();
             if (mSelEnd != 0) {
-                softKeyboard.preEditPopup.setCursor(Kernel.getWordsShowPinyin().length());
+                softKeyboard.preEditPopup.setCursor(cursor);
             }
+            specialOperateForXiaomiContact();
+            computeCursorPosition(softKeyboard.getCurrentInputConnection());
             softKeyboard.refreshDisplay();
             return true;
         }
@@ -119,7 +148,7 @@ public class PinyinEditProcess {
         Kernel.cleanKernel();
         Kernel.inputPinyin(pinyin);
 
-        ic.setComposingText(Kernel.getWordsShowPinyin(), 1);
+        ic.setComposingText(Kernel.getWordsShowPinyin(), 0);
         ic.setSelection(mCandidateEnd, mCandidateEnd);
         commitChangesInPreEdit(mCandidateEnd, mCandidateEnd);
     }

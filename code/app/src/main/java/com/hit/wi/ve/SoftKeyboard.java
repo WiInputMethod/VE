@@ -431,7 +431,6 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         quickSymbolViewGroup.refreshState();
         viewSizeUpdate.UpdateQuickSymbolSize();
         bottomBarViewGroup.refreshState();
-        pinyinProc.computeCursorPosition(getCurrentInputConnection());
         preEditPopup.refreshState();
     }
 
@@ -490,6 +489,7 @@ public final class SoftKeyboard extends InputMethodService implements SoftKeyboa
         } else if (Global.currentKeyboard == Global.KEYBOARD_EN) {
             refreshDisplay();
         }
+        pinyinProc.computeCursorPosition(getCurrentInputConnection());
         qkInputViewGroup.refreshQKKeyboardPredict();//刷新点滑预测
     }
 

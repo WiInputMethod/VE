@@ -23,7 +23,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -37,18 +36,14 @@ import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.*;
 import android.widget.RelativeLayout.LayoutParams;
-import android.widget.TextView;
 
 import com.hit.wi.ve.R;
 import com.hit.wi.ve.values.Global;
 import com.umeng.analytics.MobclickAgent;
 
 /**
- *
  * @author winlandiano
  */
 public final class GuideActivity extends Activity implements OnTouchListener {
@@ -92,9 +87,6 @@ public final class GuideActivity extends Activity implements OnTouchListener {
      * 已成为默认输入法=3
      */
     private int currentPrepareStage = 0;
-
-    private boolean isInList;
-    private boolean isDefault;
 
     @Override
     protected void onResume() {
@@ -217,8 +209,7 @@ public final class GuideActivity extends Activity implements OnTouchListener {
         }
 
         if (currentPage == 6) {
-            check();
-            if (isInList && isDefault) {
+            if (checkInList() && checkIsDefault()) {
                 runToSettingActivity();
             } else {
                 updateWindow();
@@ -256,16 +247,11 @@ public final class GuideActivity extends Activity implements OnTouchListener {
                 downX = event.getX();
                 downTime = System.currentTimeMillis();
                 if (currentPage == 6) {
-                    check();
-                    if (!isInList) {
-                        Intent intent = new Intent("/");
-                        ComponentName cm = new ComponentName("com.android.settings", "com.android.settings.LanguageSettings");
-                        intent.setComponent(cm);
-                        intent.setAction(Intent.ACTION_VIEW);
-                        this.startActivityForResult(intent, 0);
-                    } else if (!isDefault) {
+                    if (!checkInList()) {
+                        popupIMChossingView();
+                    } else if (!checkIsDefault()) {
                         ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).showInputMethodPicker();
-                    } else if (isInList && isDefault) {
+                    } else if (checkInList() && checkIsDefault()) {
                         runToSettingActivity();
                     }
                 }
@@ -292,7 +278,15 @@ public final class GuideActivity extends Activity implements OnTouchListener {
         return true;
     }
 
-    public void runToSettingActivity(){
+    private void popupIMChossingView() {
+        Intent intent = new Intent("/");
+        ComponentName cm = new ComponentName("com.android.settings", "com.android.settings.LanguageSettings");
+        intent.setComponent(cm);
+        intent.setAction(Intent.ACTION_VIEW);
+        startActivityForResult(intent, 0);
+    }
+
+    public void runToSettingActivity() {
         Intent intent = new Intent(GuideActivity.this, WIT9Activity.class);
         startActivity(intent);
         finish();
@@ -345,12 +339,12 @@ public final class GuideActivity extends Activity implements OnTouchListener {
      * 这段用来纪念我未曾有机会熟识的**李阳**师兄  ^_^'
      *
      * @author leeon
+     * @author purebluesong
      */
-    public void check() {
-        isInList = false;
-        isDefault = false;
+    public boolean checkInList() {
+        boolean isInList = false;
+        // Get list of input methods
         try {
-            // Get list of input methods
             List<InputMethodInfo> InputMethods = ((InputMethodManager) this
                     .getSystemService(Context.INPUT_METHOD_SERVICE))
                     .getEnabledInputMethodList();
@@ -363,6 +357,19 @@ public final class GuideActivity extends Activity implements OnTouchListener {
                     break;
                 }
             }
+        } catch (Exception e) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG);
+        }
+        return isInList;
+    }
+
+    /**
+     * @author leeon
+     * @author purebluesong
+     */
+    public boolean checkIsDefault() {
+        boolean isDefault = false;
+        try {
             /* 检查系统的默认输入法 */
             String curInputMethod = Settings.Secure.getString(
                     this.getContentResolver(),
@@ -370,149 +377,163 @@ public final class GuideActivity extends Activity implements OnTouchListener {
             if (WI_VE_IM.equals(curInputMethod)) {
                 isDefault = true;
             }
-
         } catch (Exception e) {
-            Log.d("WIVE","some thing wrong");
-            // DO Nothing
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG);
         }
+        return isDefault;
     }
 
+    private void pageOneToThreeAnim() {
+        //之前控件退场
+        AlphaAnimation aAnimation = new AlphaAnimation(1f, 0f);
+        aAnimation.setDuration(700);
+        aAnimation.setFillAfter(true);
+        page6Summary.startAnimation(aAnimation);
+
+        ScaleAnimation sAnimation = new ScaleAnimation(1f, 0f, 1f, 0f,
+                ScaleAnimation.RELATIVE_TO_SELF, 0.5f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
+        sAnimation.setDuration(700);
+        sAnimation.setFillAfter(true);
+        sAnimation.setInterpolator(new AccelerateInterpolator());
+        page6FirstImageView.startAnimation(sAnimation);
+        page6SecondImageView.startAnimation(sAnimation);
+
+        page6Number.startAnimation(aAnimation);
+
+        //新控件入场
+        AnimationSet as = new AnimationSet(false);
+        TranslateAnimation tAnimationIcon = new TranslateAnimation(TranslateAnimation.RELATIVE_TO_SELF, 0f,
+                TranslateAnimation.RELATIVE_TO_SELF, 0f,
+                TranslateAnimation.RELATIVE_TO_SELF, 0.3f,
+                TranslateAnimation.RELATIVE_TO_SELF, 0f);
+        tAnimationIcon.setDuration(1000);
+        tAnimationIcon.setFillAfter(true);
+        tAnimationIcon.setInterpolator(new OvershootInterpolator());
+        tAnimationIcon.setStartOffset(750);
+        as.addAnimation(tAnimationIcon);
+
+        AlphaAnimation aAnimationIcon = new AlphaAnimation(0f, 1f);
+        aAnimationIcon.setDuration(1000);
+        aAnimationIcon.setFillAfter(true);
+        aAnimationIcon.setStartOffset(750);
+        as.addAnimation(aAnimationIcon);
+        if (page1AppIcon == null) {
+            page1AppIcon = new ImageView(this);
+            page1AppIcon.setImageDrawable(getResources().getDrawable(R.drawable.wi_t9_icon_white));
+            scaleAndBindImgToView(page1AppIcon, R.drawable.wi_t9_icon_white, (int) (mScreenWidth * 0.4), (int) (mScreenHeight * 0.4));
+            LayoutParams lp = new LayoutParams((int) (mScreenWidth * 0.4), (int) (mScreenHeight * 0.4));
+            lp.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+            lp.setMargins((int) (mScreenWidth * (0.5 - 0.2)), (int) (mScreenHeight * 0.38 - mScreenWidth * 0.2), (int) (mScreenWidth * 0.3), (int) (mScreenHeight * 0.62 - mScreenWidth * 0.2));
+            screenLayout.addView(page1AppIcon, lp);
+        }
+
+        page1AppIcon.startAnimation(as);
+
+        page1AppIcon.startAnimation(as);
+        page6Success.getBackground().setAlpha(255);
+        page6Success.startAnimation(as);
+    }
+
+    private void pageOtherToThreeAnim() {
+        AnimationSet as = new AnimationSet(false);
+        TranslateAnimation tAnimationIcon = new TranslateAnimation(TranslateAnimation.RELATIVE_TO_SELF, 0f,
+                TranslateAnimation.RELATIVE_TO_SELF, 0f,
+                TranslateAnimation.RELATIVE_TO_SELF, 0.3f,
+                TranslateAnimation.RELATIVE_TO_SELF, 0f);
+        tAnimationIcon.setDuration(700);
+        tAnimationIcon.setFillAfter(true);
+        tAnimationIcon.setInterpolator(new OvershootInterpolator());
+        as.addAnimation(tAnimationIcon);
+
+        AlphaAnimation aAnimationIcon = new AlphaAnimation(0f, 1f);
+        aAnimationIcon.setDuration(700);
+        aAnimationIcon.setFillAfter(true);
+        as.addAnimation(aAnimationIcon);
+        as.setStartOffset(300);
+        page1AppIcon.startAnimation(as);
+
+        page6Success.getBackground().setAlpha(255);
+        page6Success.startAnimation(as);
+    }
+
+    private void pageOtherToTwoAnim() {
+        if (currentPrepareStage != 1) {
+            page6FirstImageView.getBackground().setAlpha(229);
+            page6Summary.getBackground().setAlpha(255);
+        }
+        ScaleAnimation sAnimation = new ScaleAnimation(0.0f, 1f, 0.0f, 1f,
+                ScaleAnimation.RELATIVE_TO_SELF, 0.5f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
+        sAnimation.setDuration(700);
+        sAnimation.setStartOffset(200);
+        sAnimation.setFillAfter(true);
+        sAnimation.setInterpolator(new OvershootInterpolator());
+        AlphaAnimation aAnimation = new AlphaAnimation(0f, 0.6f);
+        aAnimation.setDuration(700);
+        aAnimation.setStartOffset(200);
+        aAnimation.setFillAfter(true);
+        page6SecondImageView.getBackground().setAlpha(153);
+        page6SecondImageView.startAnimation(aAnimation);
+        page6SecondImageView.startAnimation(sAnimation);
+
+
+        AlphaAnimation aAnimation2 = new AlphaAnimation(0f, 1f);
+        aAnimation2.setDuration(700);
+        aAnimation2.setStartOffset(200);
+        page6Number.setText("2");
+        page6Number.getBackground().setAlpha(255);
+        page6Number.clearAnimation();
+        page6Number.startAnimation(aAnimation2);
+
+        page6Summary.clearAnimation();
+        page6Summary.startAnimation(aAnimation2);
+        page6Summary.setText(getString(R.string.guide_page6_text2));
+    }
+
+    private void pageOtherToOneAnim() {
+        AnimationSet as = new AnimationSet(false);
+        ScaleAnimation sAnimation = new ScaleAnimation(0.0f, 1f, 0.0f, 1f,
+                ScaleAnimation.RELATIVE_TO_SELF, 0.5f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
+        sAnimation.setDuration(700);
+        sAnimation.setFillAfter(true);
+        sAnimation.setInterpolator(new OvershootInterpolator());
+        as.addAnimation(sAnimation);
+        AlphaAnimation aAnimation = new AlphaAnimation(0f, 0.9f);
+        aAnimation.setDuration(700);
+        aAnimation.setFillAfter(true);
+        page6FirstImageView.getBackground().setAlpha(229);
+        as.addAnimation(aAnimation);
+        page6FirstImageView.startAnimation(as);
+
+        AlphaAnimation aAnimation2 = new AlphaAnimation(0f, 1f);
+        aAnimation2.setDuration(700);
+        page6Number.setText("1");
+        page6Number.getBackground().setAlpha(255);
+        page6Number.startAnimation(aAnimation2);
+
+        page6Summary.setText(getString(R.string.guide_page6_text1));
+        page6Summary.clearAnimation();
+        page6Summary.startAnimation(aAnimation);
+    }
+
+    /**
+     * @author someone
+     * @author purebluesong
+     */
     private void updateWindow() {
-        check();
-        if (isInList) {
-            if (isDefault) {
+        if (checkInList()) {
+            if (checkIsDefault()) {
                 if (currentPrepareStage == 2 || currentPrepareStage == 1) {
-                    //之前控件退场
-                    AlphaAnimation aAnimation = new AlphaAnimation(1f, 0f);
-                    aAnimation.setDuration(700);
-                    aAnimation.setFillAfter(true);
-                    page6Summary.startAnimation(aAnimation);
-
-                    ScaleAnimation sAnimation = new ScaleAnimation(1f, 0f, 1f, 0f,
-                            ScaleAnimation.RELATIVE_TO_SELF, 0.5f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
-                    sAnimation.setDuration(700);
-                    sAnimation.setFillAfter(true);
-                    sAnimation.setInterpolator(new AccelerateInterpolator());
-                    page6FirstImageView.startAnimation(sAnimation);
-                    page6SecondImageView.startAnimation(sAnimation);
-
-                    page6Number.startAnimation(aAnimation);
-
-                    //新控件入场
-                    AnimationSet as = new AnimationSet(false);
-                    TranslateAnimation tAnimationIcon = new TranslateAnimation(TranslateAnimation.RELATIVE_TO_SELF, 0f,
-                            TranslateAnimation.RELATIVE_TO_SELF, 0f,
-                            TranslateAnimation.RELATIVE_TO_SELF, 0.3f,
-                            TranslateAnimation.RELATIVE_TO_SELF, 0f);
-                    tAnimationIcon.setDuration(1000);
-                    tAnimationIcon.setFillAfter(true);
-                    tAnimationIcon.setInterpolator(new OvershootInterpolator());
-                    tAnimationIcon.setStartOffset(750);
-                    as.addAnimation(tAnimationIcon);
-
-                    AlphaAnimation aAnimationIcon = new AlphaAnimation(0f, 1f);
-                    aAnimationIcon.setDuration(1000);
-                    aAnimationIcon.setFillAfter(true);
-                    aAnimationIcon.setStartOffset(750);
-                    as.addAnimation(aAnimationIcon);
-                    if (page1AppIcon == null) {
-                        page1AppIcon = new ImageView(this);
-                        page1AppIcon.setImageDrawable(getResources().getDrawable(R.drawable.wi_t9_icon_white));
-                        scaleAndBindImgToView(page1AppIcon, R.drawable.wi_t9_icon_white, (int) (mScreenWidth * 0.4), (int) (mScreenHeight * 0.4));
-                        LayoutParams lp = new LayoutParams((int) (mScreenWidth * 0.4), (int) (mScreenHeight * 0.4));
-                        lp.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
-                        lp.setMargins((int) (mScreenWidth * (0.5 - 0.2)), (int) (mScreenHeight * 0.38 - mScreenWidth * 0.2), (int) (mScreenWidth * 0.3), (int) (mScreenHeight * 0.62 - mScreenWidth * 0.2));
-                        screenLayout.addView(page1AppIcon, lp);
-                    }
-
-                    page1AppIcon.startAnimation(as);
-
-                    page1AppIcon.startAnimation(as);
-                    page6Success.getBackground().setAlpha(255);
-                    page6Success.startAnimation(as);
-                    currentPrepareStage = 3;
+                    pageOneToThreeAnim();
                 } else {
-                    AnimationSet as = new AnimationSet(false);
-                    TranslateAnimation tAnimationIcon = new TranslateAnimation(TranslateAnimation.RELATIVE_TO_SELF, 0f,
-                            TranslateAnimation.RELATIVE_TO_SELF, 0f,
-                            TranslateAnimation.RELATIVE_TO_SELF, 0.3f,
-                            TranslateAnimation.RELATIVE_TO_SELF, 0f);
-                    tAnimationIcon.setDuration(700);
-                    tAnimationIcon.setFillAfter(true);
-                    tAnimationIcon.setInterpolator(new OvershootInterpolator());
-                    as.addAnimation(tAnimationIcon);
-
-                    AlphaAnimation aAnimationIcon = new AlphaAnimation(0f, 1f);
-                    aAnimationIcon.setDuration(700);
-                    aAnimationIcon.setFillAfter(true);
-                    as.addAnimation(aAnimationIcon);
-                    as.setStartOffset(300);
-                    page1AppIcon.startAnimation(as);
-
-                    page6Success.getBackground().setAlpha(255);
-                    page6Success.startAnimation(as);
-                    currentPrepareStage = 3;
+                    pageOtherToThreeAnim();
                 }
-
+                currentPrepareStage = 3;
             } else {
-                if (currentPrepareStage != 1) {
-                    page6FirstImageView.getBackground().setAlpha(229);
-                    page6Summary.getBackground().setAlpha(255);
-                }
-                ScaleAnimation sAnimation = new ScaleAnimation(0.0f, 1f, 0.0f, 1f,
-                        ScaleAnimation.RELATIVE_TO_SELF, 0.5f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
-                sAnimation.setDuration(700);
-                sAnimation.setStartOffset(200);
-                sAnimation.setFillAfter(true);
-                sAnimation.setInterpolator(new OvershootInterpolator());
-                AlphaAnimation aAnimation = new AlphaAnimation(0f, 0.6f);
-                aAnimation.setDuration(700);
-                aAnimation.setStartOffset(200);
-                aAnimation.setFillAfter(true);
-                page6SecondImageView.getBackground().setAlpha(153);
-                page6SecondImageView.startAnimation(aAnimation);
-                page6SecondImageView.startAnimation(sAnimation);
-
-
-                AlphaAnimation aAnimation2 = new AlphaAnimation(0f, 1f);
-                aAnimation2.setDuration(700);
-                aAnimation2.setStartOffset(200);
-                page6Number.setText("2");
-                page6Number.getBackground().setAlpha(255);
-                page6Number.clearAnimation();
-                page6Number.startAnimation(aAnimation2);
-
-                page6Summary.clearAnimation();
-                page6Summary.startAnimation(aAnimation2);
-                page6Summary.setText(getString(R.string.guide_page6_text2));
-
+                pageOtherToTwoAnim();
                 currentPrepareStage = 2;
             }
         } else {
-            AnimationSet as = new AnimationSet(false);
-            ScaleAnimation sAnimation = new ScaleAnimation(0.0f, 1f, 0.0f, 1f,
-                    ScaleAnimation.RELATIVE_TO_SELF, 0.5f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
-            sAnimation.setDuration(700);
-            sAnimation.setFillAfter(true);
-            sAnimation.setInterpolator(new OvershootInterpolator());
-            as.addAnimation(sAnimation);
-            AlphaAnimation aAnimation = new AlphaAnimation(0f, 0.9f);
-            aAnimation.setDuration(700);
-            aAnimation.setFillAfter(true);
-            page6FirstImageView.getBackground().setAlpha(229);
-            as.addAnimation(aAnimation);
-            page6FirstImageView.startAnimation(as);
-
-            AlphaAnimation aAnimation2 = new AlphaAnimation(0f, 1f);
-            aAnimation2.setDuration(700);
-            page6Number.setText("1");
-            page6Number.getBackground().setAlpha(255);
-            page6Number.startAnimation(aAnimation2);
-
-            page6Summary.setText(getString(R.string.guide_page6_text1));
-            page6Summary.clearAnimation();
-            page6Summary.startAnimation(aAnimation);
-
+            pageOtherToOneAnim();
             currentPrepareStage = 1;
         }
     }

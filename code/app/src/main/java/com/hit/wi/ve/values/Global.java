@@ -56,6 +56,7 @@ public final class Global {
     public static String V6 = "V6";
     public static String V5 = "V5";
     public static String V7 = "V7";
+    public static String V8 = "V8";
     public static String PACKAGE = "package:com.hit.wi.ve";
 
     public static int metaRefreshTime = 1000;
