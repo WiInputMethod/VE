@@ -1,11 +1,14 @@
 package com.hit.wi.ve.functions;
 
+import android.os.Build;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 
 import com.hit.wi.jni.Kernel;
 import com.hit.wi.ve.SoftKeyboard;
+import com.hit.wi.ve.values.Global;
 
 /**
  * Created by purebluesong on 2016/4/25.
@@ -44,18 +47,9 @@ public class PinyinEditProcess {
      * 但是要改的话就是整个候选词显示方式的改动
     * @author purebluesong
     * */
-    private int mOldSelEnd=0;
-    private boolean isXiaomi = false;
-    private int mOldCandidateEnd=0;
     private boolean isXiaomiContact() {
-        if (!isXiaomi){
-            isXiaomi = mCandidateEnd == -1 && mCandidateStart == mCandidateEnd && mCandidateEnd <= mOldCandidateEnd && mSelEnd > mOldSelEnd;
-        } else {
-            isXiaomi &= mCandidateEnd == -1;
-        }
-        mOldSelEnd = mSelEnd;
-        mOldCandidateEnd = mCandidateEnd;
-        return isXiaomi;
+        EditorInfo info = softKeyboard.getCurrentInputEditorInfo();
+        return info.packageName.equals("com.android.contacts") && Global.XIAOMI.equals(Build.MANUFACTURER);
     }
 
     private void specialOperateForXiaomiContact() {
