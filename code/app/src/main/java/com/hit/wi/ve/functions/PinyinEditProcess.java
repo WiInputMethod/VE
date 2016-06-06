@@ -108,26 +108,26 @@ public class PinyinEditProcess {
     }
 
     private void innerPinyinProcess(InputConnection ic, String sBegin, String sEnd) {
-        Log.d("WIVE", "pinyin process ");
+        Log.d("WIVE", "pinyin process");
 
         Kernel.cleanKernel();
         Kernel.inputPinyin(sBegin + sEnd);
         String showPinyin = Kernel.getWordsShowPinyin();
 
         int position = sBegin.length() + countQuotation(sBegin.length(), showPinyin);
-        commitChangesInPreEdit(mCandidateStart + position, mCandidateStart + position);
+        commitChangesInPreEdit(position,position);
         ic.setComposingText(showPinyin, 1);
         ic.setSelection(mCandidateStart + position, mCandidateStart + position);
     }
 
-    private void innerChineseInsert(InputConnection ic, String s) {
+    private void innerChineseInsert(String s) {
         Log.d("WIVE", "chinese insert");
         //因为内核的缺陷，选择了无视用户的请求=。=b
         Kernel.inputPinyin(s);
         commitChangesInPreEdit(mSelStart, mSelEnd);
     }
 
-    private void innerChineseDelete(InputConnection ic, String sBegin, String sEnd, int sBeforeEngPosition, int sAfterEngPosition) {
+    private void innerChineseDelete(InputConnection ic, String sBegin, String sEnd, int sAfterEngPosition) {
         Log.d("WIVE", "chinese delete");
         ic.commitText(sBegin, 1);
         ic.commitText(sEnd.substring(0, sAfterEngPosition), 1);
@@ -169,9 +169,8 @@ public class PinyinEditProcess {
         commitChangesInPreEdit(mCandidateStart + i + j, mCandidateEnd + i + j);
     }
 
-    private void withChineseDelete(InputConnection ic, String sBefore, String sAfter, int i) {
+    private void withChineseDelete() {
         Log.d("WIVE", "with chinese delete");
-
     }
 
     private int getFirstEnglishLetterPosition(int readLength, String sBefore) {
@@ -197,16 +196,16 @@ public class PinyinEditProcess {
                 // 光标前是中文
                 int sAfterEngPosition = getFirstEnglishLetterPosition(afterLength, sAfter);
                 if (delete) {
-                    innerChineseDelete(ic, sBefore, sAfter, sBeforeEngPosition, sAfterEngPosition);
+                    innerChineseDelete(ic, sBefore, sAfter, sAfterEngPosition);
                 } else if (sAfterEngPosition != 0) {// if current cursor is in chinese characters
-                    innerChineseInsert(ic, s);
+                    innerChineseInsert(s);
                 } else if (beforeLength > 0) {//if before cursor is chinese and after cursor is pinyin
                     borderChinesePinyinInsert(ic, sBefore, s + sAfter);
                 }
             } else {
                 // 光标前不是中文
                 if (delete) {
-                    withChineseDelete(ic, sBefore, sAfter, sBeforeEngPosition);
+                    withChineseDelete();
                 } else {
                     withChineseInsert(ic, sBefore, sAfter, sBeforeEngPosition);
                 }

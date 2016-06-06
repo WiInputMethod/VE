@@ -231,7 +231,7 @@ public final class WIT9Activity extends PreferenceActivity implements OnPreferen
      * @param intent
      */
     public void showPermissionActivity(Intent intent) {
-        if (intent.resolveActivity(getPackageManager()) != null) {
+        if (intent!=null && intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
         } else {
             Toast.makeText(this, "当前系统非MIUI，无法设置", Toast.LENGTH_SHORT).show();
@@ -312,9 +312,7 @@ public final class WIT9Activity extends PreferenceActivity implements OnPreferen
         } else
         if (preference.equals(mMIUIPermission)) {
             Intent intent = getPermissionIntent();
-            if (intent != null) {
-                showPermissionActivity(intent);
-            }
+            showPermissionActivity(intent);
         }
         return false;
     }
