@@ -1,0 +1,13 @@
+language: android
+jdk: oraclejdk8
+
+android:
+  components:
+    - build-tools-23.0.3
+    - android-19
+    - extra-android-support-v4-19.1.0
+    - extra-umeng-analytics-v5.2.4
+    - extra-HoloColorPicker-1.5
+    - add-on
+script:
+  - gradle build connectedCheck
