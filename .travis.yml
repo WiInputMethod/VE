@@ -9,5 +9,5 @@ android:
     - extra-umeng-analytics-v5.2.4
     - extra-HoloColorPicker-1.5
     - add-on
-script:
-  - gradle build connectedCheck
+# script:
+  # - gradle build connectedCheck
