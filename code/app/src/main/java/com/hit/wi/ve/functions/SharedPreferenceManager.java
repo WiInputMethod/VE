@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
-import com.hit.wi.ve.R;
+import com.hit.wi.t9.R;
 
 /**
  * 公用的静态SharedPreferenceManager，功能包括初始化和获取defaultSharedPreferences, editor等

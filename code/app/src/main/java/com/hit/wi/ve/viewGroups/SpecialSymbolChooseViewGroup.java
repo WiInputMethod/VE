@@ -8,7 +8,7 @@ import com.hit.wi.util.InputMode;
 import com.hit.wi.util.StringUtil;
 
 import com.hit.wi.ve.Interfaces.ViewGroupInterface;
-import com.hit.wi.ve.R;
+import com.hit.wi.t9.R;
 import com.hit.wi.ve.values.Global;
 import com.hit.wi.ve.view.QuickButton;
 

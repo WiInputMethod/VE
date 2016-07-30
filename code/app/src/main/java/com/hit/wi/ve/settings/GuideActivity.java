@@ -39,7 +39,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import android.widget.RelativeLayout.LayoutParams;
 
-import com.hit.wi.ve.R;
+import com.hit.wi.t9.R;
 import com.hit.wi.ve.values.Global;
 import com.umeng.analytics.MobclickAgent;
 

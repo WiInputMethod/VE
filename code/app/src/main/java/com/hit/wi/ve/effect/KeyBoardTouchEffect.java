@@ -8,7 +8,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.hit.wi.util.ViewsUtil;
-import com.hit.wi.ve.R;
+import com.hit.wi.t9.R;
 import com.hit.wi.ve.values.Global;
 
 /**

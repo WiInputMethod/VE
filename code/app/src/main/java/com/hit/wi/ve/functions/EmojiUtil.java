@@ -4,7 +4,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.util.HashMap;
 
-import com.hit.wi.ve.R;
+import com.hit.wi.t9.R;
 
 import android.annotation.SuppressLint;
 import android.content.ClipData;

@@ -2,7 +2,7 @@ package com.hit.wi.ve.functions;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import com.hit.wi.ve.R;
+import com.hit.wi.t9.R;
 
 /**
  * Created by Administrator on 2015/4/1.

@@ -14,7 +14,7 @@ import android.widget.*;
 import com.hit.wi.util.CommonFuncs;
 import com.hit.wi.util.StringUtil;
 import com.hit.wi.ve.Interfaces.QuickSymbolInterface;
-import com.hit.wi.ve.R;
+import com.hit.wi.t9.R;
 import com.hit.wi.ve.values.Global;
 import com.hit.wi.ve.values.QuickSymbolsDataStruct;
 import com.hit.wi.ve.viewGroups.QuickSymbolViewGroup;

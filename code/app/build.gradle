@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 'Google Inc.:Google APIs:23'
+    compileSdkVersion 23
     buildToolsVersion '23.0.2'
 
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
-        applicationId "com.hit.wi.ve"
+        applicationId "com.hit.wi.t9"
         minSdkVersion 17
         targetSdkVersion 19
         sourceSets.main {
@@ -37,6 +37,6 @@ android {
 
 dependencies {
     compile files('libs/umeng-analytics-v5.2.4.jar')
-    compile 'com.android.support:support-v4:19.1.0'
+    compile 'com.android.support:support-v4:23.1.0'
     compile 'com.larswerkman:HoloColorPicker:1.5'
 }

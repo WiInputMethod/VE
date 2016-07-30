@@ -1,6 +1,6 @@
 package com.hit.wi.ve.settings;
 
-import com.hit.wi.ve.R;
+import com.hit.wi.t9.R;
 import com.umeng.analytics.MobclickAgent;
 
 import android.app.Activity;

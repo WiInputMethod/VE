@@ -26,8 +26,8 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.widget.*;
 
-import com.hit.wi.jni.NKInitDictFile;
 import com.hit.wi.jni.InitInputParam;
+import com.hit.wi.t9.R;
 import com.hit.wi.util.CommonFuncs;
 import com.hit.wi.util.DisplayUtil;
 import com.hit.wi.util.InputMode;

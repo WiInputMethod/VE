@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.hit.wi.ve.R;
+import com.hit.wi.t9.R;
 import com.hit.wi.ve.effect.SoundManager;
 import com.hit.wi.ve.effect.VibrateManager;
 

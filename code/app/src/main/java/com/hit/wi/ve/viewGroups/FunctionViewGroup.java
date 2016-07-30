@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.hit.wi.ve.Interfaces.ViewGroupInterface;
-import com.hit.wi.ve.R;
+import com.hit.wi.t9.R;
 import com.hit.wi.ve.settings.WIT9Activity;
 import com.hit.wi.ve.values.Global;
 import com.hit.wi.ve.values.SkinInfoManager;

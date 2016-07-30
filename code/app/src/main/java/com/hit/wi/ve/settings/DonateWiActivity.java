@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.hit.wi.ve.R;
+import com.hit.wi.t9.R;
 import com.umeng.analytics.MobclickAgent;
 
 
