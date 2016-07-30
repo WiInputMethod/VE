@@ -34,7 +34,7 @@ import com.hit.wi.jni.DictManager;
 import com.hit.wi.jni.NKInitDictFile;
 import com.hit.wi.jni.WIInputMethodNK;
 import com.hit.wi.util.CommonFuncs;
-import com.hit.wi.ve.R;
+import com.hit.wi.t9.R;
 import com.hit.wi.ve.values.Global;
 import com.umeng.analytics.MobclickAgent;
 

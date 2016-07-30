@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import com.hit.wi.util.CommonFuncs;
-import com.hit.wi.ve.R;
+import com.hit.wi.t9.R;
 import com.hit.wi.ve.values.Global;
 
 /**

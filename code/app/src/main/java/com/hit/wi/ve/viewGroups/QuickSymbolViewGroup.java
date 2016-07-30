@@ -14,7 +14,7 @@ import com.hit.wi.jni.Kernel;
 import com.hit.wi.util.StringUtil;
 import com.hit.wi.ve.Interfaces.QuickSymbolInterface;
 import com.hit.wi.ve.Interfaces.ViewGroupInterface;
-import com.hit.wi.ve.R;
+import com.hit.wi.t9.R;
 import com.hit.wi.ve.functions.FileManager;
 import com.hit.wi.ve.settings.QuickSymbolAddActivity;
 import com.hit.wi.ve.values.Global;

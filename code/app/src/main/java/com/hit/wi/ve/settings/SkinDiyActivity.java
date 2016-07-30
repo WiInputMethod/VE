@@ -21,7 +21,7 @@ import android.widget.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.hit.wi.ve.R;
+import com.hit.wi.t9.R;
 import com.larswerkman.holocolorpicker.ColorPicker;
 import com.larswerkman.holocolorpicker.OpacityBar;
 import com.larswerkman.holocolorpicker.SVBar;

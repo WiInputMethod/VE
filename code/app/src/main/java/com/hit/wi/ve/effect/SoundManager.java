@@ -6,7 +6,7 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
 
-import com.hit.wi.ve.R;
+import com.hit.wi.t9.R;
 
 /**
  * @author Liabiao

@@ -6,7 +6,7 @@ import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.hit.wi.ve.R;
+import com.hit.wi.t9.R;
 import com.hit.wi.ve.datastruct.SkinInfoDataStruct;
 import com.hit.wi.ve.functions.FileManager;
 

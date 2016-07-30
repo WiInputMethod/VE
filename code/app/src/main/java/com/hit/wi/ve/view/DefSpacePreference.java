@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
 
-import com.hit.wi.ve.R;
+import com.hit.wi.t9.R;
 
 /**
  * Define Space Perference

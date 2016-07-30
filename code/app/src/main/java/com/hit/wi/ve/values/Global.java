@@ -44,7 +44,7 @@ public final class Global {
     public static Stack<InputAction> redoText_single = new Stack<>();
     public static int redo_MAX_NUM = 60;
 
-    public static String FilePath = "/data/data/com.hit.wi.ve/dict_qk/";
+    public static String FilePath = "/data/data/com.hit.wi.t9/dict_qk/";
 
     public static String QUANPIN = "qk";
     public static String EMOJI = "emoji";
@@ -57,7 +57,7 @@ public final class Global {
     public static String V5 = "V5";
     public static String V7 = "V7";
     public static String V8 = "V8";
-    public static String PACKAGE = "package:com.hit.wi.ve";
+    public static String PACKAGE = "package:com.hit.wi.t9";
 
     public static int metaRefreshTime = 1000;
     public static boolean inLarge = false;

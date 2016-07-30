@@ -16,7 +16,7 @@ import android.widget.SimpleAdapter;
 
 import com.hit.wi.util.CommonFuncs;
 
-import com.hit.wi.ve.R;
+import com.hit.wi.t9.R;
 import com.umeng.analytics.MobclickAgent;
 
 

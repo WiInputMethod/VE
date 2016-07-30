@@ -11,7 +11,7 @@ import android.provider.ContactsContract;
 import android.provider.ContactsContract.PhoneLookup;
 import android.util.Log;
 import android.widget.Toast;
-import com.hit.wi.ve.R;
+import com.hit.wi.t9.R;
 import com.hit.wi.define.FilePath;
 import com.hit.wi.util.VersionUtil;
 
