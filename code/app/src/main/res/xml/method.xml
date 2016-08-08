@@ -21,4 +21,4 @@
 <!-- for the Search Manager. -->
 
 <input-method xmlns:android="http://schemas.android.com/apk/res/android"
-              android:settingsActivity="com.hit.wi.ve.settings.GuideActivity"/>
+              android:settingsActivity="com.hit.wi.t9.settings.GuideActivity"/>
