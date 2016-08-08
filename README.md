@@ -1,4 +1,4 @@
-WI微逸输入法
+WI 微逸输入法
 ============
 
 [![Build Status](https://travis-ci.org/WiInputMethod/VE.svg?branch=develop)](https://travis-ci.org/WiInputMethod/VE)
