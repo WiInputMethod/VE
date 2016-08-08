@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="com.hit.wi.ve.settings.QKFragment"
+    android:layout_height="match_parent" tools:context="com.hit.wi.t9.settings.QKFragment"
     android:background="@color/snow"
     android:orientation="vertical"
     android:layout_marginRight="10dp"

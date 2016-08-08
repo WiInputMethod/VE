@@ -4,8 +4,6 @@ import android.graphics.drawable.GradientDrawable;
 import android.util.Log;
 import android.view.View;
 
-import com.hit.wi.ve.values.Global;
-
 /**
  * Created by daofa on 2016/4/10.
  */
