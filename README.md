@@ -58,6 +58,10 @@ Apache License 2.0
 ## 鸣谢
 所有在[论坛](http://forum.wicld.com/)、[内测群](http://jq.qq.com/?_wv=1027&k=2AYhXAy)中提供意见的朋友
 
-欢迎开发者们加入输入法开发者群共同开发学习 [加群链接](http://jq.qq.com/?_wv=1027&k=2AiJftV)
+~~欢迎开发者们加入输入法开发者群共同开发学习 [加群链接](http://jq.qq.com/?_wv=1027&k=2AiJftV)
+
+## 声明：
+- 本输入法内核不开源，如对输入法内核感兴趣请移步 google 输入法
+- 该项目已经年久失修，开发群并不活跃
 
  Copyright [HIT WI Lab](https://wi.hit.edu.cn) 2014-2016
